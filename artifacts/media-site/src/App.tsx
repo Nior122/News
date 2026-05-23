@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 import Home from "@/pages/Home";
 import ArticlePage from "@/pages/ArticlePage";
@@ -30,6 +31,7 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <ScrollToTop />
       <Header />
       <main className="flex-1 pb-16 md:pb-0">
         <Switch>
