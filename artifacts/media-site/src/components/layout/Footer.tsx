@@ -10,11 +10,11 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/">
               <span className="font-display font-bold text-2xl tracking-tighter text-primary cursor-pointer">
-                PulseWire
+                Scrolltek
               </span>
             </Link>
             <p className="text-muted-foreground text-sm">
-              Stay wired. Stay curious. The internet's most curious minds come here for fast, smart takes on tech, culture, and everything in between.
+              Your go-to source for tech, digital culture, AI tools, lifestyle, and the trends shaping how we live online.
             </p>
             <div className="flex items-center gap-4 text-muted-foreground">
               <a href="#" className="hover:text-primary transition-colors"><SiX className="h-5 w-5" /></a>
@@ -55,7 +55,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} PulseWire Media. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Scrolltek. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-primary transition-colors">Terms of Service</Link>
             <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
