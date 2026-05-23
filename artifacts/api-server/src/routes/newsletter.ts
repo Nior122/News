@@ -10,7 +10,8 @@ router.post("/newsletter/subscribe", async (req, res) => {
   try {
     const parsed = emailSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ error: "Invalid email address" });
+      res.status(400).json({ error: "Invalid email address" });
+      return;
     }
 
     const { email } = parsed.data;

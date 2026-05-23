@@ -63,17 +63,21 @@ router.get("/articles/featured", async (req, res) => {
         .from(articlesTable)
         .orderBy(desc(articlesTable.views))
         .limit(1);
-      if (!fallback.length) return res.status(404).json({ error: "No articles found" });
+      if (!fallback.length) {
+        res.status(404).json({ error: "No articles found" });
+        return;
+      }
       const author = await db
         .select()
         .from(authorsTable)
         .where(eq(authorsTable.id, fallback[0].authorId))
         .limit(1);
-      return res.json({
+      res.json({
         ...fallback[0],
         author: author[0] ?? { name: "Staff Writer", avatarUrl: "" },
         publishedAt: fallback[0].publishedAt.toISOString(),
       });
+      return;
     }
 
     const author = await db
@@ -195,7 +199,8 @@ router.get("/articles/search", async (req, res) => {
     const offset = (page - 1) * limit;
 
     if (!q.trim()) {
-      return res.json({ articles: [], total: 0, page, limit, hasMore: false });
+      res.json({ articles: [], total: 0, page, limit, hasMore: false });
+      return;
     }
 
     const searchPattern = `%${q}%`;
@@ -248,7 +253,8 @@ router.get("/articles/:slug", async (req, res) => {
       .limit(1);
 
     if (!articles.length) {
-      return res.status(404).json({ error: "Article not found" });
+      res.status(404).json({ error: "Article not found" });
+      return;
     }
 
     const article = articles[0];
@@ -286,7 +292,8 @@ router.get("/articles/:slug/related", async (req, res) => {
       .limit(1);
 
     if (!current.length) {
-      return res.json([]);
+      res.json([]);
+      return;
     }
 
     const related = await db
