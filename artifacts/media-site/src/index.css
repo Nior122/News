@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
-
+/* Fonts loaded in index.html to avoid render-blocking duplicate request */
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -108,8 +107,8 @@
   --input: 0 0% 90%;
   --ring: 217 91% 60%;
 
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-display: 'Syne', sans-serif;
+  --app-font-sans: 'Inter', system-ui, sans-serif;
+  --app-font-display: 'Syne', system-ui, sans-serif;
   --radius: 0.5rem;
 
   --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -133,7 +132,7 @@
   --background: 0 0% 5%;
   --foreground: 0 0% 95%;
   --border: 0 0% 15%;
-  
+
   --card: 0 0% 9%;
   --card-foreground: 0 0% 95%;
   --card-border: 0 0% 15%;
@@ -174,14 +173,55 @@
   * {
     @apply border-border;
   }
+
+  html {
+    /* Smooth scrolling — respects prefers-reduced-motion */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
   }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
   }
+
+  /* Better tap highlighting on mobile */
+  a, button, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Ensure minimum tap target on interactive elements */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove min-height for purely inline/decorative links */
+  nav a, footer a {
+    min-height: unset;
+    min-width: unset;
+  }
+
+  img {
+    /* Prevent images from causing layout shift */
+    max-width: 100%;
+    height: auto;
+  }
 }
 
+/* ─── Ticker animation ─── */
 .ticker-wrap {
   overflow: hidden;
   white-space: nowrap;
@@ -191,14 +231,21 @@
 .ticker-content {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 30s linear infinite;
+  animation: ticker 35s linear infinite;
+}
+
+/* Pause when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-content { animation: none; }
 }
 
 @keyframes ticker {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ─── content-visibility: paint below-fold sections lazily ─── */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
 }

@@ -1,23 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Media Website</title>
-    <meta name="description" content="Media Website — built on Replit. Update this description to reflect the app." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0f" />
+
+    <title>Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools</title>
+    <meta name="description" content="Scrolltek is your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Media Website" />
-    <meta property="og:description" content="Media Website — built on Replit. Update this description to reflect the app." />
+    <link rel="canonical" href="https://scrolltek.com/" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Scrolltek" />
+    <meta property="og:title" content="Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools" />
+    <meta property="og:description" content="Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
+    <meta property="og:url" content="https://scrolltek.com/" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Media Website" />
-    <meta name="twitter:description" content="Media Website — built on Replit. Update this description to reflect the app." />
+    <meta name="twitter:site" content="@scrolltek" />
+    <meta name="twitter:title" content="Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools" />
+    <meta name="twitter:description" content="Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Resource hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://picsum.photos" />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+    <!-- Fonts — display=swap keeps text visible during load -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured data: Website + SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Scrolltek",
+      "url": "https://scrolltek.com/",
+      "description": "Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://scrolltek.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Inline critical CSS: prevents flash of unstyled/light content before JS loads -->
+    <style>
+      html { background: #0a0a0f; color-scheme: dark; }
+      body { margin: 0; background: #0a0a0f; }
+      #root { min-height: 100dvh; }
+      /* Reserve header height to prevent layout shift */
+      #root-header-placeholder { height: 64px; }
+    </style>
   </head>
+
   <body>
+    <noscript>
+      <div style="font-family: system-ui, sans-serif; padding: 2rem; max-width: 720px; margin: 0 auto;">
+        <h1 style="font-size:2rem;font-weight:800;">Scrolltek</h1>
+        <p>Your go-to source for <strong>tech</strong>, <strong>digital culture</strong>, <strong>AI tools</strong>, <strong>phone tips</strong>, <strong>lifestyle</strong>, and trending topics.</p>
+        <p>JavaScript is required to browse Scrolltek's full experience. Please enable JavaScript in your browser to continue.</p>
+        <nav>
+          <a href="/category/tech">Tech</a> ·
+          <a href="/category/culture">Culture</a> ·
+          <a href="/category/lifestyle">Lifestyle</a> ·
+          <a href="/category/ai-tools">AI Tools</a> ·
+          <a href="/category/phone-tips">Phone Tips</a> ·
+          <a href="/about">About</a>
+        </nav>
+      </div>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

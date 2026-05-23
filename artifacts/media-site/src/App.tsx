@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,23 +10,32 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
-import Home from "@/pages/Home";
-import ArticlePage from "@/pages/ArticlePage";
-import CategoryPage from "@/pages/CategoryPage";
-import SearchPage from "@/pages/SearchPage";
-import AboutPage from "@/pages/AboutPage";
-import ContactPage from "@/pages/ContactPage";
-import PrivacyPage from "@/pages/PrivacyPage";
-import NotFound from "@/pages/not-found";
+const Home = lazy(() => import("@/pages/Home"));
+const ArticlePage = lazy(() => import("@/pages/ArticlePage"));
+const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
+const SearchPage = lazy(() => import("@/pages/SearchPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
+const NotFound = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
+      staleTime: 60_000,
     },
   },
 });
+
+function PageSkeleton() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+    </div>
+  );
+}
 
 function Router() {
   return (
@@ -34,16 +43,18 @@ function Router() {
       <ScrollToTop />
       <Header />
       <main className="flex-1 pb-16 md:pb-0">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/article/:slug" component={ArticlePage} />
-          <Route path="/category/:slug" component={CategoryPage} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/about" component={AboutPage} />
-          <Route path="/contact" component={ContactPage} />
-          <Route path="/privacy" component={PrivacyPage} />
-          <Route component={NotFound} />
-        </Switch>
+        <Suspense fallback={<PageSkeleton />}>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/article/:slug" component={ArticlePage} />
+            <Route path="/category/:slug" component={CategoryPage} />
+            <Route path="/search" component={SearchPage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/contact" component={ContactPage} />
+            <Route path="/privacy" component={PrivacyPage} />
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
       </main>
       <Footer />
       <MobileNav />

@@ -16,21 +16,51 @@ export function MobileNav() {
   const [location] = useLocation();
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur border-t border-border/40 pb-safe">
-      <nav className="flex items-center justify-around h-16 px-2">
+    <div
+      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur border-t border-border/40"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
+      <nav className="flex items-stretch justify-around h-[60px]">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-          const isActive = location === href;
+          const isActive =
+            href === "/"
+              ? location === "/"
+              : location.startsWith(href);
           return (
             <Link
               key={href}
               href={href}
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors",
-                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                "flex flex-col items-center justify-center flex-1 gap-[3px] min-w-0 touch-manipulation select-none",
+                "active:scale-95 transition-transform duration-100",
+                isActive
+                  ? "text-primary"
+                  : "text-muted-foreground active:text-foreground",
               )}
+              aria-label={label}
+              aria-current={isActive ? "page" : undefined}
             >
-              <Icon className="h-5 w-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <div
+                className={cn(
+                  "flex items-center justify-center w-10 h-6 rounded-full transition-colors duration-150",
+                  isActive ? "bg-primary/15" : "",
+                )}
+              >
+                <Icon
+                  className={cn(
+                    "h-[18px] w-[18px] transition-all duration-150",
+                    isActive ? "stroke-[2.5px]" : "stroke-[1.75px]",
+                  )}
+                />
+              </div>
+              <span
+                className={cn(
+                  "text-[9px] font-semibold tracking-wide leading-none truncate",
+                  isActive ? "opacity-100" : "opacity-60",
+                )}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}
