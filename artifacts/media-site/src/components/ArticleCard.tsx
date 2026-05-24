@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Article } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Clock } from "lucide-react";
 
 interface ArticleCardProps {
   article: Article;
@@ -25,7 +26,7 @@ export function CategoryBadge({ category, className }: { category: string; class
   };
 
   return (
-    <Badge variant="outline" className={cn(getCategoryColor(category), className)}>
+    <Badge variant="outline" className={cn(getCategoryColor(category), "font-semibold", className)}>
       {category}
     </Badge>
   );
@@ -41,27 +42,34 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
           className,
         )}
       >
-        {/* Fixed dimensions prevent CLS */}
-        <div className="relative shrink-0 rounded-lg overflow-hidden bg-muted" style={{ width: 112, height: 84 }}>
+        <div
+          className="relative shrink-0 rounded-xl overflow-hidden bg-muted"
+          style={{ width: 120, height: 90 }}
+        >
           <img
             src={article.imageUrl}
             alt={article.title}
-            width={112}
-            height={84}
+            width={120}
+            height={90}
             loading="lazy"
             decoding="async"
             className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
         </div>
-        <div className="flex flex-col flex-1 py-1 min-w-0">
+        <div className="flex flex-col flex-1 py-0.5 min-w-0">
           <CategoryBadge category={article.category} className="w-fit mb-2 text-xs" />
-          <h3 className="font-display font-bold text-base leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 group-hover:text-primary transition-colors line-clamp-2">
             {article.title}
           </h3>
-          <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1 flex-wrap">
-            <span>{article.author.name}</span>
-            <span>·</span>
+          <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 flex-wrap">
+            <span className="font-medium text-foreground/70 truncate max-w-[100px]">{article.author.name}</span>
+            <span className="text-border">·</span>
             <span>{new Date(article.publishedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
+            <span className="text-border">·</span>
+            <span className="flex items-center gap-0.5">
+              <Clock className="w-3 h-3" />
+              {article.readTime}m
+            </span>
           </div>
         </div>
       </Link>
@@ -71,10 +79,12 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
   return (
     <Link
       href={`/article/${article.slug}`}
-      className={cn("group flex flex-col touch-manipulation", className)}
+      className={cn(
+        "group flex flex-col touch-manipulation bg-card rounded-xl overflow-hidden border border-border/50 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300",
+        className,
+      )}
     >
-      {/* Aspect-ratio box prevents CLS before image loads */}
-      <div className="relative w-full rounded-xl overflow-hidden mb-4 bg-muted" style={{ aspectRatio: "16/9" }}>
+      <div className="relative w-full overflow-hidden bg-muted" style={{ aspectRatio: "16/9" }}>
         <img
           src={article.imageUrl}
           alt={article.title}
@@ -85,16 +95,26 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
       </div>
-      <CategoryBadge category={article.category} className="w-fit mb-3" />
-      <h3 className="font-display font-bold text-lg md:text-xl leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
-        {article.title}
-      </h3>
-      <div className="flex items-center text-sm text-muted-foreground mt-auto pt-2 flex-wrap gap-x-2 gap-y-1">
-        <span className="font-medium text-foreground">{article.author.name}</span>
-        <span className="text-border">·</span>
-        <span>{new Date(article.publishedAt).toLocaleDateString(undefined, { month: "long", day: "numeric" })}</span>
-        <span className="text-border">·</span>
-        <span>{article.readTime} min read</span>
+
+      <div className="flex flex-col flex-1 p-4">
+        <CategoryBadge category={article.category} className="w-fit mb-3" />
+        <h3 className="font-display font-bold text-base md:text-lg leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+          {article.title}
+        </h3>
+        {article.excerpt && (
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-3 leading-relaxed flex-1">
+            {article.excerpt}
+          </p>
+        )}
+        <div className="flex items-center text-xs text-muted-foreground mt-auto pt-3 border-t border-border/50 flex-wrap gap-x-2 gap-y-1">
+          <span className="font-medium text-foreground/80">{article.author.name}</span>
+          <span className="text-border">·</span>
+          <span>{new Date(article.publishedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
+          <span className="ml-auto flex items-center gap-1 text-muted-foreground/70">
+            <Clock className="w-3 h-3" />
+            {article.readTime} min
+          </span>
+        </div>
       </div>
     </Link>
   );
