@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+
+  build:
+    name: Build check
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @workspace/api-server run build
+      - run: pnpm --filter @workspace/media-site run build
+
+  purge-cloudflare-cache:
+    name: Purge Cloudflare cache
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Wait for Vercel deployment to go live
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          echo "Waiting for Vercel to deploy..."
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "Polling Vercel API for deployment status..."
+            MAX_ATTEMPTS=30
+            SLEEP_SECONDS=10
+            for i in $(seq 1 $MAX_ATTEMPTS); do
+              STATE=$(curl -sf \
+                -H "Authorization: Bearer $VERCEL_TOKEN" \
+                "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&limit=1&target=production" \
+                | node -e "
+                    let d='';
+                    process.stdin.on('data',c=>d+=c);
+                    process.stdin.on('end',()=>{
+                      try {
+                        const json=JSON.parse(d);
+                        const dep=json.deployments&&json.deployments[0];
+                        console.log(dep?dep.state:'UNKNOWN');
+                      } catch(e){ console.log('UNKNOWN'); }
+                    });
+                  ")
+              echo "Attempt $i/$MAX_ATTEMPTS — deployment state: $STATE"
+              if [ "$STATE" = "READY" ]; then echo "Vercel deployment is live."; break; fi
+              if [ "$STATE" = "ERROR" ] || [ "$STATE" = "CANCELED" ]; then
+                echo "Vercel deployment failed — skipping cache purge."; exit 0
+              fi
+              if [ "$i" = "$MAX_ATTEMPTS" ]; then echo "Timed out — purging anyway."; fi
+              sleep $SLEEP_SECONDS
+            done
+          else
+            echo "No VERCEL_TOKEN set — waiting 90 seconds."
+            sleep 90
+          fi
+
+      - name: Purge Cloudflare cache
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        run: |
+          echo "Purging Cloudflare cache..."
+          RESPONSE=$(curl -sf -X POST \
+            "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything": true}')
+          SUCCESS=$(echo "$RESPONSE" | node -e "
+            let d='';
+            process.stdin.on('data',c=>d+=c);
+            process.stdin.on('end',()=>{
+              try { console.log(JSON.parse(d).success); }
+              catch(e){ console.log('false'); }
+            });
+          ")
+          if [ "$SUCCESS" = "true" ]; then
+            echo "Cloudflare cache purged successfully."
+          else
+            echo "Cache purge failed. Response: $RESPONSE"; exit 1
+          fi
