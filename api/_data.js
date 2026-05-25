@@ -335,7 +335,7 @@ export const articles = [
     published: true,
     tags: ["AMD","On-Device AI","AMD Ryzen AI","Offline AI","AI Privacy","Agent Computer","Local AI"],
   },
-];;;
+];;;;
 
 export function withCors(response) {
   const headers = new Headers(response.headers);
