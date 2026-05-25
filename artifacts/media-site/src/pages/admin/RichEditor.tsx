@@ -1,11 +1,12 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
+import { Image as TipTapImage } from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import { useEffect, useRef, useState } from "react";
+import type { NodeViewProps } from "@tiptap/react";
 
 interface RichEditorProps {
   value: string;
@@ -42,13 +43,118 @@ const ToolbarBtn = ({
 
 const Divider = () => <div className="w-px h-5 bg-zinc-700 mx-1 self-center" />;
 
+function ImageNodeView({ node, deleteNode, updateAttributes }: NodeViewProps) {
+  const [selected, setSelected] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setSelected(false);
+      }
+    }
+    if (selected) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [selected]);
+
+  async function handleReplace(file: File) {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token") ?? ""}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        updateAttributes({ src: data.url });
+      }
+    } finally {
+      setUploading(false);
+      setSelected(false);
+    }
+  }
+
+  return (
+    <NodeViewWrapper>
+      <div
+        ref={wrapperRef}
+        className="relative inline-block w-full my-4"
+        onClick={(e) => { e.stopPropagation(); setSelected((v) => !v); }}
+      >
+        <img
+          src={node.attrs.src}
+          alt={node.attrs.alt ?? ""}
+          className={`w-full h-auto rounded-lg cursor-pointer transition-all ${selected ? "ring-2 ring-primary ring-offset-2 ring-offset-zinc-900" : "hover:opacity-90"}`}
+        />
+
+        {selected && (
+          <div className="absolute inset-0 rounded-lg bg-black/50 flex items-center justify-center">
+            <div className="flex gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 shadow-xl">
+              <button
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); fileRef.current?.click(); }}
+                disabled={uploading}
+                className="flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition disabled:opacity-50"
+              >
+                {uploading ? (
+                  <span className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-900 rounded-full animate-spin" />
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                )}
+                {uploading ? "Uploading…" : "Replace"}
+              </button>
+              <button
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); deleteNode(); }}
+                className="flex items-center gap-1.5 bg-red-600 text-white font-semibold text-sm px-4 py-2 rounded-lg hover:bg-red-500 transition"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        )}
+
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) handleReplace(f);
+            e.target.value = "";
+          }}
+        />
+      </div>
+    </NodeViewWrapper>
+  );
+}
+
+const InteractiveImage = TipTapImage.extend({
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageNodeView);
+  },
+});
+
 export default function RichEditor({ value, onChange }: RichEditorProps) {
   const [imageUrl, setImageUrl] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
   const [showImageInput, setShowImageInput] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
+  const [uploadingInline, setUploadingInline] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const linkInputRef = useRef<HTMLInputElement>(null);
+  const inlineFileRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     extensions: [
@@ -56,7 +162,7 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
         heading: { levels: [2, 3, 4] },
       }),
       Underline,
-      Image.configure({ inline: false, allowBase64: true }),
+      InteractiveImage.configure({ inline: false, allowBase64: true }),
       Link.configure({ openOnClick: false, HTMLAttributes: { class: "text-primary underline" } }),
       Placeholder.configure({ placeholder: "Start writing your article here…" }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -73,7 +179,6 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
     },
   });
 
-  // Sync external value changes (e.g. when form resets or new article loads)
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value || "", false, { preserveWhitespace: "full" });
@@ -99,6 +204,26 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
     editor?.chain().focus().setLink({ href: url }).run();
     setLinkUrl("");
     setShowLinkInput(false);
+  }
+
+  async function handleInlineUpload(file: File) {
+    setUploadingInline(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token") ?? ""}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        editor?.chain().focus().setImage({ src: data.url }).run();
+      }
+    } finally {
+      setUploadingInline(false);
+      setShowImageInput(false);
+    }
   }
 
   return (
@@ -170,7 +295,7 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </ToolbarBtn>
 
-        {/* Image */}
+        {/* Image — URL or upload from device */}
         <ToolbarBtn
           onClick={() => {
             setShowLinkInput(false);
@@ -217,18 +342,47 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
       )}
 
       {showImageInput && (
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-700 bg-zinc-800/40">
-          <svg className="w-3.5 h-3.5 text-zinc-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <input
-            ref={imageInputRef}
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); insertImage(); } if (e.key === "Escape") setShowImageInput(false); }}
-            placeholder="https://images.unsplash.com/photo-…"
-            className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
-          />
-          <button type="button" onClick={insertImage} className="text-xs bg-primary text-white px-3 py-1 rounded-md hover:bg-primary/80 transition">Insert</button>
-          <button type="button" onClick={() => setShowImageInput(false)} className="text-xs text-zinc-500 hover:text-zinc-300 transition">✕</button>
+        <div className="border-b border-zinc-700 bg-zinc-800/40">
+          <div className="flex items-center gap-2 px-3 py-2">
+            <svg className="w-3.5 h-3.5 text-zinc-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <input
+              ref={imageInputRef}
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); insertImage(); } if (e.key === "Escape") setShowImageInput(false); }}
+              placeholder="Paste image URL…"
+              className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
+            />
+            <button type="button" onClick={insertImage} className="text-xs bg-primary text-white px-3 py-1 rounded-md hover:bg-primary/80 transition">Insert</button>
+            <button type="button" onClick={() => setShowImageInput(false)} className="text-xs text-zinc-500 hover:text-zinc-300 transition">✕</button>
+          </div>
+          <div className="px-3 pb-2 flex items-center gap-2">
+            <div className="flex-1 h-px bg-zinc-700" />
+            <span className="text-xs text-zinc-600">or</span>
+            <div className="flex-1 h-px bg-zinc-700" />
+          </div>
+          <div className="px-3 pb-2">
+            <button
+              type="button"
+              disabled={uploadingInline}
+              onClick={() => inlineFileRef.current?.click()}
+              className="w-full flex items-center justify-center gap-2 text-xs text-zinc-300 hover:text-white bg-zinc-700 hover:bg-zinc-600 transition px-3 py-2 rounded-lg disabled:opacity-50"
+            >
+              {uploadingInline ? (
+                <span className="w-3.5 h-3.5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
+              ) : (
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+              )}
+              {uploadingInline ? "Uploading…" : "Upload from device"}
+            </button>
+            <input
+              ref={inlineFileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) handleInlineUpload(f); e.target.value = ""; }}
+            />
+          </div>
         </div>
       )}
 
@@ -254,7 +408,7 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
           max-width: 100%;
           height: auto;
           border-radius: 8px;
-          margin: 1rem 0;
+          margin: 0;
         }
         .ProseMirror blockquote {
           border-left: 3px solid #3b82f6;
