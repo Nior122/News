@@ -6,7 +6,7 @@
  * Routing: vercel.json rewrites /api/:path* → /api/index
  */
 
-import { articles as _rawArticles, formatArticle } from '../functions/api/_data.js';
+import { articles as _rawArticles, formatArticle } from './_data.js';
 
 // Mutable copy so view counts can increment within a single invocation
 const articles = _rawArticles.map(a => ({ ...a }));
