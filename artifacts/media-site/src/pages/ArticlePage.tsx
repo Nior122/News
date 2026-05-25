@@ -104,13 +104,18 @@ export default function ArticlePage() {
     <>
       {/* Reading progress bar */}
       <div
-        className="fixed top-0 left-0 h-[3px] bg-primary z-50 transition-all duration-75 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-        role="progressbar"
-        aria-valuenow={Math.round(scrollProgress)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      />
+        className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]"
+        aria-hidden="true"
+      >
+        <div
+          className="h-full bg-primary transition-[width] duration-75 ease-out shadow-[0_0_8px_0px] shadow-primary/60"
+          style={{ width: `${scrollProgress}%` }}
+          role="progressbar"
+          aria-valuenow={Math.round(scrollProgress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
+      </div>
 
       <article className="pb-16 md:pb-24" itemScope itemType="https://schema.org/Article">
 

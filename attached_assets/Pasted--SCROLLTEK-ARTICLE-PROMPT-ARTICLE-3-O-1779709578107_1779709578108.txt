@@ -1,0 +1,287 @@
+=============================================================
+SCROLLTEK ARTICLE PROMPT — ARTICLE 3 OF 4
+=============================================================
+You are a professional content writer and SEO expert 
+with 10 years of experience. You write for SCROLLTEK 
+— a digital media brand for 18–35 year olds.
+
+Write like a sharp financial journalist who makes 
+big money and tech stories feel urgent, personal, 
+and impossible to stop reading.
+
+=============================================================
+CRITICAL OUTPUT INSTRUCTIONS — READ FIRST
+=============================================================
+You must write the ENTIRE article in valid HTML only.
+Do NOT use markdown. Do NOT use ## or ** or *.
+Do NOT write plain text headings.
+
+Use ONLY these HTML tags:
+  <h1> for the main title
+  <h2> for section headings
+  <h3> for sub-section headings
+  <p> for all paragraphs
+  <ul> and <li> for bullet lists
+  <ol> and <li> for numbered lists
+  <strong> for bold emphasis inside paragraphs
+  <em> for italic text
+  <figure> and <figcaption> for every image block
+  <img> for images — use src="" (empty) always
+
+IMAGE FORMAT — use exactly this structure 
+for every image, with src always left empty:
+
+<figure>
+  <img 
+    src="" 
+    alt="YOUR DESCRIPTIVE ALT TEXT HERE" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>YOUR CAPTION TEXT HERE</figcaption>
+</figure>
+
+Never put a URL inside src="". Always leave it empty.
+The developer will fill in image URLs later.
+
+=============================================================
+ARTICLE TOPIC
+=============================================================
+Big Tech Is Spending $725 Billion on AI — 
+And Firing Thousands of Workers to Pay For It
+
+=============================================================
+RESEARCH & KEY FACTS TO USE
+=============================================================
+Paraphrase all facts — never copy text directly.
+
+Key facts:
+- Amazon: ~$200B AI capex in 2026
+- Microsoft: ~$190B
+- Alphabet (Google): $175–185B
+- Meta: $115–135B (more than double its 2025 spend)
+- Combined total: $725B — up 77% from 2025's $410B
+- Meta spends $370 million per DAY on data centers
+- Meta's annual payroll is ~$27B — 
+  AI spend is over 4x that amount
+- Zuckerberg directly linked May 2026 layoffs 
+  to the AI infrastructure cost in a staff memo
+- Over 113,000 tech workers lost jobs by May 2026
+- Average: 825 people per day losing tech jobs 
+  since January 1, 2026
+- 85,411 cuts in first 4 months alone
+- Oracle cut 20,000–30,000 while cloud revenue 
+  was UP 34% — companies cutting while profitable
+- Cloudflare cut 20% of staff after internal 
+  AI usage jumped 600% in 3 months
+- 275,000 AI jobs currently open but unfilled
+- Laid-off workers lack skills to fill them 
+  (the skills gap)
+- Senior Bay Area engineers now wait 67 days 
+  to find work (up from 38 days in 2025)
+- April 2026 alone: 83,387 job cuts, 
+  up 38% from March
+
+Reference links (cite naturally in article):
+- https://techjournal.org/tech-layoffs-2026-ai-spending
+- https://invezz.com/news/2026/05/04/is-big-techs-725b-ai-splurge-being-funded-by-mass-layoffs/
+- https://www.tomshardware.com/tech-industry/big-tech/big-techs-ai-spending-plans-reach-725-billion
+
+=============================================================
+SEO BLOCK — OUTPUT THIS FIRST BEFORE THE HTML ARTICLE
+=============================================================
+FOCUS KEYWORD: Big Tech AI spending layoffs 2026
+SECONDARY KEYWORDS: $725 billion AI investment, 
+tech layoffs 2026, Meta layoffs AI, 
+AI job cuts, Amazon Microsoft AI capex
+META TITLE: Big Tech Is Spending $725 Billion on AI 
+While Firing Thousands — Here Is Why
+META DESCRIPTION: Google, Meta, Amazon and Microsoft 
+are spending $725B on AI in 2026 and laying off over 
+100,000 workers. Here is the truth behind the numbers.
+URL SLUG: /big-tech-725-billion-ai-spending-layoffs-2026
+SEARCH INTENT: Informational / Trending News
+INTERNAL LINKS: "Google I/O 2026 AI Announcements" 
+and "The 7 AI Productivity Tools Worth Using in 2026"
+
+=============================================================
+FULL HTML ARTICLE STRUCTURE
+=============================================================
+
+<h1>Big Tech Is Spending $725 Billion on AI — And Firing Thousands of Workers to Pay For It</h1>
+
+<!-- HERO IMAGE -->
+<figure>
+  <img 
+    src="" 
+    alt="Big tech data center AI servers rows glowing lights layoffs 2026" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    The four biggest tech companies are spending more 
+    on AI infrastructure in 2026 than the entire 
+    global oil industry spends on exploration.
+  </figcaption>
+</figure>
+
+<!-- INTRODUCTION: 3 short paragraphs -->
+<!-- Open with striking contrast: same week companies 
+     announced record profits, they also cut thousands -->
+<!-- Drop the $725 billion figure immediately -->
+<!-- Tell reader what article answers: is AI killing jobs? 
+     Who is winning? What does it mean for you? -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>The $725 Billion Number — What It Actually Means</h2>
+<!-- Break down company by company: -->
+<!-- Use relatable analogies for huge numbers -->
+<!-- Example: Meta spends $370 million per DAY — 
+     more than most people earn in 1,000 lifetimes, daily -->
+<!-- Explain what the money goes toward: -->
+<!-- Data centers, GPU chips, custom silicon, power grids -->
+<!-- Explain GPU in one plain sentence -->
+<p>...</p>
+<p>...</p>
+
+<!-- Use a ul/li breakdown of each company's spend -->
+<ul>
+  <li><strong>Amazon:</strong> approximately $200 billion</li>
+  <li><strong>Microsoft:</strong> approximately $190 billion</li>
+  <li><strong>Google/Alphabet:</strong> $175–185 billion</li>
+  <li><strong>Meta:</strong> $115–135 billion — more than 
+    double what it spent the year before</li>
+</ul>
+<p>...</p>
+
+<!-- IMAGE 2 -->
+<figure>
+  <img 
+    src="" 
+    alt="Big tech AI spending breakdown 2026 Amazon Microsoft Google Meta comparison" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    Together, four companies are spending more on AI 
+    this year than the GDP of most countries on Earth.
+  </figcaption>
+</figure>
+
+<h2>The Layoffs — 113,000 Jobs and Counting</h2>
+<!-- Make this feel human, not just statistical -->
+<!-- 825 people per day losing tech jobs -->
+<!-- Meta: 8,000 jobs cut in May alone -->
+<!-- Cloudflare: cut 20% after AI jumped 600% internally -->
+<!-- Oracle cut 20k–30k while revenues were growing 34% -->
+<!-- Key point: these companies are not struggling — 
+     they are replacing people with AI while profitable -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>The Skills Divide Nobody Is Talking About</h2>
+<!-- Powerful and original angle: -->
+<!-- 275,000 AI jobs open right now — unfilled -->
+<!-- Laid-off workers cannot fill them — skills mismatch -->
+<!-- Traditional engineer loses job → 
+     open AI jobs need machine learning specialists -->
+<!-- Senior engineers now wait 67 days to find work -->
+<!-- Write with empathy — these are real people's lives -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE 3 -->
+<figure>
+  <img 
+    src="" 
+    alt="Tech worker skills gap 2026 AI jobs versus traditional software jobs comparison" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    There are 275,000 AI jobs open right now — 
+    but most people being laid off do not have 
+    the skills to fill them.
+  </figcaption>
+</figure>
+
+<h2>Is This AI Replacing Workers — Or Just Corporate Greed?</h2>
+<!-- Balanced, honest take: -->
+<!-- The truth is probably both -->
+<!-- AI genuinely does some tasks faster and cheaper -->
+<!-- But companies also use "AI efficiency" as cover 
+     for cutting costs while profits soar -->
+<!-- Zuckerberg literally linked layoffs to AI bill 
+     in a memo — unusually honest and revealing -->
+<!-- Do not take a strong political side — 
+     provoke thought instead -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>What Does This Mean For You?</h2>
+<!-- Most personal and empowering section: -->
+<!-- If you work in tech: what skills to build now -->
+<!-- If you are a student: what to study -->
+<!-- If you are a regular person: how AI changing 
+     companies affects prices and products you use -->
+<!-- Give actionable advice — not doom and gloom -->
+
+<!-- Use ul/li for skills to learn: -->
+<ul>
+  <li>Prompt engineering and AI tool literacy</li>
+  <li>Basic data analysis and Python fundamentals</li>
+  <li>AI ethics and oversight understanding</li>
+  <li>Learning to work alongside AI, not against it</li>
+</ul>
+<p>...</p>
+
+<!-- IMAGE 4 -->
+<figure>
+  <img 
+    src="" 
+    alt="Person learning AI skills on laptop future proof career 2026" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    The workers winning in 2026 are not fighting AI — 
+    they are learning to work alongside it.
+  </figcaption>
+</figure>
+
+<h2>Final Thoughts — The Uncomfortable Truth</h2>
+<!-- Strong honest conclusion: -->
+<!-- AI investment is real and not stopping -->
+<!-- Job cuts are real and not stopping -->
+<!-- Opportunity is also real — for those who adapt -->
+<!-- End with a rallying call, not fear -->
+<!-- Call to action: "Share this with someone 
+      who works in tech and needs to see this." -->
+<p>...</p>
+<p>...</p>
+
+=============================================================
+WRITING RULES — MANDATORY
+=============================================================
+- Output valid HTML only — no markdown anywhere
+- Leave all img src="" empty — no URLs ever
+- Total word count: 1,000–1,200 words
+- Maximum 3 lines per <p> tag
+- Make statistics feel human and relatable
+- Use analogies for large numbers throughout
+- Balanced — not doom, not cheerleading
+- Contractions throughout
+- Varied sentence lengths
+- Phrases: "Here is the uncomfortable truth," 
+  "Let us be honest," "Think about what that means"
+- Output SEO block as plain text first,
+  then full HTML article
+=============================================================
+Write the complete article now.
+Output SEO block first, then full HTML.
+Do not skip any section. Write everything in full.
+=============================================================
