@@ -24,17 +24,6 @@ export function Header() {
     setMobileOpen(false);
   }, [location]);
 
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
-
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -92,22 +81,23 @@ export function Header() {
         </div>
       </header>
 
-      {/* Mobile menu overlay */}
+      {/* Backdrop — lower z than drawer so drawer is always tappable */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-[55] bg-black/50 md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Mobile menu drawer */}
+      {/* Mobile menu drawer — above backdrop, slides down from header */}
       <div
         className={cn(
-          "fixed top-16 left-0 right-0 z-40 md:hidden bg-background border-b border-border shadow-xl transition-transform duration-300 ease-in-out",
-          mobileOpen ? "translate-y-0" : "-translate-y-full pointer-events-none"
+          "fixed top-16 left-0 right-0 z-[60] md:hidden bg-background border-b border-border shadow-xl",
+          "transition-transform duration-300 ease-in-out",
+          mobileOpen ? "translate-y-0" : "-translate-y-[110%] pointer-events-none"
         )}
       >
-        <nav className="container max-w-screen-2xl px-4 py-6 flex flex-col gap-1">
+        <nav className="px-4 py-6 flex flex-col gap-1">
           <Link
             href="/"
             className={cn(
