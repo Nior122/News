@@ -22,7 +22,7 @@ export const articles = [
     views: 0,
     featured: true,
     editorsPick: true,
-    published: false,
+    published: true,
     tags: ["Google","Google I/O 2026","Gemini AI","Gemini 3.5","Google Antigravity","AI Search","Agentic AI"],
   },
   {
@@ -335,7 +335,7 @@ export const articles = [
     published: true,
     tags: ["AMD","On-Device AI","AMD Ryzen AI","Offline AI","AI Privacy","Agent Computer","Local AI"],
   },
-];;;;;
+];;;;;;
 
 export function withCors(response) {
   const headers = new Headers(response.headers);
