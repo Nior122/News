@@ -352,6 +352,95 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     editorsPick: true,
     tags: ["AI", "Tech Layoffs", "Big Tech", "Amazon", "Microsoft", "Google", "Meta", "AI Spending"],
   },
+  {
+    slug: "amd-on-device-ai-no-internet-2026",
+    title: "AMD Just Made Powerful AI Work Directly On Your Device — No Internet Needed",
+    subtitle: "AMD's Ryzen AI Max chip runs massive AI models entirely offline — your data stays private, your AI works anywhere, and you never pay a usage fee again",
+    excerpt: "You're in the middle of something important and your Wi-Fi cuts out. Everything stops. AMD just changed that — and the implications are bigger than most people realize.",
+    body: `<p>You're in the middle of something important — summarizing a meeting, planning your budget, asking an AI to help you write a message — and your Wi-Fi cuts out. Everything stops. The spinning circle. The error. The frustration. If you've ever relied on AI for anything, you already know exactly how that feels.</p>
+
+<p>AMD just changed that. And the implications are bigger than most people realize.</p>
+
+<p>In this article, you'll learn what "on-device AI" actually means, what AMD's latest chip platform can do, why this matters for your privacy and independence, and when regular consumers can actually get their hands on it.</p>
+
+<h2>First — What Is On-Device AI?</h2>
+
+<p>Most AI you use today — ChatGPT, Gemini, Siri, Alexa — works by sending your words to a powerful computer sitting in a data center somewhere far away. That distant machine crunches the numbers, figures out a response, and sends it back to your screen. That distant computer network is what people call "the cloud." Simple enough.</p>
+
+<p>On-device AI flips that entirely. Instead of asking a librarian across town to find your book, you carry the entire library in your pocket. The thinking happens on your own chip, on your own device, in real time — with no internet connection needed, no server in the loop, and no one else's hardware involved.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80" alt="Cloud AI versus on-device AI diagram how it works comparison" width="1200" height="630" />
+  <figcaption>The difference between cloud AI and on-device AI comes down to one question: where does the thinking actually happen?</figcaption>
+</figure>
+
+<h2>What AMD Just Did — And Why It Is a Big Deal</h2>
+
+<p>AMD's new Ryzen AI Max platform can run AI models with up to 200 billion parameters — that's a measure of how complex and capable an AI is — entirely on a consumer-grade laptop or desktop PC. No data center required. No internet connection. No waiting for a server halfway around the world to respond.</p>
+
+<p>Here is where it gets really interesting. The chip uses 128GB of unified memory — meaning your processor, graphics card, and AI engine all share one fast, coordinated pool of memory, like a perfectly synchronized team rather than separate departments constantly waiting on each other. That shared architecture is what makes running massive AI models on local hardware possible.</p>
+
+<p>AMD demonstrated this live, partnering with Liquid AI to run full AI meeting summaries — <em>entirely</em> on-device, zero cloud involved. And the startup time? Down from 10 seconds to just 1 second. Ten times faster. AMD is calling these new machines "Agent Computers" — not just PCs, but devices that actively work for you, locally, around the clock.</p>
+
+<h2>Three Reasons This Changes Everything</h2>
+
+<h3>1. Your Privacy Is Finally Protected</h3>
+
+<p>Every time you type something into ChatGPT or ask Gemini a question, those words travel to a company's server. They're processed, logged, and stored in ways you can't fully control. That's fine for casual questions — but think about the conversations you'd rather keep private.</p>
+
+<p>With on-device AI, your medical information, your financial details, your personal conversations — none of it ever leaves your device. Not a single character. This is enormous for healthcare, legal work, personal finances, and honestly, just for anyone who values the idea of a private thought staying private.</p>
+
+<h3>2. It Works Without Internet — Always</h3>
+
+<p>On a plane, in a remote cabin, during a network outage, in a country with unreliable mobile data — your AI keeps working. No spinning circles. No error messages. No interruptions. Think about that for a moment.</p>
+
+<p>It's also faster. Without the round trip to a server and back, responses are near-instant. The AI isn't waiting for a signal from across the world — it's thinking right there on the chip in front of you.</p>
+
+<h3>3. No Usage Limits and No Extra Costs</h3>
+
+<p>Cloud AI charges per use. More queries, more messages, more usage — more money. You're essentially renting intelligence by the hour, and the meter is always running.</p>
+
+<p>On-device AI changes the math completely. You pay for the chip once. After that, there are no API fees, no monthly subscription limits, no sudden price hikes when a model gets popular. The AI is yours — unlimited, unrestricted, and already paid for.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80" alt="On-device AI benefits privacy offline no cost AMD Ryzen AI 2026" width="1200" height="630" />
+  <figcaption>On-device AI solves three problems at once — privacy, reliability, and cost.</figcaption>
+</figure>
+
+<h2>What Can This AI Actually Do For You?</h2>
+
+<p>Imagine finishing a three-hour meeting and asking your laptop to summarize every key decision made — without uploading a single word to any company's server. The summary appears in seconds, generated entirely from your own hardware.</p>
+
+<p>Or picture a personal health coach that knows your dietary goals and fitness history, creates meal plans and workout routines tailored specifically to you — all processed locally, your most personal data staying exactly where it belongs: on your device.</p>
+
+<p>AMD's demonstrated use cases also include a personal finance manager that handles budgeting and retirement planning fully offline — your bank balances and income details never touching an outside server — and a custom daily news brief where AI filters your feed locally, delivering only what you care about, with no algorithm tracking your reading habits on a remote platform.</p>
+
+<h2>Is This Available Right Now?</h2>
+
+<p>Here is the honest picture. Developer hardware running AMD's Ryzen AI Max platform is available now in 2026, and early adopters in technical fields are already putting it to work. Consumer devices — the kind you'd buy at a regular retailer — are expected to start arriving in late 2026 and into 2027.</p>
+
+<p>Some limited on-device AI already exists in Samsung and Apple devices, but the capability is narrow compared to what AMD is building. This is the beginning of a real shift — not science fiction, but not something you can buy off the shelf tomorrow either. That window, though, is closing fast.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80" alt="On-device AI roadmap 2026 to 2028 AMD consumer devices timeline" width="1200" height="630" />
+  <figcaption>On-device AI is moving fast — within two years, it could be standard in every laptop and smartphone you own.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Cloud Has Competition Now</h2>
+
+<p>For years, the most powerful AI has lived in the hands of a handful of giant companies — accessible only through their servers, on their terms, at their prices. That arrangement has always come with tradeoffs: your data leaving your control, your AI stopping when the internet does, your usage capped by whatever the pricing model allows.</p>
+
+<p>On-device AI shifts some of that power back to you. Privacy, speed, and independence — three things the internet has always struggled to deliver at the same time. The future of AI isn't only in massive data centers halfway around the world. It's increasingly in the device sitting right in front of you. <strong>Share this with someone who cares about their privacy online — this is a shift worth knowing about.</strong></p>`,
+    category: "Tech",
+    authorId: 4,
+    publishedAt: new Date("2026-05-25T13:00:00Z"),
+    readTime: 7,
+    imageUrl: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1200&q=80",
+    views: 0,
+    featured: false,
+    editorsPick: false,
+    tags: ["AMD", "On-Device AI", "AMD Ryzen AI", "Offline AI", "AI Privacy", "Agent Computer", "Local AI"],
+  },
 ];
 
 export async function ensureSeeded(): Promise<void> {

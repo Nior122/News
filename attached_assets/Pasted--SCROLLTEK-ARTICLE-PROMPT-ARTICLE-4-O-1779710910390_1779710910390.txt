@@ -1,0 +1,297 @@
+=============================================================
+SCROLLTEK ARTICLE PROMPT — ARTICLE 4 OF 4
+=============================================================
+You are a professional content writer and SEO expert 
+with 10 years of experience. You write for SCROLLTEK 
+— a digital media brand for curious, phone-savvy 
+18–35 year olds.
+
+Write in a clear, exciting, and friendly tone. 
+This is a technical topic — your job is to make 
+it feel like the coolest thing the reader 
+has heard all week.
+
+=============================================================
+CRITICAL OUTPUT INSTRUCTIONS — READ FIRST
+=============================================================
+You must write the ENTIRE article in valid HTML only.
+Do NOT use markdown. Do NOT use ## or ** or *.
+Do NOT write plain text headings.
+
+Use ONLY these HTML tags:
+  <h1> for the main title
+  <h2> for section headings
+  <h3> for sub-section headings
+  <p> for all paragraphs
+  <ul> and <li> for bullet lists
+  <ol> and <li> for numbered lists
+  <strong> for bold emphasis inside paragraphs
+  <em> for italic text
+  <figure> and <figcaption> for every image block
+  <img> for images — use src="" (empty) always
+
+IMAGE FORMAT — use exactly this structure 
+for every image, with src always left empty:
+
+<figure>
+  <img 
+    src="" 
+    alt="YOUR DESCRIPTIVE ALT TEXT HERE" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>YOUR CAPTION TEXT HERE</figcaption>
+</figure>
+
+Never put a URL inside src="". Always leave it empty.
+The developer will fill in image URLs later.
+
+=============================================================
+ARTICLE TOPIC
+=============================================================
+AMD Just Made Powerful AI Work Directly On 
+Your Device — No Internet Needed
+
+=============================================================
+RESEARCH & KEY FACTS TO USE
+=============================================================
+Paraphrase all facts — never copy text directly.
+
+Key facts:
+- AMD's Ryzen AI Max platform runs AI models 
+  up to 200 billion parameters with no internet
+- 128GB unified memory shared across CPU, GPU, NPU 
+  (explain simply: everything shares one fast pool 
+   of memory — like a super-efficient team)
+- AMD calls these "Agent Computers" — not just PCs
+- AMD + Liquid AI demonstrated AI meeting summaries 
+  running fully on-device, no cloud needed
+- AMD Ryzen AI 400 Series processor used
+- Achieved 10x faster AI startup (10 seconds → 1 second)
+- AI features work fully offline — no internet required
+- Faster response times than cloud AI 
+  (no round-trip to a server)
+- No cloud API fees, no usage limits, pay once
+- Privacy: sensitive data never leaves your device
+- Real offline use cases demonstrated:
+    Meeting summaries — fully private
+    Health coach — meal plans and workouts locally
+    Finance manager — budgeting, retirement planning 
+    offline
+    Daily news brief — AI filters your news locally
+- Developer hardware available now (2026)
+- Consumer devices coming late 2026 and into 2027
+
+Reference links (cite naturally in article):
+- https://startupfortune.com/amds-tiny-ai-pc-points-to-a-more-local-future-for-model-inference/
+- https://www.amd.com/en/blogs/2026/liquid-ai-amd-ryzen-on-device-meeting-summaries.html
+- https://www.amd.com/en/blogs/2026/generate-offline-agentic-ai-on-ryzen-ai-pcs.html
+
+=============================================================
+SEO BLOCK — OUTPUT THIS FIRST BEFORE THE HTML ARTICLE
+=============================================================
+FOCUS KEYWORD: AMD on-device AI no internet 2026
+SECONDARY KEYWORDS: AMD Ryzen AI Max, offline AI PC, 
+local AI model, AMD Agent Computer, AI without internet
+META TITLE: AMD Just Made Powerful AI Work Without 
+Internet — Here Is Why That Matters
+META DESCRIPTION: AMD's new Ryzen AI Max chip runs 
+massive AI models offline with zero internet. Your 
+data stays private and your AI works anywhere.
+URL SLUG: /amd-on-device-ai-no-internet-2026
+SEARCH INTENT: Informational / Tech News
+INTERNAL LINKS: "Google I/O 2026 AI Announcements" 
+and "The 7 AI Tools Worth Using in 2026"
+
+=============================================================
+FULL HTML ARTICLE STRUCTURE
+=============================================================
+
+<h1>AMD Just Made Powerful AI Work Directly On Your Device — No Internet Needed</h1>
+
+<!-- HERO IMAGE -->
+<figure>
+  <img 
+    src="" 
+    alt="AMD Ryzen AI Max chip on-device AI offline laptop no internet 2026" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    For the first time, AI powerful enough to rival 
+    cloud models is running entirely on your own 
+    device — no internet connection required.
+  </figcaption>
+</figure>
+
+<!-- INTRODUCTION: 3 short paragraphs -->
+<!-- Open with relatable moment: AI stops working 
+     because wifi cut out — frustrating right? -->
+<!-- Introduce the shift: AMD just changed that -->
+<!-- Tell reader what they will learn: what on-device 
+     AI means, why it matters for privacy and speed, 
+     and who it affects -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>First — What Is On-Device AI?</h2>
+<!-- Explain clearly in plain English: -->
+<!-- Most AI (ChatGPT, Gemini, Siri) sends request 
+     to remote server → answer comes back -->
+<!-- That server = "the cloud" (explain simply: 
+     just someone else's powerful computer far away) -->
+<!-- On-device AI: the AI runs on YOUR chip, 
+     no internet, no server, no delay -->
+<!-- Use this analogy: instead of calling a librarian 
+     at a distant building to find a book, 
+     the entire library is right in your pocket -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE 2 — diagram showing cloud AI vs on-device AI -->
+<figure>
+  <img 
+    src="" 
+    alt="Cloud AI versus on-device AI diagram how it works comparison" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    The difference between cloud AI and on-device AI 
+    comes down to one question: where does 
+    the thinking actually happen?
+  </figcaption>
+</figure>
+
+<h2>What AMD Just Did — And Why It Is a Big Deal</h2>
+<!-- Cover the actual announcement: -->
+<!-- Ryzen AI Max platform and "Agent Computers" concept -->
+<!-- Can run 200B parameter models on a desk PC -->
+<!-- 128GB unified memory (explain: brain and graphics 
+     share one fast pool — like a perfectly coordinated team) -->
+<!-- 10x faster AI startup: from 10 seconds to 1 second -->
+<!-- Real demo: AI meeting summaries with zero cloud -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>Three Reasons This Changes Everything</h2>
+
+<h3>1. Your Privacy Is Finally Protected</h3>
+<!-- Right now your ChatGPT words travel to a company server -->
+<!-- On-device: conversations, financial data, health info — 
+     none of it ever leaves your device -->
+<!-- Huge for healthcare, finance, legal, personal privacy -->
+<p>...</p>
+<p>...</p>
+
+<h3>2. It Works Without Internet — Always</h3>
+<!-- On a plane, remote area, bad wifi, power outage — 
+     your AI keeps working -->
+<!-- Faster too: no round trip to a server means 
+     near-instant responses -->
+<p>...</p>
+<p>...</p>
+
+<h3>3. No Usage Limits and No Extra Costs</h3>
+<!-- Cloud AI charges per use -->
+<!-- On-device AI: you own the chip, it is unlimited -->
+<!-- No subscriptions, no API fees, no monthly limits -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE 3 -->
+<figure>
+  <img 
+    src="" 
+    alt="On-device AI benefits privacy offline no cost AMD Ryzen AI 2026" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    On-device AI solves three problems at once — 
+    privacy, reliability, and cost.
+  </figcaption>
+</figure>
+
+<h2>What Can This AI Actually Do For You?</h2>
+<!-- Make it personal using short scenarios: -->
+<!-- Meeting summaries: no uploading to any company -->
+<!-- Health coaching: meal plans and workouts, 
+     fully private -->
+<!-- Personal finance: budgeting offline, 
+     your money data never leaves your device -->
+<!-- Custom news brief: AI reads, filters, 
+     delivers only what you care about — locally -->
+<!-- Write each as a 2–3 line scenario the 
+     reader can imagine themselves in -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>Is This Available Right Now?</h2>
+<!-- Be honest about where things stand: -->
+<!-- Developer hardware available now in 2026 -->
+<!-- Consumer devices coming late 2026 and 2027 -->
+<!-- Some on-device AI already in Samsung and 
+     Apple devices in limited form -->
+<!-- Beginning of a big shift — not sci-fi, 
+     not fully mainstream yet either -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE 4 — roadmap / timeline feel -->
+<figure>
+  <img 
+    src="" 
+    alt="On-device AI roadmap 2026 to 2028 AMD consumer devices timeline" 
+    width="1200" 
+    height="630"
+  />
+  <figcaption>
+    On-device AI is moving fast — within two years, 
+    it could be standard in every laptop 
+    and smartphone you own.
+  </figcaption>
+</figure>
+
+<h2>Final Thoughts — The Cloud Has Competition Now</h2>
+<!-- For years all the power was in the cloud — 
+     in the hands of a few giant companies -->
+<!-- On-device AI shifts some of that power back 
+     to you and your own device -->
+<!-- Privacy, speed, and independence — three things 
+     the internet has always struggled to deliver together -->
+<!-- End with enthusiasm and call to action: -->
+<!-- "The future of AI is not just in data centers 
+      halfway around the world. It is in the device 
+      in your hand. Share this with someone who cares 
+      about their privacy online." -->
+<p>...</p>
+<p>...</p>
+
+=============================================================
+WRITING RULES — MANDATORY
+=============================================================
+- Output valid HTML only — no markdown anywhere
+- Leave all img src="" empty — no URLs ever
+- Total word count: 900–1,100 words
+- Maximum 3 lines per <p> tag
+- Use "you" throughout — make it personal
+- Explain every single technical term immediately
+- Use analogies liberally — make chip tech 
+  feel like something anyone can picture
+- Excited and energetic tone throughout
+- Contractions throughout
+- Phrases like: "Here is the thing," 
+  "Think about this," 
+  "And here is where it gets really interesting"
+- Vary sentence lengths constantly
+- Output SEO block as plain text first,
+  then full HTML article
+=============================================================
+Write the complete article now.
+Output SEO block first, then full HTML.
+Do not skip any section. Write everything in full.
+=============================================================
