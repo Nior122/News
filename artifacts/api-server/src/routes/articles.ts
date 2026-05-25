@@ -296,20 +296,31 @@ router.get("/articles/:slug/related", async (req, res) => {
       return;
     }
 
-    const related = await db
+    const currentArticle = current[0];
+    const currentTags = new Set((currentArticle.tags ?? []).map((t) => t.toLowerCase()));
+
+    const candidates = await db
       .select()
       .from(articlesTable)
-      .where(eq(articlesTable.category, current[0].category))
-      .orderBy(desc(articlesTable.publishedAt))
-      .limit(4);
+      .orderBy(desc(articlesTable.publishedAt));
 
-    const filtered = related.filter((a) => a.slug !== slug).slice(0, 3);
+    const scored = candidates
+      .filter((a) => a.slug !== slug)
+      .map((a) => {
+        const sharedTags = (a.tags ?? []).filter((t) => currentTags.has(t.toLowerCase())).length;
+        const sameCategory = a.category === currentArticle.category ? 1 : 0;
+        return { article: a, score: sharedTags * 3 + sameCategory };
+      })
+      .filter((s) => s.score > 0)
+      .sort((a, b) => b.score - a.score || b.article.publishedAt.getTime() - a.article.publishedAt.getTime())
+      .slice(0, 3)
+      .map((s) => s.article);
 
     const authors = await db.select().from(authorsTable);
     const authorMap = new Map(authors.map((a) => [a.id, a]));
 
     res.json(
-      filtered.map((a) => ({
+      scored.map((a) => ({
         ...a,
         author: authorMap.get(a.authorId) ?? { name: "Staff Writer", avatarUrl: "" },
         publishedAt: a.publishedAt.toISOString(),

@@ -124,10 +124,18 @@ export default function handler(req, res) {
     if (parts[1] && parts[2] === 'related') {
       const current = articles.find(a => a.slug === parts[1]);
       if (!current) return send(res, []);
+      const currentTags = new Set((current.tags ?? []).map(t => t.toLowerCase()));
       const related = articles
-        .filter(a => a.slug !== parts[1] && a.category === current.category)
-        .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-        .slice(0, 3);
+        .filter(a => a.slug !== parts[1])
+        .map(a => {
+          const sharedTags = (a.tags ?? []).filter(t => currentTags.has(t.toLowerCase())).length;
+          const sameCategory = a.category === current.category ? 1 : 0;
+          return { a, score: sharedTags * 3 + sameCategory };
+        })
+        .filter(s => s.score > 0)
+        .sort((x, y) => y.score - x.score || new Date(y.a.publishedAt) - new Date(x.a.publishedAt))
+        .slice(0, 3)
+        .map(s => s.a);
       return send(res, related.map(formatArticle));
     }
 
