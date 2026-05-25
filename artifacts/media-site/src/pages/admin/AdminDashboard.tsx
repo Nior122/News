@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
 import RichEditor from "./RichEditor";
 
@@ -431,19 +431,12 @@ export default function AdminDashboard() {
                   </select>
                 </FormField>
               </div>
-              <FormField label="Image URL" required>
-                <input
+              <FormField label="Cover Image" required>
+                <ImagePicker
                   value={form.imageUrl}
-                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                  placeholder="https://images.unsplash.com/…"
-                  className={inputCls}
+                  onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
                 />
               </FormField>
-              {form.imageUrl && (
-                <div className="rounded-lg overflow-hidden aspect-video w-full bg-zinc-800">
-                  <img src={form.imageUrl} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                </div>
-              )}
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="Read Time (minutes)">
                   <input
@@ -514,6 +507,119 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ImagePicker({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [urlInput, setUrlInput] = useState(value);
+
+  useEffect(() => { setUrlInput(value); }, [value]);
+
+  async function handleFile(file: File) {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token") ?? ""}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        onChange(data.url);
+        setUrlInput(data.url);
+      }
+    } finally {
+      setUploading(false);
+      setShowOverlay(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      {value ? (
+        <div
+          className="relative rounded-lg overflow-hidden aspect-video w-full bg-zinc-800 cursor-pointer group"
+          onClick={() => setShowOverlay((v) => !v)}
+        >
+          <img
+            src={value}
+            alt=""
+            className="w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+          />
+          <div
+            className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-3 transition-opacity ${
+              showOverlay ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            <p className="text-xs text-zinc-300 font-medium tracking-wide uppercase mb-1">Cover Image</p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); fileRef.current?.click(); }}
+                className="flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition"
+              >
+                {uploading ? (
+                  <span className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-900 rounded-full animate-spin inline-block" />
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                )}
+                Replace
+              </button>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onChange(""); setUrlInput(""); setShowOverlay(false); }}
+                className="flex items-center gap-1.5 bg-red-600 text-white font-semibold text-sm px-4 py-2 rounded-lg hover:bg-red-500 transition"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={uploading}
+          className="w-full aspect-video rounded-lg border-2 border-dashed border-zinc-700 bg-zinc-800/50 hover:border-primary/60 hover:bg-zinc-800 transition flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-300 disabled:opacity-50"
+        >
+          {uploading ? (
+            <>
+              <span className="w-6 h-6 border-2 border-zinc-600 border-t-primary rounded-full animate-spin" />
+              <span className="text-sm">Uploading…</span>
+            </>
+          ) : (
+            <>
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <span className="text-sm font-medium">Tap to upload image</span>
+              <span className="text-xs">from your camera roll or files</span>
+            </>
+          )}
+        </button>
+      )}
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }}
+      />
+      <div className="space-y-1">
+        <p className="text-xs text-zinc-500">Or paste an image URL</p>
+        <input
+          value={urlInput}
+          onChange={(e) => { setUrlInput(e.target.value); onChange(e.target.value); }}
+          placeholder="https://images.unsplash.com/…"
+          className={inputCls}
+        />
+      </div>
     </div>
   );
 }

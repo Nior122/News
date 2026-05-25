@@ -2,6 +2,23 @@ import { Router, type Request, type Response, type NextFunction } from "express"
 import { db, articlesTable, authorsTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import jwt from "jsonwebtoken";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const uploadsDir = path.resolve(__dirname, "../../../uploads");
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname) || ".jpg";
+    cb(null, `img-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  },
+});
+const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 
 const router = Router();
 
@@ -24,6 +41,20 @@ function requireAdmin(req: Request, res: Response, next: NextFunction): void {
     res.status(401).json({ error: "Invalid or expired token" });
   }
 }
+
+router.post(
+  "/admin/upload",
+  requireAdmin,
+  upload.single("image"),
+  (req: Request, res: Response): void => {
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
+    const url = `/uploads/${req.file.filename}`;
+    res.json({ url });
+  }
+);
 
 router.post("/admin/login", (req: Request, res: Response): void => {
   const { password } = req.body as { password?: string };

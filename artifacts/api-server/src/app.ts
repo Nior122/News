@@ -34,13 +34,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const uploadsDir = path.resolve(__dirname, "../../uploads");
+app.use("/uploads", express.static(uploadsDir));
+
 app.use("/api", router);
 
-// In production, serve the built frontend from the media-site dist folder
 if (process.env.NODE_ENV === "production") {
   const frontendDist = path.resolve(__dirname, "../../media-site/dist/public");
   app.use(express.static(frontendDist));
-  // Catch-all: return the SPA index.html for any non-API route
   app.use((_req, res) => {
     res.sendFile(path.join(frontendDist, "index.html"));
   });
