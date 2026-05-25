@@ -1,0 +1,292 @@
+=============================================================
+SCROLLTEK ARTICLE PROMPT — ARTICLE 1 OF 4
+=============================================================
+You are a professional content writer and SEO expert 
+with 10 years of experience writing for top digital 
+media brands. You write for SCROLLTEK — a modern digital 
+media website for 18–35 year olds who love tech, 
+internet culture, and digital lifestyle content.
+
+Your writing must feel 100% human — warm, smart, 
+conversational, and easy to understand even for 
+someone who knows nothing about tech.
+
+=============================================================
+ARTICLE TOPIC
+=============================================================
+Google Just Changed Everything at I/O 2026 — 
+Here Is What It Means For You
+
+=============================================================
+VERIFIED RESEARCH & REFERENCE LINKS
+=============================================================
+Use these sources to build your article. 
+Paraphrase everything — never copy text directly.
+
+SOURCE 1:
+Title: Google I/O 2026 — All Announcements
+URL: https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
+Key facts to use:
+- Google launched Gemini 3.5 Flash — their smartest 
+  and fastest AI model yet
+- Gemini Omni can create anything from any input — 
+  video, image, audio, or text combined
+- Google Antigravity 2.0 launched — an AI agent 
+  platform that helps people build apps and 
+  complete complex tasks automatically
+- AI Overviews now has 2.5 billion monthly users
+- Gemini app crossed 900 million monthly active users
+- Users generated over 50 billion images using 
+  Google's image tools
+
+SOURCE 2:
+Title: Google I/O 2026 Developer Keynote
+URL: https://developers.googleblog.com/all-the-news-from-the-google-io-2026-developer-keynote/
+Key facts to use:
+- Google officially declared we are now in the 
+  "Agentic Gemini Era" — AI that doesn't just 
+  answer questions but actually does things for you
+- Gemini 3.5 Flash is built for coding, agents, 
+  and long complex real-world tasks
+
+SOURCE 3:
+Title: Google Cloud Gemini 3.5 Announcement
+URL: https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud
+Key facts to use:
+- Gemini Spark — a new AI agent that runs 
+  continuously inside the Gemini app 24/7
+- Universal Cart launched — AI-powered shopping 
+  that thinks for you
+- Google audio glasses launching in partnership 
+  with Warby Parker and Samsung
+- SynthID watermarking used 50 million times 
+  globally to detect AI content
+
+SOURCE 4 (extra context):
+Title: Sundar Pichai's Opening Keynote
+URL: https://blog.google/innovation-and-ai/sundar-pichai-io-2026/
+Key facts to use:
+- Google's AI spending planned at $180–190 billion 
+  in 2026 alone
+- "AI Mode" in Search described as the biggest 
+  Search upgrade ever
+- Students are using Gemini to prepare for exams
+- Musicians and artists are using Gemini in their 
+  creative work
+
+=============================================================
+SEO BRIEFING — INCLUDE THIS BLOCK BEFORE THE ARTICLE
+=============================================================
+Focus Keyword: Google IO 2026 AI announcements
+Secondary Keywords: Gemini 3.5, Gemini Omni, 
+Google Antigravity, Google AI 2026, agentic AI
+Meta Title: Google I/O 2026: Every AI Announcement 
+That Changes How You Use the Internet
+Meta Description: Google just dropped its biggest 
+AI update ever at I/O 2026. Here's what Gemini 3.5, 
+Gemini Omni and Antigravity mean for you.
+URL Slug: /google-io-2026-ai-announcements
+Search Intent: Informational
+Internal Link Suggestions:
+- Link to: "AMD Just Made AI Work Without Internet"
+- Link to: "The 7 AI Tools Worth Using in 2026"
+
+=============================================================
+ARTICLE STRUCTURE — FOLLOW EXACTLY
+=============================================================
+
+H1: Google Just Changed Everything at I/O 2026 — 
+Here Is What It Means For You
+
+---
+[VISUAL 1 — HERO IMAGE]
+Position: Immediately below H1, before introduction
+Type: Hero Image
+Description: A vibrant, futuristic image showing 
+the Google logo or Gemini AI interface on a glowing 
+screen with abstract digital elements around it — 
+bold colors, electric blue and white tones
+Size: 1200 x 630px minimum (required for Google 
+Discover thumbnail)
+Alt Text: Google IO 2026 Gemini AI announcements 
+hero image
+Caption: "Google made its biggest AI announcements 
+ever at I/O 2026 — and it affects how you search, 
+create, and shop online."
+Source: Unsplash.com — search "Google AI technology" 
+or "futuristic technology screen"
+---
+
+INTRODUCTION (3 short paragraphs):
+- Open with a hook — something like: 
+  "Every year, Google throws a party for developers. 
+   But this year felt different."
+- Briefly mention what I/O 2026 was and why 
+  it matters to regular people, not just developers
+- Tell the reader what they will learn in 
+  this article — promise value upfront
+- Keep paragraphs to 2–3 lines max
+
+---
+H2: What Is Google I/O and Why Should You Care?
+
+Write 2–3 short paragraphs explaining:
+- What Google I/O is (annual developer conference)
+- Why it matters to regular phone users and 
+  internet users, not just coders
+- Where it was held, who attended, and how big it was
+  (reference the 7,000 attendees and 100 countries 
+   of livestream viewers from your sources)
+
+---
+[VISUAL 2]
+Position: After this H2 section
+Type: Informational Graphic or Screenshot
+Description: A clean graphic showing the Google I/O 
+2026 event logo or a screenshot of the Google I/O 
+livestream stage — wide shot with audience visible
+Alt Text: Google IO 2026 developer conference stage 
+Mountain View California
+Caption: "Over 7,000 developers attended Google I/O 
+2026 in Mountain View, California, with millions 
+more watching online."
+Source: Search "Google IO 2026" on Google Images — 
+use only official Google press images which are 
+free to use, or use Unsplash "tech conference stage"
+---
+
+H2: The Biggest Announcements — Explained Simply
+
+Write this section in short numbered or bulleted 
+sub-points, each with 2–3 sentences of explanation.
+Cover these key announcements:
+1. Gemini 3.5 Flash — what it is, why it is faster 
+   and smarter, what regular users will notice
+2. Gemini Omni — explain what "any input to any 
+   output" means in plain English 
+   (example: type words, get a video back)
+3. Google Antigravity 2.0 — explain AI agents in 
+   simple terms: AI that doesn't just talk 
+   but actually does tasks for you
+4. Gemini Spark — the AI agent that never sleeps, 
+   runs 24/7 in the background on your behalf
+5. Universal Cart — AI shopping that picks 
+   products for you based on your preferences
+6. AI Mode in Search — explain how Search is 
+   changing from a list of links to a 
+   conversational AI assistant
+
+Use H3 subheadings for each announcement:
+H3: Gemini 3.5 Flash — Faster and Smarter Than Ever
+H3: Gemini Omni — Type Anything, Get Anything
+H3: Google Antigravity — AI That Actually Does Things
+H3: Gemini Spark — Your AI That Never Sleeps
+H3: The New Google Search — It Answers, Not Just Links
+
+---
+[VISUAL 3]
+Position: After the announcements section
+Type: Comparison Table or Infographic
+Description: A clean side-by-side visual showing 
+"Old Google vs New Google" — showing how Search, 
+Shopping, and Creation tools have changed from 
+traditional to AI-powered in 2026
+Alt Text: Old Google vs New Google AI comparison 
+infographic 2026
+Caption: "This is how Google's core products have 
+transformed in 2026 — from tools you search to 
+agents that act for you."
+Source: Create using Canva — use Google brand 
+colors (blue, red, yellow, green) on white 
+background, clean minimal design
+---
+
+H2: What Does This Actually Mean For You?
+
+This is the most important section.
+Write in a warm, personal tone addressing 
+the reader directly using "you":
+- How will these changes affect their daily 
+  Google Search experience?
+- How will Gemini on Android change how 
+  they use their phone?
+- Will their jobs be affected?
+- Is Google becoming too powerful?
+- Keep it balanced — excitement and slight caution
+
+H2: The Numbers That Show How Big This Really Is
+
+Include these verified stats 
+(paraphrased from your sources):
+- 2.5 billion people use Google AI Overviews monthly
+- Gemini app: 900 million monthly active users 
+  (doubled from 400 million last year)
+- 50 billion images generated by Google's AI tools
+- 8.5 million developers building with Gemini
+- Google's AI spending: $180–190 billion in 2026
+
+Write 3–4 short paragraphs making these numbers 
+feel real and relatable — not just a list of stats
+
+---
+[VISUAL 4]
+Position: After the stats section
+Type: Data Visualization / Stats Graphic
+Description: A bold, visually striking stats card 
+showing the key Google I/O 2026 numbers — 
+2.5B users, 900M Gemini users, 50B images — 
+in large font with icons on a dark background
+Alt Text: Google IO 2026 key statistics 
+infographic users numbers
+Caption: "The scale of Google's AI reach in 2026 
+is almost impossible to comprehend — and it is 
+still growing."
+Source: Create using Canva — dark background 
+(#0d0d0d), electric blue text and icons, 
+large bold numbers front and center
+---
+
+H2: Should You Be Excited or Worried?
+
+Write a balanced, thoughtful section:
+- Excitement: these tools genuinely help 
+  students, creators, and everyday users
+- Concern: privacy questions, AI replacing jobs, 
+  Google knowing more about you than ever
+- End on a forward-looking, empowering note — 
+  knowledge is power
+
+H2: Final Thoughts — The AI Era Is Already Here
+
+Strong conclusion paragraph:
+- Summarize the 3 biggest takeaways
+- Tell readers what to watch for next
+- End with a call to action:
+  "Which of these Google updates are you 
+   most excited about? Share this article 
+   with a friend who needs to catch up."
+
+=============================================================
+WRITING RULES — MANDATORY
+=============================================================
+- Total word count: 900–1,100 words
+- Maximum 3 lines per paragraph
+- Use "you" and "we" throughout
+- Short sentences — aim for under 20 words each
+- Explain every tech term in plain English 
+  immediately after using it
+- No robotic phrases like "In conclusion" or 
+  "It is worth noting"
+- Use contractions: it's, you'll, here's, don't
+- Add occasional phrases like: "Here's the thing," 
+  "Think about it," "Honestly," "Let's be real"
+- Vary sentence length — short. Then a bit longer 
+  to explain. Then short again.
+- Every paragraph must earn its place — 
+  no filler sentences allowed
+=============================================================
+Write the complete article now. 
+Follow every instruction above from start to finish.
+Do not skip any section.
+Do not summarize — write it in full.
+=============================================================
