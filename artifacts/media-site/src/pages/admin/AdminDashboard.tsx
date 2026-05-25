@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
+import RichEditor from "./RichEditor";
 
 const CATEGORIES = ["Tech", "Culture", "Lifestyle", "AI Tools", "Phone Tips", "Productivity", "Trending"];
 
@@ -404,13 +405,10 @@ export default function AdminDashboard() {
                   className={inputCls + " resize-none"}
                 />
               </FormField>
-              <FormField label="Body (HTML)">
-                <textarea
-                  rows={10}
+              <FormField label="Body">
+                <RichEditor
                   value={form.body ?? ""}
-                  onChange={(e) => setForm({ ...form, body: e.target.value })}
-                  className={inputCls + " resize-y font-mono text-xs"}
-                  placeholder="<p>Start writing...</p>"
+                  onChange={(html) => setForm((f) => ({ ...f, body: html }))}
                 />
               </FormField>
               <div className="grid grid-cols-2 gap-4">
