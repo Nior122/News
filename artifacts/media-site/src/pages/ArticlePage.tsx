@@ -131,9 +131,9 @@ export default function ArticlePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
           <div className="absolute bottom-0 left-0 w-full p-4 md:p-8">
-            <div className="container max-w-screen-md mx-auto">
+            <div className="container max-w-screen-md mx-auto text-center">
               {/* Breadcrumb */}
-              <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs mb-4 text-muted-foreground">
+              <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-1.5 text-xs mb-4 text-muted-foreground">
                 <Link href="/" className="hover:text-primary transition-colors">Home</Link>
                 <span>/</span>
                 <Link
@@ -146,22 +146,24 @@ export default function ArticlePage() {
                 <span className="truncate max-w-[180px] text-foreground/60">{article.title}</span>
               </nav>
 
-              <CategoryBadge category={article.category} className="mb-4" />
+              <div className="flex justify-center mb-4">
+                <CategoryBadge category={article.category} />
+              </div>
 
               <h1
-                className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-3"
+                className="font-display text-xl sm:text-3xl md:text-5xl font-extrabold leading-tight mb-3"
                 itemProp="headline"
               >
                 {article.title}
               </h1>
 
               {article.subtitle && (
-                <p className="text-base md:text-xl text-muted-foreground mb-5 font-medium leading-relaxed">
+                <p className="text-sm md:text-lg text-muted-foreground mb-5 font-medium leading-relaxed">
                   {article.subtitle}
                 </p>
               )}
 
-              <div className="flex items-center justify-between border-t border-border/50 pt-4 flex-wrap gap-4">
+              <div className="flex items-center justify-center border-t border-border/50 pt-4 flex-wrap gap-4">
                 <div className="flex items-center gap-3" itemProp="author" itemScope itemType="https://schema.org/Person">
                   {article.author.avatarUrl ? (
                     <img
