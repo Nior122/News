@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Menu, X, Sun, Moon } from "lucide-react";
+import { Search, Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
-  "Tech",
-  "Culture",
-  "Lifestyle",
-  "AI Tools",
-  "Phone Tips",
-  "Productivity",
-  "Trending",
+  { label: "Tech", slug: "tech" },
+  { label: "Culture", slug: "culture" },
+  { label: "Lifestyle", slug: "lifestyle" },
+  { label: "AI Tools", slug: "ai-tools" },
+  { label: "Phone Tips", slug: "phone-tips" },
+  { label: "Productivity", slug: "productivity" },
+  { label: "Trending", slug: "trending" },
 ];
 
 export function Header() {
@@ -28,33 +28,38 @@ export function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 md:px-8">
+          {/* Logo */}
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center space-x-2">
               <span className="font-display font-bold text-2xl tracking-tighter text-primary">
                 Scrolltek
               </span>
             </Link>
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-              {CATEGORIES.map((cat) => {
-                const slug = cat.toLowerCase().replace(/\s+/g, "-");
+
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+              {CATEGORIES.map(({ label, slug }) => {
                 const isActive = location === `/category/${slug}`;
                 return (
                   <Link
                     key={slug}
                     href={`/category/${slug}`}
                     className={cn(
-                      "transition-colors hover:text-primary",
-                      isActive ? "text-primary font-semibold" : "text-muted-foreground"
+                      "px-3 py-2 rounded-md transition-colors hover:bg-muted hover:text-foreground",
+                      isActive
+                        ? "text-primary font-semibold bg-primary/5"
+                        : "text-muted-foreground"
                     )}
                   >
-                    {cat}
+                    {label}
                   </Link>
                 );
               })}
             </nav>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Right icons */}
+          <div className="flex items-center gap-1">
             <Link href="/search" className="hidden md:flex">
               <Button variant="ghost" size="icon" aria-label="Search">
                 <Search className="h-5 w-5" />
@@ -66,108 +71,127 @@ export function Header() {
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               aria-label="Toggle theme"
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
+            {/* Hamburger — mobile only */}
+            <button
+              type="button"
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-muted transition-colors"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((o) => !o)}
             >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+              {mobileOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Backdrop — lower z than drawer so drawer is always tappable */}
+      {/* ── Mobile menu ── rendered outside header so no clipping */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-[55] bg-black/50 md:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+        <>
+          {/* Dark backdrop */}
+          <div
+            className="fixed inset-0 z-40 bg-black/60 md:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
 
-      {/* Mobile menu drawer — above backdrop, slides down from header */}
-      <div
-        className={cn(
-          "fixed top-16 left-0 right-0 z-[60] md:hidden bg-background border-b border-border shadow-xl",
-          "transition-transform duration-300 ease-in-out",
-          mobileOpen ? "translate-y-0" : "-translate-y-[110%] pointer-events-none"
-        )}
-      >
-        <nav className="px-4 py-6 flex flex-col gap-1">
-          <Link
-            href="/"
-            className={cn(
-              "flex items-center px-3 py-3 rounded-lg text-base font-medium transition-colors",
-              location === "/"
-                ? "bg-primary/10 text-primary"
-                : "text-foreground hover:bg-muted"
-            )}
+          {/* Drawer panel */}
+          <div
+            className="fixed left-0 right-0 top-16 z-50 md:hidden bg-background border-b border-border shadow-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
           >
-            Home
-          </Link>
-          <div className="h-px bg-border my-2" />
-          <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
-            Categories
-          </p>
-          {CATEGORIES.map((cat) => {
-            const slug = cat.toLowerCase().replace(/\s+/g, "-");
-            const isActive = location === `/category/${slug}`;
-            return (
+            <nav className="px-4 pt-4 pb-6 flex flex-col gap-1">
+              {/* Home */}
               <Link
-                key={slug}
-                href={`/category/${slug}`}
+                href="/"
                 className={cn(
-                  "flex items-center px-3 py-3 rounded-lg text-base font-medium transition-colors",
-                  isActive
+                  "flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-colors",
+                  location === "/"
                     ? "bg-primary/10 text-primary"
                     : "text-foreground hover:bg-muted"
                 )}
               >
-                {cat}
+                Home
               </Link>
-            );
-          })}
-          <div className="h-px bg-border my-2" />
-          <Link
-            href="/search"
-            className={cn(
-              "flex items-center gap-2 px-3 py-3 rounded-lg text-base font-medium transition-colors",
-              location === "/search"
-                ? "bg-primary/10 text-primary"
-                : "text-foreground hover:bg-muted"
-            )}
-          >
-            <Search className="h-4 w-4" />
-            Search
-          </Link>
-          <Link
-            href="/about"
-            className={cn(
-              "flex items-center px-3 py-3 rounded-lg text-base font-medium transition-colors",
-              location === "/about"
-                ? "bg-primary/10 text-primary"
-                : "text-foreground hover:bg-muted"
-            )}
-          >
-            About
-          </Link>
-          <Link
-            href="/contact"
-            className={cn(
-              "flex items-center px-3 py-3 rounded-lg text-base font-medium transition-colors",
-              location === "/contact"
-                ? "bg-primary/10 text-primary"
-                : "text-foreground hover:bg-muted"
-            )}
-          >
-            Contact
-          </Link>
-        </nav>
-      </div>
+
+              <div className="h-px bg-border mx-1 my-2" />
+              <p className="px-4 text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
+                Categories
+              </p>
+
+              {/* Category links */}
+              {CATEGORIES.map(({ label, slug }) => {
+                const isActive = location === `/category/${slug}`;
+                return (
+                  <Link
+                    key={slug}
+                    href={`/category/${slug}`}
+                    className={cn(
+                      "flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                      isActive
+                        ? "bg-primary/10 text-primary font-semibold"
+                        : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {label}
+                    <ChevronDown className="w-4 h-4 -rotate-90 opacity-40" />
+                  </Link>
+                );
+              })}
+
+              <div className="h-px bg-border mx-1 my-2" />
+
+              {/* Extra links */}
+              <Link
+                href="/search"
+                className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                  location === "/search"
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground hover:bg-muted"
+                )}
+              >
+                <Search className="h-4 w-4" />
+                Search
+              </Link>
+              <Link
+                href="/about"
+                className={cn(
+                  "flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                  location === "/about"
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground hover:bg-muted"
+                )}
+              >
+                About
+              </Link>
+              <Link
+                href="/contact"
+                className={cn(
+                  "flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                  location === "/contact"
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground hover:bg-muted"
+                )}
+              >
+                Contact
+              </Link>
+            </nav>
+          </div>
+        </>
+      )}
     </>
   );
 }
