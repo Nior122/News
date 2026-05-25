@@ -18,6 +18,7 @@ export const articlesTable = pgTable("articles", {
   featured: boolean("featured").notNull().default(false),
   editorsPick: boolean("editors_pick").notNull().default(false),
   tags: text("tags").array().notNull().default([]),
+  published: boolean("published").notNull().default(true),
 });
 
 export const insertArticleSchema = createInsertSchema(articlesTable).omit({ id: true });

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, articlesTable, authorsTable } from "@workspace/db";
-import { eq, desc, ilike, or, sql } from "drizzle-orm";
+import { eq, desc, ilike, or, sql, and } from "drizzle-orm";
 
 const router = Router();
 
@@ -11,7 +11,10 @@ router.get("/articles", async (req, res) => {
     const category = req.query.category as string | undefined;
     const offset = (page - 1) * limit;
 
-    const whereClause = category ? eq(articlesTable.category, category) : undefined;
+    const publishedFilter = eq(articlesTable.published, true);
+    const whereClause = category
+      ? and(publishedFilter, eq(articlesTable.category, category))
+      : publishedFilter;
 
     const [articles, authors, countResult] = await Promise.all([
       db
@@ -53,7 +56,7 @@ router.get("/articles/featured", async (req, res) => {
     const articles = await db
       .select()
       .from(articlesTable)
-      .where(eq(articlesTable.featured, true))
+      .where(and(eq(articlesTable.published, true), eq(articlesTable.featured, true)))
       .orderBy(desc(articlesTable.publishedAt))
       .limit(1);
 
@@ -61,6 +64,7 @@ router.get("/articles/featured", async (req, res) => {
       const fallback = await db
         .select()
         .from(articlesTable)
+        .where(eq(articlesTable.published, true))
         .orderBy(desc(articlesTable.views))
         .limit(1);
       if (!fallback.length) {
@@ -104,6 +108,7 @@ router.get("/articles/trending", async (req, res) => {
     const articles = await db
       .select()
       .from(articlesTable)
+      .where(eq(articlesTable.published, true))
       .orderBy(desc(articlesTable.views))
       .limit(limit);
 
@@ -130,6 +135,7 @@ router.get("/articles/popular", async (req, res) => {
     const articles = await db
       .select()
       .from(articlesTable)
+      .where(eq(articlesTable.published, true))
       .orderBy(desc(articlesTable.views))
       .limit(limit);
 
@@ -156,7 +162,7 @@ router.get("/articles/editors-picks", async (req, res) => {
     const articles = await db
       .select()
       .from(articlesTable)
-      .where(eq(articlesTable.editorsPick, true))
+      .where(and(eq(articlesTable.published, true), eq(articlesTable.editorsPick, true)))
       .orderBy(desc(articlesTable.publishedAt))
       .limit(limit);
 
@@ -204,10 +210,13 @@ router.get("/articles/search", async (req, res) => {
     }
 
     const searchPattern = `%${q}%`;
-    const whereClause = or(
-      ilike(articlesTable.title, searchPattern),
-      ilike(articlesTable.excerpt, searchPattern),
-      ilike(articlesTable.category, searchPattern)
+    const whereClause = and(
+      eq(articlesTable.published, true),
+      or(
+        ilike(articlesTable.title, searchPattern),
+        ilike(articlesTable.excerpt, searchPattern),
+        ilike(articlesTable.category, searchPattern)
+      )
     );
 
     const [articles, authors, countResult] = await Promise.all([
@@ -249,7 +258,7 @@ router.get("/articles/:slug", async (req, res) => {
     const articles = await db
       .select()
       .from(articlesTable)
-      .where(eq(articlesTable.slug, slug))
+      .where(and(eq(articlesTable.slug, slug), eq(articlesTable.published, true)))
       .limit(1);
 
     if (!articles.length) {
@@ -302,6 +311,7 @@ router.get("/articles/:slug/related", async (req, res) => {
     const candidates = await db
       .select()
       .from(articlesTable)
+      .where(eq(articlesTable.published, true))
       .orderBy(desc(articlesTable.publishedAt));
 
     const scored = candidates
