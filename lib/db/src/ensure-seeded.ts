@@ -135,7 +135,7 @@ const ARTICLE_BODY_TESLA_FSD = `<p>Picture this: you open an app, request a ride
 
 <figure>
   <img
-    src=""
+    src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1200&q=80"
     alt="Tesla Cybercab robotaxi interior no steering wheel no pedals 2026"
     width="1200"
     height="630"
@@ -169,7 +169,7 @@ const ARTICLE_BODY_TESLA_FSD = `<p>Picture this: you open an app, request a ride
 
 <figure>
   <img
-    src=""
+    src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1200&q=80"
     alt="Tesla FSD self-driving timeline broken promises 2018 to 2026"
     width="1200"
     height="630"
@@ -195,7 +195,7 @@ const ARTICLE_BODY_TESLA_FSD = `<p>Picture this: you open an app, request a ride
 
 <figure>
   <img
-    src=""
+    src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80"
     alt="Person relaxing in passenger seat of self-driving car hands free looking out window"
     width="1200"
     height="630"
