@@ -5,9 +5,20 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
+const SLUG_TO_NAME: Record<string, string> = {
+  tech: "Tech",
+  culture: "Culture",
+  lifestyle: "Lifestyle",
+  "ai-tools": "AI Tools",
+  "phone-tips": "Phone Tips",
+  productivity: "Productivity",
+  trending: "Trending",
+};
+
 export default function CategoryPage() {
   const [, params] = useRoute("/category/:slug");
   const slug = params?.slug || "";
+  const displayName = SLUG_TO_NAME[slug] ?? slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   const { data, isLoading } = useListArticles({ category: slug }, {
     query: {
@@ -33,11 +44,11 @@ export default function CategoryPage() {
     <div className="min-h-screen pb-16">
       <div className={`bg-gradient-to-b ${getCategoryColor(slug)} to-background border-b border-border/50 py-16 mb-12`}>
         <div className="container max-w-screen-2xl px-4 md:px-8 text-center">
-          <h1 className="font-display text-4xl md:text-6xl font-extrabold capitalize mb-4">
-            {slug.replace("-", " ")}
+          <h1 className="font-display text-4xl md:text-6xl font-extrabold mb-4">
+            {displayName}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The latest news, reviews, and insights about {slug.replace("-", " ")}.
+            The latest news, reviews, and insights about {displayName}.
           </p>
         </div>
       </div>

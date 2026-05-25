@@ -4,11 +4,27 @@ import { eq, desc, ilike, or, sql, and } from "drizzle-orm";
 
 const router = Router();
 
+/** Maps URL slugs → the exact category string stored in the DB */
+const SLUG_TO_CATEGORY: Record<string, string> = {
+  tech: "Tech",
+  culture: "Culture",
+  lifestyle: "Lifestyle",
+  "ai-tools": "AI Tools",
+  "phone-tips": "Phone Tips",
+  productivity: "Productivity",
+  trending: "Trending",
+};
+
+function slugToCategory(slug: string): string {
+  return SLUG_TO_CATEGORY[slug.toLowerCase()] ?? slug;
+}
+
 router.get("/articles", async (req, res) => {
   try {
     const page = parseInt(String(req.query.page ?? "1"), 10);
     const limit = parseInt(String(req.query.limit ?? "12"), 10);
-    const category = req.query.category as string | undefined;
+    const categorySlug = req.query.category as string | undefined;
+    const category = categorySlug ? slugToCategory(categorySlug) : undefined;
     const offset = (page - 1) * limit;
 
     const publishedFilter = eq(articlesTable.published, true);
