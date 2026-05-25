@@ -121,6 +121,113 @@ export const articles = [
     editorsPick: true,
     tags: ["Google", "Google I/O 2026", "Gemini AI", "Gemini 3.5", "Google Antigravity", "AI Search", "Agentic AI"],
   },
+  {
+    id: 2,
+    slug: "tesla-self-driving-cars-2026",
+    title: "Tesla's Self-Driving Cars Are Hitting US Streets in 2026 — Here Is What That Actually Means",
+    subtitle: "Driverless Teslas are already operating in Texas with no human inside — here's what's real, what's hype, and what it means for the rest of us",
+    excerpt: "You order a ride. The car pulls up. Nobody's driving. That's not a movie scene anymore — it's happening right now on real streets in the US. Here's what you need to know.",
+    body: `<p>Picture this: you open an app, request a ride, and a car arrives at your door. No driver greets you. No one adjusts the mirror. The steering wheel turns on its own, and you're moving through traffic guided entirely by software. That's not science fiction anymore.</p>
+
+<p>Tesla's driverless cars are now operating on public roads in the United States — no human inside, no one watching from the back seat. It's a genuine milestone. But like most things in tech, the full story is a little more complicated than the headlines suggest.</p>
+
+<p>Here's what's actually happening right now, where this is all heading, and what it means for you — whether you're a driver, a passenger, or just someone trying to cross the street.</p>
+
+<h2>What Is Tesla's Self-Driving Technology, Exactly?</h2>
+
+<p>FSD — which stands for Full Self-Driving — is a software package Tesla sells for its vehicles. Think of it less like a physical feature and more like an app that controls how the car drives. It's been in development for years, and it comes in two forms.</p>
+
+<p><strong>Supervised FSD</strong> requires a human behind the wheel at all times, ready to take over. <strong>Unsupervised FSD</strong> means the car drives itself with no human required at all. That second version is what's now running in Texas — and it's the one that changes everything.</p>
+
+<p>Then there's the <strong>robotaxi</strong> concept — essentially Uber, but without a driver. Tesla's version of this is called the <strong>Cybercab</strong>. It's a two-seat vehicle with no steering wheel and no pedals, built from the ground up to drive itself. It has roughly a 200-mile range and is being manufactured at Gigafactory Texas. It's the boldest physical expression of Tesla's self-driving ambitions.</p>
+
+<figure>
+  <img
+    src=""
+    alt="Tesla Cybercab robotaxi interior no steering wheel no pedals 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>The Tesla Cybercab has no steering wheel and no pedals — it is built to drive entirely on its own from day one.</figcaption>
+</figure>
+
+<h2>Where Are Tesla Driverless Cars Operating Right Now?</h2>
+
+<p>Tesla's unsupervised FSD service is currently live in <strong>Austin, Dallas, and Houston</strong>, Texas. These aren't test vehicles with engineers watching nervously in the back — there's genuinely no one inside. The cars are navigating real traffic, real intersections, and real roads on their own.</p>
+
+<p>Here's the thing though: the scale is still very small. Only around <strong>38 robotaxis</strong> are deployed across those three cities right now. That's not a fleet — that's a proof of concept. Meaningful, yes. Revolutionary at scale, not yet.</p>
+
+<p>Arizona has recently approved Tesla to begin testing in the state, and the next cities on the planned expansion list include <strong>Las Vegas, Phoenix, and Miami</strong>. Elon Musk has said the rollout will be "widespread across the US by the end of 2026." For regular consumers hoping to use unsupervised FSD in their own Tesla, that's been pushed to <strong>Q4 2026 at the earliest</strong>.</p>
+
+<h2>A Decade of Promises — The Honest Timeline</h2>
+
+<p>To understand where we are, it helps to understand how we got here. Tesla's history with self-driving promises is… complicated.</p>
+
+<ol>
+  <li><strong>2018:</strong> Musk promised full autonomy within the year. It did not happen.</li>
+  <li><strong>2019:</strong> He promised one million robotaxis on the road by 2020. That did not happen either.</li>
+  <li><strong>June 2025:</strong> Tesla launched its robotaxi service in Austin — but safety monitors were still riding inside the vehicles. Not truly unsupervised.</li>
+  <li><strong>April 2026:</strong> On an earnings call, Tesla pushed consumer FSD unsupervised to Q4 2026 "at the earliest."</li>
+  <li><strong>May 2026:</strong> Musk stated at the Smart Mobility Summit that unsupervised FSD will be "widespread in the US by year end" — and that within a decade, <strong>90% of all driving will be done by AI</strong>.</li>
+</ol>
+
+<p>Honestly, it's fair to hold both things in your head at once. The missed deadlines are real — and they matter for trust. But so is the fact that driverless cars are now operating on public US roads without a human inside. That's genuine progress, even if it arrived years later than promised.</p>
+
+<p>The 2026 Tesla Model Y also became the first vehicle to pass the NHTSA's new automated driver-assistance safety tests — a regulatory milestone that signals the technology is maturing in ways that count.</p>
+
+<figure>
+  <img
+    src=""
+    alt="Tesla FSD self-driving timeline broken promises 2018 to 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Tesla's road to full autonomy has taken far longer than promised — but in 2026, driverless cars are finally operating on real US streets.</figcaption>
+</figure>
+
+<h2>Who Else Is Building Self-Driving Cars?</h2>
+
+<p>Tesla isn't alone in this race. <strong>Waymo</strong> — owned by Google's parent company Alphabet — has been running robotaxis in Phoenix, San Francisco, and Austin with an impressive safety record. They've logged millions of miles with no fatalities attributed to the autonomous system.</p>
+
+<p>There's a key technical difference worth knowing. Waymo uses <strong>lidar</strong> — a laser-based sensor that creates a detailed 3D map of everything around the car — combined with radar and cameras. Tesla relies entirely on cameras and AI software, no lidar. Tesla argues its approach is more scalable and cost-effective. Waymo argues sensors provide safer, more reliable data. Both sides have a point.</p>
+
+<p>The competition matters for you because it drives safety standards higher and prices lower. If two major players are racing toward the same goal, regular people benefit faster.</p>
+
+<h2>What Does This Mean For Regular People?</h2>
+
+<p>Think about this: the average American spends over 300 hours a year driving. If a significant portion of that becomes hands-free — or disappears entirely because you're riding in a robotaxi — that's hundreds of hours returned to your life every year. That's not a small thing.</p>
+
+<p>For people who can't drive — whether due to age, disability, or medical conditions — fully autonomous vehicles could be genuinely life-changing. Mobility that was previously unavailable becomes accessible. That's one of the most compelling arguments for this technology that rarely gets enough attention.</p>
+
+<p>The harder conversation involves jobs. There are approximately <strong>3.5 million truck drivers</strong> in the US alone, plus millions more in ride-share, delivery, and logistics. Autonomous vehicles won't eliminate all of those jobs overnight — but the direction of travel is clear. As with the <a href="/article/google-io-2026-ai-announcements">AI wave reshaping search and software</a>, the question isn't whether change is coming. It's how fast, and whether we're prepared for it.</p>
+
+<figure>
+  <img
+    src=""
+    alt="Person relaxing in passenger seat of self-driving car hands free looking out window"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Imagine sitting back and letting your car do all the work. In parts of the US, that is already happening.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Road Ahead</h2>
+
+<p>Here's where things stand right now. Driverless Teslas are real, operating today, in three US cities. The scale is tiny — fewer than 40 vehicles — but the principle is proven. The technology works well enough to run without a human safety net. That's a genuine milestone, whatever you think of Elon Musk's timelines.</p>
+
+<p>Challenges remain. Complex intersections, faded road markings, and unpredictable weather all still trip up autonomous systems. Consumer FSD unsupervised is still months away at best. And regulatory approval, city by city and state by state, will shape how fast any of this actually reaches you.</p>
+
+<p><strong>Would you get in a car with no driver? Share this article and tell us — we genuinely want to know where you stand.</strong></p>`,
+    category: "Tech",
+    authorId: 2,
+    publishedAt: new Date("2026-05-25T10:30:00Z").toISOString(),
+    readTime: 7,
+    imageUrl: "https://images.unsplash.com/photo-1617886322168-72b886573c35?w=1200&q=80",
+    views: 0,
+    featured: false,
+    editorsPick: false,
+    tags: ["Tesla", "Self-Driving Cars", "Tesla FSD", "Tesla Cybercab", "Autonomous Vehicles", "Robotaxi", "EV"],
+  },
 ];
 
 export function withCors(response) {
