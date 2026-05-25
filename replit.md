@@ -1,11 +1,11 @@
-# PulseWire
+# Scrolltek
 
 A modern digital media brand built for Google Discover growth and Google Search ranking. Covers Tech, Culture, Lifestyle, AI Tools, Phone Tips, Productivity, and Trending topics.
 
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
-- `pnpm --filter @workspace/media-site run dev` — run the frontend (port 23701)
+- `pnpm --filter @workspace/media-site run dev` — run the frontend (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -27,6 +27,7 @@ A modern digital media brand built for Google Discover growth and Google Search 
 
 - `lib/api-spec/openapi.yaml` — API contract (source of truth)
 - `lib/db/src/schema/` — DB tables: articles, authors, categories, newsletter
+- `lib/db/src/ensure-seeded.ts` — seed articles (auto-inserts missing slugs on API start)
 - `artifacts/api-server/src/routes/` — Express route handlers
 - `artifacts/media-site/src/pages/` — All frontend pages
 - `artifacts/media-site/src/components/` — Shared UI components
@@ -35,7 +36,7 @@ A modern digital media brand built for Google Discover growth and Google Search 
 
 - `/` — Homepage with all sections
 - `/article/:slug` — Full article page
-- `/category/:slug` — Category filtered feed
+- `/category/:slug` — Category filtered feed (see category slugs below)
 - `/search` — Search results
 - `/about` — About the brand
 - `/contact` — Contact form
@@ -43,9 +44,9 @@ A modern digital media brand built for Google Discover growth and Google Search 
 
 ## API Endpoints
 
-- `GET /api/articles` — paginated articles (with ?category, ?page, ?limit)
+- `GET /api/articles` — paginated articles (with ?category=<slug>, ?page, ?limit)
 - `GET /api/articles/featured` — hero article
-- `GET /api/articles/trending` — top by views
+- `GET /api/articles/trending` — top articles by views
 - `GET /api/articles/popular` — popular this week
 - `GET /api/articles/editors-picks` — editor-curated articles
 - `GET /api/articles/ticker` — headline ticker items
@@ -53,71 +54,89 @@ A modern digital media brand built for Google Discover growth and Google Search 
 - `GET /api/articles/:slug` — single article (increments views)
 - `GET /api/articles/:slug/related` — related articles (same category)
 - `GET /api/categories` — all categories
-- `GET /api/categories/:slug/articles` — category spotlight (4 articles)
 - `POST /api/newsletter/subscribe` — email subscribe
 
-## Content workflow — how to publish new articles
+## ⚠️ Category system — read this before writing any article
 
-### Option A: Admin Dashboard (recommended for live site)
-Visit `/admin/login` on your live Vercel site and sign in with `ADMIN_PASSWORD`.
-Every create/edit/delete/publish action commits directly to `api/_data.js` on GitHub → Vercel auto-deploys in ~60 seconds.
+Every article must have a `category` field set to **exactly one** of the strings below.
+These are the only valid values. Any other string will cause the article to not appear
+in any category tab.
 
-**Required Vercel environment variables (set once in Vercel dashboard):**
-- `ADMIN_PASSWORD` — your admin login password
-- `GITHUB_TOKEN` — Personal Access Token with `repo` scope (so the admin can commit to GitHub)
-
-### Option B: Manual file edit
-| Environment | Article source | Updated by |
+| URL slug | DB value (use this exact string) | Nav label |
 |---|---|---|
-| **Vercel (live site)** | `api/_data.js` | commit + push to GitHub |
-| **Replit dev** | PostgreSQL DB, seeded from `lib/db/src/ensure-seeded.ts` | edit file, then reseed DB |
+| `/category/tech` | `"Tech"` | Tech |
+| `/category/culture` | `"Culture"` | Culture |
+| `/category/lifestyle` | `"Lifestyle"` | Lifestyle |
+| `/category/ai-tools` | `"AI Tools"` | AI Tools |
+| `/category/phone-tips` | `"Phone Tips"` | Phone Tips |
+| `/category/productivity` | `"Productivity"` | Productivity |
+| `/category/trending` | *(Trending tab shows top articles by views — no articles use this category string)* | Trending |
 
-**To publish a new article manually:**
-1. Add the article object to `api/_data.js`
-2. Commit and push to GitHub → Vercel auto-deploys within ~60 seconds
+**The Trending tab** at `/category/trending` is special: it shows all articles sorted by
+view count (most-read first), regardless of their category. Do not assign `category: "Trending"`
+to articles — use one of the six real categories above instead.
 
-**To also see it in local dev (Replit):**
-1. Add the same article to `lib/db/src/ensure-seeded.ts` (use `new Date("...")` for `publishedAt`, no `id` field)
-2. Reseed the dev DB: in the Shell tab run `psql $DATABASE_URL -c "DELETE FROM articles"` then restart the API server (ensureSeeded runs at startup)
+### Authors
 
-**Article format in `api/_data.js`:**
-```js
+| ID | Name |
+|---|---|
+| 1 | Maya Chen |
+| 2 | James Okafor |
+| 3 | Sofia Reyes |
+| 4 | Liam Park |
+| 5 | Anya Patel |
+
+## How to add a new article
+
+### Option A: Admin Dashboard (recommended)
+Visit `/admin/login` and sign in with the `ADMIN_PASSWORD` env var.
+The admin dashboard has a category dropdown pre-populated with all valid categories.
+
+### Option B: Add to `lib/db/src/ensure-seeded.ts` (dev only)
+Add a new object to the `articles` array. The API server automatically inserts any
+articles not yet in the DB on startup — you only need to restart the API server.
+
+```ts
 {
-  id: <next number>,
-  slug: "my-article-slug",
-  title: "...", subtitle: "...", excerpt: "...", body: `...`,
-  category: "Tech",  // Tech | Culture | Lifestyle | AI Tools | Phone Tips | Productivity
-  authorId: 1,       // 1=Maya Chen  2=James Okafor  3=Sofia Reyes  4=Liam Park  5=Anya Patel
-  publishedAt: new Date("2026-05-25T10:00:00Z").toISOString(),
-  readTime: 8,
+  slug: "my-article-slug",           // URL-safe, lowercase, hyphens
+  title: "...",
+  subtitle: "...",
+  excerpt: "...",                    // 1-2 sentence summary
+  body: `<p>HTML content...</p>`,
+  category: "Tech",                  // MUST be one of the 6 valid strings above
+  authorId: 1,                       // 1–5
+  publishedAt: new Date("2026-05-25T10:00:00Z"),
+  readTime: 7,                       // minutes
   imageUrl: "https://images.unsplash.com/photo-...?w=1200&q=80",
   views: 0,
-  featured: false,   // set true to make this the hero article
+  featured: false,                   // true = hero article (only one at a time)
   editorsPick: false,
   tags: ["Tag1", "Tag2"],
 }
 ```
 
+**After editing ensure-seeded.ts:** just restart the "artifacts/api-server: API Server"
+workflow — it will auto-insert any new slugs.
+
 ## Architecture decisions
 
 - Dark mode as default with ThemeProvider and localStorage persistence
 - All article views are incremented on read for real view count tracking
-- Category colors are stored in DB so they can be changed without redeploying
-- Ticker and trending data come from the same articles table, sorted by views
+- Category slug → DB name mapping lives in `artifacts/api-server/src/routes/articles.ts` (`SLUG_TO_CATEGORY`)
+- The Trending category page uses the `/api/articles/trending` endpoint (by views), not a category filter
+- Article cards use the "stretched link" pattern — invisible `<a>` covers the card, CategoryBadge sits above it as its own link
 - Newsletter uses a unique constraint to silently handle duplicate subscriptions
-- **Vercel has no database** — it uses `api/_data.js` as a static article store; the Express server + PostgreSQL is Replit-only
-
-## Product
-
-PulseWire is a media brand covering tech news, internet culture, AI tools, phone tips, productivity, and trending digital topics. The site is optimized for Google Discover (large thumbnails, bold titles) and mobile-first reading.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Site name is **Scrolltek**
+- Mobile hamburger menu uses conditional rendering (no CSS transforms) for iOS/Android reliability
 
 ## Gotchas
 
 - Google Fonts `@import url(...)` MUST be the first line in index.css — before any other CSS
 - Always run codegen after changing the OpenAPI spec
 - `zod` must be in api-server's `dependencies` (not devDependencies) for esbuild to bundle it
-- Article category slugs use hyphens (e.g. `ai-tools`) — ensure frontend slug generation matches
+- Category slugs use hyphens (`ai-tools`, `phone-tips`) — but DB stores the full name (`AI Tools`, `Phone Tips`)
+- The API's `SLUG_TO_CATEGORY` map in `articles.ts` handles the conversion — keep it in sync if categories change
+- ArticleCard exports only React components — keep utility functions unexported to avoid Vite HMR issues

@@ -34,7 +34,7 @@ function getCategoryColor(cat: string) {
   }
 }
 
-export function categorySlug(category: string) {
+function categorySlug(category: string) {
   return CATEGORY_SLUGS[category.toLowerCase()] ?? category.toLowerCase().replace(/\s+/g, "-");
 }
 
