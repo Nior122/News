@@ -56,6 +56,41 @@ A modern digital media brand built for Google Discover growth and Google Search 
 - `GET /api/categories/:slug/articles` — category spotlight (4 articles)
 - `POST /api/newsletter/subscribe` — email subscribe
 
+## Content workflow — how to publish new articles
+
+There are two environments with separate article stores:
+
+| Environment | Article source | Updated by |
+|---|---|---|
+| **Vercel (live site)** | `api/_data.js` | commit + push to GitHub |
+| **Replit dev** | PostgreSQL DB, seeded from `lib/db/src/ensure-seeded.ts` | edit file, then reseed DB |
+
+**To publish a new article to the live Vercel site:**
+1. Add the article object to `api/_data.js` (give it the next `id`, use `.toISOString()` for `publishedAt`)
+2. Commit and push to GitHub → Vercel auto-deploys within ~60 seconds
+
+**To also see it in local dev (Replit):**
+1. Add the same article to `lib/db/src/ensure-seeded.ts` (use `new Date("...")` for `publishedAt`, no `id` field)
+2. Reseed the dev DB: in the Shell tab run `psql $DATABASE_URL -c "DELETE FROM articles"` then restart the API server (ensureSeeded runs at startup)
+
+**Article format in `api/_data.js`:**
+```js
+{
+  id: <next number>,
+  slug: "my-article-slug",
+  title: "...", subtitle: "...", excerpt: "...", body: `...`,
+  category: "Tech",  // Tech | Culture | Lifestyle | AI Tools | Phone Tips | Productivity
+  authorId: 1,       // 1=Maya Chen  2=James Okafor  3=Sofia Reyes  4=Liam Park  5=Anya Patel
+  publishedAt: new Date("2026-05-25T10:00:00Z").toISOString(),
+  readTime: 8,
+  imageUrl: "https://images.unsplash.com/photo-...?w=1200&q=80",
+  views: 0,
+  featured: false,   // set true to make this the hero article
+  editorsPick: false,
+  tags: ["Tag1", "Tag2"],
+}
+```
+
 ## Architecture decisions
 
 - Dark mode as default with ThemeProvider and localStorage persistence
@@ -63,6 +98,7 @@ A modern digital media brand built for Google Discover growth and Google Search 
 - Category colors are stored in DB so they can be changed without redeploying
 - Ticker and trending data come from the same articles table, sorted by views
 - Newsletter uses a unique constraint to silently handle duplicate subscriptions
+- **Vercel has no database** — it uses `api/_data.js` as a static article store; the Express server + PostgreSQL is Replit-only
 
 ## Product
 
