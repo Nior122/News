@@ -229,6 +229,115 @@ export const articles = [
     editorsPick: false,
     tags: ["Tesla", "Self-Driving Cars", "Tesla FSD", "Tesla Cybercab", "Autonomous Vehicles", "Robotaxi", "EV"],
   },
+  {
+    id: 3,
+    slug: "big-tech-725-billion-ai-spending-layoffs-2026",
+    title: "Big Tech Is Spending $725 Billion on AI — And Firing Thousands of Workers to Pay For It",
+    subtitle: "Google, Meta, Amazon, and Microsoft are making the biggest financial bet in corporate history — and the workers paying the price are watching it happen in real time",
+    excerpt: "In the same weeks that the biggest tech companies reported record profits, they also handed thousands of employees their walking papers. Here is what $725 billion actually buys — and who actually pays.",
+    body: `<p>Here is something that should stop you cold. In the same weeks that Amazon, Google, Meta, and Microsoft reported some of the strongest earnings in their histories, each of those companies also quietly handed out thousands of pink slips. Record profits. Record layoffs. At exactly the same time.</p>
+
+<p>The reason those two things are happening simultaneously comes down to one number: <strong>$725 billion</strong>. That is the combined amount those four companies have committed to spending on artificial intelligence infrastructure in 2026 alone — up 77% from the $410 billion they spent the year before. The money has to come from somewhere.</p>
+
+<p>This article breaks down exactly where that money is going, who is losing their jobs because of it, whether AI is genuinely replacing workers or whether something more cynical is happening, and — most importantly — what any of this means for you.</p>
+
+<h2>The $725 Billion Number — What It Actually Means</h2>
+
+<p>Numbers this large lose their meaning quickly. So let us make it human. <strong>Meta alone is spending $370 million per day</strong> on AI data centers and infrastructure. Every single day. That is more than most people will earn across three or four entire careers — spent before dinner every 24 hours, seven days a week, without pause.</p>
+
+<p>What is the money actually buying? Think of it as the physical skeleton of the AI age: <strong>data centers</strong> (massive warehouse-sized buildings packed with computers), <strong>GPU chips</strong> — specialized processors built specifically to train and run AI models, far more powerful than the chip inside your laptop — and the custom silicon and power grid upgrades needed to keep all of it running. Building the infrastructure for AI at this scale is like building thousands of airports at once.</p>
+
+<ul>
+  <li><strong>Amazon:</strong> approximately $200 billion — the single largest AI infrastructure commitment in corporate history</li>
+  <li><strong>Microsoft:</strong> approximately $190 billion, much of it tied to its OpenAI partnership and Azure cloud expansion</li>
+  <li><strong>Google/Alphabet:</strong> $175–185 billion, accelerating hard after years of cautious AI deployment</li>
+  <li><strong>Meta:</strong> $115–135 billion — more than double what it spent in 2025, a staggering year-on-year leap</li>
+</ul>
+
+<p>To put the full $725 billion in context: it is more than the GDP of Switzerland. It is more than the entire global oil industry spends on exploration in a year. And it is being spent not over a decade, but in twelve months. Think about what that means for every industry, every job market, and every economy connected to these companies — which is basically all of them.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80"
+    alt="Big tech AI spending breakdown 2026 Amazon Microsoft Google Meta comparison"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Together, four companies are spending more on AI this year than the GDP of most countries on Earth.</figcaption>
+</figure>
+
+<h2>The Layoffs — 113,000 Jobs and Counting</h2>
+
+<p>By May 2026, more than <strong>113,000 tech workers</strong> had already lost their jobs. That averages out to <strong>825 people every single day</strong> since January 1st. Real people. Real mortgages, real families, real careers dismantled — at a pace of one person roughly every two minutes, around the clock.</p>
+
+<p>April 2026 was the worst single month on record: <strong>83,387 tech job cuts</strong>, up 38% from March. And the companies doing the cutting are not struggling. Oracle eliminated between 20,000 and 30,000 positions while its cloud revenue was growing at <strong>34% year-over-year</strong>. Cloudflare cut 20% of its entire workforce after internal AI usage surged <strong>600% in just three months</strong>. These are not distress signals — they are strategic decisions made from a position of financial strength.</p>
+
+<p>The most remarkable moment came from Mark Zuckerberg himself, who sent a staff memo in May 2026 explicitly linking the job cuts to the cost of AI infrastructure. <em>"We need to focus our investments on AI,"</em> the memo stated — an unusually direct admission that human payroll and AI capex are, in the minds of leadership, competing line items. Meta's annual payroll runs around $27 billion. Its AI spending this year is more than four times that amount.</p>
+
+<h2>The Skills Divide Nobody Is Talking About</h2>
+
+<p>Here is the part that makes this story genuinely complicated. Right now, there are <strong>275,000 AI-related jobs sitting unfilled</strong> across the tech industry. Not because companies do not want to hire — but because the people being laid off largely do not have the skills to fill them. It is one of the most painful mismatches in modern economic history.</p>
+
+<p>A senior software engineer who spent a decade building e-commerce platforms or enterprise software is not automatically qualified to build machine learning pipelines or train large language models. The skills required are different, the tools are different, and the gap between what employers need and what the available workforce can offer is widening fast. Even the most experienced engineers are feeling it: senior Bay Area engineers — historically among the most in-demand workers on the planet — are now waiting an average of <strong>67 days to find new employment</strong>, nearly double the 38-day average from 2025.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80"
+    alt="Tech worker skills gap 2026 AI jobs versus traditional software jobs comparison"
+    width="1200"
+    height="630"
+  />
+  <figcaption>There are 275,000 AI jobs open right now — but most people being laid off do not have the skills to fill them.</figcaption>
+</figure>
+
+<h2>Is This AI Replacing Workers — Or Just Corporate Greed?</h2>
+
+<p>Let us be honest: it is probably both, and those two things are not mutually exclusive. AI genuinely does automate tasks that used to require human labor. Code review, customer support triage, content moderation, data processing — all of these are being handled faster, cheaper, and at greater scale by AI systems than by human teams. That is not propaganda; it is observable reality.</p>
+
+<p>But here is the uncomfortable truth that does not get said enough: companies have always used technology transitions as cover for cost-cutting that would otherwise look bad in a press release. "We are investing in the future" lands differently than "we are reducing headcount to improve margins." Both statements can be true at the same time. When Cloudflare cuts 20% of staff in the same quarter its AI usage jumps 600%, you are watching both things happen simultaneously — genuine efficiency gains and a very convenient excuse to reduce a payroll.</p>
+
+<p>Zuckerberg's memo was unusual precisely because it dispensed with the euphemism. There was no talk of "restructuring for agility" or "right-sizing for the next chapter." He said, plainly, that AI is expensive and the money has to come from somewhere. That kind of candor is rare — and it should make everyone paying attention ask harder questions about the companies they work for, invest in, and use every day.</p>
+
+<h2>What Does This Mean For You?</h2>
+
+<p>If you work in tech, the single most important thing you can do right now is get genuinely comfortable with AI tools — not as an observer, but as someone who uses them to do their job better every day. The workers who are thriving in 2026 are not the ones fighting against automation. They are the ones who made themselves harder to replace by becoming the people who know how to direct, audit, and build on top of AI systems.</p>
+
+<p>If you are a student or early in your career, the signal from the market is clear: AI literacy is the new baseline. You do not necessarily need to become a machine learning researcher — but you do need to understand how these systems work, how to use them effectively, and how to think critically about their outputs. These are skills you can start building today, at no cost, with tools already available to you.</p>
+
+<ul>
+  <li>Prompt engineering and AI tool literacy — knowing how to get useful, reliable outputs</li>
+  <li>Basic data analysis and Python fundamentals — the language of the AI economy</li>
+  <li>AI ethics and oversight — companies increasingly need people who understand risks</li>
+  <li>Learning to work alongside AI — using it to multiply your output, not replace your thinking</li>
+</ul>
+
+<p>And if you are a regular person who does not work in tech at all? Pay attention anyway. When companies this large reorganize their entire cost structures around AI, the ripple effects hit pricing, product quality, customer service, and eventually the broader economy. The <a href="/article/google-io-2026-ai-announcements">AI announcements coming out of Google I/O 2026</a> are not separate from this story — they are the same story, told from a different angle.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80"
+    alt="Person learning AI skills on laptop future proof career 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>The workers winning in 2026 are not fighting AI — they are learning to work alongside it.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Uncomfortable Truth</h2>
+
+<p>Here is the uncomfortable truth, stated plainly. The $725 billion being spent on AI is not a blip or a bubble — it is the largest coordinated capital investment in the history of the technology industry, and it is accelerating. The job cuts are not a temporary correction — they are a structural shift in how companies think about the relationship between labor and software. Both of those things are real and neither of them is stopping.</p>
+
+<p>But neither is the opportunity. The skills gap is a genuine problem — and genuine problems create genuine demand for people who solve them. The 275,000 unfilled AI jobs are not a trivia statistic; they are an open door. The question is whether you walk through it or wait for someone else to close it. <strong>Share this with someone who works in tech and needs to see this.</strong> The conversation about what is really happening — beyond the press releases and the quarterly earnings calls — has to start somewhere.</p>`,
+    category: "Tech",
+    authorId: 2,
+    publishedAt: new Date("2026-05-25T11:30:00Z").toISOString(),
+    readTime: 8,
+    imageUrl: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80",
+    views: 0,
+    featured: false,
+    editorsPick: true,
+    tags: ["AI", "Tech Layoffs", "Big Tech", "Amazon", "Microsoft", "Google", "Meta", "AI Spending"],
+  },
 ];
 
 export function withCors(response) {
