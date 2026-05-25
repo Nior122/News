@@ -58,15 +58,22 @@ A modern digital media brand built for Google Discover growth and Google Search 
 
 ## Content workflow — how to publish new articles
 
-There are two environments with separate article stores:
+### Option A: Admin Dashboard (recommended for live site)
+Visit `/admin/login` on your live Vercel site and sign in with `ADMIN_PASSWORD`.
+Every create/edit/delete/publish action commits directly to `api/_data.js` on GitHub → Vercel auto-deploys in ~60 seconds.
 
+**Required Vercel environment variables (set once in Vercel dashboard):**
+- `ADMIN_PASSWORD` — your admin login password
+- `GITHUB_TOKEN` — Personal Access Token with `repo` scope (so the admin can commit to GitHub)
+
+### Option B: Manual file edit
 | Environment | Article source | Updated by |
 |---|---|---|
 | **Vercel (live site)** | `api/_data.js` | commit + push to GitHub |
 | **Replit dev** | PostgreSQL DB, seeded from `lib/db/src/ensure-seeded.ts` | edit file, then reseed DB |
 
-**To publish a new article to the live Vercel site:**
-1. Add the article object to `api/_data.js` (give it the next `id`, use `.toISOString()` for `publishedAt`)
+**To publish a new article manually:**
+1. Add the article object to `api/_data.js`
 2. Commit and push to GitHub → Vercel auto-deploys within ~60 seconds
 
 **To also see it in local dev (Replit):**

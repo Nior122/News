@@ -65,18 +65,20 @@ export default function AdminDashboard() {
   const [form, setForm] = useState<EditForm>(emptyForm());
   const [deleteTarget, setDeleteTarget] = useState<Article | null>(null);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [toast, setToast] = useState<{ msg: string; ok: boolean; deploy?: boolean } | null>(null);
 
-  const showToast = (msg: string, ok = true) => {
-    setToast({ msg, ok });
-    setTimeout(() => setToast(null), 3000);
+  const showToast = (msg: string, ok = true, deploy = false) => {
+    setToast({ msg, ok, deploy });
+    setTimeout(() => setToast(null), deploy ? 6000 : 3000);
   };
 
   const fetchArticles = useCallback(async () => {
     try {
       const res = await fetch("/api/admin/articles", { headers: authHeaders() });
       if (res.status === 401) { setLocation("/admin/login"); return; }
-      setArticles(await res.json());
+      const data = await res.json();
+      if (!res.ok) { setError(data.error ?? "Failed to load"); return; }
+      setArticles(data);
     } catch {
       setError("Failed to load articles");
     } finally {
@@ -115,10 +117,16 @@ export default function AdminDashboard() {
       method: "PATCH",
       headers: authHeaders(),
     });
-    if (!res.ok) { showToast("Failed to update", false); return; }
-    const updated: Article = await res.json();
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error ?? "Failed to update", false); return; }
+    const updated: Article = data;
     setArticles((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
-    showToast(updated.published ? "Article published" : "Article unpublished");
+    showToast(
+      updated.published
+        ? "Article published — Vercel deploying in ~60s"
+        : "Article unpublished — Vercel deploying in ~60s",
+      true, true
+    );
   }
 
   async function handleSave() {
@@ -126,22 +134,32 @@ export default function AdminDashboard() {
     const isEdit = modal === "edit" && form.id !== undefined;
     const url = isEdit ? `/api/admin/articles/${form.id}` : "/api/admin/articles";
     const method = isEdit ? "PUT" : "POST";
-
-    const payload = { ...form, tags: typeof form.tags === "string" ? (form.tags as string).split(",").map((t) => t.trim()).filter(Boolean) : form.tags };
+    const payload = {
+      ...form,
+      tags: typeof form.tags === "string"
+        ? (form.tags as string).split(",").map((t) => t.trim()).filter(Boolean)
+        : form.tags,
+    };
 
     try {
       const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(payload) });
-      if (!res.ok) { const d = await res.json(); showToast(d.error ?? "Save failed", false); return; }
-      const saved: Article = await res.json();
+      const data = await res.json();
+      if (!res.ok) { showToast(data.error ?? "Save failed", false); return; }
+      const saved: Article = data;
       if (isEdit) {
         setArticles((prev) => prev.map((x) => (x.id === saved.id ? saved : x)));
       } else {
         setArticles((prev) => [saved, ...prev]);
       }
       closeModal();
-      showToast(isEdit ? "Article updated" : "Article created");
+      showToast(
+        isEdit
+          ? "Article updated — Vercel deploying in ~60s"
+          : "Article created — Vercel deploying in ~60s",
+        true, true
+      );
     } catch {
-      showToast("Save failed", false);
+      showToast("Save failed — check connection", false);
     } finally {
       setSaving(false);
     }
@@ -156,7 +174,7 @@ export default function AdminDashboard() {
     if (!res.ok) { showToast("Delete failed", false); return; }
     setArticles((prev) => prev.filter((x) => x.id !== deleteTarget.id));
     closeModal();
-    showToast("Article deleted");
+    showToast("Article deleted — Vercel deploying in ~60s", true, true);
   }
 
   function handleLogout() {
@@ -172,15 +190,18 @@ export default function AdminDashboard() {
   );
 
   const total = articles.length;
-  const publishedCount = articles.filter((a) => a.published).length;
+  const publishedCount = articles.filter((a) => a.published !== false).length;
   const draftCount = total - publishedCount;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       {/* Toast */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 px-5 py-3 rounded-xl text-sm font-medium shadow-xl border transition-all ${toast.ok ? "bg-emerald-950 border-emerald-800 text-emerald-300" : "bg-red-950 border-red-800 text-red-300"}`}>
-          {toast.msg}
+        <div className={`fixed top-4 right-4 z-50 max-w-sm px-5 py-3 rounded-xl text-sm font-medium shadow-xl border transition-all ${toast.ok ? "bg-emerald-950 border-emerald-800 text-emerald-300" : "bg-red-950 border-red-800 text-red-300"}`}>
+          <p>{toast.msg}</p>
+          {toast.deploy && (
+            <p className="text-xs opacity-70 mt-1">Changes committed to GitHub → auto-deploying on Vercel</p>
+          )}
         </div>
       )}
 
@@ -194,10 +215,18 @@ export default function AdminDashboard() {
             <span className="text-zinc-600 text-sm">/ Admin</span>
           </div>
           <div className="flex items-center gap-3">
-            <a href="/" target="_blank" rel="noopener noreferrer" className="text-xs text-zinc-400 hover:text-zinc-200 transition px-3 py-1.5 rounded-lg hover:bg-zinc-800">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-zinc-400 hover:text-zinc-200 transition px-3 py-1.5 rounded-lg hover:bg-zinc-800"
+            >
               View Site →
             </a>
-            <button onClick={handleLogout} className="text-xs text-zinc-400 hover:text-red-400 transition px-3 py-1.5 rounded-lg hover:bg-zinc-800">
+            <button
+              onClick={handleLogout}
+              className="text-xs text-zinc-400 hover:text-red-400 transition px-3 py-1.5 rounded-lg hover:bg-zinc-800"
+            >
               Sign out
             </button>
           </div>
@@ -205,6 +234,12 @@ export default function AdminDashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        {/* Deploy notice */}
+        <div className="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 text-sm text-zinc-400">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+          Every save commits to GitHub and Vercel auto-deploys in ~60 seconds
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
@@ -239,7 +274,7 @@ export default function AdminDashboard() {
         {/* Table */}
         {loading ? (
           <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3, 4].map((i) => (
               <div key={i} className="h-16 bg-zinc-900 rounded-xl animate-pulse" />
             ))}
           </div>
@@ -255,15 +290,19 @@ export default function AdminDashboard() {
                   <th className="text-left px-4 py-3 font-medium hidden lg:table-cell">Date</th>
                   <th className="text-center px-4 py-3 font-medium hidden sm:table-cell">Views</th>
                   <th className="text-center px-4 py-3 font-medium">Status</th>
-                  <th className="text-center px-4 py-3 font-medium hidden lg:table-cell">Featured</th>
+                  <th className="text-center px-4 py-3 font-medium hidden lg:table-cell">Flags</th>
                   <th className="text-right px-5 py-3 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((a, i) => (
-                  <tr key={a.id} className={`border-b border-zinc-800/60 hover:bg-zinc-800/40 transition ${i === filtered.length - 1 ? "border-b-0" : ""}`}>
+                  <tr
+                    key={a.id}
+                    className={`border-b border-zinc-800/60 hover:bg-zinc-800/40 transition ${i === filtered.length - 1 ? "border-b-0" : ""}`}
+                  >
                     <td className="px-5 py-4">
                       <p className="font-medium text-zinc-100 line-clamp-1 max-w-xs">{a.title}</p>
+                      <p className="text-xs text-zinc-600 mt-0.5">{a.slug}</p>
                     </td>
                     <td className="px-4 py-4 hidden md:table-cell">
                       <span className="text-xs bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-full">{a.category}</span>
@@ -271,19 +310,25 @@ export default function AdminDashboard() {
                     <td className="px-4 py-4 text-zinc-500 text-xs hidden lg:table-cell">
                       {new Date(a.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </td>
-                    <td className="px-4 py-4 text-center text-zinc-400 text-xs hidden sm:table-cell">{a.views.toLocaleString()}</td>
+                    <td className="px-4 py-4 text-center text-zinc-400 text-xs hidden sm:table-cell">
+                      {(a.views ?? 0).toLocaleString()}
+                    </td>
                     <td className="px-4 py-4 text-center">
                       <button
                         onClick={() => handleTogglePublish(a)}
-                        title={a.published ? "Click to unpublish" : "Click to publish"}
-                        className={`text-xs font-medium px-3 py-1 rounded-full transition ${a.published ? "bg-emerald-950 text-emerald-400 hover:bg-emerald-900" : "bg-zinc-800 text-zinc-500 hover:bg-zinc-700"}`}
+                        title={a.published !== false ? "Click to unpublish" : "Click to publish"}
+                        className={`text-xs font-medium px-3 py-1 rounded-full transition ${a.published !== false ? "bg-emerald-950 text-emerald-400 hover:bg-emerald-900" : "bg-zinc-800 text-zinc-500 hover:bg-zinc-700"}`}
                       >
-                        {a.published ? "Live" : "Draft"}
+                        {a.published !== false ? "Live" : "Draft"}
                       </button>
                     </td>
                     <td className="px-4 py-4 text-center hidden lg:table-cell">
-                      {a.featured && <span className="text-xs bg-amber-950 text-amber-400 px-2.5 py-1 rounded-full">Featured</span>}
-                      {a.editorsPick && <span className="ml-1 text-xs bg-violet-950 text-violet-400 px-2.5 py-1 rounded-full">Pick</span>}
+                      {a.featured && (
+                        <span className="text-xs bg-amber-950 text-amber-400 px-2.5 py-1 rounded-full">Featured</span>
+                      )}
+                      {a.editorsPick && (
+                        <span className="ml-1 text-xs bg-violet-950 text-violet-400 px-2.5 py-1 rounded-full">Pick</span>
+                      )}
                     </td>
                     <td className="px-5 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -321,50 +366,102 @@ export default function AdminDashboard() {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto">
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl my-8 shadow-2xl">
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
-              <h2 className="font-semibold text-zinc-100">{modal === "create" ? "New Article" : "Edit Article"}</h2>
-              <button onClick={closeModal} className="text-zinc-500 hover:text-zinc-300 transition text-lg leading-none">×</button>
+              <h2 className="font-semibold text-zinc-100">
+                {modal === "create" ? "New Article" : "Edit Article"}
+              </h2>
+              <button onClick={closeModal} className="text-zinc-500 hover:text-zinc-300 transition text-xl leading-none">×</button>
             </div>
             <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
               <FormField label="Title" required>
-                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={inputCls} />
+                <input
+                  value={form.title}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  className={inputCls}
+                />
               </FormField>
               {modal === "create" && (
                 <FormField label="Slug" required>
-                  <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="my-article-slug" className={inputCls} />
+                  <input
+                    value={form.slug}
+                    onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                    placeholder="my-article-slug"
+                    className={inputCls}
+                  />
                 </FormField>
               )}
               <FormField label="Subtitle">
-                <input value={form.subtitle ?? ""} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} className={inputCls} />
+                <input
+                  value={form.subtitle ?? ""}
+                  onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                  className={inputCls}
+                />
               </FormField>
               <FormField label="Excerpt" required>
-                <textarea rows={2} value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} className={inputCls + " resize-none"} />
+                <textarea
+                  rows={2}
+                  value={form.excerpt}
+                  onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+                  className={inputCls + " resize-none"}
+                />
               </FormField>
               <FormField label="Body (HTML)">
-                <textarea rows={8} value={form.body ?? ""} onChange={(e) => setForm({ ...form, body: e.target.value })} className={inputCls + " resize-y font-mono text-xs"} />
+                <textarea
+                  rows={10}
+                  value={form.body ?? ""}
+                  onChange={(e) => setForm({ ...form, body: e.target.value })}
+                  className={inputCls + " resize-y font-mono text-xs"}
+                  placeholder="<p>Start writing...</p>"
+                />
               </FormField>
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="Category" required>
-                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={inputCls}>
+                  <select
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    className={inputCls}
+                  >
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </FormField>
                 <FormField label="Author" required>
-                  <select value={form.authorId} onChange={(e) => setForm({ ...form, authorId: Number(e.target.value) })} className={inputCls}>
+                  <select
+                    value={form.authorId}
+                    onChange={(e) => setForm({ ...form, authorId: Number(e.target.value) })}
+                    className={inputCls}
+                  >
                     {AUTHORS.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
                   </select>
                 </FormField>
               </div>
               <FormField label="Image URL" required>
-                <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://images.unsplash.com/…" className={inputCls} />
+                <input
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  placeholder="https://images.unsplash.com/…"
+                  className={inputCls}
+                />
               </FormField>
+              {form.imageUrl && (
+                <div className="rounded-lg overflow-hidden aspect-video w-full bg-zinc-800">
+                  <img src={form.imageUrl} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="Read Time (minutes)">
-                  <input type="number" min={1} value={form.readTime} onChange={(e) => setForm({ ...form, readTime: Number(e.target.value) })} className={inputCls} />
+                  <input
+                    type="number"
+                    min={1}
+                    value={form.readTime}
+                    onChange={(e) => setForm({ ...form, readTime: Number(e.target.value) })}
+                    className={inputCls}
+                  />
                 </FormField>
                 <FormField label="Tags (comma-separated)">
                   <input
                     value={Array.isArray(form.tags) ? form.tags.join(", ") : form.tags}
-                    onChange={(e) => setForm({ ...form, tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                    onChange={(e) =>
+                      setForm({ ...form, tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })
+                    }
                     placeholder="AI, Tech, Privacy"
                     className={inputCls}
                   />
@@ -376,15 +473,20 @@ export default function AdminDashboard() {
                 <Toggle label="Editor's Pick" checked={form.editorsPick} onChange={(v) => setForm({ ...form, editorsPick: v })} color="violet" />
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-800">
-              <button onClick={closeModal} className="text-sm text-zinc-400 hover:text-zinc-200 transition px-4 py-2 rounded-lg hover:bg-zinc-800">Cancel</button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold text-sm px-6 py-2 rounded-lg transition"
-              >
-                {saving ? "Saving…" : modal === "create" ? "Create Article" : "Save Changes"}
-              </button>
+            <div className="flex items-center justify-between px-6 py-4 border-t border-zinc-800">
+              <p className="text-xs text-zinc-600">Saves commit to GitHub → Vercel deploys in ~60s</p>
+              <div className="flex items-center gap-3">
+                <button onClick={closeModal} className="text-sm text-zinc-400 hover:text-zinc-200 transition px-4 py-2 rounded-lg hover:bg-zinc-800">
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold text-sm px-6 py-2 rounded-lg transition"
+                >
+                  {saving ? "Saving to GitHub…" : modal === "create" ? "Create Article" : "Save Changes"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -396,11 +498,18 @@ export default function AdminDashboard() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
             <h2 className="font-semibold text-zinc-100">Delete Article</h2>
             <p className="text-sm text-zinc-400">
-              Are you sure you want to delete <span className="text-zinc-200 font-medium">"{deleteTarget.title}"</span>? This cannot be undone.
+              Are you sure you want to delete{" "}
+              <span className="text-zinc-200 font-medium">"{deleteTarget.title}"</span>?
+              This will commit a deletion to GitHub. It cannot be undone easily.
             </p>
             <div className="flex gap-3 justify-end">
-              <button onClick={closeModal} className="text-sm text-zinc-400 hover:text-zinc-200 transition px-4 py-2 rounded-lg hover:bg-zinc-800">Cancel</button>
-              <button onClick={handleDelete} className="bg-red-600 hover:bg-red-500 text-white font-semibold text-sm px-5 py-2 rounded-lg transition">
+              <button onClick={closeModal} className="text-sm text-zinc-400 hover:text-zinc-200 transition px-4 py-2 rounded-lg hover:bg-zinc-800">
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 hover:bg-red-500 text-white font-semibold text-sm px-5 py-2 rounded-lg transition"
+              >
                 Delete
               </button>
             </div>
@@ -425,7 +534,17 @@ function FormField({ label, required, children }: { label: string; required?: bo
   );
 }
 
-function Toggle({ label, checked, onChange, color }: { label: string; checked: boolean; onChange: (v: boolean) => void; color: "emerald" | "amber" | "violet" }) {
+function Toggle({
+  label,
+  checked,
+  onChange,
+  color,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  color: "emerald" | "amber" | "violet";
+}) {
   const colors = {
     emerald: { on: "bg-emerald-600", text: "text-emerald-400" },
     amber: { on: "bg-amber-500", text: "text-amber-400" },
@@ -440,7 +559,9 @@ function Toggle({ label, checked, onChange, color }: { label: string; checked: b
         onClick={() => onChange(!checked)}
         className={`relative w-9 h-5 rounded-full transition-colors ${checked ? colors[color].on : "bg-zinc-700"}`}
       >
-        <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform ${checked ? "translate-x-4" : "translate-x-0"}`} />
+        <span
+          className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform ${checked ? "translate-x-4" : "translate-x-0"}`}
+        />
       </button>
       <span className={`text-sm ${checked ? colors[color].text : "text-zinc-500"}`}>{label}</span>
     </label>
