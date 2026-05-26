@@ -5,7 +5,7 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import type { NodeViewProps } from "@tiptap/react";
 
 interface RichEditorProps {
@@ -44,9 +44,9 @@ const ToolbarBtn = ({
 const Divider = () => <div className="w-px h-5 bg-zinc-700 mx-1 self-center" />;
 
 function ImageNodeView({ node, deleteNode, updateAttributes }: NodeViewProps) {
+  const inputId = useId();
   const [selected, setSelected] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -95,11 +95,11 @@ function ImageNodeView({ node, deleteNode, updateAttributes }: NodeViewProps) {
         {selected && (
           <div className="absolute inset-0 rounded-lg bg-black/50 flex items-center justify-center">
             <div className="flex gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 shadow-xl">
-              <button
-                type="button"
-                onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); fileRef.current?.click(); }}
-                disabled={uploading}
-                className="flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition disabled:opacity-50"
+              <label
+                htmlFor={inputId}
+                onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                onClick={(e) => e.stopPropagation()}
+                className={`flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition cursor-pointer ${uploading ? "opacity-50 pointer-events-none" : ""}`}
               >
                 {uploading ? (
                   <span className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-900 rounded-full animate-spin" />
@@ -109,7 +109,7 @@ function ImageNodeView({ node, deleteNode, updateAttributes }: NodeViewProps) {
                   </svg>
                 )}
                 {uploading ? "Uploading…" : "Replace"}
-              </button>
+              </label>
               <button
                 type="button"
                 onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); deleteNode(); }}
@@ -125,7 +125,7 @@ function ImageNodeView({ node, deleteNode, updateAttributes }: NodeViewProps) {
         )}
 
         <input
-          ref={fileRef}
+          id={inputId}
           type="file"
           accept="image/*"
           className="hidden"

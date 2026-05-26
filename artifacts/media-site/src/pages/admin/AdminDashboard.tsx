@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useId } from "react";
 import { useLocation } from "wouter";
 import RichEditor from "./RichEditor";
 
@@ -512,7 +512,7 @@ export default function AdminDashboard() {
 }
 
 function ImagePicker({ value, onChange }: { value: string; onChange: (url: string) => void }) {
-  const fileRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
   const [uploading, setUploading] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [urlInput, setUrlInput] = useState(value);
@@ -560,18 +560,18 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (url: strin
           >
             <p className="text-xs text-zinc-300 font-medium tracking-wide uppercase mb-1">Cover Image</p>
             <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); fileRef.current?.click(); }}
-                className="flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition"
+              <label
+                htmlFor={inputId}
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 bg-white text-zinc-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-zinc-100 transition cursor-pointer"
               >
                 {uploading ? (
                   <span className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-900 rounded-full animate-spin inline-block" />
                 ) : (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                 )}
-                Replace
-              </button>
+                {uploading ? "Uploading…" : "Replace"}
+              </label>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); onChange(""); setUrlInput(""); setShowOverlay(false); }}
@@ -584,11 +584,9 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (url: strin
           </div>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="w-full aspect-video rounded-lg border-2 border-dashed border-zinc-700 bg-zinc-800/50 hover:border-primary/60 hover:bg-zinc-800 transition flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-300 disabled:opacity-50"
+        <label
+          htmlFor={inputId}
+          className={`w-full aspect-video rounded-lg border-2 border-dashed border-zinc-700 bg-zinc-800/50 hover:border-primary/60 hover:bg-zinc-800 transition flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-300 cursor-pointer ${uploading ? "opacity-50 pointer-events-none" : ""}`}
         >
           {uploading ? (
             <>
@@ -602,14 +600,18 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (url: strin
               <span className="text-xs">from your camera roll or files</span>
             </>
           )}
-        </button>
+        </label>
       )}
       <input
-        ref={fileRef}
+        id={inputId}
         type="file"
         accept="image/*"
         className="hidden"
-        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) handleFile(f);
+          e.target.value = "";
+        }}
       />
       <div className="space-y-1">
         <p className="text-xs text-zinc-500">Or paste an image URL</p>
