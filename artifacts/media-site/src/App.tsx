@@ -13,7 +13,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
       return (
         <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#0a0a0f", color: "#f5f5f5", fontFamily: "system-ui, sans-serif", padding: "2rem", textAlign: "center" }}>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Something went wrong</h1>
-          <p style={{ color: "#888", marginBottom: "1.5rem" }}>The page failed to load. Please try refreshing.</p>
+          <pre style={{ color: "#f87171", background: "#1a1a1a", padding: "1rem", borderRadius: "0.5rem", fontSize: "0.75rem", textAlign: "left", maxWidth: "90vw", overflowX: "auto", marginBottom: "1.5rem", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{String(this.state.error)}</pre>
           <button onClick={() => window.location.reload()} style={{ background: "#3b82f6", color: "#fff", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.5rem", cursor: "pointer", fontSize: "1rem" }}>Refresh</button>
         </div>
       );
