@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "LFe9i6igCmsbuaeIVqY0U"
+uri = "file://artifacts/scrolltek-mobile/assets/images/icon.png"
+type = "image"
+title = "scrolltek_icon"
