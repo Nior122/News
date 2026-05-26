@@ -8,19 +8,27 @@ import { useDebounce } from "@/hooks/use-debounce";
 
 export default function SearchPage() {
   const [location] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
-  const initialQuery = searchParams.get("q") || "";
-  
-  const [query, setQuery] = useState(initialQuery);
-  const debouncedQuery = useDebounce(query, 500);
+
+  const getQueryFromUrl = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get("q") || "";
+  };
+
+  const [query, setQuery] = useState(getQueryFromUrl);
+  const debouncedQuery = useDebounce(query, 400);
+
+  // Re-sync query whenever the URL changes (e.g. clicking a tag from an article)
+  useEffect(() => {
+    setQuery(getQueryFromUrl());
+  }, [location]);
 
   const { data, isLoading, isFetching } = useSearchArticles(
-    { q: debouncedQuery }, 
+    { q: debouncedQuery },
     {
       query: {
         enabled: debouncedQuery.length > 0,
-        queryKey: getSearchArticlesQueryKey({ q: debouncedQuery })
-      }
+        queryKey: getSearchArticlesQueryKey({ q: debouncedQuery }),
+      },
     }
   );
 
@@ -38,10 +46,10 @@ export default function SearchPage() {
         <div className="container max-w-screen-md mx-auto px-4">
           <div className="relative">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground h-6 w-6" />
-            <Input 
+            <Input
               autoFocus
               className="w-full pl-12 h-16 text-lg font-medium rounded-full bg-background border-2 border-border focus-visible:ring-primary focus-visible:border-primary shadow-sm"
-              placeholder="Search articles, topics, or authors..."
+              placeholder="Search articles, topics, tags, or authors..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -57,6 +65,7 @@ export default function SearchPage() {
           <div className="text-center py-20 text-muted-foreground">
             <SearchIcon className="w-16 h-16 mx-auto mb-4 opacity-20" />
             <h2 className="text-xl font-medium">Type something to start searching</h2>
+            <p className="text-sm mt-2">Search by article title, topic, tag, or author name</p>
           </div>
         ) : isLoading && isFetching ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -67,18 +76,20 @@ export default function SearchPage() {
         ) : data?.articles && data.articles.length > 0 ? (
           <>
             <h2 className="font-display font-bold text-2xl mb-8">
-              {data.total} result{data.total !== 1 ? 's' : ''} for "{debouncedQuery}"
+              {data.total} result{data.total !== 1 ? "s" : ""} for &ldquo;{debouncedQuery}&rdquo;
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-              {data.articles.map(article => (
+              {data.articles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}
             </div>
           </>
         ) : (
           <div className="text-center py-20 text-muted-foreground">
-            <h2 className="text-xl font-medium mb-2">No results found for "{debouncedQuery}"</h2>
-            <p>Try different keywords or check your spelling.</p>
+            <h2 className="text-xl font-medium mb-2">
+              No results found for &ldquo;{debouncedQuery}&rdquo;
+            </h2>
+            <p>Try different keywords, a tag name, or check your spelling.</p>
           </div>
         )}
       </div>

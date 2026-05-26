@@ -444,7 +444,7 @@ export default async function handler(req, res) {
         const parsed = JSON.parse(body || '{}');
         const email = typeof parsed?.email === 'string' ? parsed.email.trim() : '';
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return send(res, { error: 'Invalid email address' }, 400);
-        return send(res, { message: "You're subscribed! Welcome to the PulseWire community." });
+        return send(res, { message: "You're subscribed! Welcome to the Scrolltek community." });
       } catch { return send(res, { error: 'Invalid request body' }, 400); }
     });
     return;

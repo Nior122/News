@@ -723,6 +723,119 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     editorsPick: false,
     tags: ["Productivity", "To-Do Lists", "Time Management", "GTD", "Focus", "Work Habits", "Organisation"],
   },
+
+  // ── AI Tools ──────────────────────────────────────────────────────────────
+  {
+    slug: "chatgpt-claude-gemini-comparison-2026",
+    title: "ChatGPT vs Claude vs Gemini — Which AI Is Actually Best for You in 2026?",
+    subtitle: "Three leading AI assistants, all free to try, all doing the same job differently. Here's the honest breakdown of which one wins for what",
+    excerpt: "Everyone's using AI assistants now — but most people are using the wrong one for their needs. Here's how ChatGPT, Claude, and Gemini actually compare in 2026.",
+    body: `<p>By 2026, there are three AI assistants that dominate the conversation: ChatGPT from OpenAI, Claude from Anthropic, and Gemini from Google. All three are free to start. All three can write, reason, research, and code. So which one should you actually use?</p>
+
+<p>The honest answer: it depends on what you're doing. Here's a clear breakdown of where each one genuinely excels — and where it falls short.</p>
+
+<h2>ChatGPT — The Most Versatile All-Rounder</h2>
+
+<p><strong>Best for:</strong> Brainstorming, creative writing, coding help, building custom workflows with GPTs.</p>
+
+<p>ChatGPT (GPT-4o) is the most widely used AI assistant in the world for a reason — it handles an enormous range of tasks competently. It's the best for creative work: story writing, marketing copy, generating ideas, and iterating quickly on drafts. It's also the most "conversational" of the three — it feels natural to work with, matches your tone, and handles multi-turn conversations well.</p>
+
+<p>The free tier is genuinely usable. ChatGPT Plus ($20/month) adds GPT-4o with image generation, voice mode, and the ability to create custom GPTs — mini AI apps you can build yourself. The custom GPT ecosystem is unique and genuinely useful.</p>
+
+<p><strong>Watch out for:</strong> Occasional confident hallucinations (wrong answers stated with certainty), and a tendency to be sycophantic — telling you what you want to hear rather than what's true.</p>
+
+<h2>Claude — The Best for Long, Serious Work</h2>
+
+<p><strong>Best for:</strong> Long documents, nuanced analysis, careful reasoning, writing that needs to sound like a human.</p>
+
+<p>Claude (Sonnet 3.7) from Anthropic is widely considered the best AI for serious written work. If you need to process a long PDF, write something that sounds genuinely thoughtful, or get careful analysis of a complex topic, Claude consistently outperforms the others. It handles large context windows exceptionally well — you can paste an entire contract, research paper, or code repository and ask questions about it.</p>
+
+<p>Claude is also the most honest of the three. It will tell you when it doesn't know something, push back on incorrect assumptions, and flag uncertainty rather than fabricating a confident-sounding answer.</p>
+
+<p><strong>Watch out for:</strong> It can be more cautious than necessary, occasionally declining tasks that ChatGPT or Gemini would handle without issue. The free tier is more limited than ChatGPT's.</p>
+
+<h2>Gemini — The Best Connected to Google's World</h2>
+
+<p><strong>Best for:</strong> Research with web access, working with Google Workspace (Docs, Gmail, Drive), multimodal tasks.</p>
+
+<p>Gemini 2.0 Flash is Google's answer — and its core advantage is integration. If you live in Google Docs, Gmail, and Drive, Gemini integrates directly into those tools. You can ask it to summarise your emails, draft documents in Docs, or search the web in real time.</p>
+
+<p>Gemini also handles multimodal input well — drop in an image and ask questions about it, or upload a screenshot and have it extract data. For research tasks where you need current information (not knowledge cut-off data), Gemini with web access is consistently strong.</p>
+
+<p><strong>Watch out for:</strong> Creative writing and nuanced text quality still lags behind Claude and GPT-4o. It can feel more "corporate" in tone.</p>
+
+<h2>The Bottom Line</h2>
+
+<ul>
+  <li><strong>For writing, creativity, and coding:</strong> ChatGPT</li>
+  <li><strong>For serious analysis, long documents, and honest answers:</strong> Claude</li>
+  <li><strong>For research, current events, and Google integration:</strong> Gemini</li>
+</ul>
+
+<p>The best move? Use all three. They're all free to start, and knowing which tool to reach for depending on the job is genuinely a competitive advantage in 2026. <strong>Share this with someone still just using whichever AI they heard of first.</strong></p>`,
+    category: "AI Tools",
+    authorId: 5,
+    publishedAt: new Date("2026-05-25T08:00:00Z"),
+    readTime: 7,
+    imageUrl: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80",
+    views: 0,
+    featured: false,
+    editorsPick: true,
+    tags: ["ChatGPT", "Claude", "Gemini", "AI Tools", "AI Assistants", "OpenAI", "Anthropic", "Google AI"],
+  },
+  {
+    slug: "ai-prompt-formula-better-answers-2026",
+    title: "The AI Prompt Formula That Makes Every Tool Give You Better Answers",
+    subtitle: "Most people type questions into AI like they're Googling. Here's why that's leaving most of the value on the table — and the simple formula that changes everything",
+    excerpt: "The difference between a mediocre AI response and a genuinely useful one usually comes down to how you asked the question. Here's the formula that works every time.",
+    body: `<p>Most people use AI assistants like a slightly smarter search engine. They type a question, get an answer, and move on. And most of the time, the answer is... fine. Usable. Forgettable.</p>
+
+<p>The people getting dramatically better results from the same tools aren't using different AI — they're asking differently. Here's the framework that makes the biggest difference.</p>
+
+<h2>The RCTF Formula</h2>
+
+<p>Every high-quality AI prompt has four components. You don't need all four for every request, but the more of them you include, the better the output:</p>
+
+<ul>
+  <li><strong>R — Role:</strong> Tell the AI who to be</li>
+  <li><strong>C — Context:</strong> Give it the background it needs</li>
+  <li><strong>T — Task:</strong> State exactly what you want</li>
+  <li><strong>F — Format:</strong> Specify how you want the output</li>
+</ul>
+
+<h2>What This Looks Like in Practice</h2>
+
+<p><strong>Before (vague):</strong> "Write me an email to my boss about taking a day off."</p>
+
+<p><strong>After (RCTF):</strong> "You are a professional business writer. I work in a mid-sized marketing agency and I have a good relationship with my manager. Write me a brief, professional email requesting one day off next Friday (May 30th) to attend a family event. Keep it to 3 sentences, casual but professional in tone, and end with a line offering to arrange coverage if needed."</p>
+
+<p>The second version produces something you can send directly. The first produces a generic template you have to rewrite anyway.</p>
+
+<h2>Three More Techniques That Work</h2>
+
+<p><strong>1. "Give me your honest assessment."</strong> AI models are trained to be agreeable. Explicitly asking for an honest, critical take — "Tell me what's wrong with this plan" or "What am I missing?" — consistently unlocks more useful analysis.</p>
+
+<p><strong>2. Ask for options, not one answer.</strong> "Give me three different approaches to this, with the tradeoffs of each" consistently outperforms "tell me the best way to do this." You'll see considerations you wouldn't have thought of.</p>
+
+<p><strong>3. Iterate, don't start over.</strong> Your first prompt is a starting point, not a final request. Follow up: "Make it shorter." "Make the tone more confident." "Add a specific example." Each refinement costs you nothing and takes seconds.</p>
+
+<h2>The Single Most Underused Feature</h2>
+
+<p>Most people never use the system prompt or custom instructions. In ChatGPT, you can set persistent instructions that apply to every conversation: your profession, your preferred writing style, what you don't want the AI to do. Setting this up once saves you from repeating context every session.</p>
+
+<p>In Claude, you can paste a full document at the start of a conversation and refer back to it. In Gemini, you can save a Gem (a custom configuration) for specific recurring tasks.</p>
+
+<p>The tools are powerful. How you talk to them determines how much of that power you actually get. <strong>Try the RCTF formula on your next prompt and see the difference for yourself.</strong></p>`,
+    category: "AI Tools",
+    authorId: 1,
+    publishedAt: new Date("2026-05-23T09:00:00Z"),
+    readTime: 6,
+    imageUrl: "https://images.unsplash.com/photo-1655720033654-a4239dd42d10?w=1200&q=80",
+    views: 0,
+    featured: false,
+    editorsPick: false,
+    tags: ["AI Tools", "Prompt Engineering", "ChatGPT", "Claude", "Gemini", "AI Tips", "Productivity"],
+  },
 ];
 
 export async function ensureSeeded(): Promise<void> {
