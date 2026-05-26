@@ -860,7 +860,7 @@ export async function ensureSeeded(): Promise<void> {
       if (existing.length === 0) {
         await db.insert(articlesTable).values(article);
         inserted++;
-      } else if (!existing[0].body && article.body) {
+      } else if (article.body) {
         await db
           .update(articlesTable)
           .set({ body: article.body })
