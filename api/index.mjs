@@ -1,5 +1,6 @@
 import pg from 'pg';
 import jwt from 'jsonwebtoken';
+import { ensureReady } from './setup.mjs';
 
 const { Pool } = pg;
 
@@ -97,6 +98,9 @@ export default async function handler(req, res) {
   }
 
   const db = getPool();
+
+  // Ensure schema + seed data exist on first request (no-op if already set up)
+  await ensureReady(db);
   const rawUrl = req.url ?? '/';
   const url = new URL(rawUrl, `http://${req.headers.host ?? 'localhost'}`);
   const path = url.pathname.replace(/^\/api/, '') || '/';
