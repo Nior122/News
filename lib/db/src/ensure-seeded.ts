@@ -450,11 +450,19 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "You open the app for two minutes and look up to find an hour has vanished. That's not a coincidence. Here's the science behind what short-form video is doing to your attention span.",
     body: `<p>Here's a question worth sitting with: when was the last time you read something — an article, a book chapter, even a long email — without reaching for your phone? If you're struggling to remember, you're not alone, and it may not be entirely your fault.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&q=80" alt="Person scrolling short-form video on smartphone in a dark room late at night" width="1200" height="630" />
+</figure>
+
 <h2>What Researchers Actually Found</h2>
 
 <p>A 2026 study from University College London tracked 3,000 adults across 18 months of heavy short-form video consumption. The findings were stark. Average sustained attention dropped by 22% over the study period. The ability to hold focus on a single task for more than 90 seconds — what researchers call "deep attention" — declined in participants who watched more than two hours of short-form video daily.</p>
 
 <p>The culprit isn't laziness. It's dopamine. Every swipe delivers a micro-hit of novelty. Your brain, optimised over millions of years to pay attention to new things, gets hijacked by an endless stream of them. After enough exposure, anything that doesn't change every 15 seconds starts to feel unbearably slow.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1200&q=80" alt="Brain activity and neural connections visualized showing dopamine reward pathways and attention research" width="1200" height="630" />
+</figure>
 
 <h2>The Real-World Effects</h2>
 
@@ -465,6 +473,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <h2>What You Can Actually Do</h2>
 
 <p>The research also shows the brain can recover. The key is deliberate practice in sustained attention — reading physical books, taking walks without a phone, having conversations without checking notifications. Even 20 minutes a day of focused, single-task activity shows measurable improvements in attention within six weeks.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Person reading a physical book in a quiet focused environment away from screens and devices" width="1200" height="630" />
+</figure>
 
 <p>The algorithm is optimised for your eyeballs, not your wellbeing. Knowing that is the first step to using it differently. <strong>Share this with someone who keeps saying they "used to read a lot."</strong></p>`,
     category: "Culture",
@@ -484,11 +496,19 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "A meme about a major event travels faster than any breaking news alert. Here's how internet culture became the world's most influential media format.",
     body: `<p>When something significant happens in the world, here is what the timeline now looks like. The event occurs. Within minutes, someone makes a meme. Within an hour, that meme has reached more people than any newspaper article published about it. By the time a formal news piece is written, edited, and published, the meme has already shaped how the world feels about what happened.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?w=1200&q=80" alt="Social media feeds and viral content spreading rapidly across multiple devices and platforms" width="1200" height="630" />
+</figure>
+
 <h2>The Speed That Changes Everything</h2>
 
 <p>Speed is the point. Traditional journalism takes time — reporting, verification, editing, legal review. A meme takes thirty seconds. In a world where the first framing of a story is often the one that sticks, memes consistently win the race. They don't just report what happened. They tell you how to feel about it, what narrative to attach to it, and which side you're supposed to be on.</p>
 
 <p>This is not trivial. Framing shapes perception in ways that are deeply difficult to undo. Once a meme has established a story — a politician as bumbling, a company as villainous, a moment as absurd — counter-narratives struggle to gain traction no matter how accurate they are.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200&q=80" alt="Traditional newspaper next to a smartphone showing the speed contrast between old and new media" width="1200" height="630" />
+</figure>
 
 <h2>Why Memes Work on Your Brain</h2>
 
@@ -514,11 +534,19 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "The world's largest 4-day work week trial just published its final results. Productivity went up. Revenue went up. Employee burnout went down. So why isn't everyone doing it?",
     body: `<p>The premise sounds too good to be true: work one fewer day per week, keep the same pay, and somehow get more done. And yet, that is exactly what the data from the world's largest ever 4-day work week trial shows.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80" alt="Modern open-plan office with employees collaborating at desks in a bright professional workspace" width="1200" height="630" />
+</figure>
+
 <h2>What the Trial Found</h2>
 
 <p>The 2025-2026 global trial, which ran across 233 companies and more than 14,000 employees in 17 countries, published its final results in early 2026. The headline numbers: <strong>revenue increased by an average of 8%</strong> during the trial period. <strong>Staff turnover dropped by 57%</strong>. Sick days fell by 65%. And 92% of companies said they intended to continue the 4-day week permanently.</p>
 
 <p>Perhaps most surprisingly, output — measured in tasks completed, projects shipped, and customer satisfaction scores — either held steady or improved at 94% of participating companies. The five-day week, it turns out, is not uniquely necessary for getting things done.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80" alt="Data dashboard showing productivity metrics revenue growth and employee wellbeing statistics from the 4-day week trial" width="1200" height="630" />
+</figure>
 
 <h2>Why It Works</h2>
 
@@ -527,6 +555,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <h2>The Obstacles That Remain</h2>
 
 <p>Not every industry can adopt the model easily. Healthcare, retail, manufacturing, and logistics all run on coverage models that make a simple schedule reduction complicated. And managers raised in the culture of presence — where being seen at your desk signals commitment — struggle to let go of visibility as a proxy for performance.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80" alt="Team of employees collaborating energetically around a table in a focused productive meeting" width="1200" height="630" />
+</figure>
 
 <p>But for knowledge work? The evidence is now difficult to dismiss. <strong>Would you take a pay-neutral 4-day week if your employer offered it?</strong></p>`,
     category: "Lifestyle",
@@ -546,15 +578,27 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "The number of people deactivating major social media accounts hit a record high in early 2026. Here's what they're doing instead — and what they're not missing.",
     body: `<p>Something is shifting. Not loudly, not in a way that generates many headlines, but measurably. In the first quarter of 2026, deactivation rates for major social media platforms hit their highest levels since these networks launched. The people leaving aren't posting about quitting. They're just… gone.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80" alt="Smartphone displaying social media notification overload with hundreds of unread alerts and badges" width="1200" height="630" />
+</figure>
+
 <h2>What's Driving the Exit</h2>
 
 <p>Exit surveys from three separate research groups point to similar reasons. Exhaustion is the most common — not the dramatic kind, but a low-grade tiredness from the constant performance of curating a life for an audience. The second is what researchers are calling "return on attention anxiety" — the growing feeling that time spent scrolling yields nothing of genuine value.</p>
 
 <p>The third reason is more interesting: people are increasingly aware that the feed is not neutral. Every post shown to you was chosen to provoke a reaction — ideally outrage, because outrage is the most engagement-generating emotion. Once you see the mechanism, it's hard to unsee it.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80" alt="Person looking stressed and overwhelmed by constant digital notifications and social media content on laptop" width="1200" height="630" />
+</figure>
+
 <h2>What People Are Doing Instead</h2>
 
 <p>The leavers aren't becoming hermits. They're reading more — physical books, long-form articles. They're using messaging apps for direct communication with actual friends. Many are returning to older formats: newsletters, podcasts, and hobby forums where the content is created by people who care about the subject rather than an algorithm that rewards volume.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80" alt="Person enjoying peaceful time outdoors in nature away from screens representing digital detox and wellbeing" width="1200" height="630" />
+</figure>
 
 <p>Some describe the first two weeks without social media as uncomfortable — a phantom-limb sensation, reaching for the app that isn't there. After a month, most describe feeling calmer, more present, and better rested. <strong>If you deleted your most-used social app tomorrow, what would you actually miss?</strong></p>`,
     category: "Lifestyle",
@@ -576,6 +620,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "Your iPhone ships with settings optimised for Apple's priorities, not yours. Here are the 12 tweaks that make an immediate difference.",
     body: `<p>Your iPhone was configured by engineers in Cupertino to work for Apple's ecosystem. Some of those defaults are sensible. Others quietly drain your battery, share more data than you'd choose, and slow down your experience. Here are 12 things worth changing today.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=1200&q=80" alt="iPhone close-up showing Settings app icon on the home screen ready to be configured and optimised" width="1200" height="630" />
+</figure>
+
 <h2>Battery & Performance</h2>
 
 <p><strong>1. Turn off Background App Refresh for apps that don't need it.</strong> Go to Settings → General → Background App Refresh. Most apps don't need to update in the background. Turn this off for everything except maps, calendar, and messaging apps you actively use.</p>
@@ -583,6 +631,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p><strong>2. Enable Optimised Battery Charging.</strong> Settings → Battery → Battery Health & Charging. This slows charging above 80% to reduce battery wear. If you charge overnight, this adds years to your battery's lifespan.</p>
 
 <p><strong>3. Reduce motion.</strong> Settings → Accessibility → Motion → Reduce Motion. The parallax and animation effects look nice but consume more processing power and can make the interface feel sluggish on older models.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80" alt="iPhone battery health screen showing optimised charging settings to extend battery lifespan" width="1200" height="630" />
+</figure>
 
 <h2>Privacy</h2>
 
@@ -622,6 +674,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "Most Android battery drain comes from a handful of apps and settings doing things you never asked them to do. Here's how to find and fix them in under ten minutes.",
     body: `<p>If your Android phone's battery doesn't make it through the day, the most likely culprit isn't a worn-out battery — it's apps running in the background doing things you never asked them to do. Here's how to identify the drain and shut it down.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=1200&q=80" alt="Android smartphone on a desk showing the home screen with battery indicator and system settings" width="1200" height="630" />
+</figure>
+
 <h2>Find Out What's Actually Draining Your Battery</h2>
 
 <p>Go to <strong>Settings → Battery → Battery Usage</strong> (the exact path varies slightly by manufacturer). Sort by consumption over the last 24 hours. You're looking for apps in the top five that you don't remember actively using. Social media apps are chronic offenders — they run in the background refreshing feeds, loading ads, and tracking your location even when you haven't opened them.</p>
@@ -633,6 +689,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p><strong>2. Turn off Always-On Display if you have one.</strong> Keeping the screen partially lit all day costs more than most people realise. Turn it off or set it to only activate when you lift the phone.</p>
 
 <p><strong>3. Set screen timeout to 30 seconds.</strong> Settings → Display → Screen Timeout. The display is your single biggest battery consumer. Don't let it stay on longer than needed.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&q=80" alt="Android phone plugged into charger showing battery percentage and charging status optimisation settings" width="1200" height="630" />
+</figure>
 
 <p><strong>4. Use Adaptive Battery.</strong> Settings → Battery → Adaptive Battery. This uses on-device AI to learn which apps you actually use and restricts battery access for everything else. Let it learn for a week and it makes a noticeable difference.</p>
 
@@ -660,11 +720,19 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "There's a lot of noise about AI tools. Here are the ones that are genuinely delivering on their promises for everyday work tasks in 2026.",
     body: `<p>There is a gap between AI tools that get written about and AI tools that actually get used. The former are often impressive in demos and frustrating in practice. The latter are often less flashy but consistently useful. Here's a practical breakdown of what's actually saving people time in 2026.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80" alt="AI interface visualization showing intelligent assistant tools being used for productivity and writing tasks" width="1200" height="630" />
+</figure>
+
 <h2>Writing and Editing</h2>
 
 <p><strong>Claude (Anthropic)</strong> and <strong>ChatGPT (OpenAI)</strong> are both genuinely excellent for first drafts. The workflow that works: don't ask AI to write something from scratch — give it your rough bullet points and ask it to turn them into a coherent first draft. Then edit. This is dramatically faster than writing from scratch, and the output is yours to shape. People using this workflow report saving 2-3 hours per week on written communication alone.</p>
 
 <p><strong>Grammarly and Hemingway Editor</strong> remain reliable for editing — not glamorous, but quietly effective at catching the errors and convoluted sentences that slip through on a tired afternoon.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80" alt="Person typing on laptop working on a document with AI writing assistant tools open on screen" width="1200" height="630" />
+</figure>
 
 <h2>Research and Summarisation</h2>
 
@@ -694,11 +762,19 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     excerpt: "A to-do list that never gets finished isn't a motivation problem. It's a system problem. Here's what the research says about task management that actually works.",
     body: `<p>If you've ever ended the day with more items on your to-do list than you started with — despite working hard all day — you've experienced what productivity researchers call the "Sisyphus effect." The list grows faster than you can clear it. And eventually, you stop trusting the list at all.</p>
 
+<figure>
+  <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&q=80" alt="Cluttered notebook planner with overwhelming to-do list and tasks spilling across multiple pages" width="1200" height="630" />
+</figure>
+
 <h2>Why Most To-Do Lists Fail</h2>
 
 <p>The standard to-do list has three structural problems. First, it treats all tasks as equal — a two-minute email reply sits next to a three-week project deliverable. Second, it has no relationship with time — you can add unlimited items with no awareness of how many hours you actually have. Third, it captures tasks but not outcomes — "call dentist" is on the list but the actual goal (healthy teeth, less anxiety) is invisible.</p>
 
 <p>The result is a list that grows indefinitely, prioritises poorly, and consistently fails to account for reality.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=1200&q=80" alt="Organised desk workspace with a structured planner calendar and productivity system laid out clearly" width="1200" height="630" />
+</figure>
 
 <h2>The System That Works Better</h2>
 
@@ -731,6 +807,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     subtitle: "Three leading AI assistants, all free to try, all doing the same job differently. Here's the honest breakdown of which one wins for what",
     excerpt: "Everyone's using AI assistants now — but most people are using the wrong one for their needs. Here's how ChatGPT, Claude, and Gemini actually compare in 2026.",
     body: `<p>By 2026, there are three AI assistants that dominate the conversation: ChatGPT from OpenAI, Claude from Anthropic, and Gemini from Google. All three are free to start. All three can write, reason, research, and code. So which one should you actually use?</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=80" alt="Multiple laptops side by side each showing a different AI chat assistant interface for comparison" width="1200" height="630" />
+</figure>
 
 <p>The honest answer: it depends on what you're doing. Here's a clear breakdown of where each one genuinely excels — and where it falls short.</p>
 
@@ -789,6 +869,10 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     subtitle: "Most people type questions into AI like they're Googling. Here's why that's leaving most of the value on the table — and the simple formula that changes everything",
     excerpt: "The difference between a mediocre AI response and a genuinely useful one usually comes down to how you asked the question. Here's the formula that works every time.",
     body: `<p>Most people use AI assistants like a slightly smarter search engine. They type a question, get an answer, and move on. And most of the time, the answer is... fine. Usable. Forgettable.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1542903660-eedba2cda473?w=1200&q=80" alt="Close-up of hands typing a detailed prompt into an AI chat interface on a keyboard" width="1200" height="630" />
+</figure>
 
 <p>The people getting dramatically better results from the same tools aren't using different AI — they're asking differently. Here's the framework that makes the biggest difference.</p>
 
