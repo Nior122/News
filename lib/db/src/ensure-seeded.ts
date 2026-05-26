@@ -920,6 +920,222 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     editorsPick: false,
     tags: ["AI Tools", "Prompt Engineering", "ChatGPT", "Claude", "Gemini", "AI Tips", "Productivity"],
   },
+  {
+    slug: "ai-tools-for-students-2026",
+    title: "How AI Tools Are Changing the Way Students Study in 2026",
+    subtitle: "Not just ChatGPT — students are combining five different AI tools to study faster, write better, and ace exams",
+    excerpt: "Students are using AI tools to summarise notes, generate practice questions, improve their writing, and organise revision — and the results are changing what academic success looks like.",
+    body: `<figure>
+  <img src="https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Student studying with laptop and AI tools open on screen" data-search="student studying laptop AI 2026" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>Students in 2026 are using AI tools to study faster, write better, and prepare for exams more effectively than any previous generation.</figcaption>
+</figure>
+
+<p>Three years ago, a student pulling an all-nighter had coffee, a textbook, and YouTube. Today, they have something far more powerful: <strong>an AI that can summarise a 400-page book, quiz them on it, fix their essay, and explain any concept they are stuck on — in seconds.</strong></p>
+
+<p>AI tools for studying are not cheating. They are the new calculator — a tool that, used well, makes you smarter and faster. Used badly, they make you lazy and dependent. The difference is entirely in how you use them.</p>
+
+<p>Here is what the best student AI tools actually do, which ones are worth your time, and how to get the most out of them without losing your ability to think for yourself.</p>
+
+<h2>What AI Study Tools Actually Do</h2>
+
+<p>AI study tools are software products that use large language models — the same technology behind <a href="/article/chatgpt-claude-gemini-comparison-2026" class="article-backlink">ChatGPT, Claude, and Gemini</a> — to help students learn more efficiently.</p>
+
+<p>They can:</p>
+<ul>
+  <li>Summarise long texts, lecture notes, or PDFs into clear bullet points</li>
+  <li>Generate practice questions and flashcards from any material</li>
+  <li>Explain difficult concepts in plain, simple language</li>
+  <li>Check and improve your writing — grammar, clarity, structure, argument</li>
+  <li>Help you plan revision schedules and manage your time</li>
+  <li>Answer questions about specific topics instantly, at any hour</li>
+</ul>
+
+<h2>The Best AI Tools for Students in 2026</h2>
+
+<h3>ChatGPT (Free + Paid)</h3>
+<p>Still the most widely used. Ask it to explain any concept, summarise any text you paste in, or generate practice exam questions. The free version is capable. The paid version handles longer documents and more complex tasks. Best for: general studying, writing help, concept explanations.</p>
+
+<h3>Notion AI</h3>
+<p>If you already use Notion to organise your notes, Notion AI turns it into a smart study assistant. Highlight any block of notes and ask it to summarise, expand, or generate quiz questions from them. Best for: organised students who already have their notes in one place.</p>
+
+<h3>Perplexity AI</h3>
+<p>Unlike ChatGPT, Perplexity searches the live web and shows you sources for every answer. This makes it far better for research — you can see exactly where the information comes from and verify it. Best for: research assignments, finding credible sources fast.</p>
+
+<h3>Quizlet AI</h3>
+<p>The classic flashcard app now has AI built in. Paste your notes or a topic, and it generates a complete flashcard set automatically. Then it uses spaced repetition to test you at the right intervals for long-term memory. Best for: memorisation-heavy subjects like medicine, law, and languages.</p>
+
+<h3>Grammarly (AI-Powered)</h3>
+<p>More than a spell checker. Grammarly now analyses your argument structure, tone, clarity, and sentence variety. It suggests rewrites, flags weak sections, and helps you write in a way that sounds professional. Best for: essays, reports, and any academic writing assignment.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="University student taking notes with AI assistant on laptop" data-search="university student AI laptop notes" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>The smartest students are not using one AI tool — they are using different tools for different tasks and combining them strategically.</figcaption>
+</figure>
+
+<h2>How to Use AI Tools Without Becoming Dependent on Them</h2>
+
+<p>The principle that works: <strong>use AI to understand faster, not to avoid understanding altogether.</strong></p>
+
+<ul>
+  <li>Read the chapter first. Then use AI to check your understanding.</li>
+  <li>Write your essay draft first. Then use AI to improve the language.</li>
+  <li>Attempt the practice questions yourself. Then use AI to explain what you got wrong.</li>
+  <li>Use AI to simplify concepts you are genuinely stuck on — not as a first resort.</li>
+</ul>
+
+<h2>AI for Exam Preparation — What Actually Works</h2>
+
+<p>The most valuable use of AI in the lead-up to exams is <strong>active recall practice</strong> — which research consistently shows is the most effective revision technique that exists.</p>
+
+<ol>
+  <li>Paste your lecture notes or a chapter summary into ChatGPT or Claude</li>
+  <li>Ask it to generate 20 exam-style questions on the material</li>
+  <li>Answer each question without looking at your notes</li>
+  <li>Ask the AI to mark your answers and explain what you missed</li>
+  <li>Repeat for the topics you scored lowest on</li>
+</ol>
+
+<p>To get the most precise and useful questions from AI, it helps to know how to phrase your requests properly. Our guide on <a href="/article/ai-prompt-formula-better-answers-2026" class="article-backlink">the AI prompt formula that gets better answers</a> will help you get dramatically more useful responses from any AI tool you use.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Student using multiple AI apps on laptop and tablet" data-search="student multiple AI tools laptop tablet" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>AI-powered active recall practice can compress days of revision into focused, high-retention sessions — if you use it with discipline.</figcaption>
+</figure>
+
+<h2>Organising Your Study Time With AI</h2>
+
+<p>Tell ChatGPT or Claude: "I have four exams in three weeks. Here are the subjects and their dates. I study best in the mornings. I have two part-time work shifts per week. Build me a revision schedule."</p>
+
+<p>It will produce a detailed, day-by-day plan in seconds. For managing the actual tasks and assignments involved in student life, pairing AI with a proper productivity system is powerful. Our breakdown of <a href="/article/ai-tools-saving-hours-every-week-2026" class="article-backlink">the AI tools that are genuinely saving people hours every week</a> covers the tools that work best for this.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is using AI for studying considered cheating?</h3>
+<p>It depends entirely on how you use it and what your institution's policy says. Using AI to understand concepts, practise questions, and improve your own work is not cheating. Using AI to write your essay and submitting it as your own work generally is. Always check your institution's academic integrity policy.</p>
+
+<h3>Which AI tool is best for medical or law students?</h3>
+<p>For memorisation-heavy content, Quizlet AI and Anki with AI-generated cards are the strongest options. For research, Perplexity AI is excellent because it cites its sources. For writing, Grammarly and Claude are particularly strong.</p>
+
+<h3>Do I need to pay for these tools?</h3>
+<p>Most of the best AI study tools have free tiers that are genuinely useful. ChatGPT free, Perplexity free, Quizlet free, and Grammarly free will serve most students well.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>AI study tools are the most powerful learning technology students have ever had access to — and they are mostly free. The students who understand how to use them well will study faster, write more clearly, and retain more than those who ignore them or misuse them.</p>
+
+<p>And if you want to get even more out of AI in your daily life beyond studying, start with <a href="/article/hidden-android-features-2026" class="article-backlink">the hidden Android features that make your phone a productivity powerhouse</a> — many of them are specifically designed for students on the go.</p>`,
+    category: "AI Tools",
+    authorId: 5,
+    publishedAt: new Date("2026-05-26T10:00:00Z"),
+    readTime: 7,
+    imageUrl: "https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    views: 0,
+    featured: false,
+    editorsPick: true,
+    tags: ["AI Tools", "Students", "ChatGPT", "Study Tips", "Productivity", "Education", "AI Learning"],
+  },
+  {
+    slug: "why-ai-phones-are-becoming-the-future",
+    title: "Why AI Phones Are Becoming the Future of Smartphones",
+    subtitle: "From cameras that think to assistants that learn your habits — AI is no longer a phone feature, it is the phone",
+    excerpt: "AI phones are changing how people take photos, translate calls, save battery, and use apps. Here is why every major brand is betting everything on AI — and what it means for you.",
+    body: `<figure>
+  <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Futuristic AI smartphone with glowing interface" data-search="AI smartphone futuristic 2026" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>AI is no longer a feature you turn on — it is the operating system underneath everything your phone does.</figcaption>
+</figure>
+
+<p>Not long ago, "smart" phone meant a phone that could browse the internet. Then it meant a good camera. Then it meant face recognition and a fast processor.</p>
+
+<p>In 2026, smart means something completely different. <strong>It means a phone that thinks.</strong></p>
+
+<p>AI phones do not just run apps — they learn your habits, enhance your photos before you even take them, translate live conversations in real time, and manage your battery based on how you specifically use your device. The shift happening right now is not incremental. It is a complete rethinking of what a phone is for.</p>
+
+<h2>What Makes a Phone an "AI Phone"?</h2>
+
+<p>An AI phone is one with a dedicated <strong>Neural Processing Unit (NPU)</strong> — a chip specifically designed to run AI tasks quickly and efficiently, directly on the device, without sending your data to the cloud.</p>
+
+<p>Brands leading this shift include Samsung with its Galaxy AI suite, Google with Pixel's on-device processing, Xiaomi with its HyperOS AI layer, and increasingly Tecno and Infinix — both of which brought AI camera and assistant features to mid-range price points in 2025 and 2026.</p>
+
+<p>For a deeper look at how on-device AI specifically works, read our breakdown of <a href="/article/amd-on-device-ai-no-internet-2026" class="article-backlink">how powerful AI now runs entirely offline — no internet needed</a>.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Samsung Galaxy AI phone with neural processing chip" data-search="Samsung Galaxy AI phone 2026" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>Samsung, Google, Xiaomi, Tecno, and Infinix are all racing to put more AI power directly on-device — making it faster, private, and available offline.</figcaption>
+</figure>
+
+<h2>AI Photography — Your Camera Got Dramatically Smarter</h2>
+
+<ul>
+  <li><strong>Scene detection:</strong> The AI recognises what you are photographing and adjusts exposure, colour, and sharpening automatically for that specific subject.</li>
+  <li><strong>Night mode:</strong> AI stacks and combines multiple rapid exposures to produce bright, sharp, noise-free images in near-darkness.</li>
+  <li><strong>Object eraser:</strong> Samsung, Pixel, and Xiaomi all offer AI tools that remove unwanted objects from photos and intelligently fill in the space behind them.</li>
+  <li><strong>Photo remaster:</strong> Old, blurry, or low-resolution images are sharpened and enhanced automatically using AI trained on millions of images.</li>
+  <li><strong>Generative fill:</strong> Some flagship phones now let you expand the edges of a photo beyond its original frame, with AI generating realistic content to fill the new space.</li>
+</ul>
+
+<h2>Live Translation and Call Summaries</h2>
+
+<p>Google Pixel's Live Translate can detect when two people are speaking different languages and automatically translate both sides of the conversation in real time. Samsung's Galaxy AI offers the same feature for phone calls — both parties hear the conversation in their own language, with no app, no subscription, and no internet required.</p>
+
+<p><strong>Call summaries</strong> are another underappreciated feature. After a call ends, AI transcribes the conversation and generates a brief summary of key decisions and action points. Our guide on <a href="/article/ai-tools-saving-hours-every-week-2026" class="article-backlink">the AI tools genuinely saving people hours every week</a> covers this in depth.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/7034516/pexels-photo-7034516.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person using AI phone for live translation during conversation" data-search="AI phone live translation feature 2026" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>Live translation on AI phones can handle both sides of a conversation in real time — making language barriers disappear.</figcaption>
+</figure>
+
+<h2>Smarter Battery Management</h2>
+
+<p>The AI studies your usage patterns over time. It learns that you check email heavily at 8am, stream video at lunch, game in the evening, and barely use your phone after 10pm. It uses this pattern to pre-allocate processing power when you need it and restrict background activity when you do not.</p>
+
+<p>For even more control over your Android battery, our detailed guide on <a href="/article/android-battery-life-tips-2026" class="article-backlink">how to make your Android battery last all day</a> covers the manual settings that work alongside AI to maximise your usage time.</p>
+
+<h2>Voice Assistants Are Finally Useful</h2>
+
+<p>Google's Gemini Live can hold a genuine back-and-forth conversation, understand context across multiple questions, help you draft emails, find information across your apps, and make decisions with you — not just for you. Samsung's Galaxy AI assistant can read your screen, understand what you are looking at, and help you take action on it.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/5473955/pexels-photo-5473955.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person speaking to AI voice assistant on smartphone" data-search="AI voice assistant smartphone 2026" data-source="pexels.com" width="1200" height="630" />
+  <figcaption>The gap between old-generation voice assistants and today's AI phone assistants is not a feature update — it is a complete rebuild of what voice control can do.</figcaption>
+</figure>
+
+<h2>What Regular Users Actually Gain</h2>
+
+<ul>
+  <li>Your photos look dramatically better with zero effort</li>
+  <li>Your phone recognises your patterns and stops draining battery on things you do not use</li>
+  <li>You can search your entire photo library by describing what is in a photo</li>
+  <li>Notes apps can summarise voice recordings instantly</li>
+  <li>Writing suggestions appear contextually in any text field</li>
+  <li>Spam calls are identified and filtered before you even pick up</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Do I need an expensive phone to get AI features?</h3>
+<p>Not anymore. Xiaomi, Tecno, and Infinix have all brought meaningful AI camera and assistant features to mid-range phones in 2025 and 2026. The most advanced features are still more capable on flagship hardware, but the gap is closing fast.</p>
+
+<h3>Is on-device AI really private?</h3>
+<p>More private than cloud-based AI, yes. When processing happens on the device, your photos, voice, and data do not leave the phone. However, some AI features still connect to the cloud for enhanced processing — check your settings and disable any you are uncomfortable with.</p>
+
+<h3>Will my current phone get these AI features?</h3>
+<p>Some of them, yes. Google pushes Gemini AI features to Pixel phones going back several generations. Samsung has added Galaxy AI features to devices as old as the Galaxy S23 through software updates.</p>
+
+<h2>What the Next Two Years Look Like</h2>
+
+<p>By 2028, a phone without meaningful AI features will feel as outdated as a phone without a good camera feels today. The question is not whether AI becomes the standard — it is how fast.</p>
+
+<p>For students, the implications are particularly interesting. Our breakdown of <a href="/article/ai-tools-for-students-2026" class="article-backlink">how AI tools are changing the way students study in 2026</a> covers exactly this — and shows how the AI phone and AI study tool revolution are converging.</p>`,
+    category: "Tech",
+    authorId: 1,
+    publishedAt: new Date("2026-05-26T11:00:00Z"),
+    readTime: 8,
+    imageUrl: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    views: 0,
+    featured: false,
+    editorsPick: true,
+    tags: ["Tech", "AI Phones", "Samsung", "Google Pixel", "Xiaomi", "Smartphones", "AI Features"],
+  },
 ];
 
 export async function ensureSeeded(): Promise<void> {
