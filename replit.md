@@ -86,15 +86,27 @@ to articles — use one of the six real categories above instead.
 | 4 | Liam Park |
 | 5 | Anya Patel |
 
+## ⚠️ Two article stores — BOTH must be updated
+
+| Environment | Article source | How to update |
+|---|---|---|
+| **Vercel (live site)** | `api/_data.js` | Add article object here → commit → push to GitHub → Vercel auto-deploys |
+| **Replit dev** | PostgreSQL DB, seeded from `lib/db/src/ensure-seeded.ts` | Add article here → restart API server workflow |
+
+**New articles must be added to BOTH files** or they will only appear in one environment.
+
+- `api/_data.js` needs: `id` (next integer), `published: true`, `publishedAt: new Date("...").toISOString()`
+- `lib/db/src/ensure-seeded.ts` needs: no `id`, `published` field, `publishedAt: new Date("...")`  (Date object, not string)
+
 ## How to add a new article
 
 ### Option A: Admin Dashboard (recommended)
 Visit `/admin/login` and sign in with the `ADMIN_PASSWORD` env var.
 The admin dashboard has a category dropdown pre-populated with all valid categories.
+⚠️ Admin dashboard writes to `api/_data.js` via GitHub API (Vercel only). You still need to manually add the article to `lib/db/src/ensure-seeded.ts` for Replit dev.
 
-### Option B: Add to `lib/db/src/ensure-seeded.ts` (dev only)
-Add a new object to the `articles` array. The API server automatically inserts any
-articles not yet in the DB on startup — you only need to restart the API server.
+### Option B: Manual — add to both files
+Add to `lib/db/src/ensure-seeded.ts` (Replit dev) and `api/_data.js` (Vercel).
 
 ```ts
 {
