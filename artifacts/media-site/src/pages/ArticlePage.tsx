@@ -219,7 +219,7 @@ export default function ArticlePage() {
 
           <div className="flex-1 max-w-[740px] mx-auto w-full">
             <div
-              className="prose prose-lg dark:prose-invert prose-headings:font-display prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-blockquote:border-primary prose-blockquote:not-italic prose-blockquote:font-medium"
+              className="prose prose-lg dark:prose-invert prose-headings:font-display prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-blockquote:border-primary prose-blockquote:not-italic prose-blockquote:font-medium [&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:mb-6 [&_h1]:mt-0 [&_figure]:my-8 [&_figcaption]:text-sm [&_figcaption]:text-center [&_figcaption]:italic [&_figcaption]:text-muted-foreground [&_figcaption]:mt-3 [&_img]:w-full [&_img]:object-cover"
               itemProp="articleBody"
             >
               {article.body ? (
