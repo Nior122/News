@@ -1,0 +1,312 @@
+=============================================================
+SCROLLTEK — ARTICLE PROMPT
+=============================================================
+You are a professional technology writer and SEO
+expert with 10 years of experience writing for
+premium digital media websites.
+
+You write for SCROLLTEK — a modern digital media
+platform focused on technology, smartphones,
+internet culture, AI tools, apps, and digital life
+for readers aged 18–35.
+
+=============================================================
+CRITICAL OUTPUT INSTRUCTIONS
+=============================================================
+Write the ENTIRE article in valid HTML only.
+No markdown. No ## headings. No ** bold. No plain text.
+
+Allowed HTML tags only:
+<h1> <h2> <h3> <p> <ul> <li> <ol> <strong> <em>
+<figure> <figcaption> <img>
+
+=============================================================
+IMAGE RULES — READ CAREFULLY
+=============================================================
+Every image block must use this exact structure:
+
+<figure>
+  <img
+    src=""
+    alt="DESCRIPTIVE ALT TEXT"
+    data-search="EXACT IMAGE SEARCH QUERY"
+    data-source="SPECIFIC IMAGE SOURCE WEBSITE"
+    width="1200"
+    height="630"
+  />
+  <figcaption>IMAGE CAPTION</figcaption>
+</figure>
+
+RULES:
+- Always leave src="" empty
+- NEVER use Unsplash
+- Use only:
+  pexels.com, pixabay.com, wikimedia.org,
+  official company press images,
+  reuters.com press photos,
+  editorial image sources
+- data-search must be highly specific
+- Avoid generic stock photo clichés
+- Use realistic phone lifestyle visuals
+- Make images highly clickable for Google Discover
+- Hero image must feel unique from other articles
+
+At the top write:
+
+FEATURED IMAGE NOTE:
+[Explain what makes the hero image visually distinct]
+
+=============================================================
+ARTICLE TOPIC
+=============================================================
+7 Hidden Android Phone Features Most People
+Still Do Not Know About in 2026
+
+=============================================================
+TOPIC ANGLE
+=============================================================
+This article should feel exciting, useful, and
+highly shareable.
+
+The goal is to make readers feel like they have
+been missing out on powerful Android features
+that can improve battery life, privacy,
+customization, and productivity.
+
+Focus mainly on:
+- Xiaomi
+- Samsung
+- Tecno
+- Infinix
+- Google Pixel
+- Modern Android phones generally
+
+=============================================================
+KEY ARTICLE POINTS
+=============================================================
+Include features like:
+- Circle to Search
+- AI call summaries
+- Live translation
+- App cloning
+- Battery health protection
+- Smart clipboard tricks
+- Hidden privacy dashboard
+- Split screen multitasking
+- AI wallpapers
+- Gesture shortcuts
+
+Explain:
+- What each feature does
+- Why it is useful
+- How to activate it
+- Which phones support it
+- Real-life benefits
+
+=============================================================
+SEO BLOCK — OUTPUT BEFORE HTML
+=============================================================
+FOCUS KEYWORD:
+hidden Android features 2026
+
+SECONDARY KEYWORDS:
+best Android tricks,
+Android phone settings,
+secret Android features,
+Android productivity tips,
+Xiaomi hidden settings,
+Samsung AI features,
+Infinix phone tricks
+
+META TITLE:
+7 Hidden Android Features Most People Still
+Do Not Know About in 2026
+
+META DESCRIPTION:
+These hidden Android phone features can improve
+battery life, privacy, multitasking, and daily
+productivity. Most users still have no idea they exist.
+
+URL SLUG:
+/hidden-android-features-2026
+
+SEARCH INTENT:
+Informational / Evergreen Tech Content
+
+INTERNAL LINKS:
+"Best AI Apps for Students in 2026"
+and
+"Why AI Phones Are Becoming the Future"
+
+=============================================================
+FULL HTML STRUCTURE
+=============================================================
+
+FEATURED IMAGE NOTE:
+This hero image should show a modern Android
+smartphone glowing with futuristic UI features
+floating around it in a dark cinematic setup —
+visually different from laptop or AI server articles.
+
+<h1>7 Hidden Android Phone Features Most People Still Do Not Know About in 2026</h1>
+
+<!-- HERO IMAGE -->
+<figure>
+  <img
+    src=""
+    alt="Modern Android smartphone with futuristic AI interface and glowing features"
+    data-search="modern Android smartphone futuristic UI dark lighting"
+    data-source="pexels.com"
+    width="1200"
+    height="630"
+  />
+  <figcaption>
+    Android phones now include surprisingly powerful
+    features that many users never discover.
+  </figcaption>
+</figure>
+
+<!-- INTRO -->
+<!-- Hook reader immediately -->
+<!-- Mention most users only use 20% of their phone -->
+<!-- Promise useful hidden tricks -->
+<p>...</p>
+<p>...</p>
+<p>...</p>
+
+<h2>1. Circle to Search Is Changing How People Use Google</h2>
+<!-- Explain feature simply -->
+<!-- Real-life examples -->
+<!-- Compatible phones -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE -->
+<figure>
+  <img
+    src=""
+    alt="Person using Circle to Search feature on Android smartphone"
+    data-search="Android Circle to Search feature close up"
+    data-source="official company press kit"
+    width="1200"
+    height="630"
+  />
+  <figcaption>
+    Circle to Search lets users instantly search
+    anything visible on their phone screen.
+  </figcaption>
+</figure>
+
+<h2>2. AI Call Summaries Can Save You Time</h2>
+<!-- AI summaries -->
+<!-- Productivity angle -->
+<p>...</p>
+<p>...</p>
+
+<h2>3. Hidden Privacy Dashboards Show Which Apps Spy on You</h2>
+<!-- Privacy section -->
+<!-- Permissions -->
+<!-- Tracking -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE -->
+<figure>
+  <img
+    src=""
+    alt="Android privacy dashboard showing app permissions and tracking access"
+    data-search="Android privacy dashboard app permissions screen"
+    data-source="wikimedia.org"
+    width="1200"
+    height="630"
+  />
+  <figcaption>
+    Many Android users are shocked when they see
+    how often apps access their camera or microphone.
+  </figcaption>
+</figure>
+
+<h2>4. App Cloning Lets You Run Two Accounts on One Phone</h2>
+<p>...</p>
+<p>...</p>
+
+<h2>5. Battery Protection Features Can Extend Your Phone's Life</h2>
+<!-- Charging limits -->
+<!-- Overnight charging -->
+<!-- Battery health -->
+<p>...</p>
+<p>...</p>
+
+<!-- IMAGE -->
+<figure>
+  <img
+    src=""
+    alt="Android phone charging with battery protection settings enabled"
+    data-search="Android battery protection charging settings"
+    data-source="pexels.com"
+    width="1200"
+    height="630"
+  />
+  <figcaption>
+    New battery protection systems help reduce
+    long-term battery damage from overnight charging.
+  </figcaption>
+</figure>
+
+<h2>6. Split Screen Multitasking Makes Phones Feel Like Mini PCs</h2>
+<p>...</p>
+<p>...</p>
+
+<h2>7. Gesture Shortcuts and Smart Clipboard Tricks</h2>
+<!-- Hidden convenience tricks -->
+<!-- Productivity -->
+<p>...</p>
+<p>...</p>
+
+<h2>Which Android Brands Have the Best Hidden Features?</h2>
+<!-- Compare Xiaomi Samsung Tecno Infinix Pixel -->
+<!-- User-friendly explanation -->
+<ul>
+  <li><strong>Samsung:</strong> best AI ecosystem</li>
+  <li><strong>Xiaomi:</strong> deepest customization</li>
+  <li><strong>Google Pixel:</strong> smartest AI tools</li>
+  <li><strong>Tecno/Infinix:</strong> strong value features</li>
+</ul>
+
+<!-- IMAGE -->
+<figure>
+  <img
+    src=""
+    alt="Multiple Android smartphones from Samsung Xiaomi Tecno and Google Pixel"
+    data-search="Samsung Xiaomi Infinix Tecno Pixel smartphones lineup"
+    data-source="official company press kit"
+    width="1200"
+    height="630"
+  />
+  <figcaption>
+    Android brands are competing heavily through
+    AI-powered software features in 2026.
+  </figcaption>
+</figure>
+
+<h2>Final Thoughts</h2>
+<!-- Encourage readers to explore settings -->
+<!-- Human relatable ending -->
+<!-- CTA -->
+<p>...</p>
+<p>...</p>
+
+=============================================================
+WRITING RULES
+=============================================================
+- Valid HTML only
+- No markdown
+- src="" must stay empty
+- 1,000–1,300 words
+- Paragraphs max 3 lines
+- Use natural human tone
+- Explain things simply
+- Make article visually engaging
+- Highly optimized for Google Discover
+- SEO friendly but natural
+=============================================================
