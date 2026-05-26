@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useRoute, Link } from "wouter";
+import React, { useEffect, useState, useCallback } from "react";
+import { useRoute, Link, useLocation } from "wouter";
 import { useGetArticle, getGetArticleQueryKey, useListRelatedArticles, getListRelatedArticlesQueryKey } from "@workspace/api-client-react";
 import { ArticleCard, CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -39,6 +39,7 @@ function ShareButtons({ url, title, className }: { url: string; title: string; c
 export default function ArticlePage() {
   const [, params] = useRoute("/article/:slug");
   const slug = params?.slug || "";
+  const [, navigate] = useLocation();
 
   const { data: article, isLoading } = useGetArticle(slug, {
     query: {
@@ -56,6 +57,14 @@ export default function ArticlePage() {
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  const handleBodyClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const target = (e.target as HTMLElement).closest('a.article-backlink');
+    if (!target) return;
+    e.preventDefault();
+    const href = target.getAttribute('href');
+    if (href) navigate(href);
+  }, [navigate]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -221,6 +230,7 @@ export default function ArticlePage() {
             <div
               className="prose prose-lg dark:prose-invert prose-headings:font-display prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-blockquote:border-primary prose-blockquote:not-italic prose-blockquote:font-medium [&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:mb-6 [&_h1]:mt-0 [&_figure]:my-8 [&_figcaption]:text-sm [&_figcaption]:text-center [&_figcaption]:italic [&_figcaption]:text-muted-foreground [&_figcaption]:mt-3 [&_img]:w-full [&_img]:object-cover"
               itemProp="articleBody"
+              onClick={handleBodyClick}
             >
               {article.body ? (
                 <div dangerouslySetInnerHTML={{ __html: article.body }} />

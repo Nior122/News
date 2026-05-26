@@ -270,6 +270,19 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+/* ─── Article backlinks ─── */
+.article-backlink {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: text-decoration-style 0.15s ease, color 0.15s ease;
+}
+.article-backlink:hover {
+  text-decoration-style: solid;
+}
+
 /* ─── content-visibility: paint below-fold sections lazily ─── */
 .cv-auto {
   content-visibility: auto;
