@@ -897,3 +897,16 @@ async function runSetup(pool) {
 
   console.log('[setup] Schema and seed complete.');
 }
+
+/**
+ * Force-refresh all article bodies — can be called from the admin endpoint
+ * to immediately push full content into the database without waiting for cold start.
+ */
+export async function forceRefreshBodies(pool) {
+  let count = 0;
+  for (const [slug, body] of Object.entries(BODIES)) {
+    await pool.query(`UPDATE articles SET body = $1 WHERE slug = $2`, [body, slug]);
+    count++;
+  }
+  return count;
+}

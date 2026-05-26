@@ -7,7 +7,7 @@
 
 import pg from 'pg';
 import crypto from 'crypto';
-import { ensureReady } from './setup.mjs';
+import { ensureReady, forceRefreshBodies } from './setup.mjs';
 
 const { Pool } = pg;
 
@@ -150,6 +150,14 @@ export default async function handler(req, res) {
       if (!email) { send(res, { error: 'Email required' }, 400); return; }
       await db.query(`INSERT INTO newsletter_subscribers (email, subscribed_at) VALUES ($1, NOW()) ON CONFLICT (email) DO NOTHING`, [email]);
       send(res, { success: true }); return;
+    }
+
+    // Force-refresh all article bodies (bypasses cold-start caching)
+    if (path === '/admin/force-seed' && method === 'GET') {
+      const key = url.searchParams.get('key');
+      if (!key || key !== process.env.ADMIN_PASSWORD) { send(res, { error: 'Unauthorized' }, 401); return; }
+      const count = await forceRefreshBodies(db);
+      send(res, { success: true, updated: count, message: `Updated body for ${count} articles.` }); return;
     }
 
     // Admin login
