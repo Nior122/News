@@ -848,22 +848,29 @@ export async function ensureSeeded(): Promise<void> {
       await db.insert(categoriesTable).values(category).onConflictDoNothing();
     }
 
-    // Insert any articles that don't exist yet (by slug)
+    // Insert any articles that don't exist yet (by slug), or update body if it's missing
     let inserted = 0;
+    let updated = 0;
     for (const article of articles) {
       const existing = await db
-        .select({ id: articlesTable.id })
+        .select({ id: articlesTable.id, body: articlesTable.body })
         .from(articlesTable)
         .where(sql`slug = ${article.slug}`)
         .limit(1);
       if (existing.length === 0) {
         await db.insert(articlesTable).values(article);
         inserted++;
+      } else if (!existing[0].body && article.body) {
+        await db
+          .update(articlesTable)
+          .set({ body: article.body })
+          .where(sql`slug = ${article.slug}`);
+        updated++;
       }
     }
 
-    if (inserted > 0) {
-      console.log(`[seed] ✓ Inserted ${inserted} new article(s). Total seed articles: ${articles.length}.`);
+    if (inserted > 0 || updated > 0) {
+      console.log(`[seed] ✓ Inserted ${inserted} new article(s), updated body for ${updated} article(s). Total seed articles: ${articles.length}.`);
     } else {
       console.log(`[seed] All ${articles.length} articles already present — skipping.`);
     }
