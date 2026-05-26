@@ -14,7 +14,12 @@ const { Pool } = pg;
 // ── DB pool (reused across warm invocations) ─────────────────────────────────
 let pool;
 function getPool() {
-  if (!pool) pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  if (!pool) {
+    const connStr = process.env.DATABASE_URL ?? '';
+    // Strip channel_binding param — not supported by all pg versions
+    const sanitized = connStr.replace(/[&?]channel_binding=[^&]*/g, '').replace(/\?&/, '?');
+    pool = new Pool({ connectionString: sanitized });
+  }
   return pool;
 }
 
