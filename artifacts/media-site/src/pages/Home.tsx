@@ -14,7 +14,6 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import useEmblaCarousel from "embla-carousel-react";
 import { Flame, TrendingUp } from "lucide-react";
 
 function SectionHeader({
@@ -45,9 +44,45 @@ function SectionHeader({
   );
 }
 
+function TrendingCard({ article, index }: { article: ReturnType<typeof useListTrendingArticles>["data"] extends (infer T)[] | undefined ? T : never; index: number }) {
+  return (
+    <Link
+      href={`/article/${article.slug}`}
+      className="flex gap-3 items-center bg-card p-3 rounded-xl border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group touch-manipulation"
+      style={{ width: "clamp(260px, 28vw, 360px)", flexShrink: 0 }}
+    >
+      <span className="font-display text-3xl font-extrabold text-muted-foreground/20 group-hover:text-primary/30 transition-colors shrink-0 w-8 text-center leading-none">
+        {index + 1}
+      </span>
+      {article.imageUrl && (
+        <div className="relative shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-muted">
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            width={64}
+            height={64}
+            loading="lazy"
+            decoding="async"
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <h3 className="font-bold font-display leading-snug line-clamp-2 mb-1.5 group-hover:text-primary transition-colors text-sm md:text-base">
+          {article.title}
+        </h3>
+        <div className="text-xs text-muted-foreground flex items-center gap-2">
+          <span className="font-medium text-primary/70">{article.category}</span>
+          <span>·</span>
+          <span>{article.readTime} min</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 function TrendingCarousel() {
   const { data: articles, isLoading } = useListTrendingArticles();
-  const [emblaRef] = useEmblaCarousel({ dragFree: true, align: "start" });
 
   if (isLoading)
     return (
@@ -55,7 +90,7 @@ function TrendingCarousel() {
         <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
         <div className="flex gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="flex-[0_0_82%] sm:flex-[0_0_55%] md:flex-[0_0_38%] lg:flex-[0_0_28%] h-24 rounded-xl" />
+            <Skeleton key={i} className="h-24 rounded-xl" style={{ width: "clamp(260px, 28vw, 360px)", flexShrink: 0 }} />
           ))}
         </div>
       </div>
@@ -63,47 +98,19 @@ function TrendingCarousel() {
   if (!articles || articles.length === 0) return null;
 
   return (
-    <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
-      <SectionHeader title="Trending Now" icon={<Flame className="w-5 h-5" />} />
-      <div className="overflow-hidden -mx-1" ref={emblaRef}>
-        <div className="flex gap-4 px-1">
+    <section className="py-10">
+      <div className="container max-w-screen-2xl px-4 md:px-8">
+        <SectionHeader title="Trending Now" icon={<Flame className="w-5 h-5" />} />
+      </div>
+      <div className="trending-scroll-wrap">
+        <div className="trending-scroll-track">
+          {/* Original set */}
           {articles.map((article, index) => (
-            <div
-              key={article.id}
-              className="flex-[0_0_82%] sm:flex-[0_0_55%] md:flex-[0_0_38%] lg:flex-[0_0_28%] min-w-0"
-            >
-              <Link
-                href={`/article/${article.slug}`}
-                className="flex gap-3 items-center bg-card p-3 rounded-xl border border-border h-full hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group touch-manipulation"
-              >
-                <span className="font-display text-3xl font-extrabold text-muted-foreground/20 group-hover:text-primary/30 transition-colors shrink-0 w-8 text-center leading-none">
-                  {index + 1}
-                </span>
-                {article.imageUrl && (
-                  <div className="relative shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-muted">
-                    <img
-                      src={article.imageUrl}
-                      alt={article.title}
-                      width={64}
-                      height={64}
-                      loading="lazy"
-                      decoding="async"
-                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold font-display leading-snug line-clamp-2 mb-1.5 group-hover:text-primary transition-colors text-sm md:text-base">
-                    {article.title}
-                  </h3>
-                  <div className="text-xs text-muted-foreground flex items-center gap-2">
-                    <span className="font-medium text-primary/70">{article.category}</span>
-                    <span>·</span>
-                    <span>{article.readTime} min</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
+            <TrendingCard key={`a-${article.id}`} article={article} index={index} />
+          ))}
+          {/* Duplicate for seamless loop */}
+          {articles.map((article, index) => (
+            <TrendingCard key={`b-${article.id}`} article={article} index={index} />
           ))}
         </div>
       </div>

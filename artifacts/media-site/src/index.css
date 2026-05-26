@@ -244,6 +244,32 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+/* ─── Trending cards scroll animation ─── */
+.trending-scroll-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.trending-scroll-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: trending-scroll 40s linear infinite;
+}
+
+.trending-scroll-wrap:hover .trending-scroll-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trending-scroll-track { animation: none; }
+}
+
+@keyframes trending-scroll {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
 /* ─── content-visibility: paint below-fold sections lazily ─── */
 .cv-auto {
   content-visibility: auto;
