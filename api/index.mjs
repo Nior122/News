@@ -103,6 +103,21 @@ function fmt(row) {
 
 const JOIN = 'SELECT a.*, au.name AS author_name, au.avatar_url FROM articles a JOIN authors au ON a.author_id = au.id';
 
+const SLUG_TO_CATEGORY = {
+  'tech': 'Tech',
+  'culture': 'Culture',
+  'lifestyle': 'Lifestyle',
+  'ai-tools': 'AI Tools',
+  'phone-tips': 'Phone Tips',
+  'productivity': 'Productivity',
+  'trending': 'Trending',
+};
+
+function slugToCategory(slug) {
+  if (!slug) return null;
+  return SLUG_TO_CATEGORY[slug.toLowerCase()] ?? slug;
+}
+
 // ── Main handler ─────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -259,7 +274,7 @@ export default async function handler(req, res) {
 
     // Articles: list
     if (path === '/articles' && method === 'GET') {
-      const category = url.searchParams.get('category');
+      const category = slugToCategory(url.searchParams.get('category'));
       const limit = Math.min(parseInt(url.searchParams.get('limit') ?? '12', 10), 50);
       const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
       const params = [];

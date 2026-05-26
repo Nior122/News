@@ -88,21 +88,628 @@ async function runSetup(pool) {
 
   // ── 4. Article body content ───────────────────────────────────────────────
   const BODIES = {
-    'google-io-2026-ai-announcements': `<p>Every year, Google throws a party for developers. But this year felt different. Way different.</p><p>Google I/O 2026 wasn't just a conference. It was a declaration — a signal that everything you thought you knew about searching the internet, shopping online, and using your phone is about to change. Fast.</p><h2>What Is Google I/O and Why Should You Care?</h2><p>Google I/O is Google's annual developer conference — but don't let the word "developer" fool you. This event shapes the products billions of people use every single day. If you use Google Search, Gmail, YouTube, or an Android phone — what was announced at I/O 2026 affects you directly.</p><h2>The Biggest Announcements</h2><h3>Gemini 3.5 Flash — Faster and Smarter Than Ever</h3><p>Google's new AI model is built for speed without sacrificing intelligence. Gemini 3.5 Flash handles complex, real-world tasks — writing code, planning a trip, assisting developers building apps.</p><h3>Gemini Omni — Type Anything, Get Anything</h3><p>Gemini Omni can take any type of input — a photo, a voice note, a video clip, or plain text — and produce any type of output. Type a description and get a video back.</p><h3>Google Antigravity — AI That Actually Does Things</h3><p>Google officially declared we're in the <strong>"Agentic Gemini Era."</strong> Antigravity 2.0 is their AI agent platform. It can complete complex tasks automatically — booking a restaurant, researching a topic, building a simple app — without you doing the steps yourself.</p><h3>The New Google Search — It Answers, Not Just Links</h3><p>Sundar Pichai called AI Mode in Search <strong>"the biggest Search upgrade ever."</strong> Instead of a list of blue links, Search is becoming a full conversation. You ask, it answers. You follow up, it remembers.</p><h2>What Does This Mean For You?</h2><p>Your Android phone is about to get a lot more capable. Gemini is becoming less of an app and more of a layer built into how your phone works — answering questions, handling tasks, and learning your preferences over time.</p><p>Think about this: <strong>2.5 billion people</strong> are already using Google's AI-powered search features every single month. The Gemini app hit <strong>900 million monthly active users</strong> — up from 400 million just a year ago.</p><h2>Final Thoughts</h2><p>AI Mode is changing Search in ways that affect every person who uses the internet. Gemini Omni and Antigravity represent a new category of AI — one that creates and acts, not just responds. <strong>Which of these Google updates are you most excited about?</strong></p>`,
-    'tesla-self-driving-cars-2026': `<p>Picture this: you open an app, request a ride, and a car arrives at your door. No driver greets you. The steering wheel turns on its own, and you're moving through traffic guided entirely by software. That's not science fiction anymore.</p><p>Tesla's driverless cars are now operating on public roads in the United States — no human inside. It's a genuine milestone. But like most things in tech, the full story is more complicated than the headlines suggest.</p><h2>What Is Tesla's Self-Driving Technology?</h2><p>FSD — Full Self-Driving — is a software package Tesla sells for its vehicles. It comes in two forms. <strong>Supervised FSD</strong> requires a human behind the wheel at all times. <strong>Unsupervised FSD</strong> means the car drives itself with no human required at all. That second version is now running in Texas.</p><p>Then there's the <strong>Cybercab</strong> — a two-seat vehicle with no steering wheel and no pedals, built from the ground up to drive itself. It has roughly a 200-mile range and is being manufactured at Gigafactory Texas.</p><h2>Where Are Tesla Driverless Cars Operating Right Now?</h2><p>Tesla's unsupervised FSD service is currently live in <strong>Austin, Dallas, and Houston</strong>, Texas. Only around <strong>38 robotaxis</strong> are deployed across those three cities right now. Arizona has recently approved Tesla to begin testing, and expansion to Las Vegas, Phoenix, and Miami is planned.</p><h2>A Decade of Promises — The Honest Timeline</h2><p>Tesla's history with self-driving promises is complicated. Musk promised full autonomy in 2018. It did not happen. He promised one million robotaxis by 2020. That did not happen either. But in May 2026, driverless cars are genuinely operating on public US roads without a human inside. That's real progress.</p><h2>What Does This Mean For Regular People?</h2><p>The average American spends over 300 hours a year driving. If a significant portion of that becomes hands-free — that's hundreds of hours returned to your life every year.</p><p>For people who can't drive — whether due to age, disability, or medical conditions — fully autonomous vehicles could be genuinely life-changing.</p><h2>Final Thoughts</h2><p>Driverless Teslas are real, operating today, in three US cities. The scale is tiny — fewer than 40 vehicles — but the principle is proven. <strong>Would you get in a car with no driver?</strong></p>`,
-    'big-tech-725-billion-ai-spending-layoffs-2026': `<p>In the same weeks that Amazon, Google, Meta, and Microsoft reported some of the strongest earnings in their histories, each of those companies also quietly handed out thousands of pink slips. Record profits. Record layoffs. At exactly the same time.</p><p>The reason: <strong>$725 billion</strong>. That is the combined amount those four companies have committed to spending on artificial intelligence infrastructure in 2026 alone — up 77% from the year before.</p><h2>The $725 Billion Number</h2><ul><li><strong>Amazon:</strong> approximately $200 billion</li><li><strong>Microsoft:</strong> approximately $190 billion</li><li><strong>Google/Alphabet:</strong> $175–185 billion</li><li><strong>Meta:</strong> $115–135 billion</li></ul><p>To put it in context: it is more than the GDP of Switzerland. And it is being spent in twelve months.</p><h2>The Layoffs — 113,000 Jobs and Counting</h2><p>By May 2026, more than <strong>113,000 tech workers</strong> had already lost their jobs. That averages out to <strong>825 people every single day</strong> since January 1st. April 2026 was the worst single month on record: <strong>83,387 tech job cuts</strong>, up 38% from March.</p><p>Mark Zuckerberg sent a staff memo explicitly linking the job cuts to the cost of AI infrastructure: <em>"We need to focus our investments on AI."</em> An unusually direct admission that human payroll and AI capex are competing line items.</p><h2>The Skills Divide</h2><p>Right now, there are <strong>275,000 AI-related jobs sitting unfilled</strong> across the tech industry. The people being laid off largely do not have the skills to fill them. Senior Bay Area engineers are now waiting an average of <strong>67 days to find new employment</strong>, nearly double the 38-day average from 2025.</p><h2>What Does This Mean For You?</h2><p>The single most important thing you can do right now is get genuinely comfortable with AI tools — not as an observer, but as someone who uses them to do their job better every day. The workers who are thriving in 2026 are the ones who made themselves harder to replace by becoming the people who know how to direct and build on top of AI systems.</p><p><strong>Share this with someone who works in tech and needs to see this.</strong></p>`,
-    'amd-on-device-ai-no-internet-2026': `<p>You're in the middle of something important — summarizing a meeting, planning your budget, asking an AI to help you write a message — and your Wi-Fi cuts out. Everything stops. AMD just changed that.</p><h2>What Is On-Device AI?</h2><p>Most AI you use today — ChatGPT, Gemini, Siri — works by sending your words to a powerful computer in a data center far away. On-device AI flips that entirely. The thinking happens on your own chip, on your own device, in real time — with no internet connection needed.</p><h2>What AMD Just Did</h2><p>AMD's new Ryzen AI Max platform can run AI models with up to 200 billion parameters entirely on a consumer-grade laptop or desktop PC. No data center required. No internet connection. The chip uses 128GB of unified memory — meaning your processor, graphics card, and AI engine all share one fast, coordinated pool of memory.</p><p>AMD demonstrated this live, running full AI meeting summaries entirely on-device, zero cloud involved. And the startup time? Down from 10 seconds to just 1 second. AMD is calling these new machines "Agent Computers."</p><h2>Three Reasons This Changes Everything</h2><h3>1. Your Privacy Is Finally Protected</h3><p>With on-device AI, your medical information, your financial details, your personal conversations — none of it ever leaves your device. Not a single character.</p><h3>2. It Works Without Internet — Always</h3><p>On a plane, in a remote cabin, during a network outage — your AI keeps working. It's also faster. Without the round trip to a server and back, responses are near-instant.</p><h3>3. No Usage Limits and No Extra Costs</h3><p>Cloud AI charges per use. On-device AI changes the math completely. You pay for the chip once. After that, there are no API fees, no monthly subscription limits.</p><h2>Final Thoughts</h2><p>On-device AI shifts power back to you. Privacy, speed, and independence — three things the internet has always struggled to deliver at the same time. <strong>Share this with someone who cares about their privacy online.</strong></p>`,
-    'tiktok-brain-attention-span-2026': `<p>Here's a question worth sitting with: when was the last time you read something — an article, a book chapter, even a long email — without reaching for your phone? If you're struggling to remember, you're not alone, and it may not be entirely your fault.</p><h2>What Researchers Actually Found</h2><p>A 2026 study from University College London tracked 3,000 adults across 18 months of heavy short-form video consumption. Average sustained attention dropped by 22% over the study period. The ability to hold focus on a single task for more than 90 seconds declined in participants who watched more than two hours of short-form video daily.</p><p>The culprit isn't laziness. It's dopamine. Every swipe delivers a micro-hit of novelty. Your brain, optimised over millions of years to pay attention to new things, gets hijacked by an endless stream of them.</p><h2>The Real-World Effects</h2><p>Students report finding lectures physically painful to sit through. Workers describe struggling to finish reports they could have written easily three years ago. Readers abandon books after a few pages. The brain is plastic: it rewires itself based on what you repeatedly do. Feed it constant novelty, and it gets worse at tolerating the absence of novelty.</p><h2>What You Can Actually Do</h2><p>The research also shows the brain can recover. The key is deliberate practice in sustained attention — reading physical books, taking walks without a phone, having conversations without checking notifications. Even 20 minutes a day of focused, single-task activity shows measurable improvements in attention within six weeks.</p><p>The algorithm is optimised for your eyeballs, not your wellbeing. <strong>Share this with someone who keeps saying they "used to read a lot."</strong></p>`,
-    'memes-internet-news-culture-2026': `<p>When something significant happens in the world, here is what the timeline now looks like. The event occurs. Within minutes, someone makes a meme. Within an hour, that meme has reached more people than any newspaper article published about it. By the time a formal news piece is written, edited, and published, the meme has already shaped how the world feels about what happened.</p><h2>The Speed That Changes Everything</h2><p>Speed is the point. Traditional journalism takes time — reporting, verification, editing, legal review. A meme takes thirty seconds. In a world where the first framing of a story is often the one that sticks, memes consistently win the race. They don't just report what happened. They tell you how to feel about it, what narrative to attach to it, and which side you're supposed to be on.</p><p>Framing shapes perception in ways that are deeply difficult to undo. Once a meme has established a story — a politician as bumbling, a company as villainous, a moment as absurd — counter-narratives struggle to gain traction no matter how accurate they are.</p><h2>Why Memes Work on Your Brain</h2><p>The combination of image and text activates more of the brain simultaneously than either format alone. Humour bypasses the critical thinking that you'd apply to a serious editorial. And the shareability is built in — forwarding a meme takes one tap and feels like participation rather than consumption.</p><p>Political campaigns, corporations, and advocacy groups have all figured this out. The most sophisticated influence operations in 2026 don't run TV ads. They seed memes. <strong>Which format do you trust more — a breaking news alert or what you see in your feed?</strong></p>`,
-    'four-day-work-week-results-2026': `<p>The premise sounds too good to be true: work one fewer day per week, keep the same pay, and somehow get more done. And yet, that is exactly what the data from the world's largest ever 4-day work week trial shows.</p><h2>What the Trial Found</h2><p>The 2025-2026 global trial, which ran across 233 companies and more than 14,000 employees in 17 countries, published its final results in early 2026. Revenue increased by an average of <strong>8%</strong> during the trial period. Staff turnover dropped by <strong>57%</strong>. Sick days fell by <strong>65%</strong>. And 92% of companies said they intended to continue the 4-day week permanently.</p><p>Output — measured in tasks completed, projects shipped, and customer satisfaction scores — either held steady or improved at 94% of participating companies.</p><h2>Why It Works</h2><p>Most knowledge workers are genuinely productive for around 3-5 hours per day. The rest of the time is filled with unnecessary meetings, email theatre, and the slow drift that happens when your brain knows it has all day. Compress the week and you compress the waste. Focus sharpens. Decisions get made faster.</p><h2>The Obstacles That Remain</h2><p>Not every industry can adopt the model easily. Healthcare, retail, manufacturing, and logistics all run on coverage models that make a simple schedule reduction complicated. And managers raised in the culture of presence — where being seen at your desk signals commitment — struggle to let go of visibility as a proxy for performance.</p><p>But for knowledge work? The evidence is now difficult to dismiss. <strong>Would you take a pay-neutral 4-day week if your employer offered it?</strong></p>`,
-    'quitting-social-media-digital-detox-2026': `<p>Something is shifting. Not loudly, not in a way that generates many headlines, but measurably. In the first quarter of 2026, deactivation rates for major social media platforms hit their highest levels since these networks launched. The people leaving aren't posting about quitting. They're just… gone.</p><h2>What's Driving the Exit</h2><p>Exit surveys from three separate research groups point to similar reasons. Exhaustion is the most common — not the dramatic kind, but a low-grade tiredness from the constant performance of curating a life for an audience. The second is what researchers are calling "return on attention anxiety" — the growing feeling that time spent scrolling yields nothing of genuine value.</p><p>The third reason: people are increasingly aware that the feed is not neutral. Every post shown to you was chosen to provoke a reaction — ideally outrage, because outrage is the most engagement-generating emotion. Once you see the mechanism, it's hard to unsee it.</p><h2>What People Are Doing Instead</h2><p>The leavers aren't becoming hermits. They're reading more — physical books, long-form articles. They're using messaging apps for direct communication with actual friends. Many are returning to newsletters, podcasts, and hobby forums where the content is created by people who care about the subject rather than an algorithm that rewards volume.</p><p>Some describe the first two weeks without social media as uncomfortable — a phantom-limb sensation. After a month, most describe feeling calmer, more present, and better rested. <strong>If you deleted your most-used social app tomorrow, what would you actually miss?</strong></p>`,
-    'iphone-settings-change-now-2026': `<p>Your iPhone was configured by engineers in Cupertino to work for Apple's ecosystem. Some of those defaults are sensible. Others quietly drain your battery, share more data than you'd choose, and slow down your experience. Here are 12 things worth changing today.</p><h2>Battery &amp; Performance</h2><p><strong>1. Turn off Background App Refresh</strong> for apps that don't need it. Go to Settings → General → Background App Refresh. Most apps don't need to update in the background.</p><p><strong>2. Enable Optimised Battery Charging.</strong> Settings → Battery → Battery Health &amp; Charging. This slows charging above 80% to reduce battery wear.</p><p><strong>3. Reduce motion.</strong> Settings → Accessibility → Motion → Reduce Motion. The parallax and animation effects consume more processing power.</p><h2>Privacy</h2><p><strong>4. Audit your location permissions.</strong> Settings → Privacy &amp; Security → Location Services. Any app with "Always" access is tracking your movement continuously. Most should be "While Using" or "Never."</p><p><strong>5. Turn off personalised ads.</strong> Settings → Privacy &amp; Security → Apple Advertising → turn off Personalised Ads.</p><p><strong>6. Disable Significant Locations.</strong> Settings → Privacy &amp; Security → Location Services → System Services → Significant Locations. Your phone is logging everywhere you go.</p><h2>Usability</h2><p><strong>7. Set your default browser and email app.</strong> Settings → Apps → find your preferred browser or email client.</p><p><strong>8. Turn on Back Tap.</strong> Settings → Accessibility → Touch → Back Tap. Double or triple tapping the back of your phone can trigger actions.</p><p><strong>9. Schedule a Focus mode for work hours.</strong> Settings → Focus. This silences notifications from apps outside your approved list.</p><p><strong>10. Turn off raise to wake if you use Face ID.</strong> Settings → Display &amp; Brightness → Raise to Wake.</p><p><strong>11. Enable haptic keyboard feedback.</strong> Settings → Sound &amp; Haptics → Keyboard Feedback → Haptic.</p><p><strong>12. Check which apps can see your clipboard.</strong> Any time an app accesses your clipboard, iOS shows a notification. Pay attention. <strong>Forward this to someone who just got a new iPhone.</strong></p>`,
-    'android-battery-life-tips-2026': `<p>If your Android phone's battery doesn't make it through the day, the most likely culprit isn't a worn-out battery — it's apps running in the background doing things you never asked them to do. Here's how to identify the drain and shut it down.</p><h2>Find Out What's Actually Draining Your Battery</h2><p>Go to <strong>Settings → Battery → Battery Usage</strong>. Sort by consumption over the last 24 hours. You're looking for apps in the top five that you don't remember actively using. Social media apps are chronic offenders — they run in the background refreshing feeds, loading ads, and tracking your location even when you haven't opened them.</p><h2>The Seven Changes That Make the Biggest Difference</h2><p><strong>1. Restrict background activity per app.</strong> Long press any app → App Info → Battery → Restricted. This stops apps from waking up when you're not using them.</p><p><strong>2. Turn off Always-On Display if you have one.</strong> Keeping the screen partially lit all day costs more than most people realise.</p><p><strong>3. Set screen timeout to 30 seconds.</strong> Settings → Display → Screen Timeout. The display is your single biggest battery consumer.</p><p><strong>4. Use Adaptive Battery.</strong> Settings → Battery → Adaptive Battery. This uses on-device AI to learn which apps you actually use and restricts battery access for everything else.</p><p><strong>5. Turn off Wi-Fi scanning and Bluetooth scanning.</strong> Settings → Location → Wi-Fi and Bluetooth Scanning. These scan for networks even when you're not using either.</p><p><strong>6. Enable Dark Mode system-wide.</strong> On OLED screens, dark pixels are literally turned off. Dark Mode can extend battery life by 15-20%.</p><p><strong>7. Charge to 85%, not 100%.</strong> Many Android phones now let you cap charging — Settings → Battery → Charging Limit. <strong>Share this with someone complaining their phone dies before lunch.</strong></p>`,
-    'ai-tools-saving-hours-every-week-2026': `<p>There is a gap between AI tools that get written about and AI tools that actually get used. The former are often impressive in demos and frustrating in practice. The latter are often less flashy but consistently useful. Here's a practical breakdown of what's actually saving people time in 2026.</p><h2>Writing and Editing</h2><p><strong>Claude (Anthropic)</strong> and <strong>ChatGPT (OpenAI)</strong> are both genuinely excellent for first drafts. The workflow that works: don't ask AI to write something from scratch — give it your rough bullet points and ask it to turn them into a coherent first draft. Then edit. People using this workflow report saving 2-3 hours per week on written communication alone.</p><p><strong>Grammarly and Hemingway Editor</strong> remain reliable for editing — quietly effective at catching the errors and convoluted sentences that slip through on a tired afternoon.</p><h2>Research and Summarisation</h2><p><strong>Perplexity AI</strong> has become the go-to for research among professionals who need cited, sourced answers rather than a confident AI hallucination. It shows you where its information came from, which matters when you're using it for work that other people will rely on.</p><p><strong>NotebookLM</strong> (Google) lets you upload documents — PDFs, articles, reports — and then ask questions about them. It can collapse a 90-minute read into a focused 15-minute session.</p><h2>Task Management and Focus</h2><p><strong>Reclaim.ai</strong> integrates with your calendar and automatically schedules focus time, habits, and buffer time around meetings. People who've used it consistently for a month report getting back an average of 6 hours of focused work time per week.</p><p>The common thread: these tools work best as assistants, not replacements. <strong>Which of these are you already using?</strong></p>`,
-    'todo-list-broken-better-system-2026': `<p>If you've ever ended the day with more items on your to-do list than you started with — despite working hard all day — you've experienced what productivity researchers call the "Sisyphus effect." The list grows faster than you can clear it. And eventually, you stop trusting the list at all.</p><h2>Why Most To-Do Lists Fail</h2><p>The standard to-do list has three structural problems. First, it treats all tasks as equal — a two-minute email reply sits next to a three-week project deliverable. Second, it has no relationship with time — you can add unlimited items with no awareness of how many hours you actually have. Third, it captures tasks but not outcomes.</p><h2>The System That Works Better</h2><p><strong>Time-blocking instead of listing.</strong> Instead of a list of tasks, schedule them as specific blocks in your calendar. If a task isn't worth giving time to, it shouldn't be on the list.</p><p><strong>The MIT method: three Most Important Tasks.</strong> Each morning, identify the three things that — if you completed only those — would make the day a genuine success. Everything else is a bonus. This forces genuine prioritisation.</p><p><strong>Weekly review.</strong> Once a week, look at everything outstanding and make an active decision about each item: do it, schedule it, delegate it, or delete it. Items that sit untouched for three weeks are items you've already decided not to do.</p><p><strong>Capture and process separately.</strong> Write everything down immediately (capture), but only process — decide what to do with it — at a scheduled time, not continuously.</p><p>The goal isn't an empty list. It's a trustworthy system. <strong>Share this with someone who's been talking about getting organised since January.</strong></p>`,
-    'chatgpt-claude-gemini-comparison-2026': `<p>By 2026, there are three AI assistants that dominate the conversation: ChatGPT from OpenAI, Claude from Anthropic, and Gemini from Google. All three are free to start. All three can write, reason, research, and code. So which one should you actually use?</p><h2>ChatGPT — The Most Versatile All-Rounder</h2><p><strong>Best for:</strong> Brainstorming, creative writing, coding help, building custom workflows.</p><p>ChatGPT (GPT-4o) is the most widely used AI assistant in the world for a reason — it handles an enormous range of tasks competently. It's the best for creative work: story writing, marketing copy, generating ideas, and iterating quickly on drafts. It's also the most "conversational" of the three.</p><p><strong>Watch out for:</strong> Occasional confident hallucinations, and a tendency to be sycophantic — telling you what you want to hear rather than what's true.</p><h2>Claude — The Best for Long, Serious Work</h2><p><strong>Best for:</strong> Long documents, nuanced analysis, careful reasoning, writing that needs to sound like a human.</p><p>Claude (Sonnet 3.7) from Anthropic is widely considered the best AI for serious written work. If you need to process a long PDF or write something that sounds genuinely thoughtful, Claude consistently outperforms the others. It's also the most honest of the three — it will push back on incorrect assumptions.</p><p><strong>Watch out for:</strong> It can be more cautious than necessary. The free tier is more limited than ChatGPT's.</p><h2>Gemini — The Best Connected to Google's World</h2><p><strong>Best for:</strong> Research with web access, working with Google Workspace, multimodal tasks.</p><p>Gemini 2.0 Flash's core advantage is integration. If you live in Google Docs, Gmail, and Drive, Gemini integrates directly into those tools. For research tasks where you need current information, Gemini with web access is consistently strong.</p><h2>The Bottom Line</h2><ul><li><strong>For writing, creativity, and coding:</strong> ChatGPT</li><li><strong>For serious analysis, long documents, and honest answers:</strong> Claude</li><li><strong>For research, current events, and Google integration:</strong> Gemini</li></ul><p>The best move? Use all three. They're all free to start. <strong>Share this with someone still just using whichever AI they heard of first.</strong></p>`,
-    'ai-prompt-formula-better-answers-2026': `<p>Most people use AI assistants like a slightly smarter search engine. They type a question, get an answer, and move on. And most of the time, the answer is... fine. Usable. Forgettable.</p><p>The people getting dramatically better results from the same tools aren't using different AI — they're asking differently. Here's the framework that makes the biggest difference.</p><h2>The RCTF Formula</h2><p>Every high-quality AI prompt has four components:</p><ul><li><strong>R — Role:</strong> Tell the AI who to be</li><li><strong>C — Context:</strong> Give it the background it needs</li><li><strong>T — Task:</strong> State exactly what you want</li><li><strong>F — Format:</strong> Specify how you want the output</li></ul><h2>What This Looks Like in Practice</h2><p><strong>Before (vague):</strong> "Write me an email to my boss about taking a day off."</p><p><strong>After (RCTF):</strong> "You are a professional business writer. I work in a mid-sized marketing agency and I have a good relationship with my manager. Write me a brief, professional email requesting one day off next Friday to attend a family event. Keep it to 3 sentences, casual but professional in tone."</p><p>The second version produces something you can send directly. The first produces a generic template you have to rewrite anyway.</p><h2>Three More Techniques That Work</h2><p><strong>1. "Give me your honest assessment."</strong> AI models are trained to be agreeable. Explicitly asking for an honest, critical take consistently unlocks more useful analysis.</p><p><strong>2. Ask for options, not one answer.</strong> "Give me three different approaches to this, with the tradeoffs of each" consistently outperforms "tell me the best way."</p><p><strong>3. Iterate, don't start over.</strong> Your first prompt is a starting point. Follow up: "Make it shorter." "Make the tone more confident." "Add a specific example."</p><p>The tools are powerful. How you talk to them determines how much of that power you actually get. <strong>Try the RCTF formula on your next prompt and see the difference for yourself.</strong></p>`,
-    'hidden-android-features-2026': `<p>Most Android users tap into about 20% of what their phone can actually do. The other 80% sits quietly in settings menus and hidden features that never get mentioned in the box or the setup guide. Here are seven of the best.</p><h2>1. One-Handed Mode</h2><p>Go to <strong>Settings → Advanced Features → One-Handed Mode</strong>. Swipe down on the bottom edge of the screen to shrink the entire display to one corner. Essential if you have a large phone and small hands — or if you're frequently using your phone while holding something else.</p><h2>2. Secure Folder</h2><p>Samsung devices have a <strong>Secure Folder</strong> (Settings → Biometrics and Security → Secure Folder) — a fully encrypted, password-protected space on your phone where you can store apps, photos, and files. Even if someone picks up your phone, they cannot access what's inside without your separate Secure Folder PIN.</p><h2>3. Split Screen and Pop-Up View</h2><p>Long press the Recent Apps button and select "Split Screen." You can run two apps simultaneously — a browser alongside your notes app, YouTube alongside a messaging app. Pop-Up View takes this further, letting you float a small app window over another app like a picture-in-picture.</p><h2>4. Developer Options — USB Debugging and Animation Speed</h2><p>Go to <strong>Settings → About Phone</strong> and tap "Build Number" seven times quickly. This unlocks Developer Options. Inside, you can reduce animation scales from 1x to 0.5x — making your entire phone feel noticeably faster. You can also enable USB debugging for advanced file management.</p><h2>5. Screen Recorder with Audio</h2><p>Pull down the notification shade and look for Screen Recorder in your quick settings tiles. Unlike third-party apps, the built-in version captures your screen with internal audio, mic audio, or both — with no watermark and no quality limit.</p><h2>6. Live Transcribe</h2><p>Android's built-in <strong>Live Transcribe</strong> (search for it in Settings or the Play Store if not pre-installed) transcribes spoken audio to text in real time with impressive accuracy. Useful in meetings, lectures, or any situation where you need a written record of what was said.</p><h2>7. Clipboard History</h2><p>On Samsung and many other Android devices, the keyboard has a built-in clipboard manager. Tap the clipboard icon in your keyboard toolbar to see everything you've recently copied — not just the last item. You can pin frequently used text snippets so they never expire.</p><p><strong>Share this with an Android user who thinks they already know everything their phone can do.</strong></p>`,
+    'google-io-2026-ai-announcements': `<p>Every year, Google throws a party for developers. But this year felt different. Way different.</p>
+
+<p>Google I/O 2026 wasn't just a conference. It was a declaration — a signal that everything you thought you knew about searching the internet, shopping online, and using your phone is about to change. Fast.</p>
+
+<p>Here's what happened, what it means, and what you should actually care about.</p>
+
+<h2>What Is Google I/O and Why Should You Care?</h2>
+
+<p>Google I/O is Google's annual developer conference — but don't let the word "developer" fool you. This event shapes the products billions of people use every single day.</p>
+
+<p>This year, thousands of developers, engineers, and journalists packed into the Shoreline Amphitheater in Mountain View, California. Millions more tuned in live from over 100 countries. It felt less like a tech conference and more like a turning point.</p>
+
+<p>If you use Google Search, Gmail, YouTube, or an Android phone — what was announced at I/O 2026 affects you directly. No coding knowledge required.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Google IO 2026 developer conference stage Mountain View California" />
+  <figcaption>Thousands of developers attended Google I/O 2026 in Mountain View, California, with millions more watching online from over 100 countries.</figcaption>
+</figure>
+
+<h2>The Biggest Announcements — Explained Simply</h2>
+
+<p>Google dropped a lot at I/O 2026. Here are the six things that will actually change how you use the internet — explained in plain English.</p>
+
+<h3>Gemini 3.5 Flash — Faster and Smarter Than Ever</h3>
+
+<p>Google's new AI model is built for speed without sacrificing intelligence. Gemini 3.5 Flash handles complex, real-world tasks — writing code, planning a trip, assisting developers building apps. For regular users, it's the engine powering faster, smarter responses everywhere Google's AI shows up.</p>
+
+<p>You'll feel the difference before you even notice it.</p>
+
+<h3>Gemini Omni — Type Anything, Get Anything</h3>
+
+<p>Here's the thing — Gemini Omni is genuinely hard to explain because it's unlike anything before it. It can take any type of input — a photo, a voice note, a video clip, or plain text — and produce any type of output. Type a description and get a video back. Speak a prompt and get an image.</p>
+
+<p>It blurs the line between creation and instruction in a way that feels almost magical.</p>
+
+<h3>Google Antigravity — AI That Actually Does Things</h3>
+
+<p>Google officially declared we're in the <strong>"Agentic Gemini Era."</strong> Antigravity 2.0 is their AI agent platform — and this is where things get genuinely exciting. Traditional AI answers your questions. Antigravity acts on them.</p>
+
+<p>It can complete complex tasks automatically — booking a restaurant, researching a topic, building a simple app — without you doing the steps yourself.</p>
+
+<h3>Gemini Spark — Your AI That Never Sleeps</h3>
+
+<p>Gemini Spark is a persistent AI agent running 24/7 inside the Gemini app. Think of it less like a chatbot and more like a background assistant. It proactively surfaces information, reminds you of things, and takes actions on your behalf — even when you're not actively using the app.</p>
+
+<p>It doesn't wait for you to ask.</p>
+
+<h3>The New Google Search — It Answers, Not Just Links</h3>
+
+<p>Sundar Pichai called AI Mode in Search <strong>"the biggest Search upgrade ever."</strong> He wasn't being subtle. Instead of a list of blue links, Search is becoming a full conversation. You ask, it answers. You follow up, it remembers.</p>
+
+<p>The era of clicking through ten tabs to find one answer? It's ending.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80" alt="AI technology transformation comparison showing old Google versus new AI-powered Google 2026" />
+  <figcaption>Google's core products have transformed in 2026 — from tools you search to agents that act for you.</figcaption>
+</figure>
+
+<h2>What Does This Actually Mean For You?</h2>
+
+<p>Honestly, the changes are closer than you think. If you use Google Search on your phone, you're probably already seeing AI Overviews — those AI-generated summaries at the top of results. That's just the beginning.</p>
+
+<p>Your Android phone is about to get a lot more capable. Gemini is becoming less of an app and more of a layer built into how your phone works — answering questions, handling tasks, and learning your preferences over time.</p>
+
+<p>Jobs will be affected. Let's be real about that. Tasks that used to require a specialist — image editing, basic coding, content research — are being automated. But new tools also create new opportunities. The question is whether you're using them or sitting them out.</p>
+
+<p>And yes, Google is learning more about you than ever. The more AI personalizes your experience, the more data it needs. Convenience and privacy are in constant tension here — and that tension isn't going away.</p>
+
+<h2>The Numbers That Show How Big This Really Is</h2>
+
+<p>Think about this: <strong>2.5 billion people</strong> are already using Google's AI-powered search features every single month. That's roughly one in every three people on the planet.</p>
+
+<p>The Gemini app hit <strong>900 million monthly active users</strong> — up from 400 million just a year ago. That kind of growth doesn't happen by accident. It happens when a product genuinely becomes useful. And <strong>50 billion images</strong> have now been generated using Google's AI tools. That number is almost impossible to picture.</p>
+
+<p>Over <strong>8.5 million developers</strong> are actively building with Gemini right now. To fund all of this, Google plans to spend <strong>$180–190 billion on AI in 2026 alone</strong>. For context, that's more than the GDP of many countries. The commitment is not casual.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80" alt="Google IO 2026 key statistics data visualization showing 2.5 billion users and 900 million Gemini users" />
+  <figcaption>The scale of Google's AI reach in 2026 is almost impossible to comprehend — and it's still growing fast.</figcaption>
+</figure>
+
+<h2>Should You Be Excited or Worried?</h2>
+
+<p>Both, honestly. And that's okay.</p>
+
+<p>The excitement is real. Students are using Gemini to prep for exams. Musicians and artists are using it in their creative work. Small business owners are automating tasks they couldn't afford to outsource before. These tools are genuinely democratizing things that used to cost money or require expertise.</p>
+
+<p>The concern is also real. Privacy questions don't have easy answers. The more Google knows about your habits, preferences, and behavior, the more powerful — and potentially invasive — it becomes. Job displacement in certain industries isn't a hypothetical. It's already happening.</p>
+
+<p>The best thing you can do is stay informed. Know what these tools are, how they work, and what trade-offs come with them. Knowledge is power — especially now.</p>
+
+<h2>Final Thoughts — The AI Era Is Already Here</h2>
+
+<p>Three things to take away from Google I/O 2026. First, AI Mode is changing Search in ways that affect every person who uses the internet. Second, Gemini Omni and Antigravity represent a new category of AI — one that creates and acts, not just responds. Third, the scale of this is enormous. We're not in the early days of AI anymore.</p>
+
+<p>Watch for Gemini Spark rolling out to more users in the coming months. Keep an eye on how AI Mode changes your daily Search results. And pay attention to Universal Cart — AI-powered shopping that thinks for you is coming whether you're ready or not.</p>
+
+<p><strong>Which of these Google updates are you most excited about? Share this article with a friend who needs to catch up.</strong></p>`,
+
+    'tesla-self-driving-cars-2026': `<p>Picture this: you open an app, request a ride, and a car arrives at your door. No driver greets you. No one adjusts the mirror. The steering wheel turns on its own, and you're moving through traffic guided entirely by software. That's not science fiction anymore.</p>
+
+<p>Tesla's driverless cars are now operating on public roads in the United States — no human inside, no one watching from the back seat. It's a genuine milestone. But like most things in tech, the full story is a little more complicated than the headlines suggest.</p>
+
+<p>Here's what's actually happening right now, where this is all heading, and what it means for you — whether you're a driver, a passenger, or just someone trying to cross the street.</p>
+
+<h2>What Is Tesla's Self-Driving Technology, Exactly?</h2>
+
+<p>FSD — which stands for Full Self-Driving — is a software package Tesla sells for its vehicles. Think of it less like a physical feature and more like an app that controls how the car drives. It's been in development for years, and it comes in two forms.</p>
+
+<p><strong>Supervised FSD</strong> requires a human behind the wheel at all times, ready to take over. <strong>Unsupervised FSD</strong> means the car drives itself with no human required at all. That second version is what's now running in Texas — and it's the one that changes everything.</p>
+
+<p>Then there's the <strong>robotaxi</strong> concept — essentially Uber, but without a driver. Tesla's version of this is called the <strong>Cybercab</strong>. It's a two-seat vehicle with no steering wheel and no pedals, built from the ground up to drive itself. It has roughly a 200-mile range and is being manufactured at Gigafactory Texas. It's the boldest physical expression of Tesla's self-driving ambitions.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1200&q=80"
+    alt="Tesla Cybercab robotaxi interior no steering wheel no pedals 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>The Tesla Cybercab has no steering wheel and no pedals — it is built to drive entirely on its own from day one.</figcaption>
+</figure>
+
+<h2>Where Are Tesla Driverless Cars Operating Right Now?</h2>
+
+<p>Tesla's unsupervised FSD service is currently live in <strong>Austin, Dallas, and Houston</strong>, Texas. These aren't test vehicles with engineers watching nervously in the back — there's genuinely no one inside. The cars are navigating real traffic, real intersections, and real roads on their own.</p>
+
+<p>Here's the thing though: the scale is still very small. Only around <strong>38 robotaxis</strong> are deployed across those three cities right now. That's not a fleet — that's a proof of concept. Meaningful, yes. Revolutionary at scale, not yet.</p>
+
+<p>Arizona has recently approved Tesla to begin testing in the state, and the next cities on the planned expansion list include <strong>Las Vegas, Phoenix, and Miami</strong>. Elon Musk has said the rollout will be "widespread across the US by the end of 2026." For regular consumers hoping to use unsupervised FSD in their own Tesla, that's been pushed to <strong>Q4 2026 at the earliest</strong>.</p>
+
+<h2>A Decade of Promises — The Honest Timeline</h2>
+
+<p>To understand where we are, it helps to understand how we got here. Tesla's history with self-driving promises is… complicated.</p>
+
+<ol>
+  <li><strong>2018:</strong> Musk promised full autonomy within the year. It did not happen.</li>
+  <li><strong>2019:</strong> He promised one million robotaxis on the road by 2020. That did not happen either.</li>
+  <li><strong>June 2025:</strong> Tesla launched its robotaxi service in Austin — but safety monitors were still riding inside the vehicles. Not truly unsupervised.</li>
+  <li><strong>April 2026:</strong> On an earnings call, Tesla pushed consumer FSD unsupervised to Q4 2026 "at the earliest."</li>
+  <li><strong>May 2026:</strong> Musk stated at the Smart Mobility Summit that unsupervised FSD will be "widespread in the US by year end" — and that within a decade, <strong>90% of all driving will be done by AI</strong>.</li>
+</ol>
+
+<p>Honestly, it's fair to hold both things in your head at once. The missed deadlines are real — and they matter for trust. But so is the fact that driverless cars are now operating on public US roads without a human inside. That's genuine progress, even if it arrived years later than promised.</p>
+
+<p>The 2026 Tesla Model Y also became the first vehicle to pass the NHTSA's new automated driver-assistance safety tests — a regulatory milestone that signals the technology is maturing in ways that count.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1200&q=80"
+    alt="Tesla FSD self-driving timeline broken promises 2018 to 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Tesla's road to full autonomy has taken far longer than promised — but in 2026, driverless cars are finally operating on real US streets.</figcaption>
+</figure>
+
+<h2>Who Else Is Building Self-Driving Cars?</h2>
+
+<p>Tesla isn't alone in this race. <strong>Waymo</strong> — owned by Google's parent company Alphabet — has been running robotaxis in Phoenix, San Francisco, and Austin with an impressive safety record. They've logged millions of miles with no fatalities attributed to the autonomous system.</p>
+
+<p>There's a key technical difference worth knowing. Waymo uses <strong>lidar</strong> — a laser-based sensor that creates a detailed 3D map of everything around the car — combined with radar and cameras. Tesla relies entirely on cameras and AI software, no lidar. Tesla argues its approach is more scalable and cost-effective. Waymo argues sensors provide safer, more reliable data. Both sides have a point.</p>
+
+<p>The competition matters for you because it drives safety standards higher and prices lower. If two major players are racing toward the same goal, regular people benefit faster.</p>
+
+<h2>What Does This Mean For Regular People?</h2>
+
+<p>Think about this: the average American spends over 300 hours a year driving. If a significant portion of that becomes hands-free — or disappears entirely because you're riding in a robotaxi — that's hundreds of hours returned to your life every year. That's not a small thing.</p>
+
+<p>For people who can't drive — whether due to age, disability, or medical conditions — fully autonomous vehicles could be genuinely life-changing. Mobility that was previously unavailable becomes accessible. That's one of the most compelling arguments for this technology that rarely gets enough attention.</p>
+
+<p>The harder conversation involves jobs. There are approximately <strong>3.5 million truck drivers</strong> in the US alone, plus millions more in ride-share, delivery, and logistics. Autonomous vehicles won't eliminate all of those jobs overnight — but the direction of travel is clear.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80"
+    alt="Person relaxing in passenger seat of self-driving car hands free looking out window"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Imagine sitting back and letting your car do all the work. In parts of the US, that is already happening.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Road Ahead</h2>
+
+<p>Here's where things stand right now. Driverless Teslas are real, operating today, in three US cities. The scale is tiny — fewer than 40 vehicles — but the principle is proven. The technology works well enough to run without a human safety net. That's a genuine milestone, whatever you think of Elon Musk's timelines.</p>
+
+<p>Challenges remain. Complex intersections, faded road markings, and unpredictable weather all still trip up autonomous systems. Consumer FSD unsupervised is still months away at best. And regulatory approval, city by city and state by state, will shape how fast any of this actually reaches you.</p>
+
+<p><strong>Would you get in a car with no driver? Share this article and tell us — we genuinely want to know where you stand.</strong></p>`,
+
+    'big-tech-725-billion-ai-spending-layoffs-2026': `<p>Here is something that should stop you cold. In the same weeks that Amazon, Google, Meta, and Microsoft reported some of the strongest earnings in their histories, each of those companies also quietly handed out thousands of pink slips. Record profits. Record layoffs. At exactly the same time.</p>
+
+<p>The reason those two things are happening simultaneously comes down to one number: <strong>$725 billion</strong>. That is the combined amount those four companies have committed to spending on artificial intelligence infrastructure in 2026 alone — up 77% from the $410 billion they spent the year before. The money has to come from somewhere.</p>
+
+<p>This article breaks down exactly where that money is going, who is losing their jobs because of it, whether AI is genuinely replacing workers or whether something more cynical is happening, and — most importantly — what any of this means for you.</p>
+
+<h2>The $725 Billion Number — What It Actually Means</h2>
+
+<p>Numbers this large lose their meaning quickly. So let us make it human. <strong>Meta alone is spending $370 million per day</strong> on AI data centers and infrastructure. Every single day. That is more than most people will earn across three or four entire careers — spent before dinner every 24 hours, seven days a week, without pause.</p>
+
+<p>What is the money actually buying? Think of it as the physical skeleton of the AI age: <strong>data centers</strong> (massive warehouse-sized buildings packed with computers), <strong>GPU chips</strong> — specialized processors built specifically to train and run AI models, far more powerful than the chip inside your laptop — and the custom silicon and power grid upgrades needed to keep all of it running.</p>
+
+<ul>
+  <li><strong>Amazon:</strong> approximately $200 billion — the single largest AI infrastructure commitment in corporate history</li>
+  <li><strong>Microsoft:</strong> approximately $190 billion, much of it tied to its OpenAI partnership and Azure cloud expansion</li>
+  <li><strong>Google/Alphabet:</strong> $175–185 billion, accelerating hard after years of cautious AI deployment</li>
+  <li><strong>Meta:</strong> $115–135 billion — more than double what it spent in 2025, a staggering year-on-year leap</li>
+</ul>
+
+<p>To put the full $725 billion in context: it is more than the GDP of Switzerland. It is more than the entire global oil industry spends on exploration in a year. And it is being spent not over a decade, but in twelve months.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80"
+    alt="Big tech AI spending breakdown 2026 Amazon Microsoft Google Meta comparison"
+    width="1200"
+    height="630"
+  />
+  <figcaption>Together, four companies are spending more on AI this year than the GDP of most countries on Earth.</figcaption>
+</figure>
+
+<h2>The Layoffs — 113,000 Jobs and Counting</h2>
+
+<p>By May 2026, more than <strong>113,000 tech workers</strong> had already lost their jobs. That averages out to <strong>825 people every single day</strong> since January 1st. Real people. Real mortgages, real families, real careers dismantled — at a pace of one person roughly every two minutes, around the clock.</p>
+
+<p>April 2026 was the worst single month on record: <strong>83,387 tech job cuts</strong>, up 38% from March. And the companies doing the cutting are not struggling. Oracle eliminated between 20,000 and 30,000 positions while its cloud revenue was growing at <strong>34% year-over-year</strong>. Cloudflare cut 20% of its entire workforce after internal AI usage surged <strong>600% in just three months</strong>. These are not distress signals — they are strategic decisions made from a position of financial strength.</p>
+
+<p>The most remarkable moment came from Mark Zuckerberg himself, who sent a staff memo in May 2026 explicitly linking the job cuts to the cost of AI infrastructure. <em>"We need to focus our investments on AI,"</em> the memo stated — an unusually direct admission that human payroll and AI capex are, in the minds of leadership, competing line items.</p>
+
+<h2>The Skills Divide Nobody Is Talking About</h2>
+
+<p>Here is the part that makes this story genuinely complicated. Right now, there are <strong>275,000 AI-related jobs sitting unfilled</strong> across the tech industry. Not because companies do not want to hire — but because the people being laid off largely do not have the skills to fill them. It is one of the most painful mismatches in modern economic history.</p>
+
+<p>A senior software engineer who spent a decade building e-commerce platforms or enterprise software is not automatically qualified to build machine learning pipelines or train large language models. Even the most experienced engineers are feeling it: senior Bay Area engineers are now waiting an average of <strong>67 days to find new employment</strong>, nearly double the 38-day average from 2025.</p>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80"
+    alt="Tech worker skills gap 2026 AI jobs versus traditional software jobs comparison"
+    width="1200"
+    height="630"
+  />
+  <figcaption>There are 275,000 AI jobs open right now — but most people being laid off do not have the skills to fill them.</figcaption>
+</figure>
+
+<h2>Is This AI Replacing Workers — Or Just Corporate Greed?</h2>
+
+<p>Let us be honest: it is probably both, and those two things are not mutually exclusive. AI genuinely does automate tasks that used to require human labor. Code review, customer support triage, content moderation, data processing — all of these are being handled faster, cheaper, and at greater scale by AI systems than by human teams.</p>
+
+<p>But here is the uncomfortable truth: companies have always used technology transitions as cover for cost-cutting that would otherwise look bad in a press release. "We are investing in the future" lands differently than "we are reducing headcount to improve margins." Both statements can be true at the same time. Zuckerberg's memo was unusual precisely because it dispensed with the euphemism.</p>
+
+<h2>What Does This Mean For You?</h2>
+
+<p>If you work in tech, the single most important thing you can do right now is get genuinely comfortable with AI tools — not as an observer, but as someone who uses them to do their job better every day. The workers who are thriving in 2026 are the ones who made themselves harder to replace by becoming the people who know how to direct, audit, and build on top of AI systems.</p>
+
+<ul>
+  <li>Prompt engineering and AI tool literacy — knowing how to get useful, reliable outputs</li>
+  <li>Basic data analysis and Python fundamentals — the language of the AI economy</li>
+  <li>AI ethics and oversight — companies increasingly need people who understand risks</li>
+  <li>Learning to work alongside AI — using it to multiply your output, not replace your thinking</li>
+</ul>
+
+<figure>
+  <img
+    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80"
+    alt="Person learning AI skills on laptop future proof career 2026"
+    width="1200"
+    height="630"
+  />
+  <figcaption>The workers winning in 2026 are not fighting AI — they are learning to work alongside it.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Uncomfortable Truth</h2>
+
+<p>Here is the uncomfortable truth, stated plainly. The $725 billion being spent on AI is not a blip or a bubble — it is the largest coordinated capital investment in the history of the technology industry, and it is accelerating. The job cuts are not a temporary correction — they are a structural shift in how companies think about the relationship between labor and software.</p>
+
+<p>But neither is the opportunity. The skills gap is a genuine problem — and genuine problems create genuine demand for people who solve them. The 275,000 unfilled AI jobs are not a trivia statistic; they are an open door. <strong>Share this with someone who works in tech and needs to see this.</strong></p>`,
+
+    'amd-on-device-ai-no-internet-2026': `<p>You're in the middle of something important — summarizing a meeting, planning your budget, asking an AI to help you write a message — and your Wi-Fi cuts out. Everything stops. The spinning circle. The error. The frustration. If you've ever relied on AI for anything, you already know exactly how that feels.</p>
+
+<p>AMD just changed that. And the implications are bigger than most people realize.</p>
+
+<h2>First — What Is On-Device AI?</h2>
+
+<p>Most AI you use today — ChatGPT, Gemini, Siri, Alexa — works by sending your words to a powerful computer sitting in a data center somewhere far away. That distant machine crunches the numbers, figures out a response, and sends it back to your screen.</p>
+
+<p>On-device AI flips that entirely. Instead of asking a librarian across town to find your book, you carry the entire library in your pocket. The thinking happens on your own chip, on your own device, in real time — with no internet connection needed, no server in the loop, and no one else's hardware involved.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80" alt="Cloud AI versus on-device AI diagram how it works comparison" width="1200" height="630" />
+  <figcaption>The difference between cloud AI and on-device AI comes down to one question: where does the thinking actually happen?</figcaption>
+</figure>
+
+<h2>What AMD Just Did — And Why It Is a Big Deal</h2>
+
+<p>AMD's new Ryzen AI Max platform can run AI models with up to 200 billion parameters — that's a measure of how complex and capable an AI is — entirely on a consumer-grade laptop or desktop PC. No data center required. No internet connection. No waiting for a server halfway around the world to respond.</p>
+
+<p>The chip uses 128GB of unified memory — meaning your processor, graphics card, and AI engine all share one fast, coordinated pool of memory. That shared architecture is what makes running massive AI models on local hardware possible.</p>
+
+<p>AMD demonstrated this live, partnering with Liquid AI to run full AI meeting summaries entirely on-device, zero cloud involved. And the startup time? Down from 10 seconds to just 1 second. AMD is calling these new machines "Agent Computers" — not just PCs, but devices that actively work for you, locally, around the clock.</p>
+
+<h2>Three Reasons This Changes Everything</h2>
+
+<h3>1. Your Privacy Is Finally Protected</h3>
+
+<p>Every time you type something into ChatGPT or ask Gemini a question, those words travel to a company's server. They're processed, logged, and stored in ways you can't fully control.</p>
+
+<p>With on-device AI, your medical information, your financial details, your personal conversations — none of it ever leaves your device. Not a single character. This is enormous for healthcare, legal work, personal finances, and honestly, just for anyone who values the idea of a private thought staying private.</p>
+
+<h3>2. It Works Without Internet — Always</h3>
+
+<p>On a plane, in a remote cabin, during a network outage, in a country with unreliable mobile data — your AI keeps working. No spinning circles. No error messages. No interruptions.</p>
+
+<p>It's also faster. Without the round trip to a server and back, responses are near-instant. The AI isn't waiting for a signal from across the world — it's thinking right there on the chip in front of you.</p>
+
+<h3>3. No Usage Limits and No Extra Costs</h3>
+
+<p>Cloud AI charges per use. More queries, more messages, more usage — more money. You're essentially renting intelligence by the hour, and the meter is always running.</p>
+
+<p>On-device AI changes the math completely. You pay for the chip once. After that, there are no API fees, no monthly subscription limits, no sudden price hikes. The AI is yours — unlimited, unrestricted, and already paid for.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80" alt="On-device AI benefits privacy offline no cost AMD Ryzen AI 2026" width="1200" height="630" />
+  <figcaption>On-device AI solves three problems at once — privacy, reliability, and cost.</figcaption>
+</figure>
+
+<h2>What Can This AI Actually Do For You?</h2>
+
+<p>Imagine finishing a three-hour meeting and asking your laptop to summarize every key decision made — without uploading a single word to any company's server. The summary appears in seconds, generated entirely from your own hardware.</p>
+
+<p>Or picture a personal health coach that knows your dietary goals and fitness history, creates meal plans and workout routines tailored specifically to you — all processed locally, your most personal data staying exactly where it belongs: on your device.</p>
+
+<p>AMD's demonstrated use cases also include a personal finance manager that handles budgeting and retirement planning fully offline, and a custom daily news brief where AI filters your feed locally with no algorithm tracking your reading habits on a remote platform.</p>
+
+<h2>Is This Available Right Now?</h2>
+
+<p>Developer hardware running AMD's Ryzen AI Max platform is available now in 2026, and early adopters in technical fields are already putting it to work. Consumer devices — the kind you'd buy at a regular retailer — are expected to start arriving in late 2026 and into 2027.</p>
+
+<figure>
+  <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80" alt="On-device AI roadmap 2026 to 2028 AMD consumer devices timeline" width="1200" height="630" />
+  <figcaption>On-device AI is moving fast — within two years, it could be standard in every laptop and smartphone you own.</figcaption>
+</figure>
+
+<h2>Final Thoughts — The Cloud Has Competition Now</h2>
+
+<p>For years, the most powerful AI has lived in the hands of a handful of giant companies — accessible only through their servers, on their terms, at their prices. That arrangement has always come with tradeoffs: your data leaving your control, your AI stopping when the internet does, your usage capped by whatever the pricing model allows.</p>
+
+<p>On-device AI shifts some of that power back to you. Privacy, speed, and independence — three things the internet has always struggled to deliver at the same time. <strong>Share this with someone who cares about their privacy online — this is a shift worth knowing about.</strong></p>`,
+
+    'tiktok-brain-attention-span-2026': `<p>Here's a question worth sitting with: when was the last time you read something — an article, a book chapter, even a long email — without reaching for your phone? If you're struggling to remember, you're not alone, and it may not be entirely your fault.</p>
+
+<h2>What Researchers Actually Found</h2>
+
+<p>A 2026 study from University College London tracked 3,000 adults across 18 months of heavy short-form video consumption. The findings were stark. Average sustained attention dropped by 22% over the study period. The ability to hold focus on a single task for more than 90 seconds — what researchers call "deep attention" — declined in participants who watched more than two hours of short-form video daily.</p>
+
+<p>The culprit isn't laziness. It's dopamine. Every swipe delivers a micro-hit of novelty. Your brain, optimised over millions of years to pay attention to new things, gets hijacked by an endless stream of them. After enough exposure, anything that doesn't change every 15 seconds starts to feel unbearably slow.</p>
+
+<h2>The Real-World Effects</h2>
+
+<p>The consequences show up in unexpected places. Students report finding lectures physically painful to sit through. Workers describe struggling to finish reports they could have written easily three years ago. Readers abandon books after a few pages. The patience required for anything that unfolds slowly — a relationship, a skill, a long read — becomes harder to sustain.</p>
+
+<p>This isn't moral panic. It's neuroscience. The brain is plastic: it rewires itself based on what you repeatedly do. Feed it constant novelty, and it gets worse at tolerating the absence of novelty.</p>
+
+<h2>What You Can Actually Do</h2>
+
+<p>The research also shows the brain can recover. The key is deliberate practice in sustained attention — reading physical books, taking walks without a phone, having conversations without checking notifications. Even 20 minutes a day of focused, single-task activity shows measurable improvements in attention within six weeks.</p>
+
+<p>The algorithm is optimised for your eyeballs, not your wellbeing. Knowing that is the first step to using it differently. <strong>Share this with someone who keeps saying they "used to read a lot."</strong></p>`,
+
+    'memes-internet-news-culture-2026': `<p>When something significant happens in the world, here is what the timeline now looks like. The event occurs. Within minutes, someone makes a meme. Within an hour, that meme has reached more people than any newspaper article published about it. By the time a formal news piece is written, edited, and published, the meme has already shaped how the world feels about what happened.</p>
+
+<h2>The Speed That Changes Everything</h2>
+
+<p>Speed is the point. Traditional journalism takes time — reporting, verification, editing, legal review. A meme takes thirty seconds. In a world where the first framing of a story is often the one that sticks, memes consistently win the race. They don't just report what happened. They tell you how to feel about it, what narrative to attach to it, and which side you're supposed to be on.</p>
+
+<p>This is not trivial. Framing shapes perception in ways that are deeply difficult to undo. Once a meme has established a story — a politician as bumbling, a company as villainous, a moment as absurd — counter-narratives struggle to gain traction no matter how accurate they are.</p>
+
+<h2>Why Memes Work on Your Brain</h2>
+
+<p>The combination of image and text activates more of the brain simultaneously than either format alone. Humour bypasses the critical thinking that you'd apply to a serious editorial. And the shareability is built in — forwarding a meme takes one tap and feels like participation rather than consumption.</p>
+
+<p>Political campaigns, corporations, and advocacy groups have all figured this out. The most sophisticated influence operations in 2026 don't run TV ads. They seed memes. <strong>Which format do you trust more — a breaking news alert or what you see in your feed?</strong></p>`,
+
+    'four-day-work-week-results-2026': `<p>The premise sounds too good to be true: work one fewer day per week, keep the same pay, and somehow get more done. And yet, that is exactly what the data from the world's largest ever 4-day work week trial shows.</p>
+
+<h2>What the Trial Found</h2>
+
+<p>The 2025-2026 global trial, which ran across 233 companies and more than 14,000 employees in 17 countries, published its final results in early 2026. The headline numbers: <strong>revenue increased by an average of 8%</strong> during the trial period. <strong>Staff turnover dropped by 57%</strong>. Sick days fell by 65%. And 92% of companies said they intended to continue the 4-day week permanently.</p>
+
+<p>Perhaps most surprisingly, output — measured in tasks completed, projects shipped, and customer satisfaction scores — either held steady or improved at 94% of participating companies. The five-day week, it turns out, is not uniquely necessary for getting things done.</p>
+
+<h2>Why It Works</h2>
+
+<p>The explanation isn't mysterious. Most knowledge workers are genuinely productive for around 3-5 hours per day. The rest of the time is filled with unnecessary meetings, email theatre, and the slow drift that happens when your brain knows it has all day. Compress the week and you compress the waste. Focus sharpens. Decisions get made faster. Meetings get shorter because they have to.</p>
+
+<h2>The Obstacles That Remain</h2>
+
+<p>Not every industry can adopt the model easily. Healthcare, retail, manufacturing, and logistics all run on coverage models that make a simple schedule reduction complicated. And managers raised in the culture of presence — where being seen at your desk signals commitment — struggle to let go of visibility as a proxy for performance.</p>
+
+<p>But for knowledge work? The evidence is now difficult to dismiss. <strong>Would you take a pay-neutral 4-day week if your employer offered it?</strong></p>`,
+
+    'quitting-social-media-digital-detox-2026': `<p>Something is shifting. Not loudly, not in a way that generates many headlines, but measurably. In the first quarter of 2026, deactivation rates for major social media platforms hit their highest levels since these networks launched. The people leaving aren't posting about quitting. They're just… gone.</p>
+
+<h2>What's Driving the Exit</h2>
+
+<p>Exit surveys from three separate research groups point to similar reasons. Exhaustion is the most common — not the dramatic kind, but a low-grade tiredness from the constant performance of curating a life for an audience. The second is what researchers are calling "return on attention anxiety" — the growing feeling that time spent scrolling yields nothing of genuine value.</p>
+
+<p>The third reason is more interesting: people are increasingly aware that the feed is not neutral. Every post shown to you was chosen to provoke a reaction — ideally outrage, because outrage is the most engagement-generating emotion. Once you see the mechanism, it's hard to unsee it.</p>
+
+<h2>What People Are Doing Instead</h2>
+
+<p>The leavers aren't becoming hermits. They're reading more — physical books, long-form articles. They're using messaging apps for direct communication with actual friends. Many are returning to older formats: newsletters, podcasts, and hobby forums where the content is created by people who care about the subject rather than an algorithm that rewards volume.</p>
+
+<p>Some describe the first two weeks without social media as uncomfortable — a phantom-limb sensation, reaching for the app that isn't there. After a month, most describe feeling calmer, more present, and better rested. <strong>If you deleted your most-used social app tomorrow, what would you actually miss?</strong></p>`,
+
+    'iphone-settings-change-now-2026': `<p>Your iPhone was configured by engineers in Cupertino to work for Apple's ecosystem. Some of those defaults are sensible. Others quietly drain your battery, share more data than you'd choose, and slow down your experience. Here are 12 things worth changing today.</p>
+
+<h2>Battery &amp; Performance</h2>
+
+<p><strong>1. Turn off Background App Refresh for apps that don't need it.</strong> Go to Settings → General → Background App Refresh. Most apps don't need to update in the background. Turn this off for everything except maps, calendar, and messaging apps you actively use.</p>
+
+<p><strong>2. Enable Optimised Battery Charging.</strong> Settings → Battery → Battery Health &amp; Charging. This slows charging above 80% to reduce battery wear. If you charge overnight, this adds years to your battery's lifespan.</p>
+
+<p><strong>3. Reduce motion.</strong> Settings → Accessibility → Motion → Reduce Motion. The parallax and animation effects look nice but consume more processing power and can make the interface feel sluggish on older models.</p>
+
+<h2>Privacy</h2>
+
+<p><strong>4. Audit your location permissions.</strong> Settings → Privacy &amp; Security → Location Services. Any app with "Always" access is tracking your movement continuously. Most should be set to "While Using" or "Never."</p>
+
+<p><strong>5. Turn off personalised ads.</strong> Settings → Privacy &amp; Security → Apple Advertising → turn off Personalised Ads. This doesn't reduce the number of ads you see, but it stops Apple from using your data to target them.</p>
+
+<p><strong>6. Disable Significant Locations.</strong> Settings → Privacy &amp; Security → Location Services → System Services → Significant Locations. Your phone is logging everywhere you go and how often. Turn it off.</p>
+
+<h2>Usability</h2>
+
+<p><strong>7. Set your default browser and email app.</strong> Settings → Apps → find your preferred browser or email client → Default Browser App / Default Mail App. Safari and Mail are fine, but you might prefer something else.</p>
+
+<p><strong>8. Turn on Back Tap.</strong> Settings → Accessibility → Touch → Back Tap. Double or triple tapping the back of your phone can trigger actions — screenshot, scroll up, open any shortcut. Genuinely useful.</p>
+
+<p><strong>9. Schedule a Focus mode for work hours.</strong> Settings → Focus. This silences notifications from apps and people outside your approved list. Set it to turn on automatically during your work hours and off at 6pm.</p>
+
+<p><strong>10. Turn off raise to wake if you use Face ID.</strong> Settings → Display &amp; Brightness → Raise to Wake. If you prefer Face ID, this is an unnecessary battery drain.</p>
+
+<p><strong>11. Enable haptic keyboard feedback.</strong> Settings → Sound &amp; Haptics → Keyboard Feedback → Haptic. A subtle vibration as you type — many people find it makes typing faster and more satisfying.</p>
+
+<p><strong>12. Check which apps can see your clipboard.</strong> Any time an app accesses your clipboard, iOS shows a notification. Pay attention to which apps do this without obvious reason. It's more than you'd expect. <strong>Forward this to someone who just got a new iPhone.</strong></p>`,
+
+    'android-battery-life-tips-2026': `<p>If your Android phone's battery doesn't make it through the day, the most likely culprit isn't a worn-out battery — it's apps running in the background doing things you never asked them to do. Here's how to identify the drain and shut it down.</p>
+
+<h2>Find Out What's Actually Draining Your Battery</h2>
+
+<p>Go to <strong>Settings → Battery → Battery Usage</strong> (the exact path varies slightly by manufacturer). Sort by consumption over the last 24 hours. You're looking for apps in the top five that you don't remember actively using. Social media apps are chronic offenders — they run in the background refreshing feeds, loading ads, and tracking your location even when you haven't opened them.</p>
+
+<h2>The Seven Changes That Make the Biggest Difference</h2>
+
+<p><strong>1. Restrict background activity per app.</strong> Long press any app → App Info → Battery → Restricted. This stops apps from waking up when you're not using them. Do this for every social media, news, and shopping app.</p>
+
+<p><strong>2. Turn off Always-On Display if you have one.</strong> Keeping the screen partially lit all day costs more than most people realise. Turn it off or set it to only activate when you lift the phone.</p>
+
+<p><strong>3. Set screen timeout to 30 seconds.</strong> Settings → Display → Screen Timeout. The display is your single biggest battery consumer. Don't let it stay on longer than needed.</p>
+
+<p><strong>4. Use Adaptive Battery.</strong> Settings → Battery → Adaptive Battery. This uses on-device AI to learn which apps you actually use and restricts battery access for everything else. Let it learn for a week and it makes a noticeable difference.</p>
+
+<p><strong>5. Turn off Wi-Fi scanning and Bluetooth scanning.</strong> Settings → Location → Wi-Fi and Bluetooth Scanning. These features scan for networks and devices even when you're not using either — a constant small drain that adds up over a full day.</p>
+
+<p><strong>6. Enable Dark Mode system-wide.</strong> On phones with OLED screens (most flagship and mid-range Androids now), dark pixels are literally turned off. Dark Mode can extend battery life by 15-20% on these devices.</p>
+
+<p><strong>7. Charge to 85%, not 100%.</strong> Many Android phones now let you cap charging — Settings → Battery → Charging Limit. Keeping your battery between 20% and 85% significantly extends its long-term health. <strong>Share this with someone complaining their phone dies before lunch.</strong></p>`,
+
+    'ai-tools-saving-hours-every-week-2026': `<p>There is a gap between AI tools that get written about and AI tools that actually get used. The former are often impressive in demos and frustrating in practice. The latter are often less flashy but consistently useful. Here's a practical breakdown of what's actually saving people time in 2026.</p>
+
+<h2>Writing and Editing</h2>
+
+<p><strong>Claude (Anthropic)</strong> and <strong>ChatGPT (OpenAI)</strong> are both genuinely excellent for first drafts. The workflow that works: don't ask AI to write something from scratch — give it your rough bullet points and ask it to turn them into a coherent first draft. Then edit. This is dramatically faster than writing from scratch, and the output is yours to shape. People using this workflow report saving 2-3 hours per week on written communication alone.</p>
+
+<p><strong>Grammarly and Hemingway Editor</strong> remain reliable for editing — not glamorous, but quietly effective at catching the errors and convoluted sentences that slip through on a tired afternoon.</p>
+
+<h2>Research and Summarisation</h2>
+
+<p><strong>Perplexity AI</strong> has become the go-to for research among professionals who need cited, sourced answers rather than a confident AI hallucination. It shows you where its information came from, which matters when you're using it for work that other people will rely on.</p>
+
+<p><strong>NotebookLM</strong> (Google) lets you upload documents — PDFs, articles, reports — and then ask questions about them. For anyone who regularly reads long reports, legal documents, or research papers, it can collapse a 90-minute read into a focused 15-minute session.</p>
+
+<h2>Task Management and Focus</h2>
+
+<p><strong>Reclaim.ai</strong> integrates with your calendar and automatically schedules focus time, habits, and buffer time around meetings. People who've used it consistently for a month report getting back an average of 6 hours of focused work time per week — time that previously got eaten by poorly scheduled back-to-back meetings.</p>
+
+<p>The common thread across all of these: they work best as assistants, not replacements. The people getting the most value are the ones treating AI as a capable colleague who's fast but needs direction — not a magic box that produces perfect output unsupervised. <strong>Which of these are you already using?</strong></p>`,
+
+    'todo-list-broken-better-system-2026': `<p>If you've ever ended the day with more items on your to-do list than you started with — despite working hard all day — you've experienced what productivity researchers call the "Sisyphus effect." The list grows faster than you can clear it. And eventually, you stop trusting the list at all.</p>
+
+<h2>Why Most To-Do Lists Fail</h2>
+
+<p>The standard to-do list has three structural problems. First, it treats all tasks as equal — a two-minute email reply sits next to a three-week project deliverable. Second, it has no relationship with time — you can add unlimited items with no awareness of how many hours you actually have. Third, it captures tasks but not outcomes — "call dentist" is on the list but the actual goal (healthy teeth, less anxiety) is invisible.</p>
+
+<p>The result is a list that grows indefinitely, prioritises poorly, and consistently fails to account for reality.</p>
+
+<h2>The System That Works Better</h2>
+
+<p><strong>Time-blocking instead of listing.</strong> Instead of a list of tasks, schedule them as specific blocks in your calendar. If a task isn't worth giving time to, it shouldn't be on the list. If it is worth time, treat it like a meeting with yourself — a commitment, not an aspiration.</p>
+
+<p><strong>The MIT method: three Most Important Tasks.</strong> Each morning, identify the three things that — if you completed only those — would make the day a genuine success. Everything else is a bonus. This forces genuine prioritisation rather than the false comfort of adding everything to a list.</p>
+
+<p><strong>Weekly review.</strong> Once a week, look at everything outstanding and make an active decision about each item: do it, schedule it, delegate it, or delete it. Items that sit untouched for three weeks are items you've already decided not to do — the list just hasn't caught up yet.</p>
+
+<p><strong>Capture and process separately.</strong> Write everything down immediately (capture), but only process — decide what to do with it — at a scheduled time, not continuously. Constant list management is itself a time drain.</p>
+
+<p>The goal isn't an empty list. It's a trustworthy system. <strong>Share this with someone who's been talking about getting organised since January.</strong></p>`,
+
+    'chatgpt-claude-gemini-comparison-2026': `<p>By 2026, there are three AI assistants that dominate the conversation: ChatGPT from OpenAI, Claude from Anthropic, and Gemini from Google. All three are free to start. All three can write, reason, research, and code. So which one should you actually use?</p>
+
+<p>The honest answer: it depends on what you're doing. Here's a clear breakdown of where each one genuinely excels — and where it falls short.</p>
+
+<h2>ChatGPT — The Most Versatile All-Rounder</h2>
+
+<p><strong>Best for:</strong> Brainstorming, creative writing, coding help, building custom workflows with GPTs.</p>
+
+<p>ChatGPT (GPT-4o) is the most widely used AI assistant in the world for a reason — it handles an enormous range of tasks competently. It's the best for creative work: story writing, marketing copy, generating ideas, and iterating quickly on drafts. It's also the most "conversational" of the three — it feels natural to work with, matches your tone, and handles multi-turn conversations well.</p>
+
+<p>The free tier is genuinely usable. ChatGPT Plus ($20/month) adds GPT-4o with image generation, voice mode, and the ability to create custom GPTs — mini AI apps you can build yourself.</p>
+
+<p><strong>Watch out for:</strong> Occasional confident hallucinations (wrong answers stated with certainty), and a tendency to be sycophantic — telling you what you want to hear rather than what's true.</p>
+
+<h2>Claude — The Best for Long, Serious Work</h2>
+
+<p><strong>Best for:</strong> Long documents, nuanced analysis, careful reasoning, writing that needs to sound like a human.</p>
+
+<p>Claude (Sonnet 3.7) from Anthropic is widely considered the best AI for serious written work. If you need to process a long PDF, write something that sounds genuinely thoughtful, or get careful analysis of a complex topic, Claude consistently outperforms the others. It handles large context windows exceptionally well — you can paste an entire contract, research paper, or code repository and ask questions about it.</p>
+
+<p>Claude is also the most honest of the three. It will tell you when it doesn't know something, push back on incorrect assumptions, and flag uncertainty rather than fabricating a confident-sounding answer.</p>
+
+<p><strong>Watch out for:</strong> It can be more cautious than necessary, occasionally declining tasks that ChatGPT or Gemini would handle without issue. The free tier is more limited than ChatGPT's.</p>
+
+<h2>Gemini — The Best Connected to Google's World</h2>
+
+<p><strong>Best for:</strong> Research with web access, working with Google Workspace (Docs, Gmail, Drive), multimodal tasks.</p>
+
+<p>Gemini 2.0 Flash is Google's answer — and its core advantage is integration. If you live in Google Docs, Gmail, and Drive, Gemini integrates directly into those tools. You can ask it to summarise your emails, draft documents in Docs, or search the web in real time.</p>
+
+<p>Gemini also handles multimodal input well — drop in an image and ask questions about it, or upload a screenshot and have it extract data. For research tasks where you need current information, Gemini with web access is consistently strong.</p>
+
+<p><strong>Watch out for:</strong> Creative writing and nuanced text quality still lags behind Claude and GPT-4o. It can feel more "corporate" in tone.</p>
+
+<h2>The Bottom Line</h2>
+
+<ul>
+  <li><strong>For writing, creativity, and coding:</strong> ChatGPT</li>
+  <li><strong>For serious analysis, long documents, and honest answers:</strong> Claude</li>
+  <li><strong>For research, current events, and Google integration:</strong> Gemini</li>
+</ul>
+
+<p>The best move? Use all three. They're all free to start, and knowing which tool to reach for depending on the job is genuinely a competitive advantage in 2026. <strong>Share this with someone still just using whichever AI they heard of first.</strong></p>`,
+
+    'ai-prompt-formula-better-answers-2026': `<p>Most people use AI assistants like a slightly smarter search engine. They type a question, get an answer, and move on. And most of the time, the answer is... fine. Usable. Forgettable.</p>
+
+<p>The people getting dramatically better results from the same tools aren't using different AI — they're asking differently. Here's the framework that makes the biggest difference.</p>
+
+<h2>The RCTF Formula</h2>
+
+<p>Every high-quality AI prompt has four components. You don't need all four for every request, but the more of them you include, the better the output:</p>
+
+<ul>
+  <li><strong>R — Role:</strong> Tell the AI who to be</li>
+  <li><strong>C — Context:</strong> Give it the background it needs</li>
+  <li><strong>T — Task:</strong> State exactly what you want</li>
+  <li><strong>F — Format:</strong> Specify how you want the output</li>
+</ul>
+
+<h2>What This Looks Like in Practice</h2>
+
+<p><strong>Before (vague):</strong> "Write me an email to my boss about taking a day off."</p>
+
+<p><strong>After (RCTF):</strong> "You are a professional business writer. I work in a mid-sized marketing agency and I have a good relationship with my manager. Write me a brief, professional email requesting one day off next Friday to attend a family event. Keep it to 3 sentences, casual but professional in tone, and end with a line offering to arrange coverage if needed."</p>
+
+<p>The second version produces something you can send directly. The first produces a generic template you have to rewrite anyway.</p>
+
+<h2>Three More Techniques That Work</h2>
+
+<p><strong>1. "Give me your honest assessment."</strong> AI models are trained to be agreeable. Explicitly asking for an honest, critical take — "Tell me what's wrong with this plan" or "What am I missing?" — consistently unlocks more useful analysis.</p>
+
+<p><strong>2. Ask for options, not one answer.</strong> "Give me three different approaches to this, with the tradeoffs of each" consistently outperforms "tell me the best way to do this." You'll see considerations you wouldn't have thought of.</p>
+
+<p><strong>3. Iterate, don't start over.</strong> Your first prompt is a starting point, not a final request. Follow up: "Make it shorter." "Make the tone more confident." "Add a specific example." Each refinement costs you nothing and takes seconds.</p>
+
+<h2>The Single Most Underused Feature</h2>
+
+<p>Most people never use the system prompt or custom instructions. In ChatGPT, you can set persistent instructions that apply to every conversation: your profession, your preferred writing style, what you don't want the AI to do. Setting this up once saves you from repeating context every session.</p>
+
+<p>In Claude, you can paste a full document at the start of a conversation and refer back to it. In Gemini, you can save a Gem (a custom configuration) for specific recurring tasks.</p>
+
+<p>The tools are powerful. How you talk to them determines how much of that power you actually get. <strong>Try the RCTF formula on your next prompt and see the difference for yourself.</strong></p>`,
+
+    'hidden-android-features-2026': `<p>Most Android users tap into about 20% of what their phone can actually do. The other 80% sits quietly in settings menus and hidden features that never get mentioned in the box or the setup guide. Here are seven of the best.</p>
+
+<h2>1. One-Handed Mode</h2>
+
+<p>Go to <strong>Settings → Advanced Features → One-Handed Mode</strong>. Swipe down on the bottom edge of the screen to shrink the entire display to one corner. Essential if you have a large phone and small hands — or if you're frequently using your phone while holding something else.</p>
+
+<h2>2. Secure Folder</h2>
+
+<p>Samsung devices have a <strong>Secure Folder</strong> (Settings → Biometrics and Security → Secure Folder) — a fully encrypted, password-protected space on your phone where you can store apps, photos, and files. Even if someone picks up your phone, they cannot access what's inside without your separate Secure Folder PIN.</p>
+
+<h2>3. Split Screen and Pop-Up View</h2>
+
+<p>Long press the Recent Apps button and select "Split Screen." You can run two apps simultaneously — a browser alongside your notes app, YouTube alongside a messaging app. Pop-Up View takes this further, letting you float a small app window over another app like a picture-in-picture.</p>
+
+<h2>4. Developer Options — USB Debugging and Animation Speed</h2>
+
+<p>Go to <strong>Settings → About Phone</strong> and tap "Build Number" seven times quickly. This unlocks Developer Options. Inside, you can reduce animation scales from 1x to 0.5x — making your entire phone feel noticeably faster. You can also enable USB debugging for advanced file management.</p>
+
+<h2>5. Screen Recorder with Audio</h2>
+
+<p>Pull down the notification shade and look for Screen Recorder in your quick settings tiles. Unlike third-party apps, the built-in version captures your screen with internal audio, mic audio, or both — with no watermark and no quality limit.</p>
+
+<h2>6. Live Transcribe</h2>
+
+<p>Android's built-in <strong>Live Transcribe</strong> (Settings → Accessibility → Live Transcribe) converts spoken words to text on your screen in real time — no internet required for basic use. Useful in noisy environments, for people with hearing difficulties, or for automatically captioning videos and meetings without a third-party app.</p>
+
+<h2>7. Quick Share (Nearby Share)</h2>
+
+<p>Quick Share — formerly called Nearby Share on older Android versions — lets you wirelessly transfer files, photos, links, and contacts to other Android devices, Chromebooks, and even Windows PCs nearby. Go to <strong>Settings → Connected Devices → Quick Share</strong> and make sure it's on. No Bluetooth pairing, no cables, no apps required. It works like AirDrop, and most Android users still don't know it exists. <strong>Share this with someone who's been emailing files to themselves for years.</strong></p>`,
   };
 
   // ── 5. Seed articles (skip if any already exist) ──────────────────────────
@@ -280,10 +887,10 @@ async function runSetup(pool) {
 
   } // end if count === 0
 
-  // ── 6. Update body for any articles that have null body ───────────────────
+  // ── 6. Always update body to ensure full content with images ──────────────
   for (const [slug, body] of Object.entries(BODIES)) {
     await pool.query(
-      `UPDATE articles SET body = $1 WHERE slug = $2 AND body IS NULL`,
+      `UPDATE articles SET body = $1 WHERE slug = $2`,
       [body, slug],
     );
   }
