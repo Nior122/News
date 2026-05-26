@@ -240,11 +240,21 @@ export default async function handler(req, res) {
     // Articles: search
     if (path === '/articles/search' && method === 'GET') {
       const q = url.searchParams.get('q') ?? '';
+      const page = parseInt(url.searchParams.get('page') ?? '1', 10);
+      const limit = parseInt(url.searchParams.get('limit') ?? '12', 10);
+      const offset = (page - 1) * limit;
+      if (!q.trim()) { send(res, { articles: [], total: 0, page, limit, hasMore: false }); return; }
+      const pattern = `%${q}%`;
       const { rows } = await db.query(
-        `${JOIN} WHERE a.published=true AND (a.title ILIKE $1 OR a.excerpt ILIKE $1 OR a.category ILIKE $1) ORDER BY a.published_at DESC LIMIT 20`,
-        [`%${q}%`],
+        `${JOIN} WHERE a.published=true AND (a.title ILIKE $1 OR a.excerpt ILIKE $1 OR a.category ILIKE $1) ORDER BY a.published_at DESC LIMIT $2 OFFSET $3`,
+        [pattern, limit, offset],
       );
-      send(res, rows.map(fmt)); return;
+      const { rows: countRows } = await db.query(
+        `SELECT COUNT(*) as total FROM articles a WHERE a.published=true AND (a.title ILIKE $1 OR a.excerpt ILIKE $1 OR a.category ILIKE $1)`,
+        [pattern],
+      );
+      const total = parseInt(countRows[0].total, 10);
+      send(res, { articles: rows.map(fmt), total, page, limit, hasMore: offset + rows.length < total }); return;
     }
 
     // Articles: list
@@ -255,12 +265,19 @@ export default async function handler(req, res) {
       const params = [];
       let where = 'WHERE a.published=true';
       if (category) { params.push(category); where += ` AND a.category=$${params.length}`; }
+      // Count total for pagination
+      const countParams = category ? [category] : [];
+      const { rows: countRows } = await db.query(
+        `SELECT COUNT(*) as total FROM articles a ${where}`,
+        countParams,
+      );
+      const total = parseInt(countRows[0].total, 10);
       params.push(limit, offset);
       const { rows } = await db.query(
         `${JOIN} ${where} ORDER BY a.published_at DESC LIMIT $${params.length-1} OFFSET $${params.length}`,
         params,
       );
-      send(res, rows.map(fmt)); return;
+      send(res, { articles: rows.map(fmt), total, hasMore: offset + rows.length < total }); return;
     }
 
     // Articles: related
