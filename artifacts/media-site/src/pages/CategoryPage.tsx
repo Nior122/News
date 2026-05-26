@@ -134,6 +134,11 @@ function StandardCategoryPage({
     setAllArticles([]);
   }, [slug]);
 
+  // Use cached query data as fallback so back-navigation never flashes "no articles"
+  // while the useEffect hasn't had a chance to populate allArticles yet.
+  const displayArticles = allArticles.length > 0 ? allArticles : (data?.articles ?? []);
+  const isInitialLoading = isLoading && displayArticles.length === 0;
+
   return (
     <div className="min-h-screen pb-16">
       <div className={`bg-gradient-to-b ${gradient} to-background border-b border-border/50 py-16 mb-12`}>
@@ -144,12 +149,12 @@ function StandardCategoryPage({
       </div>
 
       <div className="container max-w-screen-2xl px-4 md:px-8">
-        {isLoading && page === 1 ? (
+        {isInitialLoading ? (
           <SkeletonGrid />
-        ) : allArticles.length > 0 ? (
+        ) : displayArticles.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-              {allArticles.map((article) => (
+              {displayArticles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}
             </div>
