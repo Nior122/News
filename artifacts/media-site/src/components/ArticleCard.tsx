@@ -93,9 +93,11 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
         </div>
 
         {/* Text content */}
-        <div className="relative z-10 flex flex-col flex-1 py-0.5 min-w-0">
+        <div className="relative z-10 flex flex-col flex-1 py-0.5 min-w-0 pointer-events-none">
           {/* Category badge — real link above the stretched article link */}
-          <CategoryBadge category={article.category} className="w-fit mb-2 text-xs" />
+          <div className="pointer-events-auto w-fit mb-2">
+            <CategoryBadge category={article.category} className="text-xs" />
+          </div>
           <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 group-hover:text-primary transition-colors line-clamp-2 pointer-events-none">
             {article.title}
           </h3>
@@ -143,9 +145,11 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
       </div>
 
       {/* Card body */}
-      <div className="relative z-10 flex flex-col flex-1 p-4">
+      <div className="relative z-10 flex flex-col flex-1 p-4 pointer-events-none">
         {/* Category badge is a real link above the stretched overlay */}
-        <CategoryBadge category={article.category} className="w-fit mb-3" />
+        <div className="pointer-events-auto w-fit mb-3">
+          <CategoryBadge category={article.category} />
+        </div>
         <h3 className="font-display font-bold text-base md:text-lg leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2 pointer-events-none">
           {article.title}
         </h3>

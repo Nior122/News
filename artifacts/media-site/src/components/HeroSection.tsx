@@ -44,12 +44,14 @@ export function HeroSection() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
-        <div className="relative z-10 mt-auto p-5 md:p-10 w-full md:w-3/4">
+        <div className="relative z-10 mt-auto p-5 md:p-10 w-full md:w-3/4 pointer-events-none">
           {/* Category badge — real link above the stretched article overlay */}
-          <CategoryBadge
-            category={article.category}
-            className="mb-3 bg-primary text-primary-foreground border-none"
-          />
+          <div className="pointer-events-auto w-fit mb-3">
+            <CategoryBadge
+              category={article.category}
+              className="bg-primary text-primary-foreground border-none"
+            />
+          </div>
           <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-3 md:mb-4 group-hover:text-primary transition-colors pointer-events-none">
             {article.title}
           </h1>
