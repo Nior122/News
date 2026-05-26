@@ -2,7 +2,7 @@
   "version": 2,
   "buildCommand": "pnpm --filter @workspace/media-site run build",
   "outputDirectory": "artifacts/media-site/dist/public",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install",
   "framework": null,
   "functions": {
     "api/index.mjs": {
