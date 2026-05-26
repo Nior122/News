@@ -151,10 +151,13 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
   const [linkUrl, setLinkUrl] = useState("");
   const [showImageInput, setShowImageInput] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
-  const [uploadingInline, setUploadingInline] = useState(false);
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const linkInputRef = useRef<HTMLInputElement>(null);
   const inlineFileRef = useRef<HTMLInputElement>(null);
+  const dragCounter = useRef(0);
+  const inlineUploadId = useId();
 
   const editor = useEditor({
     extensions: [
@@ -206,24 +209,55 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
     setShowLinkInput(false);
   }
 
-  async function handleInlineUpload(file: File) {
-    setUploadingInline(true);
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token") ?? ""}` },
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        editor?.chain().focus().setImage({ src: data.url }).run();
-      }
-    } finally {
-      setUploadingInline(false);
-      setShowImageInput(false);
+  async function uploadFiles(files: File[]) {
+    const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+    if (!imageFiles.length) return;
+    setUploadingCount((n) => n + imageFiles.length);
+    setShowImageInput(false);
+    const results = await Promise.allSettled(
+      imageFiles.map(async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${localStorage.getItem("admin_token") ?? ""}` },
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.url) return data.url as string;
+        throw new Error("Upload failed");
+      })
+    );
+    const urls = results
+      .filter((r): r is PromiseFulfilledResult<string> => r.status === "fulfilled")
+      .map((r) => r.value);
+    if (urls.length > 0) {
+      let chain = editor?.chain().focus();
+      for (const url of urls) chain = chain?.setImage({ src: url });
+      chain?.run();
     }
+    setUploadingCount((n) => n - imageFiles.length);
+  }
+
+  function handleDragEnter(e: React.DragEvent) {
+    e.preventDefault();
+    dragCounter.current++;
+    if (dragCounter.current === 1) setIsDragging(true);
+  }
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault();
+    dragCounter.current--;
+    if (dragCounter.current === 0) setIsDragging(false);
+  }
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+  }
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    dragCounter.current = 0;
+    setIsDragging(false);
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length) uploadFiles(files);
   }
 
   return (
@@ -362,32 +396,61 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
             <div className="flex-1 h-px bg-zinc-700" />
           </div>
           <div className="px-3 pb-2">
-            <button
-              type="button"
-              disabled={uploadingInline}
-              onClick={() => inlineFileRef.current?.click()}
-              className="w-full flex items-center justify-center gap-2 text-xs text-zinc-300 hover:text-white bg-zinc-700 hover:bg-zinc-600 transition px-3 py-2 rounded-lg disabled:opacity-50"
+            <label
+              htmlFor={inlineUploadId}
+              className={`w-full flex items-center justify-center gap-2 text-xs text-zinc-300 hover:text-white bg-zinc-700 hover:bg-zinc-600 transition px-3 py-2 rounded-lg cursor-pointer ${uploadingCount > 0 ? "opacity-50 pointer-events-none" : ""}`}
             >
-              {uploadingInline ? (
-                <span className="w-3.5 h-3.5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
+              {uploadingCount > 0 ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
+                  Uploading {uploadingCount} image{uploadingCount !== 1 ? "s" : ""}…
+                </>
               ) : (
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  Upload from device (select multiple)
+                </>
               )}
-              {uploadingInline ? "Uploading…" : "Upload from device"}
-            </button>
+            </label>
             <input
+              id={inlineUploadId}
               ref={inlineFileRef}
               type="file"
               accept="image/*"
+              multiple
               className="hidden"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) handleInlineUpload(f); e.target.value = ""; }}
+              onChange={(e) => {
+                const files = Array.from(e.target.files ?? []);
+                if (files.length) uploadFiles(files);
+                e.target.value = "";
+              }}
             />
           </div>
         </div>
       )}
 
-      {/* Editor area */}
-      <EditorContent editor={editor} />
+      {/* Editor area with drag-and-drop */}
+      <div
+        className="relative"
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <EditorContent editor={editor} />
+        {isDragging && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-b-xl bg-primary/10 border-2 border-dashed border-primary pointer-events-none">
+            <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+            <p className="text-sm font-semibold text-primary">Drop images to insert</p>
+          </div>
+        )}
+        {uploadingCount > 0 && !isDragging && (
+          <div className="absolute bottom-3 right-3 z-10 flex items-center gap-2 bg-zinc-900/90 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-zinc-300 shadow-lg pointer-events-none">
+            <span className="w-3 h-3 border-2 border-zinc-500 border-t-primary rounded-full animate-spin" />
+            Uploading {uploadingCount} image{uploadingCount !== 1 ? "s" : ""}…
+          </div>
+        )}
+      </div>
 
       {/* Word count */}
       <div className="px-4 py-1.5 border-t border-zinc-800 bg-zinc-900/60 text-right">
