@@ -769,35 +769,257 @@ async function runSetup(pool) {
 
 <p>The tools are powerful. How you talk to them determines how much of that power you actually get. <strong>Try the RCTF formula on your next prompt and see the difference for yourself.</strong></p>`,
 
-    'hidden-android-features-2026': `<p>Most Android users tap into about 20% of what their phone can actually do. The other 80% sits quietly in settings menus and hidden features that never get mentioned in the box or the setup guide. Here are seven of the best.</p>
+    'hidden-android-features-2026': `<figure>
+  <img src="https://images.pexels.com/photos/1440727/pexels-photo-1440727.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Multiple Android phones on a table showing different screens" width="1200" height="630" />
+  <figcaption>From Samsung to Pixel — Android phones are packed with features most users never discover.</figcaption>
+</figure>
 
-<h2>1. One-Handed Mode</h2>
+<p>You have been using your Android phone every single day. You text, scroll, take photos, stream videos. But here is the truth: <strong>most people use less than 20% of what their phone can actually do.</strong></p>
 
-<p>Go to <strong>Settings → Advanced Features → One-Handed Mode</strong>. Swipe down on the bottom edge of the screen to shrink the entire display to one corner. Essential if you have a large phone and small hands — or if you're frequently using your phone while holding something else.</p>
+<p>Whether you are on a Samsung Galaxy, Google Pixel, Xiaomi, Tecno, or Infinix, these seven hidden features work right now and will make your phone feel brand new. No downloads required.</p>
 
-<h2>2. Secure Folder</h2>
+<h2>1. One-Handed Mode — Shrink Your Screen in Seconds</h2>
 
-<p>Samsung devices have a <strong>Secure Folder</strong> (Settings → Biometrics and Security → Secure Folder) — a fully encrypted, password-protected space on your phone where you can store apps, photos, and files. Even if someone picks up your phone, they cannot access what's inside without your separate Secure Folder PIN.</p>
+<p>Modern phones keep getting bigger. One-Handed Mode shrinks your entire display down to the corner of the screen so your thumb can reach everything without stretching.</p>
+<ul>
+  <li><strong>Samsung:</strong> Settings → Advanced Features → One-Handed Mode</li>
+  <li><strong>Xiaomi / Tecno / Infinix:</strong> Settings → Additional Settings → One-Handed Mode</li>
+  <li><strong>Google Pixel:</strong> Settings → System → Gestures → One-Handed Mode</li>
+</ul>
+<p>Once enabled, swipe down from the bottom centre of your screen. The display drops instantly. Tap outside the shrunk area to exit.</p>
 
-<h2>3. Split Screen and Pop-Up View</h2>
+<h2>2. Secure Folder — Your Private Space Inside Your Phone</h2>
 
-<p>Long press the Recent Apps button and select "Split Screen." You can run two apps simultaneously — a browser alongside your notes app, YouTube alongside a messaging app. Pop-Up View takes this further, letting you float a small app window over another app like a picture-in-picture.</p>
+<p>Imagine a hidden compartment inside your phone with its own PIN, fingerprint, or face unlock — completely separate from the rest of your device.</p>
+<p><strong>On Samsung devices:</strong> Settings → Biometrics and Security → Secure Folder. You can even install a second copy of any app inside — two WhatsApp accounts, a private Instagram, a hidden Gallery.</p>
+<p><strong>Xiaomi users</strong> have <strong>Second Space</strong> (Settings → Special Features → Second Space). <strong>Tecno and Infinix</strong> users should look for <strong>Private Zone</strong> under Settings → Privacy.</p>
 
-<h2>4. Developer Options — USB Debugging and Animation Speed</h2>
+<h2>3. Split Screen — Run Two Apps Simultaneously</h2>
 
-<p>Go to <strong>Settings → About Phone</strong> and tap "Build Number" seven times quickly. This unlocks Developer Options. Inside, you can reduce animation scales from 1x to 0.5x — making your entire phone feel noticeably faster. You can also enable USB debugging for advanced file management.</p>
+<p>Long press the Recent Apps button and select <strong>Split Screen</strong>. Choose your second app. Both run live simultaneously — drag the divider to adjust space. <strong>Samsung Galaxy users</strong> also get <strong>Pop-Up View</strong> — a floating mini app window over your main app.</p>
 
-<h2>5. Screen Recorder with Audio</h2>
+<figure>
+  <img src="https://images.pexels.com/photos/3912992/pexels-photo-3912992.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Android phone showing split screen multitasking" width="1200" height="630" />
+  <figcaption>Split Screen lets you run two apps simultaneously — perfect for note-taking, research, or messaging while watching content.</figcaption>
+</figure>
 
-<p>Pull down the notification shade and look for Screen Recorder in your quick settings tiles. Unlike third-party apps, the built-in version captures your screen with internal audio, mic audio, or both — with no watermark and no quality limit.</p>
+<h2>4. Developer Options — Make Your Phone Feel Faster Instantly</h2>
 
-<h2>6. Live Transcribe</h2>
+<p>Go to Settings → About Phone and tap <strong>Build Number</strong> seven times. Developer Options appears in Settings. Inside, set <strong>Window Animation Scale</strong>, <strong>Transition Animation Scale</strong>, and <strong>Animator Duration Scale</strong> to <strong>0.5x</strong>. Your phone's animations now run at twice the speed — everything feels faster instantly.</p>
 
-<p>Android's built-in <strong>Live Transcribe</strong> (Settings → Accessibility → Live Transcribe) converts spoken words to text on your screen in real time — no internet required for basic use. Useful in noisy environments, for people with hearing difficulties, or for automatically captioning videos and meetings without a third-party app.</p>
+<h2>5. Screen Recorder With Internal Audio</h2>
 
-<h2>7. Quick Share (Nearby Share)</h2>
+<p>Swipe down your notification shade and look for <strong>Screen Recorder</strong> in your quick settings tiles. The built-in recorder captures internal audio, microphone, or both — with no watermark, no time limit, no subscription. Recordings save directly to your gallery.</p>
 
-<p>Quick Share — formerly called Nearby Share on older Android versions — lets you wirelessly transfer files, photos, links, and contacts to other Android devices, Chromebooks, and even Windows PCs nearby. Go to <strong>Settings → Connected Devices → Quick Share</strong> and make sure it's on. No Bluetooth pairing, no cables, no apps required. It works like AirDrop, and most Android users still don't know it exists. <strong>Share this with someone who's been emailing files to themselves for years.</strong></p>`,
+<h2>6. Live Transcribe — Real-Time Speech to Text</h2>
+
+<p>Settings → Accessibility → Live Transcribe converts spoken words into text on your screen as they happen — in real time, in dozens of languages, with no internet connection required for basic use. Available on most Android devices via the Play Store.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/3653369/pexels-photo-3653369.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Google Pixel phone showing accessibility features screen" width="1200" height="630" />
+  <figcaption>Google Pixel leads on accessibility features — but Live Transcribe is available on most Android devices through the Play Store.</figcaption>
+</figure>
+
+<h2>7. Quick Share — Wireless File Transfer That Actually Works</h2>
+
+<p>Quick Share transfers files, photos, links, contacts, and folders wirelessly between Android phones, tablets, Chromebooks, and Windows PCs. Find it at Settings → Connected Devices → Quick Share. Speeds are fast enough to send a 1GB file in seconds when devices are close.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Do these features work on all Android phones?</h3>
+<p>Most do. Developer Options, Screen Recorder, and Quick Share are available on virtually every Android phone running Android 10 or later. Secure Folder is Samsung-specific, Second Space is Xiaomi-specific, and Live Transcribe is available via the Play Store on any Android device.</p>
+
+<h3>Is it safe to enable Developer Options?</h3>
+<p>Yes, as long as you only change the animation speed settings. The animation scales are completely safe and easy to reverse at any time.</p>
+
+<h3>Will Split Screen drain my battery faster?</h3>
+<p>Running two apps at once uses slightly more CPU and RAM, which can modestly increase battery drain. For a deeper look at keeping your battery healthy, check out our guide on <a href="/article/android-battery-life-tips-2026" class="article-backlink">how to make your Android battery last all day</a>.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>Your Android phone is more powerful than you are giving it credit for. These seven features are sitting there right now — installed, ready, and free. None require a new phone or a paid app.</p>
+
+<p>And if you are curious about how AI is being built directly into these same phones to make them even smarter, read our full breakdown of <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a>.</p>`,
+
+    'ai-tools-for-students-2026': `<figure>
+  <img src="https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Student studying with laptop and AI tools open on screen" width="1200" height="630" />
+  <figcaption>Students in 2026 are using AI tools to study faster, write better, and prepare for exams more effectively than any previous generation.</figcaption>
+</figure>
+
+<p>Three years ago, a student pulling an all-nighter had coffee, a textbook, and YouTube. Today, they have something far more powerful: <strong>an AI that can summarise a 400-page book, quiz them on it, fix their essay, and explain any concept they are stuck on — in seconds.</strong></p>
+
+<p>AI tools for studying are not cheating. They are the new calculator — a tool that, used well, makes you smarter and faster. Used badly, they make you lazy and dependent. The difference is entirely in how you use them.</p>
+
+<p>Here is what the best student AI tools actually do, which ones are worth your time, and how to get the most out of them without losing your ability to think for yourself.</p>
+
+<h2>What AI Study Tools Actually Do</h2>
+
+<p>AI study tools are software products that use large language models — the same technology behind <a href="/article/chatgpt-claude-gemini-comparison-2026" class="article-backlink">ChatGPT, Claude, and Gemini</a> — to help students learn more efficiently. They can summarise long texts and lecture notes into clear bullet points, generate practice questions and flashcards from any material, explain difficult concepts in plain language, check and improve your writing, help you plan revision schedules, and answer questions about specific topics instantly at any hour.</p>
+
+<h2>The Best AI Tools for Students in 2026</h2>
+
+<h3>ChatGPT (Free + Paid)</h3>
+<p>Still the most widely used. Ask it to explain any concept, summarise any text you paste in, or generate practice exam questions. The free version is capable. The paid version handles longer documents and more complex tasks. Best for: general studying, writing help, concept explanations.</p>
+
+<h3>Notion AI</h3>
+<p>If you already use Notion to organise your notes, Notion AI turns it into a smart study assistant. Highlight any block of notes and ask it to summarise, expand, or generate quiz questions from them. Best for: organised students who already have their notes in one place.</p>
+
+<h3>Perplexity AI</h3>
+<p>Unlike ChatGPT, Perplexity searches the live web and shows you sources for every answer. This makes it far better for research — you can see exactly where the information comes from and verify it. Best for: research assignments, finding credible sources fast.</p>
+
+<h3>Quizlet AI</h3>
+<p>The classic flashcard app now has AI built in. Paste your notes or a topic, and it generates a complete flashcard set automatically. Then it uses spaced repetition to test you at the right intervals for long-term memory. Best for: memorisation-heavy subjects like medicine, law, and languages.</p>
+
+<h3>Grammarly (AI-Powered)</h3>
+<p>More than a spell checker. Grammarly now analyses your argument structure, tone, clarity, and sentence variety. It suggests rewrites, flags weak sections, and helps you write professionally. Best for: essays, reports, and any academic writing assignment.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="University student taking notes with AI assistant on laptop" width="1200" height="630" />
+  <figcaption>The smartest students are not using one AI tool — they are using different tools for different tasks and combining them strategically.</figcaption>
+</figure>
+
+<h2>How to Use AI Tools Without Becoming Dependent on Them</h2>
+
+<p>The principle that works: <strong>use AI to understand faster, not to avoid understanding altogether.</strong></p>
+<ul>
+  <li>Read the chapter first. Then use AI to check your understanding.</li>
+  <li>Write your essay draft first. Then use AI to improve the language.</li>
+  <li>Attempt the practice questions yourself. Then use AI to explain what you got wrong.</li>
+  <li>Use AI to simplify concepts you are genuinely stuck on — not as a first resort.</li>
+</ul>
+
+<h2>AI for Exam Preparation — What Actually Works</h2>
+
+<p>The most valuable use of AI in the lead-up to exams is <strong>active recall practice</strong> — which research consistently shows is the most effective revision technique that exists.</p>
+<ol>
+  <li>Paste your lecture notes or a chapter summary into ChatGPT or Claude</li>
+  <li>Ask it to generate 20 exam-style questions on the material</li>
+  <li>Answer each question without looking at your notes</li>
+  <li>Ask the AI to mark your answers and explain what you missed</li>
+  <li>Repeat for the topics you scored lowest on</li>
+</ol>
+
+<p>To get the most precise and useful questions from AI, it helps to know how to phrase your requests properly. Our guide on <a href="/article/ai-prompt-formula-better-answers-2026" class="article-backlink">the AI prompt formula that gets better answers</a> will help you get dramatically more useful responses from any AI tool you use.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Student preparing for exams with notes and AI tool on screen" width="1200" height="630" />
+  <figcaption>AI-powered active recall practice can compress days of revision into focused, high-retention sessions — if you use it with discipline.</figcaption>
+</figure>
+
+<h2>Organising Your Study Time With AI</h2>
+
+<p>Tell ChatGPT or Claude: "I have four exams in three weeks. Here are the subjects and their dates. I study best in the mornings. Build me a revision schedule." It will produce a detailed, day-by-day plan in seconds. For managing the actual tasks and assignments involved in student life, pairing AI with a proper productivity system is powerful. Our breakdown of <a href="/article/ai-tools-saving-hours-every-week-2026" class="article-backlink">the AI tools that are genuinely saving people hours every week</a> covers the tools that work best for this.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is using AI for studying considered cheating?</h3>
+<p>It depends entirely on how you use it and what your institution's policy says. Using AI to understand concepts, practise questions, and improve your own work is not cheating. Using AI to write your essay and submitting it as your own work generally is. Always check your institution's academic integrity policy.</p>
+
+<h3>Which AI tool is best for medical or law students?</h3>
+<p>For memorisation-heavy content, Quizlet AI and Anki with AI-generated cards are the strongest options. For research, Perplexity AI is excellent because it cites its sources. For writing, Grammarly and Claude are particularly strong.</p>
+
+<h3>Do I need to pay for these tools?</h3>
+<p>Most of the best AI study tools have free tiers that are genuinely useful. ChatGPT free, Perplexity free, Quizlet free, and Grammarly free will serve most students well.</p>
+
+<h3>Can AI help if English is not my first language?</h3>
+<p>Enormously. AI tools are exceptionally good at improving writing in your second language — correcting grammar, improving flow, and suggesting more natural phrasing. Many international students report that this alone cuts the time they spend on essays by half.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>AI study tools are the most powerful learning technology students have ever had access to — and they are mostly free. The students who understand how to use them well will study faster, write more clearly, and retain more than those who ignore them or misuse them.</p>
+
+<p>And if you want to get even more out of AI in your daily life beyond studying, start with <a href="/article/hidden-android-features-2026" class="article-backlink">the hidden Android features that make your phone a productivity powerhouse</a> — many of them are specifically designed for students on the go.</p>`,
+
+    'why-ai-phones-are-becoming-the-future': `<figure>
+  <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Futuristic AI smartphone with glowing interface" width="1200" height="630" />
+  <figcaption>AI is no longer a feature you turn on — it is the operating system underneath everything your phone does.</figcaption>
+</figure>
+
+<p>Not long ago, "smart" phone meant a phone that could browse the internet. Then it meant a good camera. Then it meant face recognition and a fast processor.</p>
+
+<p>In 2026, smart means something completely different. <strong>It means a phone that thinks.</strong></p>
+
+<p>AI phones do not just run apps — they learn your habits, enhance your photos before you even take them, translate live conversations in real time, and manage your battery based on how you specifically use your device. The shift happening right now is not incremental. It is a complete rethinking of what a phone is for.</p>
+
+<h2>What Makes a Phone an "AI Phone"?</h2>
+
+<p>An AI phone is one with a dedicated <strong>Neural Processing Unit (NPU)</strong> — a chip specifically designed to run AI tasks quickly and efficiently, directly on the device, without sending your data to the cloud. This makes AI features fast, private, and functional without an internet connection.</p>
+
+<p>Brands leading this shift include Samsung with its Galaxy AI suite, Google with Pixel's on-device processing, Xiaomi with its HyperOS AI layer, and increasingly Tecno and Infinix — both of which brought AI camera and assistant features to mid-range price points in 2025 and 2026.</p>
+
+<p>For a deeper look at how on-device AI specifically works, read our breakdown of <a href="/article/amd-on-device-ai-no-internet-2026" class="article-backlink">how powerful AI now runs entirely offline — no internet needed</a>.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Samsung Galaxy AI phone with neural processing chip" width="1200" height="630" />
+  <figcaption>Samsung, Google, Xiaomi, Tecno, and Infinix are all racing to put more AI power directly on-device — making it faster, private, and available offline.</figcaption>
+</figure>
+
+<h2>AI Photography — Your Camera Got Dramatically Smarter</h2>
+
+<ul>
+  <li><strong>Scene detection:</strong> The AI recognises what you are photographing and adjusts exposure, colour, and sharpening automatically for that specific subject.</li>
+  <li><strong>Night mode:</strong> AI stacks multiple rapid exposures to produce bright, sharp, noise-free images in near-darkness.</li>
+  <li><strong>Object eraser:</strong> Samsung, Pixel, and Xiaomi all offer AI tools that remove unwanted objects from photos and intelligently fill the space behind them.</li>
+  <li><strong>Photo remaster:</strong> Old, blurry, or low-resolution images are sharpened and enhanced automatically using AI trained on millions of images.</li>
+  <li><strong>Generative fill:</strong> Some flagship phones now let you expand the edges of a photo beyond its original frame, with AI generating realistic content to fill the new space.</li>
+</ul>
+
+<h2>Live Translation and Call Summaries</h2>
+
+<p>Google Pixel's Live Translate can detect when two people are speaking different languages and automatically translate both sides of the conversation in real time. Samsung's Galaxy AI offers the same feature for phone calls — both parties hear the conversation in their own language, with no app, no subscription, and no internet required.</p>
+
+<p>After a call ends, AI can transcribe the conversation and generate a brief summary of key decisions and action points. Our guide on <a href="/article/ai-tools-saving-hours-every-week-2026" class="article-backlink">the AI tools genuinely saving people hours every week</a> covers this in depth.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/7034516/pexels-photo-7034516.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person using AI phone for live translation during conversation" width="1200" height="630" />
+  <figcaption>Live translation on AI phones can handle both sides of a conversation in real time — making language barriers disappear.</figcaption>
+</figure>
+
+<h2>Smarter Battery Management</h2>
+
+<p>The AI studies your usage patterns over time. It learns when you check email, stream video, and game — and uses those patterns to pre-allocate processing power when you need it and restrict background activity when you do not. Users on the same hardware get meaningfully different battery lives based on how well their phone has learned their patterns.</p>
+
+<p>For even more control over your Android battery, our detailed guide on <a href="/article/android-battery-life-tips-2026" class="article-backlink">how to make your Android battery last all day</a> covers the manual settings that work alongside AI to maximise your usage time.</p>
+
+<h2>Voice Assistants Are Finally Useful</h2>
+
+<p>Google's Gemini Live can hold a genuine back-and-forth conversation, understand context across multiple questions, help you draft emails, find information across your apps, and make decisions with you — not just for you. Samsung's Galaxy AI assistant can read your screen, understand what you are looking at, and help you take action on it.</p>
+
+<figure>
+  <img src="https://images.pexels.com/photos/5473955/pexels-photo-5473955.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person speaking to AI voice assistant on smartphone" width="1200" height="630" />
+  <figcaption>The gap between old-generation voice assistants and today's AI phone assistants is not a feature update — it is a complete rebuild of what voice control can do.</figcaption>
+</figure>
+
+<h2>What Regular Users Actually Gain</h2>
+
+<ul>
+  <li>Your photos look dramatically better with zero effort</li>
+  <li>Your phone recognises your patterns and stops draining battery on things you do not use</li>
+  <li>You can search your entire photo library by describing what is in a photo</li>
+  <li>Notes apps can summarise voice recordings instantly</li>
+  <li>Writing suggestions appear contextually in any text field</li>
+  <li>Spam calls are identified and filtered before you even pick up</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Do I need an expensive phone to get AI features?</h3>
+<p>Not anymore. Xiaomi, Tecno, and Infinix have all brought meaningful AI camera and assistant features to mid-range phones in 2025 and 2026. The most advanced features are still more capable on flagship hardware, but the gap is closing fast.</p>
+
+<h3>Is on-device AI really private?</h3>
+<p>More private than cloud-based AI, yes. When processing happens on the device, your photos, voice, and data do not leave the phone. However, some AI features still connect to the cloud for enhanced processing — check your settings and disable any you are uncomfortable with.</p>
+
+<h3>Will my current phone get these AI features?</h3>
+<p>Some of them, yes. Google pushes Gemini AI features to Pixel phones going back several generations. Samsung has added Galaxy AI features to devices as old as the Galaxy S23 through software updates.</p>
+
+<h3>What is the difference between AI phones and regular smartphones?</h3>
+<p>The key technical difference is the NPU — Neural Processing Unit. AI phones have dedicated hardware for running machine learning models on-device, which is faster and more power-efficient than using the main CPU.</p>
+
+<h2>What the Next Two Years Look Like</h2>
+
+<p>By 2028, a phone without meaningful AI features will feel as outdated as a phone without a good camera feels today. The question is not whether AI becomes the standard — it is how fast.</p>
+
+<p>For students, the implications are particularly interesting. Our breakdown of <a href="/article/ai-tools-for-students-2026" class="article-backlink">how AI tools are changing the way students study in 2026</a> covers exactly how the AI phone and AI study tool revolutions are converging into something genuinely powerful.</p>`,
   };
 
   // ── 5. Seed articles (skip if any already exist) ──────────────────────────
@@ -947,13 +1169,33 @@ async function runSetup(pool) {
     },
     {
       slug: 'hidden-android-features-2026',
-      title: '7 Hidden Android Phone Features Most People Still Do Not Know About in 2026',
-      subtitle: 'Most users only tap into 20% of what their Android phone can do',
-      excerpt: 'These hidden Android phone features can improve battery life, privacy, multitasking, and daily productivity. Most users still have no idea they exist.',
+      title: '7 Hidden Android Features Most People Still Do Not Know About in 2026',
+      subtitle: 'Most users only tap into 20% of what their Android phone can do — here is the other 80%',
+      excerpt: 'These hidden Android phone features can improve battery life, privacy, multitasking, and daily productivity. From Samsung to Pixel to Infinix — most users still have no idea they exist.',
       category: 'Phone Tips', authorId: 2,
-      imageUrl: 'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg',
-      readTime: 7, featured: false, editorsPick: false,
+      imageUrl: 'https://images.pexels.com/photos/1440727/pexels-photo-1440727.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      readTime: 8, featured: false, editorsPick: false,
       tags: ['Android', 'Samsung', 'Xiaomi', 'Google Pixel', 'Phone Tips', 'Productivity'],
+    },
+    {
+      slug: 'ai-tools-for-students-2026',
+      title: 'How AI Tools Are Changing the Way Students Study in 2026',
+      subtitle: 'Not just ChatGPT — students are combining five different AI tools to study faster, write better, and ace exams',
+      excerpt: 'Students are using AI tools to summarise notes, generate practice questions, improve their writing, and organise revision — and the results are changing what academic success looks like.',
+      category: 'AI Tools', authorId: 5,
+      imageUrl: 'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      readTime: 7, featured: false, editorsPick: true,
+      tags: ['AI Tools', 'Students', 'ChatGPT', 'Study Tips', 'Productivity', 'Education'],
+    },
+    {
+      slug: 'why-ai-phones-are-becoming-the-future',
+      title: 'Why AI Phones Are Becoming the Future of Smartphones',
+      subtitle: 'From cameras that think to assistants that learn your habits — AI is no longer a phone feature, it is the phone',
+      excerpt: 'AI phones are changing how people take photos, translate calls, save battery, and use apps. Here is why every major brand is betting everything on AI — and what it means for you.',
+      category: 'Tech', authorId: 1,
+      imageUrl: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      readTime: 8, featured: false, editorsPick: true,
+      tags: ['Tech', 'AI Phones', 'Samsung', 'Google Pixel', 'Xiaomi', 'Smartphones', 'AI Features'],
     },
   ];
 
