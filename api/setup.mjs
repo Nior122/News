@@ -4,6 +4,53 @@
  * Runs once per cold start, cached as a promise to avoid duplicate calls.
  */
 
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ *  HOW TO ADD A NEW ARTICLE — READ THIS BEFORE EDITING
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ *  This file is the SINGLE source of truth for the Vercel + Neon deployment.
+ *  Every article must appear in TWO places inside this file:
+ *
+ *  1. BODIES  (around line 90)       — the full HTML body of the article
+ *  2. articles array (near the end)  — metadata: slug, title, category, etc.
+ *
+ *  Both are inside runSetup(). Adding to only one will result in an article
+ *  with missing content OR an article that is never inserted.
+ *
+ *  After making changes here, redeploy to Vercel, then immediately call:
+ *    GET /api/admin/force-seed?key=ADMIN_PASSWORD
+ *  This pushes all changes into the live Neon database without waiting for
+ *  a cold start. It is safe to call repeatedly — all operations are idempotent.
+ *
+ *  PARALLEL FILE: lib/db/src/ensure-seeded.ts is the equivalent for the
+ *  Replit development database. Keep both files in sync when adding articles.
+ *  If only deploying to Vercel, only this file needs updating.
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+// Canonical publish dates — used on first insert so articles have correct
+// timestamps even on a fresh database. Add an entry for every new article.
+const PUBLISHED_AT = {
+  'google-io-2026-ai-announcements':           '2026-05-25T09:00:00Z',
+  'tesla-self-driving-cars-2026':              '2026-05-25T10:30:00Z',
+  'big-tech-725-billion-ai-spending-layoffs-2026': '2026-05-25T11:30:00Z',
+  'amd-on-device-ai-no-internet-2026':         '2026-05-25T13:00:00Z',
+  'tiktok-brain-attention-span-2026':          '2026-05-24T09:00:00Z',
+  'memes-internet-news-culture-2026':          '2026-05-23T11:00:00Z',
+  'four-day-work-week-results-2026':           '2026-05-22T08:00:00Z',
+  'quitting-social-media-digital-detox-2026':  '2026-05-21T10:00:00Z',
+  'iphone-settings-change-now-2026':           '2026-05-23T07:00:00Z',
+  'android-battery-life-tips-2026':            '2026-05-22T07:00:00Z',
+  'ai-tools-saving-hours-every-week-2026':     '2026-05-24T08:00:00Z',
+  'todo-list-broken-better-system-2026':       '2026-05-20T09:00:00Z',
+  'chatgpt-claude-gemini-comparison-2026':     '2026-05-25T08:00:00Z',
+  'ai-prompt-formula-better-answers-2026':     '2026-05-23T09:00:00Z',
+  'hidden-android-features-2026':              '2026-05-26T08:00:00Z',
+  'ai-tools-for-students-2026':               '2026-05-26T10:00:00Z',
+  'why-ai-phones-are-becoming-the-future':    '2026-05-26T11:00:00Z',
+};
+
 let setupPromise = null;
 
 export function ensureReady(pool) {
@@ -1196,40 +1243,62 @@ async function runSetup(pool) {
     },
   ];
 
+  // Insert any articles that don't exist yet. Uses PUBLISHED_AT for correct
+  // timestamps. ON CONFLICT DO NOTHING preserves existing rows (views, flags, etc.)
   for (const a of articles) {
     await pool.query(
       `INSERT INTO articles
          (slug, title, subtitle, excerpt, body, category, author_id, image_url,
           read_time, featured, editors_pick, published, tags, published_at, views)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12,NOW(),0)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12,
+               COALESCE($13::timestamptz, NOW()), 0)
        ON CONFLICT (slug) DO NOTHING`,
       [
         a.slug, a.title, a.subtitle ?? null, a.excerpt,
         BODIES[a.slug] ?? null,
         a.category, a.authorId, a.imageUrl, a.readTime,
         a.featured, a.editorsPick, a.tags,
+        PUBLISHED_AT[a.slug] ?? null,
       ],
     );
   }
 
-  // ── 6. Always update body to ensure full content with images ──────────────
-  for (const [slug, body] of Object.entries(BODIES)) {
+  // ── 6. Always sync content fields from code → database ───────────────────
+  // Runs on every cold start and every force-seed call.
+  // Updates: title, subtitle, excerpt, imageUrl, readTime, body.
+  // Does NOT touch: views, featured, editors_pick, published (admin-managed).
+  for (const a of articles) {
     await pool.query(
-      `UPDATE articles SET body = $1 WHERE slug = $2`,
-      [body, slug],
+      `UPDATE articles
+         SET title      = $1,
+             subtitle   = $2,
+             excerpt    = $3,
+             image_url  = $4,
+             read_time  = $5,
+             body       = COALESCE($6, body)
+       WHERE slug = $7`,
+      [
+        a.title, a.subtitle ?? null, a.excerpt,
+        a.imageUrl, a.readTime,
+        BODIES[a.slug] ?? null,
+        a.slug,
+      ],
     );
   }
 
-  console.log('[setup] Schema and seed complete.');
+  console.log(`[setup] Schema and seed complete. ${articles.length} articles synced.`);
 }
 
 /**
- * Force-refresh: re-runs full setup so missing articles are inserted
- * and all bodies are updated. Safe to call on a populated database.
+ * Force-refresh: resets the setup cache and re-runs the full setup.
+ * - Inserts any articles missing from the database (ON CONFLICT DO NOTHING)
+ * - Syncs title, subtitle, excerpt, imageUrl, readTime, body for all articles
+ * - Safe to call repeatedly on a populated database — fully idempotent
+ * - Call via: GET /api/admin/force-seed?key=ADMIN_PASSWORD
  */
 export async function forceRefreshBodies(pool) {
-  setupPromise = null; // reset so runSetup executes again
-  await runSetup(pool);
+  setupPromise = null;          // clear cache so ensureReady re-runs setup
+  await ensureReady(pool);      // runs runSetup, sets setupPromise correctly
   const { rows } = await pool.query('SELECT COUNT(*) AS c FROM articles');
   return parseInt(rows[0].c, 10);
 }
