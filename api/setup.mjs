@@ -1022,10 +1022,7 @@ async function runSetup(pool) {
 <p>For students, the implications are particularly interesting. Our breakdown of <a href="/article/ai-tools-for-students-2026" class="article-backlink">how AI tools are changing the way students study in 2026</a> covers exactly how the AI phone and AI study tool revolutions are converging into something genuinely powerful.</p>`,
   };
 
-  // ── 5. Seed articles (skip if any already exist) ──────────────────────────
-  const { rows: existing } = await pool.query('SELECT COUNT(*) as c FROM articles');
-  if (parseInt(existing[0].c, 10) === 0) {
-
+  // ── 5. Seed articles — always insert missing ones (ON CONFLICT DO NOTHING) ──
   const articles = [
     {
       slug: 'google-io-2026-ai-announcements',
@@ -1215,8 +1212,6 @@ async function runSetup(pool) {
     );
   }
 
-  } // end if count === 0
-
   // ── 6. Always update body to ensure full content with images ──────────────
   for (const [slug, body] of Object.entries(BODIES)) {
     await pool.query(
@@ -1229,14 +1224,12 @@ async function runSetup(pool) {
 }
 
 /**
- * Force-refresh all article bodies — can be called from the admin endpoint
- * to immediately push full content into the database without waiting for cold start.
+ * Force-refresh: re-runs full setup so missing articles are inserted
+ * and all bodies are updated. Safe to call on a populated database.
  */
 export async function forceRefreshBodies(pool) {
-  let count = 0;
-  for (const [slug, body] of Object.entries(BODIES)) {
-    await pool.query(`UPDATE articles SET body = $1 WHERE slug = $2`, [body, slug]);
-    count++;
-  }
-  return count;
+  setupPromise = null; // reset so runSetup executes again
+  await runSetup(pool);
+  const { rows } = await pool.query('SELECT COUNT(*) AS c FROM articles');
+  return parseInt(rows[0].c, 10);
 }

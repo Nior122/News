@@ -157,7 +157,7 @@ export default async function handler(req, res) {
       const key = url.searchParams.get('key');
       if (!key || key !== process.env.ADMIN_PASSWORD) { send(res, { error: 'Unauthorized' }, 401); return; }
       const count = await forceRefreshBodies(db);
-      send(res, { success: true, updated: count, message: `Updated body for ${count} articles.` }); return;
+      send(res, { success: true, total: count, message: `Setup complete. ${count} articles now in database.` }); return;
     }
 
     // Admin login
