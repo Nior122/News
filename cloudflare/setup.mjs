@@ -2,6 +2,9 @@
  * Cloudflare Worker setup — creates tables and seeds articles on cold start.
  * Uses Neon HTTP driver tagged-template syntax (works in Workers runtime).
  * Functionally identical to api/setup.mjs but adapted for the edge.
+ *
+ * Key difference from api/setup.mjs: uses db`...` tagged templates instead
+ * of pool.query() — no db.unsafe() calls anywhere.
  */
 
 const PUBLISHED_AT = {
@@ -32,14 +35,14 @@ export function ensureReady(db) {
   if (!setupPromise) {
     setupPromise = runSetup(db).catch((err) => {
       setupPromise = null;
-      console.error('[setup] failed:', err);
+      console.error('[cf-setup] failed:', err);
     });
   }
   return setupPromise;
 }
 
 async function runSetup(db) {
-  // ── 1. Create tables ──────────────────────────────────────────────────────
+  // ── 1. Tables ─────────────────────────────────────────────────────────────
   await db`
     CREATE TABLE IF NOT EXISTS authors (
       id         SERIAL PRIMARY KEY,
@@ -82,7 +85,7 @@ async function runSetup(db) {
       subscribed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )`;
 
-  // ── 2. Seed authors ───────────────────────────────────────────────────────
+  // ── 2. Authors ────────────────────────────────────────────────────────────
   await db`
     INSERT INTO authors (id, name, avatar_url) VALUES
       (1, 'Maya Chen',    'https://i.pravatar.cc/150?img=47'),
@@ -94,7 +97,7 @@ async function runSetup(db) {
 
   await db`SELECT setval('authors_id_seq', (SELECT MAX(id) FROM authors))`;
 
-  // ── 3. Seed categories ────────────────────────────────────────────────────
+  // ── 3. Categories ─────────────────────────────────────────────────────────
   await db`
     INSERT INTO categories (slug, name, color, article_count) VALUES
       ('tech',         'Tech',         '#3B82F6', 0),
@@ -106,21 +109,16 @@ async function runSetup(db) {
       ('trending',     'Trending',     '#F97316', 0)
     ON CONFLICT (slug) DO NOTHING`;
 
-  // ── 4. Article bodies (full HTML) ─────────────────────────────────────────
-  // NOTE: Bodies for earlier articles are omitted here for brevity — they are
-  // already in the Neon database from the Vercel deployment. The Cloudflare
-  // Worker only needs to insert/sync articles. If deploying to a fresh Neon DB,
-  // run force-seed via Vercel first to populate all bodies, then Cloudflare
-  // will keep them in sync going forward.
-  //
-  // To add bodies here, copy from api/setup.mjs BODIES object.
+  // ── 4. Articles ───────────────────────────────────────────────────────────
+  // Bodies are empty here — bodies already exist in Neon from Vercel's setup.
+  // If deploying to a fresh DB, run force-seed via Vercel first.
+  // To add bodies, copy from api/setup.mjs BODIES object.
   const BODIES = {};
 
-  // ── 5. Articles metadata ──────────────────────────────────────────────────
   const articles = [
     {
       slug: 'google-io-2026-ai-announcements',
-      title: 'Google Just Changed Everything at I/O 2026 — Here Is What It Means For You',
+      title: "Google Just Changed Everything at I/O 2026 — Here Is What It Means For You",
       subtitle: "From an AI that shops for you to a search engine that actually talks back — Google's biggest week of the year just rewired your digital life",
       excerpt: "Every year, Google throws a party for developers. But this year felt different. Here's what happened at I/O 2026 and why it changes everything you do online.",
       category: 'Tech', authorId: 1,
@@ -161,7 +159,7 @@ async function runSetup(db) {
     {
       slug: 'tiktok-brain-attention-span-2026',
       title: "The TikTok Brain Is Real — Here's What Constant Scrolling Is Doing to Your Mind",
-      subtitle: 'Neuroscientists now have the data — and the results are harder to dismiss than you\'d like',
+      subtitle: "Neuroscientists now have the data — and the results are harder to dismiss than you'd like",
       excerpt: "You open the app for two minutes and look up to find an hour has vanished. That's not a coincidence. Here's the science behind what short-form video is doing to your attention span.",
       category: 'Culture', authorId: 3,
       imageUrl: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80',
@@ -310,10 +308,13 @@ async function runSetup(db) {
     },
   ];
 
-  // ── 6. Insert missing articles ─────────────────────────────────────────────
+  // ── 5. Insert missing articles ─────────────────────────────────────────────
   for (const a of articles) {
     const body = BODIES[a.slug] ?? null;
-    const publishedAt = PUBLISHED_AT[a.slug] ?? null;
+    // Use the canonical published date, or fall back to NOW()
+    const publishedAt = PUBLISHED_AT[a.slug]
+      ? new Date(PUBLISHED_AT[a.slug])
+      : new Date();
     await db`
       INSERT INTO articles
         (slug, title, subtitle, excerpt, body, category, author_id, image_url,
@@ -321,23 +322,23 @@ async function runSetup(db) {
       VALUES (
         ${a.slug}, ${a.title}, ${a.subtitle ?? null}, ${a.excerpt},
         ${body}, ${a.category}, ${a.authorId}, ${a.imageUrl},
-        ${a.readTime}, ${a.featured}, ${a.editorsPick}, true, ${a.tags},
-        ${publishedAt ? db.unsafe(`'${publishedAt}'::timestamptz`) : db.unsafe('NOW()')}, 0
+        ${a.readTime}, ${a.featured}, ${a.editorsPick}, true,
+        ${a.tags}, ${publishedAt}, 0
       )
       ON CONFLICT (slug) DO NOTHING`;
   }
 
-  // ── 7. Sync content fields for all articles ───────────────────────────────
+  // ── 6. Sync content fields ────────────────────────────────────────────────
   for (const a of articles) {
     const body = BODIES[a.slug] ?? null;
     await db`
       UPDATE articles
-        SET title     = ${a.title},
-            subtitle  = ${a.subtitle ?? null},
-            excerpt   = ${a.excerpt},
-            image_url = ${a.imageUrl},
-            read_time = ${a.readTime},
-            body      = COALESCE(${body}, body)
+      SET title     = ${a.title},
+          subtitle  = ${a.subtitle ?? null},
+          excerpt   = ${a.excerpt},
+          image_url = ${a.imageUrl},
+          read_time = ${a.readTime},
+          body      = COALESCE(${body}, body)
       WHERE slug = ${a.slug}`;
   }
 

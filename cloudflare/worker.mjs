@@ -2,19 +2,18 @@
  * Cloudflare Worker — handles all /api/* routes for Scrolltek.
  * Uses Neon HTTP driver (works in Workers runtime, unlike pg).
  * JWT auth uses Web Crypto API (built into Workers).
- * Compatible with: Cloudflare Pages Functions or standalone Worker.
  */
 
 import { neon } from '@neondatabase/serverless';
 import { ensureReady, forceRefreshBodies } from './setup.mjs';
 
-// ── DB client (Neon HTTP driver — edge-compatible) ────────────────────────────
+// ── DB client ─────────────────────────────────────────────────────────────────
 function getDb(env) {
   const connStr = (env.DATABASE_URL ?? '').replace(/[&?]channel_binding=[^&]*/g, '').replace(/\?&/, '?');
   return neon(connStr);
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Response helpers ──────────────────────────────────────────────────────────
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -30,7 +29,7 @@ function cors(response) {
   return r;
 }
 
-// ── JWT using Web Crypto API ──────────────────────────────────────────────────
+// ── JWT (Web Crypto API — built into Workers) ─────────────────────────────────
 function b64url(buf) {
   return btoa(String.fromCharCode(...new Uint8Array(buf)))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -59,28 +58,24 @@ async function verifyToken(token, secret) {
   const key = await crypto.subtle.importKey(
     'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'],
   );
-  const valid = await crypto.subtle.verify(
-    'HMAC', key, Uint8Array.from(atob(sig.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0)),
-    enc.encode(`${header}.${body}`),
+  const sigBytes = Uint8Array.from(
+    atob(sig.replace(/-/g, '+').replace(/_/g, '/')),
+    c => c.charCodeAt(0),
   );
+  const valid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${header}.${body}`));
   if (!valid) return null;
   const payload = JSON.parse(atob(body.replace(/-/g, '+').replace(/_/g, '/')));
   if (payload.exp < Math.floor(Date.now() / 1000)) return null;
   return payload;
 }
 
-function requireAdmin(req, env) {
+async function requireAdmin(req, env) {
   const auth = req.headers.get('Authorization') ?? '';
   if (!auth.startsWith('Bearer ')) return null;
   return verifyToken(auth.slice(7), env.ADMIN_PASSWORD ?? '');
 }
 
-// ── Row formatters ────────────────────────────────────────────────────────────
-function authorFrom(row) {
-  if (!row.author_name) return { name: 'Staff Writer', avatarUrl: '' };
-  return { name: row.author_name, avatarUrl: row.avatar_url ?? '' };
-}
-
+// ── Row formatter ─────────────────────────────────────────────────────────────
 function fmt(row) {
   return {
     id: row.id,
@@ -101,11 +96,11 @@ function fmt(row) {
       ? row.published_at.toISOString()
       : String(row.published_at),
     tags: row.tags ?? [],
-    author: authorFrom(row),
+    author: row.author_name
+      ? { name: row.author_name, avatarUrl: row.avatar_url ?? '' }
+      : { name: 'Staff Writer', avatarUrl: '' },
   };
 }
-
-const JOIN = 'SELECT a.*, au.name AS author_name, au.avatar_url FROM articles a JOIN authors au ON a.author_id = au.id';
 
 const SLUG_TO_CATEGORY = {
   tech: 'Tech', culture: 'Culture', lifestyle: 'Lifestyle',
@@ -118,7 +113,7 @@ function slugToCategory(slug) {
   return SLUG_TO_CATEGORY[slug.toLowerCase()] ?? slug;
 }
 
-// ── Main fetch handler ────────────────────────────────────────────────────────
+// ── Main handler ──────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') {
@@ -173,53 +168,54 @@ export default {
 
       // Admin upload (not supported in Workers)
       if (path === '/admin/upload' && method === 'POST') {
-        const payload = await requireAdmin(request, env);
-        if (!payload) return cors(json({ error: 'Unauthorized' }, 401));
+        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         return cors(json({ error: 'File upload not supported in edge mode. Use an image URL instead.' }, 400));
       }
 
       // Admin list articles
       if (path === '/admin/articles' && method === 'GET') {
-        const payload = await requireAdmin(request, env);
-        if (!payload) return cors(json({ error: 'Unauthorized' }, 401));
-        const rows = await db`${db.unsafe(JOIN)} ORDER BY a.published_at DESC`;
+        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          ORDER BY a.published_at DESC`;
         return cors(json(rows.map(fmt)));
       }
 
       // Admin create article
       if (path === '/admin/articles' && method === 'POST') {
-        const payload = await requireAdmin(request, env);
-        if (!payload) return cors(json({ error: 'Unauthorized' }, 401));
+        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const b = await request.json().catch(() => ({}));
         const tags = Array.isArray(b.tags) ? b.tags : String(b.tags ?? '').split(',').map(t => t.trim()).filter(Boolean);
         const rows = await db`
           INSERT INTO articles (slug,title,subtitle,excerpt,body,category,image_url,read_time,author_id,featured,editors_pick,published,tags,published_at,views)
           VALUES (${b.slug},${b.title},${b.subtitle||null},${b.excerpt},${b.body||null},${b.category},${b.imageUrl||''},${Number(b.readTime)||3},${Number(b.authorId)||1},${!!b.featured},${!!b.editorsPick},${b.published!==false},${tags},NOW(),0)
           RETURNING *`;
-        const au = await db`SELECT name, avatar_url FROM authors WHERE id=${rows[0].author_id}`;
+        const au = await db`SELECT name, avatar_url FROM authors WHERE id = ${rows[0].author_id}`;
         return cors(json(fmt({ ...rows[0], author_name: au[0]?.name, avatar_url: au[0]?.avatar_url }), 201));
       }
 
       // Admin article by ID (PUT / DELETE)
       const idMatch = path.match(/^\/admin\/articles\/(\d+)$/);
       if (idMatch) {
-        const payload = await requireAdmin(request, env);
-        if (!payload) return cors(json({ error: 'Unauthorized' }, 401));
+        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const id = parseInt(idMatch[1], 10);
         if (method === 'PUT') {
           const b = await request.json().catch(() => ({}));
           const tags = Array.isArray(b.tags) ? b.tags : String(b.tags ?? '').split(',').map(t => t.trim()).filter(Boolean);
           const rows = await db`
-            UPDATE articles SET title=${b.title},subtitle=${b.subtitle||null},excerpt=${b.excerpt},body=${b.body||null},
-            category=${b.category},image_url=${b.imageUrl||''},read_time=${Number(b.readTime)},author_id=${Number(b.authorId)},
-            featured=${!!b.featured},editors_pick=${!!b.editorsPick},published=${!!b.published},tags=${tags}
+            UPDATE articles
+            SET title=${b.title}, subtitle=${b.subtitle||null}, excerpt=${b.excerpt}, body=${b.body||null},
+                category=${b.category}, image_url=${b.imageUrl||''}, read_time=${Number(b.readTime)},
+                author_id=${Number(b.authorId)}, featured=${!!b.featured}, editors_pick=${!!b.editorsPick},
+                published=${!!b.published}, tags=${tags}
             WHERE id=${id} RETURNING *`;
           if (!rows.length) return cors(json({ error: 'Not found' }, 404));
-          const au = await db`SELECT name, avatar_url FROM authors WHERE id=${rows[0].author_id}`;
+          const au = await db`SELECT name, avatar_url FROM authors WHERE id = ${rows[0].author_id}`;
           return cors(json(fmt({ ...rows[0], author_name: au[0]?.name, avatar_url: au[0]?.avatar_url })));
         }
         if (method === 'DELETE') {
-          await db`DELETE FROM articles WHERE id=${id}`;
+          await db`DELETE FROM articles WHERE id = ${id}`;
           return cors(json({ success: true }));
         }
       }
@@ -227,44 +223,61 @@ export default {
       // Admin publish toggle
       const pubMatch = path.match(/^\/admin\/articles\/(\d+)\/publish$/);
       if (pubMatch && method === 'PATCH') {
-        const payload = await requireAdmin(request, env);
-        if (!payload) return cors(json({ error: 'Unauthorized' }, 401));
+        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const id = parseInt(pubMatch[1], 10);
-        const cur = await db`SELECT published FROM articles WHERE id=${id}`;
+        const cur = await db`SELECT published FROM articles WHERE id = ${id}`;
         if (!cur.length) return cors(json({ error: 'Not found' }, 404));
-        const rows = await db`UPDATE articles SET published=${!cur[0].published} WHERE id=${id} RETURNING *`;
-        const au = await db`SELECT name, avatar_url FROM authors WHERE id=${rows[0].author_id}`;
+        const rows = await db`UPDATE articles SET published = ${!cur[0].published} WHERE id = ${id} RETURNING *`;
+        const au = await db`SELECT name, avatar_url FROM authors WHERE id = ${rows[0].author_id}`;
         return cors(json(fmt({ ...rows[0], author_name: au[0]?.name, avatar_url: au[0]?.avatar_url })));
       }
 
       // Articles: featured
       if (path === '/articles/featured' && method === 'GET') {
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.featured=true AND a.published=true ORDER BY a.published_at DESC LIMIT 1`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.featured = true AND a.published = true
+          ORDER BY a.published_at DESC LIMIT 1`;
         if (!rows.length) return cors(json({ error: 'Not found' }, 404));
         return cors(json(fmt(rows[0])));
       }
 
       // Articles: trending
       if (path === '/articles/trending' && method === 'GET') {
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.published=true ORDER BY a.views DESC, a.published_at DESC LIMIT 5`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.published = true
+          ORDER BY a.views DESC, a.published_at DESC LIMIT 5`;
         return cors(json(rows.map(fmt)));
       }
 
       // Articles: editors-picks
       if (path === '/articles/editors-picks' && method === 'GET') {
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.editors_pick=true AND a.published=true ORDER BY a.published_at DESC LIMIT 6`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.editors_pick = true AND a.published = true
+          ORDER BY a.published_at DESC LIMIT 6`;
         return cors(json(rows.map(fmt)));
       }
 
       // Articles: popular
       if (path === '/articles/popular' && method === 'GET') {
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.published=true ORDER BY a.views DESC, a.published_at DESC LIMIT 10`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.published = true
+          ORDER BY a.views DESC, a.published_at DESC LIMIT 10`;
         return cors(json(rows.map(fmt)));
       }
 
       // Articles: ticker
       if (path === '/articles/ticker' && method === 'GET') {
-        const rows = await db`SELECT id,slug,title,category FROM articles WHERE published=true ORDER BY published_at DESC LIMIT 10`;
+        const rows = await db`
+          SELECT id, slug, title, category FROM articles
+          WHERE published = true ORDER BY published_at DESC LIMIT 10`;
         return cors(json(rows));
       }
 
@@ -276,24 +289,43 @@ export default {
         const offset = (page - 1) * limit;
         if (!q.trim()) return cors(json({ articles: [], total: 0, page, limit, hasMore: false }));
         const pattern = `%${q}%`;
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.published=true AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern}) ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
-        const countRows = await db`SELECT COUNT(*) as total FROM articles a WHERE a.published=true AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern})`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.published = true
+            AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern})
+          ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
+        const countRows = await db`
+          SELECT COUNT(*) AS total FROM articles a
+          WHERE a.published = true
+            AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern})`;
         const total = parseInt(countRows[0].total, 10);
         return cors(json({ articles: rows.map(fmt), total, page, limit, hasMore: offset + rows.length < total }));
       }
 
-      // Articles: list
+      // Articles: list (with optional category filter)
       if (path === '/articles' && method === 'GET') {
         const category = slugToCategory(url.searchParams.get('category'));
         const limit = Math.min(parseInt(url.searchParams.get('limit') ?? '12', 10), 50);
         const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+
         let rows, countRows;
         if (category) {
-          rows = await db`${db.unsafe(JOIN)} WHERE a.published=true AND a.category=${category} ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
-          countRows = await db`SELECT COUNT(*) as total FROM articles a WHERE a.published=true AND a.category=${category}`;
+          rows = await db`
+            SELECT a.*, au.name AS author_name, au.avatar_url
+            FROM articles a JOIN authors au ON a.author_id = au.id
+            WHERE a.published = true AND a.category = ${category}
+            ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
+          countRows = await db`
+            SELECT COUNT(*) AS total FROM articles
+            WHERE published = true AND category = ${category}`;
         } else {
-          rows = await db`${db.unsafe(JOIN)} WHERE a.published=true ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
-          countRows = await db`SELECT COUNT(*) as total FROM articles a WHERE a.published=true`;
+          rows = await db`
+            SELECT a.*, au.name AS author_name, au.avatar_url
+            FROM articles a JOIN authors au ON a.author_id = au.id
+            WHERE a.published = true
+            ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
+          countRows = await db`SELECT COUNT(*) AS total FROM articles WHERE published = true`;
         }
         const total = parseInt(countRows[0].total, 10);
         return cors(json({ articles: rows.map(fmt), total, hasMore: offset + rows.length < total }));
@@ -303,9 +335,13 @@ export default {
       const relMatch = path.match(/^\/articles\/([^/]+)\/related$/);
       if (relMatch && method === 'GET') {
         const slug = relMatch[1];
-        const base = await db`SELECT category FROM articles WHERE slug=${slug}`;
+        const base = await db`SELECT category FROM articles WHERE slug = ${slug}`;
         if (!base.length) return cors(json([]));
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.category=${base[0].category} AND a.slug!=${slug} AND a.published=true ORDER BY a.published_at DESC LIMIT 4`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.category = ${base[0].category} AND a.slug != ${slug} AND a.published = true
+          ORDER BY a.published_at DESC LIMIT 4`;
         return cors(json(rows.map(fmt)));
       }
 
@@ -313,9 +349,12 @@ export default {
       const slugMatch = path.match(/^\/articles\/([^/]+)$/);
       if (slugMatch && method === 'GET') {
         const slug = slugMatch[1];
-        const rows = await db`${db.unsafe(JOIN)} WHERE a.slug=${slug}`;
+        const rows = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.slug = ${slug}`;
         if (!rows.length) return cors(json({ error: 'Not found' }, 404));
-        await db`UPDATE articles SET views=views+1 WHERE slug=${slug}`;
+        await db`UPDATE articles SET views = views + 1 WHERE slug = ${slug}`;
         return cors(json(fmt(rows[0])));
       }
 
