@@ -1040,7 +1040,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     subtitle: "From cameras that think to assistants that never forget — AI is not a feature anymore, it is the entire phone",
     excerpt: "AI phones are reshaping how people take photos, handle calls, manage battery, and interact with their devices. Here is what changed, which brands are leading, and what it means for your next upgrade.",
     body: `<figure>
-  <img src="" alt="AI smartphone held in hand showing glowing AI interface live translation feature 2026" data-search="premium AI smartphone held hand glowing screen interface" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/20870805/pexels-photo-20870805.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="AI smartphone held in hand showing glowing AI interface live translation feature 2026" data-search="premium AI smartphone held hand glowing screen interface" data-source="pexels.com" width="1200" height="630" />
   <figcaption>The smartphone in your pocket is no longer just a communication device — in 2026 it is an intelligent assistant that thinks alongside you.</figcaption>
 </figure>
 
@@ -1059,7 +1059,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>This matters because it means AI features run <strong>on the device itself</strong> — no internet required, no data sent to a server, no delay. Your photos get enhanced in the moment you take them. Your voice is transcribed offline. Your battery is optimised based on your personal usage patterns — locally, privately, instantly. If you want to understand how this on-device AI technology works at the chip level, our breakdown of <a href="/article/amd-on-device-ai-no-internet-2026" class="article-backlink">how powerful AI now runs entirely offline</a> explains the hardware in plain English.</p>
 
 <figure>
-  <img src="" alt="Smartphone processor chip NPU AI hardware close up technology 2026" data-search="smartphone processor chip AI hardware close up" data-source="wikimedia.org" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/3520679/pexels-photo-3520679.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Smartphone processor chip NPU AI hardware close up technology 2026" data-search="smartphone processor chip AI hardware close up" data-source="wikimedia.org" width="1200" height="630" />
   <figcaption>The secret behind AI phones is a dedicated neural processing unit — a chip inside the phone built specifically to run AI tasks quickly and privately on-device.</figcaption>
 </figure>
 
@@ -1098,7 +1098,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>Today's AI phone assistants are different. Google's Gemini Live holds a genuine back-and-forth conversation. It remembers context across questions, helps you draft emails, searches across your apps, and works through decisions with you. Samsung's Galaxy AI can read your screen in real time and take action on what it sees — no commands required.</p>
 
 <figure>
-  <img src="" alt="Smartphone AI camera before after photo enhancement comparison 2026" data-search="smartphone AI camera photo enhancement before after" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Smartphone AI camera before after photo enhancement comparison 2026" data-search="smartphone AI camera photo enhancement before after" data-source="pexels.com" width="1200" height="630" />
   <figcaption>AI camera systems can fix lighting, remove unwanted objects, and enhance detail — all in the second after you tap the shutter button.</figcaption>
 </figure>
 
@@ -1111,7 +1111,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p><strong>Xiaomi</strong> is pushing AI features into HyperOS aggressively and has the fastest-growing AI camera lineup outside of Samsung and Google. <strong>Tecno and Infinix</strong> deserve real credit for bringing genuine AI camera features — not just marketing labels — to sub-$300 devices. The gap between flagship and budget AI is narrowing faster than anyone expected.</p>
 
 <figure>
-  <img src="" alt="AI phone comparison Samsung Google Pixel Xiaomi Tecno Infinix features 2026" data-search="smartphone brands comparison chart features Samsung Pixel Xiaomi" data-source="pixabay.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/1440727/pexels-photo-1440727.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="AI phone comparison Samsung Google Pixel Xiaomi Tecno Infinix features 2026" data-search="smartphone brands comparison chart features Samsung Pixel Xiaomi" data-source="pixabay.com" width="1200" height="630" />
   <figcaption>Every major smartphone brand is racing to build the most useful AI phone — and the competition is pushing advanced features down to affordable price points faster than ever.</figcaption>
 </figure>
 
@@ -1124,7 +1124,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>And be aware that some budget phones use "AI" as a marketing label on features that are not genuinely AI-powered. If a phone is advertising AI features without specifying an NPU chip, look closer before you buy.</p>
 
 <figure>
-  <img src="" alt="Person checking phone privacy settings permissions concerned data security" data-search="person checking phone privacy settings permissions screen" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/7034516/pexels-photo-7034516.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person checking phone privacy settings permissions concerned data security" data-search="person checking phone privacy settings permissions screen" data-source="pexels.com" width="1200" height="630" />
   <figcaption>AI phones are powerful — but knowing which features keep your data local and which share it with the cloud is something every user should check in their settings.</figcaption>
 </figure>
 
@@ -1143,7 +1143,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>Some of them, yes. AI assistants are already replacing basic apps like calculators, note-takers, and translators by handling those tasks natively. The change will be gradual — but it is already happening.</p>
 
 <figure>
-  <img src="" alt="Person using AI phone hands free feature public transport commuting 2026" data-search="person using smartphone AI feature hands free commuting" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/4559759/pexels-photo-4559759.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person using AI phone hands free feature public transport commuting 2026" data-search="person using smartphone AI feature hands free commuting" data-source="pexels.com" width="1200" height="630" />
   <figcaption>The best AI phone features work quietly in the background — so you spend less time managing your phone and more time actually living your life.</figcaption>
 </figure>
 
@@ -1160,7 +1160,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     authorId: 1,
     publishedAt: new Date("2026-05-28T09:00:00Z"),
     readTime: 9,
-    imageUrl: "https://images.pexels.com/photos/13750474/pexels-photo-13750474.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageUrl: "https://images.pexels.com/photos/20870805/pexels-photo-20870805.jpeg?auto=compress&cs=tinysrgb&w=1200",
     views: 0,
     featured: true,
     editorsPick: false,
@@ -1172,7 +1172,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     subtitle: "You do not need a huge following or a production studio — you need clarity, consistency, and a reason people should care",
     excerpt: "Building a personal brand online in 2026 is one of the smartest things you can do with your time and expertise. Here is exactly how to start, grow, and eventually monetize your presence — even from zero.",
     body: `<figure>
-  <img src="" alt="Content creator desk setup camera laptop ring light personal brand workspace 2026" data-search="content creator desk setup camera laptop ring light workspace" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/7129669/pexels-photo-7129669.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Content creator desk setup camera laptop ring light personal brand workspace 2026" data-search="content creator desk setup camera laptop ring light workspace" data-source="pexels.com" width="1200" height="630" />
   <figcaption>Building a personal brand in 2026 does not require a big budget or a massive following — it requires consistency, clarity, and the courage to show up as yourself.</figcaption>
 </figure>
 
@@ -1191,7 +1191,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>Think about it. When you think of certain creators in the tech or lifestyle space, you do not just remember their content — you remember their <em>voice</em>. Their angle. Their way of seeing things. That is a personal brand. And building one is far more achievable than most people think. You might want to look at how <a href="/article/quitting-social-media-digital-detox-2026" class="article-backlink">people are rethinking their relationship with social media in 2026</a> — because building a brand requires being intentional about how you show up, not just how often.</p>
 
 <figure>
-  <img src="" alt="Online brand presence social media profile clean consistent content creator" data-search="social media profile clean consistent branding creator" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/7514834/pexels-photo-7514834.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Online brand presence social media profile clean consistent content creator" data-search="social media profile clean consistent branding creator" data-source="pexels.com" width="1200" height="630" />
   <figcaption>A strong personal brand is not about looking perfect — it is about being instantly recognizable and consistently valuable to the people you are trying to reach.</figcaption>
 </figure>
 
@@ -1223,7 +1223,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>A newsletter or blog gives you a direct line to your audience that no algorithm can take away. Building an email list is the most valuable long-term asset a creator can own. Even if you start on TikTok or Instagram, building a newsletter in parallel protects you if platforms change their rules — which they always do eventually.</p>
 
 <figure>
-  <img src="" alt="Social media platforms icons TikTok YouTube Instagram LinkedIn creator 2026" data-search="social media platform icons creator posting content" data-source="pixabay.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/705164/pexels-photo-705164.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Social media platforms icons TikTok YouTube Instagram LinkedIn creator 2026" data-search="social media platform icons creator posting content" data-source="pixabay.com" width="1200" height="630" />
   <figcaption>You do not need to be on every platform — you need to dominate one, then expand. Choose the platform where your target audience already lives.</figcaption>
 </figure>
 
@@ -1236,7 +1236,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>AI tools are changing how creators work in 2026. You can use ChatGPT to brainstorm 30 content ideas in five minutes. Canva AI to design branded graphics without a designer. CapCut's AI tools to edit video in a fraction of the time. Notion AI to plan a full month of content in one session. Our breakdown of <a href="/article/ai-tools-saving-hours-every-week-2026" class="article-backlink">AI tools genuinely saving creators hours every week</a> covers exactly which ones are worth your time.</p>
 
 <figure>
-  <img src="" alt="Content creation workflow personal brand AI tools planning posting 2026" data-search="content creation workflow planning posting schedule creator" data-source="pixabay.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/3865826/pexels-photo-3865826.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Content creation workflow personal brand AI tools planning posting 2026" data-search="content creation workflow planning posting schedule creator" data-source="pixabay.com" width="1200" height="630" />
   <figcaption>The most consistent creators in 2026 use AI tools to plan, produce, and repurpose their content — so they never run out of ideas or creative energy.</figcaption>
 </figure>
 
@@ -1253,7 +1253,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 </ul>
 
 <figure>
-  <img src="" alt="Creator checking analytics phone growth followers milestone celebrating" data-search="creator checking phone analytics growth followers success" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/3861957/pexels-photo-3861957.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Creator checking analytics phone growth followers milestone celebrating" data-search="creator checking phone analytics growth followers success" data-source="pexels.com" width="1200" height="630" />
   <figcaption>Every creator remembers the moment they realised their brand was actually working — and it always starts with one small, consistent action taken long before results appeared.</figcaption>
 </figure>
 
@@ -1278,7 +1278,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
 <p>Start off-camera. Write posts. Do voiceover. Create carousels. Show your work without showing your face. Plenty of hugely successful personal brands are built entirely without video. And if you do want to get comfortable on camera, the only cure is repetition — record ten videos before you judge any of them.</p>
 
 <figure>
-  <img src="" alt="Young diverse creators collaborating working together online content 2026" data-search="young diverse creators collaborating content creation team" data-source="pexels.com" width="1200" height="630" />
+  <img src="https://images.pexels.com/photos/29267512/pexels-photo-29267512.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Young diverse creators collaborating working together online content 2026" data-search="young diverse creators collaborating content creation team" data-source="pexels.com" width="1200" height="630" />
   <figcaption>The creator economy in 2026 is not a solo sport — the most successful personal brands grow through collaboration, community, and relentless consistency.</figcaption>
 </figure>
 
@@ -1295,7 +1295,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     authorId: 3,
     publishedAt: new Date("2026-05-28T11:00:00Z"),
     readTime: 10,
-    imageUrl: "https://images.pexels.com/photos/3811082/pexels-photo-3811082.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageUrl: "https://images.pexels.com/photos/7129669/pexels-photo-7129669.jpeg?auto=compress&cs=tinysrgb&w=1200",
     views: 0,
     featured: false,
     editorsPick: true,
