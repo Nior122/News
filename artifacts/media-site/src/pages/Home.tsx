@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import {
   useListArticles,
-  useListTrendingArticles,
   useListPopularArticles,
   useListEditorsPicks,
   Article,
@@ -15,6 +14,19 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Flame, TrendingUp } from "lucide-react";
+
+// ── Utilities ────────────────────────────────────────────────────────────────
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── Section Header ────────────────────────────────────────────────────────────
 
 function SectionHeader({
   title,
@@ -44,7 +56,9 @@ function SectionHeader({
   );
 }
 
-function TrendingCard({ article, index }: { article: ReturnType<typeof useListTrendingArticles>["data"] extends (infer T)[] | undefined ? T : never; index: number }) {
+// ── Trending Now (truly random from ALL articles) ─────────────────────────────
+
+function TrendingCard({ article, index }: { article: Article; index: number }) {
   return (
     <Link
       href={`/article/${article.slug}`}
@@ -80,32 +94,22 @@ function TrendingCard({ article, index }: { article: ReturnType<typeof useListTr
   );
 }
 
-function shuffle<T>(arr: T[]): T[] {
-
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 function TrendingCarousel() {
-  const { data: articles, isLoading } = useListTrendingArticles();
-  const [visible, setVisible] = useState<typeof articles>([]);
+  // Pull from ALL articles for true randomness
+  const { data, isLoading } = useListArticles({ limit: 50 });
+  const articles = data?.articles ?? [];
+  const [visible, setVisible] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
   const SHOW = 6;
 
-  // Initialise on first load
   useEffect(() => {
-    if (articles && articles.length > 0) {
+    if (articles.length > 0) {
       setVisible(shuffle(articles).slice(0, SHOW));
     }
-  }, [articles]);
+  }, [articles.length]);
 
-  // Reshuffle every 10 seconds with a fade-out → swap → fade-in
   useEffect(() => {
-    if (!articles || articles.length === 0) return;
+    if (articles.length === 0) return;
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => {
@@ -120,14 +124,14 @@ function TrendingCarousel() {
     return (
       <div className="container max-w-screen-2xl px-4 md:px-8 py-10">
         <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
-        <div className="flex gap-4 flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" style={{ width: "clamp(240px, 28vw, 340px)", flexShrink: 0 }} />
+            <Skeleton key={i} className="h-24 rounded-xl" />
           ))}
         </div>
       </div>
     );
-  if (!articles || articles.length === 0) return null;
+  if (visible.length === 0) return null;
 
   return (
     <section className="py-10">
@@ -135,12 +139,9 @@ function TrendingCarousel() {
         <SectionHeader title="Trending Now" icon={<Flame className="w-5 h-5" />} />
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          style={{
-            opacity: fading ? 0 : 1,
-            transition: "opacity 0.4s ease",
-          }}
+          style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
         >
-          {visible?.map((article, index) => (
+          {visible.map((article, index) => (
             <TrendingCard key={`${article.id}-${index}`} article={article} index={index} />
           ))}
         </div>
@@ -149,30 +150,55 @@ function TrendingCarousel() {
   );
 }
 
+// ── Latest Wire (newest first, rest shuffles periodically) ────────────────────
 
 function LatestArticles() {
   const [page, setPage] = useState(1);
-  const [allArticles, setAllArticles] = useState<Article[]>([]);
+  const [allFetched, setAllFetched] = useState<Article[]>([]);
+  const [displayed, setDisplayed] = useState<Article[]>([]);
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [fading, setFading] = useState(false);
 
   const { data, isLoading } = useListArticles({ page, limit: 12 });
 
+  // Accumulate fetched articles
   useEffect(() => {
-    if (data?.articles) {
-      if (page === 1) {
-        setAllArticles(data.articles);
-      } else {
-        setAllArticles((prev) => {
-          const existingIds = new Set(prev.map((a) => a.id));
-          const newOnes = data.articles.filter((a) => !existingIds.has(a.id));
-          return [...prev, ...newOnes];
-        });
-        setLoadingMore(false);
-      }
-      setHasMore(data.hasMore ?? false);
+    if (!data?.articles) return;
+    if (page === 1) {
+      setAllFetched(data.articles);
+    } else {
+      setAllFetched((prev) => {
+        const existingIds = new Set(prev.map((a) => a.id));
+        const newOnes = data.articles.filter((a) => !existingIds.has(a.id));
+        return [...prev, ...newOnes];
+      });
+      setLoadingMore(false);
     }
+    setHasMore(data.hasMore ?? false);
   }, [data, page]);
+
+  // On initial load: pin the newest article (index 0 from API = most recent),
+  // shuffle the rest
+  useEffect(() => {
+    if (allFetched.length === 0) return;
+    const [newest, ...rest] = allFetched;
+    setDisplayed([newest, ...shuffle(rest)]);
+  }, [allFetched]);
+
+  // Reshuffle the non-pinned articles every 15 seconds
+  useEffect(() => {
+    if (allFetched.length < 2) return;
+    const id = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        const [newest, ...rest] = allFetched;
+        setDisplayed([newest, ...shuffle(rest)]);
+        setFading(false);
+      }, 400);
+    }, 15000);
+    return () => clearInterval(id);
+  }, [allFetched]);
 
   const handleLoadMore = () => {
     setLoadingMore(true);
@@ -195,8 +221,11 @@ function LatestArticles() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {allArticles.map((article) => (
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
+          >
+            {displayed.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
@@ -229,6 +258,8 @@ function LatestArticles() {
   );
 }
 
+// ── Popular This Week ─────────────────────────────────────────────────────────
+
 function PopularArticles() {
   const { data: articles, isLoading } = useListPopularArticles();
 
@@ -240,15 +271,14 @@ function PopularArticles() {
         <SectionHeader title="Popular This Week" icon={<TrendingUp className="w-5 h-5" />} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {articles.slice(0, 6).map((article, index) => (
-            <div key={article.id} className="flex items-start gap-4 bg-background p-4 rounded-xl border border-border hover:border-primary/20 hover:shadow-md transition-all duration-200">
+            <div
+              key={article.id}
+              className="flex items-start gap-4 bg-background p-4 rounded-xl border border-border hover:border-primary/20 hover:shadow-md transition-all duration-200"
+            >
               <span className="font-display text-2xl font-extrabold text-muted-foreground/25 shrink-0 w-7 leading-none mt-1">
                 {index + 1}
               </span>
-              <ArticleCard
-                article={article}
-                layout="horizontal"
-                className="flex-1"
-              />
+              <ArticleCard article={article} layout="horizontal" className="flex-1" />
             </div>
           ))}
         </div>
@@ -256,6 +286,8 @@ function PopularArticles() {
     </section>
   );
 }
+
+// ── Editor's Picks ────────────────────────────────────────────────────────────
 
 function EditorsPicks() {
   const { data: articles, isLoading } = useListEditorsPicks();
@@ -274,43 +306,123 @@ function EditorsPicks() {
         </div>
         <div className="lg:col-span-5 flex flex-col gap-4">
           {rest.map((article) => (
-            <ArticleCard key={article.id} article={article} layout="horizontal" className="py-3 border-b border-border/50 last:border-0" />
+            <ArticleCard
+              key={article.id}
+              article={article}
+              layout="horizontal"
+              className="py-3 border-b border-border/50 last:border-0"
+            />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
+// ── Category Spotlight (shuffles articles periodically) ───────────────────────
 
 function CategorySpotlight({ category }: { category: string }) {
   const slug = category.toLowerCase().replace(/\s+/g, "-");
-  const { data, isLoading } = useListArticles({
-    category: slug,
-    limit: 4,
-  });
+  const { data, isLoading } = useListArticles({ category: slug, limit: 12 });
+  const pool = data?.articles ?? [];
+  const [displayed, setDisplayed] = useState<Article[]>([]);
+  const [fading, setFading] = useState(false);
 
-  if (isLoading || !data || data.articles.length === 0) return null;
+  // Initial display: shuffle the pool, take 4
+  useEffect(() => {
+    if (pool.length > 0) {
+      setDisplayed(shuffle(pool).slice(0, 4));
+    }
+  }, [pool.length]);
 
-  const featured = data.articles[0];
-  const rest = data.articles.slice(1);
+  // Reshuffle every 12 seconds
+  useEffect(() => {
+    if (pool.length < 2) return;
+    const id = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setDisplayed(shuffle(pool).slice(0, 4));
+        setFading(false);
+      }, 400);
+    }, 12000);
+    return () => clearInterval(id);
+  }, [pool]);
+
+  if (isLoading) return null;
+  if (displayed.length === 0) return null;
+
+  const [featured, ...rest] = displayed;
 
   return (
     <section className="cv-auto container max-w-screen-2xl px-4 md:px-8 py-10">
-      <SectionHeader
-        title={category}
-        viewAllLink={`/category/${slug}`}
-      />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-        <ArticleCard article={featured} />
+      <SectionHeader title={category} viewAllLink={`/category/${slug}`} />
+      <div
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
+        style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
+      >
+        {featured && <ArticleCard article={featured} />}
         <div className="flex flex-col gap-4 justify-between">
           {rest.map((article) => (
-            <ArticleCard key={article.id} article={article} layout="horizontal" className="py-3 border-b border-border/50 last:border-0" />
+            <ArticleCard
+              key={article.id}
+              article={article}
+              layout="horizontal"
+              className="py-3 border-b border-border/50 last:border-0"
+            />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
+// ── Category Buttons (shuffles order periodically) ────────────────────────────
+
+const CATEGORY_META: { label: string; slug: string; color: string; emoji: string }[] = [
+  { label: "Tech",        slug: "tech",        color: "bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30 text-blue-600 dark:text-blue-400",        emoji: "💻" },
+  { label: "Culture",     slug: "culture",     color: "bg-purple-500/10 hover:bg-purple-500/20 border-purple-500/30 text-purple-600 dark:text-purple-400",  emoji: "🎭" },
+  { label: "Lifestyle",   slug: "lifestyle",   color: "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-600 dark:text-emerald-400", emoji: "🌿" },
+  { label: "AI Tools",    slug: "ai-tools",    color: "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-600 dark:text-amber-400",     emoji: "🤖" },
+  { label: "Phone Tips",  slug: "phone-tips",  color: "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-600 dark:text-red-400",           emoji: "📱" },
+  { label: "Productivity",slug: "productivity",color: "bg-cyan-500/10 hover:bg-cyan-500/20 border-cyan-500/30 text-cyan-600 dark:text-cyan-400",        emoji: "⚡" },
+  { label: "Trending",    slug: "trending",    color: "bg-orange-500/10 hover:bg-orange-500/20 border-orange-500/30 text-orange-600 dark:text-orange-400",  emoji: "🔥" },
+];
+
+function CategoryButtons() {
+  const [order, setOrder] = useState(() => shuffle(CATEGORY_META));
+
+  // Reshuffle button order every 20 seconds
+  useEffect(() => {
+    const id = setInterval(() => {
+      setOrder(shuffle(CATEGORY_META));
+    }, 20000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
+      <SectionHeader title="Browse by Category" />
+      <div className="flex flex-wrap gap-3">
+        {order.map((cat) => (
+          <Link key={cat.slug} href={`/category/${cat.slug}`}>
+            <span
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border font-semibold text-sm transition-all duration-300 cursor-pointer ${cat.color}`}
+            >
+              <span>{cat.emoji}</span>
+              {cat.label}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── Home Page ─────────────────────────────────────────────────────────────────
+
+const ALL_CATEGORIES = [
+  "Tech", "AI Tools", "Phone Tips", "Culture", "Lifestyle", "Productivity", "Trending",
+];
 
 export default function Home() {
   usePageMeta({});
@@ -320,13 +432,27 @@ export default function Home() {
       <BreakingTicker />
       <HeroSection />
       <TrendingCarousel />
+
       <div className="border-t border-border/50" />
       <LatestArticles />
+
       <PopularArticles />
       <EditorsPicks />
-      <CategorySpotlight category="Tech" />
+
       <div className="border-t border-border/30 container max-w-screen-2xl px-4 md:px-8" />
-      <CategorySpotlight category="Culture" />
+
+      {ALL_CATEGORIES.map((cat, i) => (
+        <React.Fragment key={cat}>
+          <CategorySpotlight category={cat} />
+          {i < ALL_CATEGORIES.length - 1 && (
+            <div className="border-t border-border/20 container max-w-screen-2xl px-4 md:px-8" />
+          )}
+        </React.Fragment>
+      ))}
+
+      <div className="border-t border-border/30" />
+      <CategoryButtons />
+
       <NewsletterSignup />
     </div>
   );
