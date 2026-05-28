@@ -130,6 +130,10 @@ Add TWO entries inside `ensureSeeded()`:
 | repairable-gadgets-right-to-repair-2026 | Tech | Maya Chen |
 | modern-retro-gadgets-2026 | Culture | Sofia Reyes |
 | privacy-first-gadgets-2026 | Tech | Liam Park |
+| how-to-protect-digital-privacy-2026 | Lifestyle | Sofia Reyes |
+| make-money-online-ai-freelancer-2026 | Productivity | Anya Patel |
+| what-is-vibe-coding-2026 | Trending | Maya Chen |
+| best-budget-wireless-earbuds-2026 | Phone Tips | James Okafor |
 
 ## User preferences
 
