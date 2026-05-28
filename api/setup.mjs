@@ -1945,7 +1945,7 @@ async function runSetup(pool) {
 
 <p>The MSI Claw 8 EX AI is reportedly edging toward a $2,000 price point — closer to a high-end laptop than a traditional gaming handheld. Premium displays, powerful processors, fast storage, long-lasting batteries, and solid build quality all cost money to engineer at this scale.</p>
 
-<p>This is part of a broader pattern in consumer tech. If you want to understand why gadgets across the board are getting more expensive in 2026, <a href="/articles/why-gadgets-are-getting-more-expensive-2026">this breakdown explains the forces driving prices up across the industry</a>.</p>
+<p>This is part of a broader pattern in consumer tech. If you want to understand why gadgets across the board are getting more expensive in 2026, <a href="/article/why-gadgets-are-getting-more-expensive-2026">this breakdown explains the forces driving prices up across the industry</a>.</p>
 
 <p>For handheld gaming specifically, the price is justified by a simple argument: you are getting a full gaming PC that fits in your hands. When you frame it that way, $1,500 starts to look like a value proposition.</p>
 
@@ -1981,7 +1981,7 @@ async function runSetup(pool) {
 
 <p>The handheld gaming device is becoming a lifestyle gadget — in the same category as premium headphones or a high-end tablet. It signals something about who you are and how you spend your leisure time.</p>
 
-<p>If you are curious how this connects to the broader shift in premium mobile technology, take a look at <a href="/articles/why-ai-phones-are-the-future-2026">why AI phones are reshaping what we expect from pocket-sized devices</a>.</p>
+<p>If you are curious how this connects to the broader shift in premium mobile technology, take a look at <a href="/article/why-ai-phones-are-the-future-2026">why AI phones are reshaping what we expect from pocket-sized devices</a>.</p>
 
 <h2>Is This a Real Trend or Just Hype?</h2>
 
@@ -2031,7 +2031,7 @@ async function runSetup(pool) {
 
 <p>Whether you are a lifelong gamer or someone who has never touched a controller, these devices represent something worth paying attention to. The question is not whether this trend is real. The question is which device you will pick up first.</p>
 
-<p>If you want to explore the bigger picture of where consumer gadgets are headed, our guide to <a href="/articles/google-io-2026-ai-announcements">the biggest tech announcements shaping 2026</a> is a great place to start.</p>`,
+<p>If you want to explore the bigger picture of where consumer gadgets are headed, our guide to <a href="/article/google-io-2026-ai-announcements">the biggest tech announcements shaping 2026</a> is a great place to start.</p>`,
 
     'repairable-gadgets-right-to-repair-2026': `<p>What if your phone broke and you could fix it yourself — without voiding the warranty, without paying a shop hundreds of dollars, without buying a whole new device?</p>
 
@@ -2133,7 +2133,7 @@ async function runSetup(pool) {
 
 <p>The segment most responsive to the repairability message tends to be people aged 25 to 40 who are buying their second or third premium device and have learned from experience that "easy to buy" does not always mean "easy to own."</p>
 
-<p>This connects to a broader shift in how people think about tech ownership — including the questions driving interest in <a href="/articles/handheld-gaming-gadgets-2026">premium gadgets that offer more control and flexibility to users</a>.</p>
+<p>This connects to a broader shift in how people think about tech ownership — including the questions driving interest in <a href="/article/handheld-gaming-gadgets-2026">premium gadgets that offer more control and flexibility to users</a>.</p>
 
 <figure>
   <img
@@ -2169,7 +2169,7 @@ async function runSetup(pool) {
 
 <p>The brands that understand this are winning buyers. The ones that do not are beginning to feel the pressure.</p>
 
-<p>For more on how consumer demands are reshaping the tech industry, see our overview of <a href="/articles/why-ai-phones-are-the-future-2026">how AI phones are changing what people expect from their most personal devices</a>.</p>`,
+<p>For more on how consumer demands are reshaping the tech industry, see our overview of <a href="/article/why-ai-phones-are-the-future-2026">how AI phones are changing what people expect from their most personal devices</a>.</p>`,
 
     'modern-retro-gadgets-2026': `<p>There is something happening in consumer electronics that nobody fully predicted: people are falling in love with old things again.</p>
 
@@ -2265,7 +2265,7 @@ async function runSetup(pool) {
   <li><strong>Cameras:</strong> The film camera aesthetic remains the most powerful retro signal in consumer electronics.</li>
   <li><strong>Audio equipment:</strong> Speakers, turntables, and headphones with vintage styling have wide mainstream appeal.</li>
   <li><strong>Keyboards:</strong> Typewriter-style mechanical keyboards have moved from enthusiast circles into mainstream home offices.</li>
-  <li><strong>Gaming handhelds:</strong> Devices that evoke original Game Boy or arcade aesthetics resonate strongly with the nostalgia demographic. The <a href="/articles/handheld-gaming-gadgets-2026">premium handheld gaming market</a> has leaned heavily into this visual language.</li>
+  <li><strong>Gaming handhelds:</strong> Devices that evoke original Game Boy or arcade aesthetics resonate strongly with the nostalgia demographic. The <a href="/article/handheld-gaming-gadgets-2026">premium handheld gaming market</a> has leaned heavily into this visual language.</li>
   <li><strong>Clocks and home displays:</strong> Products mimicking old airport departure boards or analogue clocks with digital internals are a growing niche.</li>
 </ul>
 
@@ -2298,7 +2298,7 @@ async function runSetup(pool) {
 <p>Fujifilm X-series cameras, Teenage Engineering pocket operators and audio gear, vintage-style Bluetooth speakers from brands like Tivoli Audio, and typewriter-style keyboards from brands like Lofree and Keychron are consistently well-reviewed.</p>
 
 <h3>Why do retro gadgets often cost more than regular ones?</h3>
-<p>Premium materials, specialist manufacturing, and smaller production runs all contribute to higher prices. The <a href="/articles/repairable-gadgets-right-to-repair-2026">broader story of why tech costs more in 2026</a> also applies here.</p>
+<p>Premium materials, specialist manufacturing, and smaller production runs all contribute to higher prices. The <a href="/article/repairable-gadgets-right-to-repair-2026">broader story of why tech costs more in 2026</a> also applies here.</p>
 
 <h3>Is the retro trend connected to vinyl records and film photography?</h3>
 <p>Absolutely. Vinyl, film photography, and physical media all share the same cultural logic — a preference for tangible, imperfect, character-rich experiences over perfectly optimised digital ones.</p>
@@ -2309,7 +2309,7 @@ async function runSetup(pool) {
 
 <p>In a world where most consumer electronics look identical, the gadget that stands out is increasingly the one that looks like it came from somewhere — not just a factory render. That is why the modern-retro trend is not going away. It is filling a gap that pure minimalism left open.</p>
 
-<p>For more on where consumer tech culture is heading in 2026, see our feature on <a href="/articles/big-tech-725-billion-ai-spending-layoffs-2026">how big tech investment is shaping the products we will all use next</a>.</p>`,
+<p>For more on where consumer tech culture is heading in 2026, see our feature on <a href="/article/big-tech-725-billion-ai-spending-layoffs-2026">how big tech investment is shaping the products we will all use next</a>.</p>`,
 
     'privacy-first-gadgets-2026': `<p>Every time you speak to a smart speaker, your voice goes to a server. Every time your phone's AI assistant answers a question, your data travels somewhere. Every photo, every search, every message — most of it lives in someone else's infrastructure.</p>
 
@@ -2351,7 +2351,7 @@ async function runSetup(pool) {
   <li>A smart home hub that runs entirely on your local network, with no mandatory external connection</li>
 </ul>
 
-<p>Local processing is closely related to the on-device AI movement. Our breakdown of <a href="/articles/amd-on-device-ai-no-internet-2026">how AMD's on-device AI eliminates the need for an internet connection</a> covers the chip-level technology making this possible.</p>
+<p>Local processing is closely related to the on-device AI movement. Our breakdown of <a href="/article/amd-on-device-ai-no-internet-2026">how AMD's on-device AI eliminates the need for an internet connection</a> covers the chip-level technology making this possible.</p>
 
 <h2>Why Some Users Want Less Cloud Dependence</h2>
 
@@ -2417,7 +2417,7 @@ async function runSetup(pool) {
 
 <p>For mass-market devices targeting less tech-savvy buyers, privacy is not yet the primary purchase driver. But it is becoming a differentiating factor at the margins — the thing that tips a decision when two products are otherwise comparable.</p>
 
-<p>The connection between privacy and device performance is also growing clearer. The same on-device AI chips enabling privacy-first features are also making devices faster and more capable. This intersection — where privacy and performance point in the same direction — is where the strongest products are emerging. See our look at <a href="/articles/why-ai-phones-are-the-future-2026">how AI phones are redefining what mobile privacy and performance look like together</a>.</p>
+<p>The connection between privacy and device performance is also growing clearer. The same on-device AI chips enabling privacy-first features are also making devices faster and more capable. This intersection — where privacy and performance point in the same direction — is where the strongest products are emerging. See our look at <a href="/article/why-ai-phones-are-the-future-2026">how AI phones are redefining what mobile privacy and performance look like together</a>.</p>
 
 <figure>
   <img
@@ -2453,7 +2453,7 @@ async function runSetup(pool) {
 
 <p>In 2026, the better offer is increasingly: keep your data, and we will give you convenience anyway.</p>
 
-<p>For more on how technology is shifting to respect individual control, see our piece on <a href="/articles/repairable-gadgets-right-to-repair-2026">why repairable gadgets are winning buyers who want ownership over their devices</a>.</p>`,
+<p>For more on how technology is shifting to respect individual control, see our piece on <a href="/article/repairable-gadgets-right-to-repair-2026">why repairable gadgets are winning buyers who want ownership over their devices</a>.</p>`,
   };
 
   // ── 5. Seed articles — always insert missing ones (ON CONFLICT DO NOTHING) ──
