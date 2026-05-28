@@ -1,0 +1,17 @@
+{
+  "name": "scrolltek-cloudflare",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev worker.mjs",
+    "deploy": "wrangler deploy worker.mjs",
+    "secrets:set": "wrangler secret put DATABASE_URL && wrangler secret put ADMIN_PASSWORD"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  },
+  "devDependencies": {
+    "wrangler": "^3.101.0"
+  }
+}
