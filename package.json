@@ -13,6 +13,7 @@
     "typescript": "~5.9.3"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
     "pg": "^8.20.0"
   }
 }

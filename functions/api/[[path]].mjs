@@ -181,15 +181,21 @@ export async function onRequest({ request, env }) {
   try {
     await maybeInit(db);
 
-    // Health
-    if (path === '/health' && method === 'GET') {
-      return json({ ok: true });
+    // Health check (/healthz matches OpenAPI spec, /health for legacy)
+    if ((path === '/healthz' || path === '/health') && method === 'GET') {
+      return json({ status: 'ok' });
     }
 
     // Categories
     if (path === '/categories' && method === 'GET') {
-      const rows = await db`SELECT * FROM categories ORDER BY name`;
-      return json(rows);
+      const rows = await db`SELECT slug, name, color, article_count FROM categories ORDER BY name`;
+      return json(rows.map(r => ({
+        id: 0,
+        slug: r.slug,
+        name: r.name,
+        color: r.color,
+        articleCount: r.article_count ?? 0,
+      })));
     }
 
     // Newsletter
@@ -361,8 +367,9 @@ export async function onRequest({ request, env }) {
     // Articles: list (with optional category filter)
     if (path === '/articles' && method === 'GET') {
       const category = slugToCategory(url.searchParams.get('category'));
-      const limit = Math.min(parseInt(url.searchParams.get('limit') ?? '12', 10), 50);
-      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+      const page = Math.max(1, parseInt(url.searchParams.get('page') ?? '1', 10));
+      const limit = Math.min(Math.max(1, parseInt(url.searchParams.get('limit') ?? '12', 10)), 50);
+      const offset = (page - 1) * limit;
 
       let rows, countRows;
       if (category) {
@@ -383,7 +390,7 @@ export async function onRequest({ request, env }) {
         countRows = await db`SELECT COUNT(*) AS total FROM articles WHERE published = true`;
       }
       const total = parseInt(countRows[0].total, 10);
-      return json({ articles: rows.map(fmt), total, hasMore: offset + rows.length < total });
+      return json({ articles: rows.map(fmt), total, page, limit, hasMore: offset + rows.length < total });
     }
 
     // Articles: related
