@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { href: "/category/trending", label: "Trending", icon: TrendingUp },
   { href: "/category/ai-productivity", label: "AI", icon: Layers },
   { href: "/category/culture-lifestyle", label: "Lifestyle", icon: Sparkles },
-  { href: "/category/phone-tips", label: "Phone Tips", icon: Smartphone },
+  { href: "/category/phone-tips", label: "Gadgets", icon: Smartphone },
 ];
 
 export function MobileNav() {
@@ -17,46 +17,46 @@ export function MobileNav() {
 
   return (
     <div
-      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur border-t border-border/40"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-background/98 backdrop-blur-md border-t border-border/50"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <nav className="flex items-stretch justify-around h-[60px]">
+      <nav className="flex items-center justify-around px-1" style={{ height: "56px" }}>
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
-            href === "/"
-              ? location === "/"
-              : location.startsWith(href);
+            href === "/" ? location === "/" : location.startsWith(href);
           return (
             <Link
               key={href}
               href={href}
-              className={cn(
-                "flex flex-col items-center justify-center flex-1 gap-[3px] min-w-0 touch-manipulation select-none",
-                "active:scale-95 transition-transform duration-100",
-                isActive
-                  ? "text-primary"
-                  : "text-muted-foreground active:text-foreground",
-              )}
               aria-label={label}
               aria-current={isActive ? "page" : undefined}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 flex-1 h-full min-w-0",
+                "touch-manipulation select-none transition-opacity duration-100 active:opacity-60",
+                isActive ? "text-primary" : "text-muted-foreground",
+              )}
             >
+              {/* Pill indicator behind icon */}
               <div
                 className={cn(
-                  "flex items-center justify-center w-10 h-6 rounded-full transition-colors duration-150",
-                  isActive ? "bg-primary/15" : "",
+                  "flex items-center justify-center rounded-2xl transition-all duration-200",
+                  "w-12 h-7",
+                  isActive ? "bg-primary/12" : "bg-transparent",
                 )}
               >
                 <Icon
                   className={cn(
-                    "h-[18px] w-[18px] transition-all duration-150",
-                    isActive ? "stroke-[2.5px]" : "stroke-[1.75px]",
+                    "transition-all duration-200",
+                    isActive
+                      ? "h-[19px] w-[19px] stroke-[2.4px]"
+                      : "h-[18px] w-[18px] stroke-[1.7px]",
                   )}
                 />
               </div>
               <span
                 className={cn(
-                  "text-[9px] font-semibold tracking-wide leading-none truncate",
-                  isActive ? "opacity-100" : "opacity-60",
+                  "text-[9.5px] font-semibold leading-none tracking-wide truncate max-w-[52px] text-center",
+                  isActive ? "opacity-100" : "opacity-55",
                 )}
               >
                 {label}

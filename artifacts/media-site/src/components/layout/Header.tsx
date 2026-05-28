@@ -60,11 +60,14 @@ export function Header() {
 
           {/* Right icons */}
           <div className="flex items-center gap-1">
-            <Link href="/search" className="hidden md:flex">
+            {/* Search — visible on all screen sizes, right before theme toggle */}
+            <Link href="/search">
               <Button variant="ghost" size="icon" aria-label="Search">
                 <Search className="h-5 w-5" />
               </Button>
             </Link>
+
+            {/* Theme toggle */}
             <Button
               variant="ghost"
               size="icon"
@@ -77,6 +80,7 @@ export function Header() {
                 <Moon className="h-5 w-5" />
               )}
             </Button>
+
             {/* Hamburger — mobile only */}
             <button
               type="button"
@@ -154,18 +158,6 @@ export function Header() {
               <div className="h-px bg-border mx-1 my-2" />
 
               {/* Extra links */}
-              <Link
-                href="/search"
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors",
-                  location === "/search"
-                    ? "bg-primary/10 text-primary"
-                    : "text-foreground hover:bg-muted"
-                )}
-              >
-                <Search className="h-4 w-4" />
-                Search
-              </Link>
               <Link
                 href="/about"
                 className={cn(
