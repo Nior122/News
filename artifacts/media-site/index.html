@@ -26,17 +26,28 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Resource hints -->
+    <!-- Resource hints — preconnect opens TCP+TLS early for critical origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="preconnect" href="https://i.pravatar.cc" crossorigin />
     <link rel="dns-prefetch" href="https://picsum.photos" />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
 
-    <!-- Fonts — display=swap keeps text visible during load -->
+    <!-- Fonts — non-blocking load so fonts never delay first paint.
+         "preload as style" fetches the CSS immediately, onload swaps it in.
+         The <noscript> fallback serves users with JS disabled. -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      />
+    </noscript>
 
     <!-- Structured data: Website + SearchAction -->
     <script type="application/ld+json">
