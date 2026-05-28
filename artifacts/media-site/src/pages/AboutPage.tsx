@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { Zap, Globe, Lightbulb, Heart } from "lucide-react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const PILLARS = [
   {
@@ -26,6 +27,11 @@ const PILLARS = [
 ];
 
 export default function AboutPage() {
+  usePageMeta({
+    title: "About Us",
+    description: "Scrolltek covers tech, culture, AI tools, phone tips, lifestyle, and trending topics — fast, useful, and written for real people.",
+  });
+
   return (
     <div className="min-h-screen pb-16">
       {/* Hero */}

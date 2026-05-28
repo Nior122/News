@@ -10,6 +10,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Flame } from "lucide-react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 // ── Category metadata ─────────────────────────────────────────────────────────
 
@@ -307,6 +308,11 @@ export default function CategoryPage() {
   const description =
     SLUG_TO_DESCRIPTION[slug] ?? `The latest news, reviews, and insights about ${displayName}.`;
   const gradient = getCategoryColor(slug);
+
+  usePageMeta({
+    title: displayName,
+    description,
+  });
 
   if (slug === "trending") {
     return <TrendingPage displayName={displayName} description={description} gradient={gradient} />;

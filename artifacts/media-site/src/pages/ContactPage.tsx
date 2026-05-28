@@ -3,9 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export default function ContactPage() {
   const { toast } = useToast();
+  usePageMeta({
+    title: "Contact Us",
+    description: "Get in touch with the Scrolltek team. Send us a tip, feedback, or just say hi.",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

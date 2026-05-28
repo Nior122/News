@@ -5,6 +5,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Input } from "@/components/ui/input";
 import { Search as SearchIcon, Loader2 } from "lucide-react";
 import { useDebounce } from "@/hooks/use-debounce";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export default function SearchPage() {
   const [location] = useLocation();
@@ -39,6 +40,13 @@ export default function SearchPage() {
       window.history.replaceState(null, "", `/search`);
     }
   }, [debouncedQuery]);
+
+  usePageMeta({
+    title: debouncedQuery ? `Search: "${debouncedQuery}"` : "Search",
+    description: debouncedQuery
+      ? `Scrolltek search results for "${debouncedQuery}" — tech, culture, lifestyle, AI tools and more.`
+      : "Search Scrolltek for articles on tech, culture, lifestyle, AI tools, phone tips, productivity and trending topics.",
+  });
 
   return (
     <div className="min-h-screen pb-16">

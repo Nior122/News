@@ -1,8 +1,14 @@
 import React from "react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const LAST_UPDATED = "May 2026";
 
 export default function PrivacyPage() {
+  usePageMeta({
+    title: "Privacy Policy",
+    description: "Scrolltek's privacy policy — how we collect, use, and protect your information when you visit our website.",
+  });
+
   return (
     <div className="min-h-screen pb-16">
       {/* Hero */}

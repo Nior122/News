@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useRoute, Link, useLocation } from "wouter";
 import { useGetArticle, getGetArticleQueryKey, useListRelatedArticles, getListRelatedArticlesQueryKey } from "@workspace/api-client-react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { ArticleCard, CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2 } from "lucide-react";
@@ -69,6 +70,12 @@ export default function ArticlePage() {
       enabled: !!slug,
       queryKey: getListRelatedArticlesQueryKey(slug),
     },
+  });
+
+  usePageMeta({
+    title: article?.title,
+    description: article?.excerpt ?? undefined,
+    canonical: article ? `${window.location.origin}/article/${article.slug}` : undefined,
   });
 
   // Tell MobileNav which category tab to highlight
