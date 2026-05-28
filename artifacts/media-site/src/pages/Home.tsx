@@ -49,7 +49,6 @@ function TrendingCard({ article, index }: { article: ReturnType<typeof useListTr
     <Link
       href={`/article/${article.slug}`}
       className="flex gap-3 items-center bg-card p-3 rounded-xl border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group touch-manipulation"
-      style={{ width: "clamp(260px, 28vw, 360px)", flexShrink: 0 }}
     >
       <span className="font-display text-3xl font-extrabold text-muted-foreground/20 group-hover:text-primary/30 transition-colors shrink-0 w-8 text-center leading-none">
         {index + 1}
@@ -81,16 +80,49 @@ function TrendingCard({ article, index }: { article: ReturnType<typeof useListTr
   );
 }
 
+function shuffle<T>(arr: T[]): T[] {
+
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function TrendingCarousel() {
   const { data: articles, isLoading } = useListTrendingArticles();
+  const [visible, setVisible] = useState<typeof articles>([]);
+  const [fading, setFading] = useState(false);
+  const SHOW = 6;
+
+  // Initialise on first load
+  useEffect(() => {
+    if (articles && articles.length > 0) {
+      setVisible(shuffle(articles).slice(0, SHOW));
+    }
+  }, [articles]);
+
+  // Reshuffle every 10 seconds with a fade-out → swap → fade-in
+  useEffect(() => {
+    if (!articles || articles.length === 0) return;
+    const id = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setVisible(shuffle(articles).slice(0, SHOW));
+        setFading(false);
+      }, 400);
+    }, 10000);
+    return () => clearInterval(id);
+  }, [articles]);
 
   if (isLoading)
     return (
       <div className="container max-w-screen-2xl px-4 md:px-8 py-10">
         <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
-        <div className="flex gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" style={{ width: "clamp(260px, 28vw, 360px)", flexShrink: 0 }} />
+        <div className="flex gap-4 flex-wrap">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} className="h-24 rounded-xl" style={{ width: "clamp(240px, 28vw, 340px)", flexShrink: 0 }} />
           ))}
         </div>
       </div>
@@ -101,22 +133,22 @@ function TrendingCarousel() {
     <section className="py-10">
       <div className="container max-w-screen-2xl px-4 md:px-8">
         <SectionHeader title="Trending Now" icon={<Flame className="w-5 h-5" />} />
-      </div>
-      <div className="trending-scroll-wrap">
-        <div className="trending-scroll-track">
-          {/* Original set */}
-          {articles.map((article, index) => (
-            <TrendingCard key={`a-${article.id}`} article={article} index={index} />
-          ))}
-          {/* Duplicate for seamless loop */}
-          {articles.map((article, index) => (
-            <TrendingCard key={`b-${article.id}`} article={article} index={index} />
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          style={{
+            opacity: fading ? 0 : 1,
+            transition: "opacity 0.4s ease",
+          }}
+        >
+          {visible?.map((article, index) => (
+            <TrendingCard key={`${article.id}-${index}`} article={article} index={index} />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
 
 function LatestArticles() {
   const [page, setPage] = useState(1);

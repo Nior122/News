@@ -119,15 +119,24 @@ router.get("/articles/featured", async (req, res) => {
 
 router.get("/articles/trending", async (req, res) => {
   try {
-    const limit = parseInt(String(req.query.limit ?? "5"), 10);
+    const limit = parseInt(String(req.query.limit ?? "10"), 10);
 
-    const articles = await db
+    // Fetch a broad pool (up to 27) across ALL categories, ordered by recency+views
+    // then shuffle so every page-load shows a different cross-category mix
+    const pool = await db
       .select()
       .from(articlesTable)
       .where(eq(articlesTable.published, true))
-      .orderBy(desc(articlesTable.views))
-      .limit(limit);
+      .orderBy(desc(articlesTable.publishedAt))
+      .limit(27);
 
+    // Fisher-Yates shuffle for a random cross-category order
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    const articles = pool.slice(0, limit);
     const authors = await db.select().from(authorsTable);
     const authorMap = new Map(authors.map((a) => [a.id, a]));
 
