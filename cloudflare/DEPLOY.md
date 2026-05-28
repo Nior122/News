@@ -1,7 +1,8 @@
 # Cloudflare Deployment Guide — Scrolltek
 
-This folder contains everything needed to deploy Scrolltek to Cloudflare.
-Vercel continues to work unchanged — both deployments share the same Neon database.
+This guide uses **Cloudflare Pages Functions** — no separate Worker needed.
+The API runs automatically as part of your Pages project.
+Vercel continues to work unchanged — both share the same Neon database.
 
 ---
 
@@ -9,13 +10,12 @@ Vercel continues to work unchanged — both deployments share the same Neon data
 
 ```
 GitHub repo
-├── api/              → Vercel Serverless Function (unchanged)
-├── vercel.json       → Vercel config (unchanged)
-└── cloudflare/
-    ├── worker.mjs    → Cloudflare Worker (API)
-    ├── setup.mjs     → DB seed for Worker runtime
-    ├── wrangler.toml → Worker config
-    └── _redirects    → Cloudflare Pages SPA routing + API proxy
+├── functions/
+│   └── api/
+│       └── [[path]].mjs   → Cloudflare Pages Function (handles all /api/* routes)
+├── artifacts/media-site/  → React frontend (built and deployed to Pages)
+├── api/                   → Vercel Serverless Function (unchanged)
+└── vercel.json            → Vercel config (unchanged)
 ```
 
 **Both Vercel and Cloudflare point to the same Neon PostgreSQL database.**
@@ -24,117 +24,79 @@ GitHub repo
 
 ## Step 1 — Push to GitHub
 
-Make sure your code is pushed to a GitHub repository.
-Cloudflare will connect to it for automatic deployments.
+Make sure your latest code (including the `functions/` folder) is pushed to GitHub.
 
 ---
 
-## Step 2 — Deploy the Worker (API)
-
-The Worker handles all `/api/*` routes.
-
-### Install Wrangler CLI (once)
-```bash
-npm install -g wrangler
-wrangler login
-```
-
-### Deploy the Worker
-```bash
-cd cloudflare
-npm install
-wrangler deploy worker.mjs --name scrolltek-api
-```
-
-### Set secrets (DATABASE_URL and ADMIN_PASSWORD)
-```bash
-wrangler secret put DATABASE_URL
-# Paste your Neon connection string when prompted
-
-wrangler secret put ADMIN_PASSWORD
-# Paste your admin password when prompted
-```
-
-Your Worker will be live at:
-`https://scrolltek-api.YOUR_ACCOUNT.workers.dev`
-
----
-
-## Step 3 — Deploy the Frontend (Cloudflare Pages)
+## Step 2 — Create a Cloudflare Pages project
 
 1. Go to **dash.cloudflare.com → Workers & Pages → Create → Pages**
-2. Connect your GitHub repository
+2. Click **Connect to Git** and select your GitHub repository
 3. Set build settings:
    - **Framework preset**: None
    - **Build command**: `pnpm --filter @workspace/media-site run build`
    - **Build output directory**: `artifacts/media-site/dist/public`
-   - **Root directory**: `/` (repo root)
-4. Add environment variables:
-   - `NODE_VERSION` = `20`
-5. Click **Save and Deploy**
+   - **Root directory**: `/` (repo root, leave as default)
+4. Click **Save and Deploy**
 
 ---
 
-## Step 4 — Connect Worker to Pages (API proxy)
+## Step 3 — Add environment variables
 
-Edit `cloudflare/_redirects` and replace `YOUR_SUBDOMAIN` with your actual
-Worker subdomain (visible in the Worker dashboard):
+After the project is created, go to:
+**Pages project → Settings → Environment variables → Production**
 
-```
-/api/* https://scrolltek-api.YOUR_SUBDOMAIN.workers.dev/api/:splat 200
-/* /index.html 200
-```
+Add these two variables:
 
-Commit and push — Cloudflare Pages redeploys automatically.
+| Variable        | Value                          |
+|-----------------|--------------------------------|
+| `DATABASE_URL`  | Your Neon connection string    |
+| `ADMIN_PASSWORD`| Your admin password            |
 
-### Alternative: use Pages Functions instead of a Worker
-If you prefer, you can deploy the Worker as a Cloudflare Pages Function instead.
-Create `functions/api/[[path]].mjs` that imports and re-exports from `worker.mjs`.
-This keeps everything in one Pages project with no separate Worker needed.
+Click **Save**, then go to **Deployments → Redeploy** to apply them.
 
 ---
 
-## Step 5 — Seed the database
+## Step 4 — Verify it works
 
-After deploying, call force-seed on **either** Vercel or Cloudflare to ensure
-all articles are in the Neon database:
+Open your Pages URL (e.g. `https://news-6u3.pages.dev/api/health`)
+You should see: `{"ok":true}`
 
-```
-GET https://your-vercel-app.vercel.app/api/admin/force-seed?key=YOUR_ADMIN_PASSWORD
-```
-
-or via the Cloudflare Worker:
-```
-GET https://scrolltek-api.YOUR_ACCOUNT.workers.dev/api/admin/force-seed?key=YOUR_ADMIN_PASSWORD
-```
-
-Expected response: `{"success":true,"total":19,"message":"Setup complete. 19 articles now in database."}`
+If articles load on the homepage, everything is working.
 
 ---
 
-## Adding New Articles
+## Step 5 — Seed the database (only if articles are missing)
 
-Same process as before — update both:
-1. `api/setup.mjs` — for Vercel
-2. `lib/db/src/ensure-seeded.ts` — for Replit dev
-3. `cloudflare/setup.mjs` — BODIES and articles array — for Cloudflare
+Since your Neon database already has articles from Vercel, you may not need this.
+But if articles are missing, call:
 
-Then call force-seed on both deployments after pushing.
+```
+GET https://news-6u3.pages.dev/api/admin/force-seed?key=YOUR_ADMIN_PASSWORD
+```
+
+Expected: `{"success":true,"total":19,"message":"Setup complete. 19 articles now in database."}`
+
+---
+
+## How it works
+
+Cloudflare automatically detects the `functions/` folder at the repo root and
+deploys `functions/api/[[path]].mjs` as a serverless function that handles every
+`/api/*` request. No Worker deployment, no `_redirects` proxy, no separate URL.
 
 ---
 
 ## Custom Domain
 
-In Cloudflare Pages dashboard → Custom domains → add your domain.
+Pages dashboard → Custom domains → add your domain.
 Cloudflare handles TLS automatically.
-
-For the Worker (API), go to the Worker dashboard → Triggers → Custom domains.
 
 ---
 
 ## Environment Variables Summary
 
-| Variable        | Vercel | Cloudflare Worker | Required |
-|-----------------|--------|-------------------|----------|
-| DATABASE_URL    | ✅     | ✅ (wrangler secret) | Yes   |
-| ADMIN_PASSWORD  | ✅     | ✅ (wrangler secret) | Yes   |
+| Variable        | Vercel | Cloudflare Pages | Required |
+|-----------------|--------|-----------------|----------|
+| DATABASE_URL    | ✅     | ✅ (Pages vars) | Yes      |
+| ADMIN_PASSWORD  | ✅     | ✅ (Pages vars) | Yes      |
