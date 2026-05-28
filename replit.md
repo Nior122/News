@@ -126,6 +126,10 @@ Add TWO entries inside `ensureSeeded()`:
 | why-ai-phones-are-becoming-the-future | Tech | Maya Chen |
 | why-ai-phones-are-the-future-2026 | Tech | Maya Chen |
 | how-to-build-personal-brand-online-2026 | Lifestyle | Sofia Reyes |
+| handheld-gaming-gadgets-2026 | Tech | James Okafor |
+| repairable-gadgets-right-to-repair-2026 | Tech | Maya Chen |
+| modern-retro-gadgets-2026 | Culture | Sofia Reyes |
+| privacy-first-gadgets-2026 | Tech | Liam Park |
 
 ## User preferences
 
