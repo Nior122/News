@@ -8,6 +8,20 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 
+function JsonLd({ data }: { data: Record<string, unknown> }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "article-jsonld";
+    script.textContent = JSON.stringify(data);
+    document.head.appendChild(script);
+    return () => {
+      document.getElementById("article-jsonld")?.remove();
+    };
+  }, [data]);
+  return null;
+}
+
 function ShareButtons({ url, title, className }: { url: string; title: string; className?: string }) {
   const encoded = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -118,9 +132,42 @@ export default function ArticlePage() {
   }
 
   const articleUrl = typeof window !== "undefined" ? window.location.href : "";
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+
+  const jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt,
+    image: article.imageUrl ? [article.imageUrl] : undefined,
+    datePublished: new Date(article.publishedAt).toISOString(),
+    dateModified: new Date(article.publishedAt).toISOString(),
+    url: articleUrl,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    author: {
+      "@type": "Person",
+      name: article.author.name,
+      image: article.author.avatarUrl || undefined,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Scrolltek",
+      logo: {
+        "@type": "ImageObject",
+        url: `${origin}/favicon.svg`,
+      },
+    },
+    articleSection: article.category,
+    keywords: article.tags?.join(", ") || article.category,
+    timeRequired: `PT${article.readTime}M`,
+  };
 
   return (
     <>
+      <JsonLd data={jsonLdData} />
       {/* Reading progress bar */}
       <div
         className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]"
