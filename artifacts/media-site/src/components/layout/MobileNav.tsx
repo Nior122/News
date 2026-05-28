@@ -1,15 +1,14 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { Home, TrendingUp, Cpu, Search, Layers, Heart } from "lucide-react";
+import { Home, TrendingUp, Cpu, Smartphone, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home },
   { href: "/category/tech", label: "Tech", icon: Cpu },
   { href: "/category/trending", label: "Trending", icon: TrendingUp },
-  { href: "/category/lifestyle", label: "Lifestyle", icon: Heart },
   { href: "/category/ai-tools", label: "AI", icon: Layers },
-  { href: "/search", label: "Search", icon: Search },
+  { href: "/category/phone-tips", label: "Phone Tips", icon: Smartphone },
 ];
 
 export function MobileNav() {
