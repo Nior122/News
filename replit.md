@@ -124,6 +124,8 @@ Add TWO entries inside `ensureSeeded()`:
 | hidden-android-features-2026 | Phone Tips | James Okafor |
 | ai-tools-for-students-2026 | AI Tools | Anya Patel |
 | why-ai-phones-are-becoming-the-future | Tech | Maya Chen |
+| why-ai-phones-are-the-future-2026 | Tech | Maya Chen |
+| how-to-build-personal-brand-online-2026 | Lifestyle | Sofia Reyes |
 
 ## User preferences
 
