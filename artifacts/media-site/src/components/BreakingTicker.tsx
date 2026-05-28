@@ -25,7 +25,7 @@ export function BreakingTicker() {
     if (!headlines || headlines.length === 0) return;
     const id = setInterval(() => {
       setShuffled(shuffle(headlines));
-    }, 20000);
+    }, 60000);
     return () => clearInterval(id);
   }, [headlines]);
 

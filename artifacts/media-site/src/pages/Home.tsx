@@ -109,7 +109,7 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
         setVisible(shuffle(allArticles).slice(0, SHOW));
         setFading(false);
       }, 400);
-    }, 10000);
+    }, 60000);
     return () => clearInterval(id);
   }, [allArticles]);
 
@@ -167,7 +167,7 @@ function LatestArticles() {
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => { setDisplayed(shuffle(pool)); setFading(false); }, 400);
-    }, 15000);
+    }, 60000);
     return () => clearInterval(id);
   }, [pool]);
 
@@ -239,7 +239,7 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => { setVisible(shuffle(allArticles).slice(0, 6)); setFading(false); }, 400);
-    }, 15000);
+    }, 60000);
     return () => clearInterval(id);
   }, [allArticles]);
 
@@ -285,7 +285,7 @@ function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => { setVisible(shuffle(allArticles).slice(0, 3)); setFading(false); }, 400);
-    }, 20000);
+    }, 60000);
     return () => clearInterval(id);
   }, [allArticles]);
 
@@ -336,7 +336,7 @@ function CategorySpotlight({ category }: { category: string }) {
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => { setDisplayed(shuffle(pool).slice(0, 4)); setFading(false); }, 400);
-    }, 120000);
+    }, 60000);
     return () => clearInterval(id);
   }, [pool]);
 
@@ -383,7 +383,7 @@ function CategoryButtons() {
   const [order, setOrder] = useState(() => shuffle(CATEGORY_META));
 
   useEffect(() => {
-    const id = setInterval(() => setOrder(shuffle(CATEGORY_META)), 120000);
+    const id = setInterval(() => setOrder(shuffle(CATEGORY_META)), 60000);
     return () => clearInterval(id);
   }, []);
 

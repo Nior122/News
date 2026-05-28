@@ -173,7 +173,7 @@ function MixedCategoryPage({
         setDisplayed(shuffle(pool));
         setFading(false);
       }, 400);
-    }, 120000);
+    }, 60000);
     return () => clearInterval(id);
   }, [pool]);
 
