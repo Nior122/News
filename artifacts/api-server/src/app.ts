@@ -5,6 +5,7 @@ import type { IncomingMessage, ServerResponse } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import router from "./routes";
+import sitemapRouter from "./routes/sitemap";
 import { logger } from "./lib/logger";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -37,6 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 const uploadsDir = path.resolve(__dirname, "../../uploads");
 app.use("/uploads", express.static(uploadsDir));
 
+app.use(sitemapRouter);
 app.use("/api", router);
 
 if (process.env.NODE_ENV === "production") {
