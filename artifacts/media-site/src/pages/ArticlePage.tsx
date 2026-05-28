@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 
 function ShareButtons({ url, title, className }: { url: string; title: string; className?: string }) {
   const encoded = encodeURIComponent(url);
@@ -40,6 +41,7 @@ export default function ArticlePage() {
   const [, params] = useRoute("/article/:slug");
   const slug = params?.slug || "";
   const [, navigate] = useLocation();
+  const { setActiveCategory } = useActiveCategory();
 
   const { data: article, isLoading } = useGetArticle(slug, {
     query: {
@@ -54,6 +56,14 @@ export default function ArticlePage() {
       queryKey: getListRelatedArticlesQueryKey(slug),
     },
   });
+
+  // Tell MobileNav which category tab to highlight
+  useEffect(() => {
+    if (article?.category) {
+      setActiveCategory(article.category.toLowerCase().replace(/\s+/g, "-"));
+    }
+    return () => setActiveCategory(null);
+  }, [article?.category, setActiveCategory]);
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);

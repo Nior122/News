@@ -26,6 +26,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { ActiveCategoryProvider } from "@/contexts/ActiveCategoryContext";
 
 const Home = lazy(() => import("@/pages/Home"));
 const ArticlePage = lazy(() => import("@/pages/ArticlePage"));
@@ -72,26 +73,28 @@ function Router() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <ScrollToTop />
-      <Header />
-      <main className="flex-1 pb-16 md:pb-0">
-        <Suspense fallback={<PageSkeleton />}>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/article/:slug" component={ArticlePage} />
-            <Route path="/category/:slug" component={CategoryPage} />
-            <Route path="/search" component={SearchPage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/contact" component={ContactPage} />
-            <Route path="/privacy" component={PrivacyPage} />
-            <Route component={NotFound} />
-          </Switch>
-        </Suspense>
-      </main>
-      <Footer />
-      <MobileNav />
-    </div>
+    <ActiveCategoryProvider>
+      <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <ScrollToTop />
+        <Header />
+        <main className="flex-1 pb-16 md:pb-0">
+          <Suspense fallback={<PageSkeleton />}>
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/article/:slug" component={ArticlePage} />
+              <Route path="/category/:slug" component={CategoryPage} />
+              <Route path="/search" component={SearchPage} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/contact" component={ContactPage} />
+              <Route path="/privacy" component={PrivacyPage} />
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
+        </main>
+        <Footer />
+        <MobileNav />
+      </div>
+    </ActiveCategoryProvider>
   );
 }
 

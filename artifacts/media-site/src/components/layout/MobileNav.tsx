@@ -1,19 +1,85 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { Home, TrendingUp, Cpu, Smartphone, Layers, Sparkles } from "lucide-react";
+import { Home, TrendingUp, Cpu, Smartphone, Sparkles, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
+
+// Maps every real category slug → the nav item slug it belongs to
+const CATEGORY_TO_NAV: Record<string, string> = {
+  tech: "tech",
+  "phone-tips": "phone-tips",
+  "ai-tools": "ai-productivity",
+  productivity: "ai-productivity",
+  "ai-productivity": "ai-productivity",
+  culture: "culture-lifestyle",
+  lifestyle: "culture-lifestyle",
+  "culture-lifestyle": "culture-lifestyle",
+  trending: "trending",
+};
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/category/tech", label: "Tech", icon: Cpu },
-  { href: "/category/trending", label: "Trending", icon: TrendingUp },
-  { href: "/category/ai-productivity", label: "AI", icon: Layers },
-  { href: "/category/culture-lifestyle", label: "Lifestyle", icon: Sparkles },
-  { href: "/category/phone-tips", label: "Gadgets", icon: Smartphone },
+  {
+    href: "/",
+    label: "Home",
+    icon: Home,
+    navSlug: "home",
+  },
+  {
+    href: "/category/tech",
+    label: "Tech",
+    icon: Cpu,
+    navSlug: "tech",
+  },
+  {
+    href: "/category/phone-tips",
+    label: "Phone Tips",
+    icon: Smartphone,
+    navSlug: "phone-tips",
+  },
+  {
+    href: "/category/ai-productivity",
+    label: "AI & More",
+    icon: Sparkles,
+    navSlug: "ai-productivity",
+  },
+  {
+    href: "/category/culture-lifestyle",
+    label: "Culture",
+    icon: Globe,
+    navSlug: "culture-lifestyle",
+  },
+  {
+    href: "/category/trending",
+    label: "Trending",
+    icon: TrendingUp,
+    navSlug: "trending",
+  },
 ];
 
 export function MobileNav() {
   const [location] = useLocation();
+  const { activeCategory } = useActiveCategory();
+
+  // Resolve which nav slug is active for the current page
+  function getActiveNavSlug(): string | null {
+    if (location === "/") return "home";
+
+    // Category page — extract slug and map to nav slug
+    const catMatch = location.match(/^\/category\/([^/?#]+)/);
+    if (catMatch) {
+      const slug = catMatch[1];
+      return CATEGORY_TO_NAV[slug] ?? null;
+    }
+
+    // Article page — use the category set by ArticlePage via context
+    if (location.startsWith("/article/") && activeCategory) {
+      return CATEGORY_TO_NAV[activeCategory] ?? null;
+    }
+
+    return null;
+  }
+
+  const activeNavSlug = getActiveNavSlug();
 
   return (
     <div
@@ -21,9 +87,8 @@ export function MobileNav() {
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <nav className="flex items-center justify-around px-1" style={{ height: "56px" }}>
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-          const isActive =
-            href === "/" ? location === "/" : location.startsWith(href);
+        {NAV_ITEMS.map(({ href, label, icon: Icon, navSlug }) => {
+          const isActive = activeNavSlug === navSlug;
           return (
             <Link
               key={href}
@@ -36,7 +101,6 @@ export function MobileNav() {
                 isActive ? "text-primary" : "text-muted-foreground",
               )}
             >
-              {/* Pill indicator behind icon */}
               <div
                 className={cn(
                   "flex items-center justify-center rounded-2xl transition-all duration-200",
