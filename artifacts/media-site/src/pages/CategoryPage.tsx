@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRoute } from "wouter";
 import {
   useListArticles,
   useListTrendingArticles,
   getListArticlesQueryKey,
+  Article,
 } from "@workspace/api-client-react";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Flame } from "lucide-react";
+
+// ── Category metadata ─────────────────────────────────────────────────────────
 
 const SLUG_TO_NAME: Record<string, string> = {
   tech: "Tech",
@@ -18,6 +21,9 @@ const SLUG_TO_NAME: Record<string, string> = {
   "phone-tips": "Phone Tips",
   productivity: "Productivity",
   trending: "Trending",
+  // virtual mixed slugs
+  "ai-productivity": "AI & Productivity",
+  "culture-lifestyle": "Culture & Lifestyle",
 };
 
 const SLUG_TO_DESCRIPTION: Record<string, string> = {
@@ -28,6 +34,14 @@ const SLUG_TO_DESCRIPTION: Record<string, string> = {
   "phone-tips": "Get more from your smartphone with tips, tricks, and hidden features.",
   productivity: "Work smarter, not harder — tools, habits, and systems that actually work.",
   trending: "The most-read stories on Scrolltek right now.",
+  "ai-productivity": "The best of AI Tools and Productivity — tools, tips, and systems that save you hours.",
+  "culture-lifestyle": "Culture and Lifestyle stories — how we live, connect, and unwind.",
+};
+
+// Virtual slugs map to the real category slugs they combine
+const MIXED_SLUG_MAP: Record<string, string[]> = {
+  "ai-productivity": ["ai-tools", "productivity"],
+  "culture-lifestyle": ["culture", "lifestyle"],
 };
 
 function getCategoryColor(cat: string) {
@@ -39,8 +53,21 @@ function getCategoryColor(cat: string) {
     case "phone-tips": return "from-green-500/20";
     case "productivity": return "from-amber-500/20";
     case "trending": return "from-red-500/20";
+    case "ai-productivity": return "from-amber-500/20";
+    case "culture-lifestyle": return "from-purple-500/20";
     default: return "from-primary/20";
   }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 function SkeletonGrid() {
@@ -58,8 +85,17 @@ function SkeletonGrid() {
   );
 }
 
-/** Trending page — shows most-read articles across all categories */
-function TrendingPage({ displayName, description, gradient }: { displayName: string; description: string; gradient: string }) {
+// ── Trending page ─────────────────────────────────────────────────────────────
+
+function TrendingPage({
+  displayName,
+  description,
+  gradient,
+}: {
+  displayName: string;
+  description: string;
+  gradient: string;
+}) {
   const { data: articles, isLoading } = useListTrendingArticles({ limit: 20 } as never);
 
   return (
@@ -90,7 +126,89 @@ function TrendingPage({ displayName, description, gradient }: { displayName: str
   );
 }
 
-/** Standard category page — filters articles by category */
+// ── Mixed category page (AI+Productivity or Culture+Lifestyle) ────────────────
+// Articles from both categories are pooled and reshuffled every 2 minutes.
+
+function MixedCategoryPage({
+  slugs,
+  displayName,
+  description,
+  gradient,
+}: {
+  slugs: string[];
+  displayName: string;
+  description: string;
+  gradient: string;
+}) {
+  const q0 = useListArticles({ category: slugs[0], limit: 50 });
+  const q1 = useListArticles({ category: slugs[1], limit: 50 });
+
+  // Merge both pools, deduplicated
+  const pool = React.useMemo(() => {
+    const seen = new Set<number>();
+    const all: Article[] = [];
+    for (const q of [q0, q1]) {
+      for (const a of q.data?.articles ?? []) {
+        if (!seen.has(a.id)) { seen.add(a.id); all.push(a); }
+      }
+    }
+    return all;
+  }, [q0.data, q1.data]);
+
+  const [displayed, setDisplayed] = useState<Article[]>([]);
+  const [fading, setFading] = useState(false);
+  const isLoading = q0.isLoading || q1.isLoading;
+
+  // Initial shuffle on load
+  useEffect(() => {
+    if (pool.length > 0) setDisplayed(shuffle(pool));
+  }, [pool.length]);
+
+  // Reshuffle every 2 minutes
+  useEffect(() => {
+    if (pool.length < 2) return;
+    const id = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setDisplayed(shuffle(pool));
+        setFading(false);
+      }, 400);
+    }, 120000);
+    return () => clearInterval(id);
+  }, [pool]);
+
+  return (
+    <div className="min-h-screen pb-16">
+      <div className={`bg-gradient-to-b ${gradient} to-background border-b border-border/50 py-16 mb-12`}>
+        <div className="container max-w-screen-2xl px-4 md:px-8 text-center">
+          <h1 className="font-display text-4xl md:text-6xl font-extrabold mb-4">{displayName}</h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{description}</p>
+        </div>
+      </div>
+      <div className="container max-w-screen-2xl px-4 md:px-8">
+        {isLoading && displayed.length === 0 ? (
+          <SkeletonGrid />
+        ) : displayed.length > 0 ? (
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10"
+            style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
+          >
+            {displayed.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-muted-foreground">
+            No articles found.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Standard category page ────────────────────────────────────────────────────
+
 function StandardCategoryPage({
   slug,
   displayName,
@@ -103,7 +221,7 @@ function StandardCategoryPage({
   gradient: string;
 }) {
   const [page, setPage] = React.useState(1);
-  const [allArticles, setAllArticles] = React.useState<any[]>([]);
+  const [allArticles, setAllArticles] = React.useState<Article[]>([]);
 
   const { data, isLoading } = useListArticles(
     { category: slug, page, limit: 12 },
@@ -121,21 +239,18 @@ function StandardCategoryPage({
         setAllArticles(data.articles);
       } else {
         setAllArticles((prev) => {
-          const ids = new Set(prev.map((a: any) => a.id));
-          return [...prev, ...data.articles.filter((a: any) => !ids.has(a.id))];
+          const ids = new Set(prev.map((a) => a.id));
+          return [...prev, ...data.articles.filter((a) => !ids.has(a.id))];
         });
       }
     }
   }, [data, page]);
 
-  // Reset when slug changes
   React.useEffect(() => {
     setPage(1);
     setAllArticles([]);
   }, [slug]);
 
-  // Use cached query data as fallback so back-navigation never flashes "no articles"
-  // while the useEffect hasn't had a chance to populate allArticles yet.
   const displayArticles = allArticles.length > 0 ? allArticles : (data?.articles ?? []);
   const isInitialLoading = isLoading && displayArticles.length === 0;
 
@@ -182,6 +297,8 @@ function StandardCategoryPage({
   );
 }
 
+// ── Router ────────────────────────────────────────────────────────────────────
+
 export default function CategoryPage() {
   const [, params] = useRoute("/category/:slug");
   const slug = params?.slug || "";
@@ -192,8 +309,17 @@ export default function CategoryPage() {
   const gradient = getCategoryColor(slug);
 
   if (slug === "trending") {
+    return <TrendingPage displayName={displayName} description={description} gradient={gradient} />;
+  }
+
+  if (MIXED_SLUG_MAP[slug]) {
     return (
-      <TrendingPage displayName={displayName} description={description} gradient={gradient} />
+      <MixedCategoryPage
+        slugs={MIXED_SLUG_MAP[slug]}
+        displayName={displayName}
+        description={description}
+        gradient={gradient}
+      />
     );
   }
 
