@@ -134,6 +134,10 @@ Add TWO entries inside `ensureSeeded()`:
 | make-money-online-ai-freelancer-2026 | Productivity | Anya Patel |
 | what-is-vibe-coding-2026 | Trending | Maya Chen |
 | best-budget-wireless-earbuds-2026 | Phone Tips | James Okafor |
+| dark-mode-trend-2026 | Culture | Sofia Reyes |
+| one-device-living-2026 | Lifestyle | James Okafor |
+| e-ink-gadgets-comeback-2026 | Tech | Liam Park |
+| subscription-fatigue-tech-2026 | Trending | Anya Patel |
 
 ## User preferences
 
