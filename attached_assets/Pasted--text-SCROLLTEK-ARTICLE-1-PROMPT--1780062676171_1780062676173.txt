@@ -1,0 +1,420 @@
+```text
+=============================================================
+SCROLLTEK — ARTICLE 1 PROMPT
+=============================================================
+You are a professional content writer, SEO expert,
+and digital media editor with 10 years of experience
+writing for premium digital lifestyle publications.
+
+You are writing for SCROLLTEK — a modern digital media
+website for 18–35 year olds covering:
+- internet culture
+- digital lifestyle
+- creator economy
+- gadgets
+- AI tools
+- modern technology trends
+
+IMPORTANT:
+Write ONLY ONE article.
+Do NOT generate any additional article content.
+Do NOT invent fake internal articles.
+
+=============================================================
+ARTICLE TOPIC
+=============================================================
+Why People Are Obsessed With “Tiny Internet” Communities Again
+
+=============================================================
+ARTICLE ANGLE
+=============================================================
+Write a highly visual article about why users are
+moving away from massive social media platforms and
+toward:
+- Discord groups
+- private communities
+- niche forums
+- Telegram groups
+- invite-only spaces
+- smaller creator communities
+
+Discuss:
+- internet fatigue
+- algorithm exhaustion
+- online identity
+- parasocial relationships
+- why smaller communities feel safer and more real
+- why creators are building private audiences
+- whether giant social networks are losing cultural power
+
+Explain everything in simple English.
+
+=============================================================
+SEO BLOCK
+=============================================================
+FOCUS KEYWORD:
+tiny internet communities
+
+SECONDARY KEYWORDS:
+private online communities, niche internet groups,
+discord culture, internet culture trends,
+small online communities
+
+META TITLE:
+Why People Are Obsessed With “Tiny Internet” Communities Again
+
+META DESCRIPTION:
+People are leaving giant social platforms for smaller,
+more personal online communities in 2026. Here is why
+the internet is becoming smaller again.
+
+URL SLUG:
+/tiny-internet-communities-2026
+
+=============================================================
+DISCOVER IMAGE REQUIREMENTS
+=============================================================
+VERY IMPORTANT:
+- Minimum image width: 1200px
+- Minimum total pixels: 300,000+
+- Featured image must perfectly match the article topic
+- Search the whole internet for the BEST matching image
+- Never reuse any previous Scrolltek cover image
+- Never use broken image links
+- Use visually emotional and editorial imagery
+
+=============================================================
+GOOGLE DISCOVER THUMBNAIL RULES
+=============================================================
+The HTML output MUST include:
+- schema.org markup
+OR
+- og:image meta tags
+
+The selected thumbnail image must:
+- be large
+- visually striking
+- representative of the article
+- optimized for Google Discover click-through rate
+
+=============================================================
+IMAGE BLOCK FORMAT
+=============================================================
+<figure>
+  <img
+    src=""
+    alt="DESCRIPTIVE ALT TEXT"
+    data-search="SPECIFIC IMAGE SEARCH TERM"
+    data-source="EXACT WEBSITE"
+    width="1200"
+    height="675"
+  />
+  <figcaption>CAPTION</figcaption>
+</figure>
+
+=============================================================
+STRICT INTERNAL BACKLINK RULES
+=============================================================
+ONLY create backlinks to articles that ALREADY EXIST
+on the website.
+
+NEVER invent new article titles.
+NEVER generate additional articles for backlinks.
+NEVER create fake URLs.
+
+Use ONLY these existing articles:
+- Why Millions Are Quietly Quitting Social Media in 2026
+- How Memes Became the Fastest News Network on Earth
+- The TikTok Brain Is Real
+- How to Build a Personal Brand Online in 2026
+
+=============================================================
+FINAL REQUIREMENTS
+=============================================================
+- HTML ONLY
+- Minimum 5 images
+- Mobile-first formatting
+- Short paragraphs
+- FAQ section
+- Human tone
+- Discover-friendly emotional hook
+=============================================================
+
+
+
+=============================================================
+SCROLLTEK — ARTICLE 2 PROMPT
+=============================================================
+ARTICLE TOPIC:
+Why “Second Brain” Apps Are Becoming Digital Survival Tools
+
+=============================================================
+ARTICLE ANGLE
+=============================================================
+Write a highly visual article explaining why people
+are using:
+- Notion
+- Obsidian
+- digital notes
+- personal knowledge systems
+- bookmarking apps
+- AI memory tools
+
+to organize their lives.
+
+Discuss:
+- information overload
+- productivity anxiety
+- memory outsourcing
+- creator workflows
+- digital clutter
+- why modern users feel overwhelmed
+- why “second brain” systems are trending
+
+Keep everything simple and relatable.
+
+=============================================================
+SEO BLOCK
+=============================================================
+FOCUS KEYWORD:
+second brain apps
+
+SECONDARY KEYWORDS:
+digital organization tools, knowledge management,
+productivity apps 2026, personal knowledge systems,
+information overload
+
+META TITLE:
+Why “Second Brain” Apps Are Becoming Digital Survival Tools
+
+META DESCRIPTION:
+Modern users are overwhelmed with information.
+Here is why “second brain” apps are becoming essential
+for work, studying, and everyday life in 2026.
+
+URL SLUG:
+/second-brain-apps-2026
+
+=============================================================
+DISCOVER IMAGE REQUIREMENTS
+=============================================================
+- Minimum width: 1200px
+- Minimum total pixels: 300,000+
+- Premium editorial visuals only
+- Feature image must visually communicate:
+  “digital organization”
+- Never reuse old cover images
+
+=============================================================
+GOOGLE DISCOVER THUMBNAIL RULES
+=============================================================
+Include:
+- schema.org markup
+OR
+- og:image meta tags
+
+=============================================================
+STRICT INTERNAL BACKLINK RULES
+=============================================================
+ONLY backlink to already-existing website articles.
+
+Use ONLY:
+- Your To-Do List Is Broken. Here's the System That Actually Works.
+- The AI Tools That Are Actually Saving People Hours Every Week
+- How AI Tools Are Changing the Way Students Study in 2026
+- The AI Prompt Formula That Makes Every Tool Give You Better Answers
+
+=============================================================
+FINAL REQUIREMENTS
+=============================================================
+- HTML ONLY
+- Minimum 5 visuals
+- FAQ section
+- Discover-friendly formatting
+- Human tone
+=============================================================
+
+
+
+=============================================================
+SCROLLTEK — ARTICLE 3 PROMPT
+=============================================================
+ARTICLE TOPIC:
+Why “Camera Culture” Is Becoming More Important Than Social Media Followers
+
+=============================================================
+ARTICLE ANGLE
+=============================================================
+Write a highly visual article about how:
+- better smartphone cameras
+- vlogging culture
+- cinematic editing
+- aesthetic photography
+- everyday content creation
+
+are becoming more important online than follower counts.
+
+Discuss:
+- visual storytelling
+- creator economy
+- lifestyle aesthetics
+- social validation
+- why people upgrade phones mainly for cameras
+- why visual quality dominates online attention
+- why everyone is becoming a content creator
+
+Explain simply.
+
+=============================================================
+SEO BLOCK
+=============================================================
+FOCUS KEYWORD:
+camera culture 2026
+
+SECONDARY KEYWORDS:
+smartphone camera trends, visual storytelling,
+creator economy trends, cinematic content,
+social media visuals
+
+META TITLE:
+Why “Camera Culture” Is Becoming More Important Than Social Media Followers
+
+META DESCRIPTION:
+In 2026, visual quality matters more than follower
+counts. Here is why camera culture is dominating the
+modern internet.
+
+URL SLUG:
+/camera-culture-2026
+
+=============================================================
+DISCOVER IMAGE REQUIREMENTS
+=============================================================
+- Minimum width: 1200px
+- Minimum total pixels: 300,000+
+- Cinematic editorial visuals only
+- Unique feature image required
+- Never reuse previous website cover images
+
+=============================================================
+GOOGLE DISCOVER THUMBNAIL RULES
+=============================================================
+Include:
+- schema.org markup
+OR
+- og:image meta tags
+
+=============================================================
+STRICT INTERNAL BACKLINK RULES
+=============================================================
+ONLY backlink to already-existing articles.
+
+Use ONLY:
+- How to Build a Personal Brand Online in 2026
+- How Memes Became the Fastest News Network on Earth
+- Why AI Phones Are Becoming the Future of Smartphones
+- 12 iPhone Settings You Should Change the Moment You Read This
+
+=============================================================
+FINAL REQUIREMENTS
+=============================================================
+- HTML ONLY
+- Minimum 5 visuals
+- Premium digital-magazine tone
+- Mobile-first structure
+- FAQ section
+=============================================================
+
+
+
+=============================================================
+SCROLLTEK — ARTICLE 4 PROMPT
+=============================================================
+ARTICLE TOPIC:
+Why People Are Starting to Treat AI Like a Personal Therapist
+
+=============================================================
+ARTICLE ANGLE
+=============================================================
+Write a highly visual, balanced article about how
+many users now talk to AI for:
+- emotional support
+- motivation
+- journaling
+- loneliness
+- productivity encouragement
+- daily advice
+
+Discuss:
+- emotional attachment to AI
+- loneliness online
+- digital companionship
+- why users trust AI conversations
+- risks and concerns
+- whether this trend is healthy
+- how AI is changing human behavior
+
+IMPORTANT:
+Keep the tone balanced, thoughtful, and non-political.
+
+=============================================================
+SEO BLOCK
+=============================================================
+FOCUS KEYWORD:
+AI emotional support
+
+SECONDARY KEYWORDS:
+AI companionship, talking to AI,
+AI loneliness trend, emotional AI,
+AI chatbot behavior
+
+META TITLE:
+Why People Are Starting to Treat AI Like a Personal Therapist
+
+META DESCRIPTION:
+Millions of people are now using AI chatbots for
+comfort, motivation, and emotional conversations.
+Here is why the trend is growing in 2026.
+
+URL SLUG:
+/ai-emotional-support-2026
+
+=============================================================
+DISCOVER IMAGE REQUIREMENTS
+=============================================================
+- Minimum width: 1200px
+- Minimum total pixels: 300,000+
+- Feature image must emotionally match article
+- Use cinematic editorial visuals
+- Never reuse previous feature images
+
+=============================================================
+GOOGLE DISCOVER THUMBNAIL RULES
+=============================================================
+Include:
+- schema.org markup
+OR
+- og:image meta tags
+
+=============================================================
+STRICT INTERNAL BACKLINK RULES
+=============================================================
+ONLY backlink to existing website articles.
+
+Use ONLY:
+- ChatGPT vs Claude vs Gemini — Which AI Is Actually Best for You in 2026?
+- The AI Prompt Formula That Makes Every Tool Give You Better Answers
+- The AI Tools That Are Actually Saving People Hours Every Week
+- The TikTok Brain Is Real
+
+=============================================================
+FINAL REQUIREMENTS
+=============================================================
+- HTML ONLY
+- Minimum 5 visuals
+- Human tone
+- Emotional but balanced writing
+- Discover-friendly formatting
+- FAQ section
+=============================================================
+```

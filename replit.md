@@ -138,6 +138,10 @@ Add TWO entries inside `ensureSeeded()`:
 | one-device-living-2026 | Lifestyle | James Okafor |
 | e-ink-gadgets-comeback-2026 | Tech | Liam Park |
 | subscription-fatigue-tech-2026 | Trending | Anya Patel |
+| tiny-internet-communities-2026 | Culture | Sofia Reyes |
+| second-brain-apps-2026 | Productivity | Anya Patel |
+| camera-culture-2026 | Culture | James Okafor |
+| ai-emotional-support-2026 | AI Tools | Maya Chen |
 
 ## User preferences
 
