@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import {
   useListArticles,
@@ -13,8 +13,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Flame, TrendingUp } from "lucide-react";
 
-// ── Utilities ─────────────────────────────────────────────────────────────────
-
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -24,14 +22,10 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// Keeps the 4 newest articles pinned to the first 4 slots (shuffled among
-// themselves), then shuffles all remaining articles after them.
 function shuffleWithPinnedTop<T>(arr: T[], pinnedCount = 4): T[] {
   if (arr.length <= pinnedCount) return shuffle(arr);
   return [...shuffle(arr.slice(0, pinnedCount)), ...shuffle(arr.slice(pinnedCount))];
 }
-
-// ── Section Header ────────────────────────────────────────────────────────────
 
 function SectionHeader({
   title,
@@ -60,8 +54,6 @@ function SectionHeader({
     </div>
   );
 }
-
-// ── Trending Now (5 random from ALL articles, reshuffles every 10s) ───────────
 
 function TrendingCard({ article, index }: { article: Article; index: number }) {
   return (
@@ -138,8 +130,6 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
     </section>
   );
 }
-
-// ── Latest Wire (newest 8 shuffled, reshuffles every 15s) ─────────────────────
 
 function LatestArticles() {
   const [page, setPage] = useState(1);
@@ -231,8 +221,6 @@ function LatestArticles() {
   );
 }
 
-// ── Popular This Week (random from ALL articles) ──────────────────────────────
-
 function PopularArticles({ allArticles }: { allArticles: Article[] }) {
   const [visible, setVisible] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
@@ -276,8 +264,6 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
     </section>
   );
 }
-
-// ── Editor's Picks (3 random from ALL articles, reshuffled) ──────────────────
 
 function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
   const [visible, setVisible] = useState<Article[]>([]);
@@ -325,18 +311,24 @@ function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
   );
 }
 
-// ── Category Spotlight (single category, shuffles every 2 min) ────────────────
-
-function CategorySpotlight({ category }: { category: string }) {
+function CategorySpotlight({
+  category,
+  allArticles,
+}: {
+  category: string;
+  allArticles: Article[];
+}) {
   const slug = category.toLowerCase().replace(/\s+/g, "-");
-  const { data, isLoading } = useListArticles({ category: slug, limit: 12 });
-  const pool = data?.articles ?? [];
+  const pool = useMemo(
+    () => allArticles.filter((a) => a.category.toLowerCase() === category.toLowerCase()),
+    [allArticles, category]
+  );
   const [displayed, setDisplayed] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     if (pool.length > 0) setDisplayed(shuffle(pool).slice(0, 4));
-  }, [pool.length]);
+  }, [pool]);
 
   useEffect(() => {
     if (pool.length < 2) return;
@@ -347,7 +339,7 @@ function CategorySpotlight({ category }: { category: string }) {
     return () => clearInterval(id);
   }, [pool]);
 
-  if (isLoading || displayed.length === 0) return null;
+  if (displayed.length === 0) return null;
 
   const [featured, ...rest] = displayed;
 
@@ -373,8 +365,6 @@ function CategorySpotlight({ category }: { category: string }) {
     </section>
   );
 }
-
-// ── Category Buttons (reshuffles every 2 minutes) ─────────────────────────────
 
 const CATEGORY_META = [
   { label: "Tech",        slug: "tech",        color: "bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30 text-blue-600 dark:text-blue-400",          emoji: "💻" },
@@ -413,8 +403,6 @@ function CategoryButtons() {
   );
 }
 
-// ── Home Page ─────────────────────────────────────────────────────────────────
-
 const CATEGORY_SECTIONS = [
   "Tech", "AI Tools", "Phone Tips", "Culture", "Lifestyle", "Productivity", "Trending",
 ];
@@ -422,16 +410,15 @@ const CATEGORY_SECTIONS = [
 export default function Home() {
   usePageMeta({});
 
-  // Fetch all articles once — shared by Trending Now, Popular This Week, Editor's Picks
-  const { data, isLoading: allLoading } = useListArticles({ limit: 50 });
+  const { data, isLoading } = useListArticles({ limit: 100 });
   const allArticles = data?.articles ?? [];
 
   return (
     <div className="min-h-screen">
       <BreakingTicker />
-      <HeroSection />
+      <HeroSection articles={allArticles} isLoading={isLoading} />
 
-      {allLoading ? (
+      {isLoading ? (
         <div className="container max-w-screen-2xl px-4 md:px-8 py-10">
           <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -452,7 +439,7 @@ export default function Home() {
 
       {CATEGORY_SECTIONS.map((cat, i) => (
         <React.Fragment key={cat}>
-          <CategorySpotlight category={cat} />
+          <CategorySpotlight category={cat} allArticles={allArticles} />
           {i < CATEGORY_SECTIONS.length - 1 && (
             <div className="border-t border-border/20 container max-w-screen-2xl px-4 md:px-8" />
           )}

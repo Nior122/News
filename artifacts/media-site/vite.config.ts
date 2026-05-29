@@ -42,19 +42,39 @@ export default defineConfig({
     emptyOutDir: true,
     target: "es2020",
     cssCodeSplit: true,
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom"],
-          "vendor-query": ["@tanstack/react-query"],
-          "vendor-ui": [
-            "@radix-ui/react-tooltip",
-            "@radix-ui/react-toast",
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-          ],
-          "vendor-motion": ["framer-motion"],
-          "vendor-carousel": ["embla-carousel-react"],
+        manualChunks(id) {
+          if (id.includes("node_modules/@tiptap") || id.includes("node_modules/prosemirror")) {
+            return "vendor-tiptap";
+          }
+          if (id.includes("node_modules/framer-motion")) {
+            return "vendor-motion";
+          }
+          if (id.includes("node_modules/embla-carousel")) {
+            return "vendor-carousel";
+          }
+          if (id.includes("node_modules/recharts") || id.includes("node_modules/d3-")) {
+            return "vendor-charts";
+          }
+          if (
+            id.includes("node_modules/@radix-ui") ||
+            id.includes("node_modules/class-variance-authority") ||
+            id.includes("node_modules/clsx") ||
+            id.includes("node_modules/tailwind-merge") ||
+            id.includes("node_modules/cmdk") ||
+            id.includes("node_modules/vaul") ||
+            id.includes("node_modules/sonner")
+          ) {
+            return "vendor-ui";
+          }
+          if (id.includes("node_modules/@tanstack")) {
+            return "vendor-query";
+          }
+          if (id.includes("node_modules/react-dom") || id.includes("node_modules/react/")) {
+            return "vendor-react";
+          }
         },
       },
     },

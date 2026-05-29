@@ -6,6 +6,11 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { invalidatePrefix } from "../lib/cache";
+
+function bustCache() {
+  invalidatePrefix("articles:");
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.resolve(__dirname, "../../../uploads");
@@ -118,6 +123,7 @@ router.put("/admin/articles/:id", requireAdmin, async (req: Request, res: Respon
       res.status(404).json({ error: "Article not found" });
       return;
     }
+    bustCache();
     res.json({ ...updated[0], publishedAt: updated[0].publishedAt.toISOString() });
   } catch (err) {
     req.log.error(err);
@@ -153,6 +159,7 @@ router.post("/admin/articles", requireAdmin, async (req: Request, res: Response)
       })
       .returning();
 
+    bustCache();
     res.status(201).json({ ...inserted[0], publishedAt: inserted[0].publishedAt.toISOString() });
   } catch (err) {
     req.log.error(err);
@@ -179,6 +186,7 @@ router.patch("/admin/articles/:id/publish", requireAdmin, async (req: Request, r
       .where(eq(articlesTable.id, id))
       .returning();
 
+    bustCache();
     res.json({ ...updated[0], publishedAt: updated[0].publishedAt.toISOString() });
   } catch (err) {
     req.log.error(err);
@@ -190,6 +198,7 @@ router.delete("/admin/articles/:id", requireAdmin, async (req: Request, res: Res
   try {
     const id = parseInt(req.params.id, 10);
     await db.delete(articlesTable).where(eq(articlesTable.id, id));
+    bustCache();
     res.json({ success: true });
   } catch (err) {
     req.log.error(err);

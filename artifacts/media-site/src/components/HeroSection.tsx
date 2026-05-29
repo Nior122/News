@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { useListArticles } from "@workspace/api-client-react";
+import { Article } from "@workspace/api-client-react";
 import { CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function HeroSection() {
-  const { data, isLoading } = useListArticles({ page: 1, limit: 27 });
-  const [current, setCurrent] = useState<typeof data extends { articles: (infer T)[] } | undefined ? T : never | null>(null);
+interface HeroSectionProps {
+  articles: Article[];
+  isLoading: boolean;
+}
+
+export function HeroSection({ articles, isLoading }: HeroSectionProps) {
+  const [current, setCurrent] = useState<Article | null>(null);
   const [fading, setFading] = useState(false);
 
-  function pickRandom(articles: NonNullable<typeof data>["articles"]) {
-    return articles[Math.floor(Math.random() * articles.length)];
+  function pickRandom(arr: Article[]) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  // Pick initial random article
   useEffect(() => {
-    if (data?.articles && data.articles.length > 0) {
-      setCurrent(pickRandom(data.articles));
-    }
-  }, [data]);
+    if (articles.length > 0) setCurrent(pickRandom(articles));
+  }, [articles.length]);
 
-  // Rotate every 10 seconds with fade
   useEffect(() => {
-    if (!data?.articles || data.articles.length === 0) return;
+    if (articles.length === 0) return;
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => {
-        setCurrent(pickRandom(data.articles));
+        setCurrent(pickRandom(articles));
         setFading(false);
       }, 500);
     }, 10000);
     return () => clearInterval(id);
-  }, [data]);
+  }, [articles]);
 
   if (isLoading || !current) {
     return (
