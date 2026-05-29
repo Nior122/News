@@ -24,6 +24,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+// Keeps the 4 newest articles pinned to the first 4 slots (shuffled among
+// themselves), then shuffles all remaining articles after them.
+function shuffleWithPinnedTop<T>(arr: T[], pinnedCount = 4): T[] {
+  if (arr.length <= pinnedCount) return shuffle(arr);
+  return [...shuffle(arr.slice(0, pinnedCount)), ...shuffle(arr.slice(pinnedCount))];
+}
+
 // ── Section Header ────────────────────────────────────────────────────────────
 
 function SectionHeader({
@@ -159,14 +166,14 @@ function LatestArticles() {
   }, [data, page]);
 
   useEffect(() => {
-    if (pool.length > 0) setDisplayed(shuffle(pool));
+    if (pool.length > 0) setDisplayed(shuffleWithPinnedTop(pool));
   }, [pool]);
 
   useEffect(() => {
     if (pool.length < 2) return;
     const id = setInterval(() => {
       setFading(true);
-      setTimeout(() => { setDisplayed(shuffle(pool)); setFading(false); }, 400);
+      setTimeout(() => { setDisplayed(shuffleWithPinnedTop(pool)); setFading(false); }, 400);
     }, 60000);
     return () => clearInterval(id);
   }, [pool]);
