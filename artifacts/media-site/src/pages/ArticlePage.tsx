@@ -75,6 +75,10 @@ export default function ArticlePage() {
   usePageMeta({
     title: article?.title,
     description: article?.excerpt ?? undefined,
+    ogImage: article?.imageUrl ?? undefined,
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    ogType: "article",
     canonical: article ? `${window.location.origin}/article/${article.slug}` : undefined,
   });
 
@@ -146,7 +150,16 @@ export default function ArticlePage() {
     "@type": "NewsArticle",
     headline: article.title,
     description: article.excerpt,
-    image: article.imageUrl ? [article.imageUrl] : undefined,
+    image: article.imageUrl
+      ? [
+          {
+            "@type": "ImageObject",
+            url: article.imageUrl,
+            width: 1200,
+            height: 630,
+          },
+        ]
+      : undefined,
     datePublished: new Date(article.publishedAt).toISOString(),
     dateModified: new Date(article.publishedAt).toISOString(),
     url: articleUrl,

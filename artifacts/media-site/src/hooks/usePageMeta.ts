@@ -5,6 +5,10 @@ interface PageMeta {
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  ogType?: string;
   canonical?: string;
 }
 
@@ -28,6 +32,13 @@ function setMeta(name: string, content: string) {
   el.setAttribute("content", content);
 }
 
+function removeMeta(name: string) {
+  const el =
+    document.querySelector(`meta[name="${name}"]`) ||
+    document.querySelector(`meta[property="${name}"]`);
+  el?.remove();
+}
+
 export function usePageMeta(meta: PageMeta) {
   useEffect(() => {
     const prevTitle = document.title;
@@ -40,10 +51,26 @@ export function usePageMeta(meta: PageMeta) {
 
     const desc = meta.description || DEFAULT_DESCRIPTION;
     setMeta("description", desc);
+    setMeta("og:type", meta.ogType || "website");
     setMeta("og:title", meta.ogTitle || pageTitle);
     setMeta("og:description", meta.ogDescription || desc);
     setMeta("twitter:title", meta.ogTitle || pageTitle);
     setMeta("twitter:description", meta.ogDescription || desc);
+
+    if (meta.ogImage) {
+      setMeta("og:image", meta.ogImage);
+      setMeta("og:image:width", String(meta.ogImageWidth ?? 1200));
+      setMeta("og:image:height", String(meta.ogImageHeight ?? 630));
+      setMeta("og:image:type", "image/jpeg");
+      setMeta("twitter:card", "summary_large_image");
+      setMeta("twitter:image", meta.ogImage);
+    } else {
+      removeMeta("og:image");
+      removeMeta("og:image:width");
+      removeMeta("og:image:height");
+      removeMeta("og:image:type");
+      removeMeta("twitter:image");
+    }
 
     if (meta.canonical) {
       let link = document.querySelector<HTMLLinkElement>("link[rel='canonical']");
@@ -58,5 +85,12 @@ export function usePageMeta(meta: PageMeta) {
     return () => {
       document.title = prevTitle;
     };
-  }, [meta.title, meta.description]);
+  }, [
+    meta.title,
+    meta.description,
+    meta.ogImage,
+    meta.ogImageWidth,
+    meta.ogImageHeight,
+    meta.ogType,
+  ]);
 }
