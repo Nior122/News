@@ -5,9 +5,11 @@ import { pinoHttp } from "pino-http";
 import type { IncomingMessage, ServerResponse } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs/promises";
 import router from "./routes";
 import sitemapRouter from "./routes/sitemap";
 import { logger } from "./lib/logger";
+import { renderForPath, injectIntoHtml } from "./lib/ssr";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,9 +57,25 @@ app.use("/api", router);
 
 if (process.env.NODE_ENV === "production") {
   const frontendDist = path.resolve(__dirname, "../../media-site/dist/public");
+  const templatePath = path.join(frontendDist, "index.html");
+
+  let templateCache: string | null = null;
+  async function getTemplate(): Promise<string> {
+    if (!templateCache) templateCache = await fs.readFile(templatePath, "utf-8");
+    return templateCache;
+  }
+
   app.use(express.static(frontendDist));
-  app.use((_req, res) => {
-    res.sendFile(path.join(frontendDist, "index.html"));
+  app.use(async (req: Request, res: Response) => {
+    try {
+      const template = await getTemplate();
+      const result = await renderForPath(req.path);
+      const html = result ? injectIntoHtml(template, result) : template;
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.send(html);
+    } catch {
+      res.sendFile(templatePath);
+    }
   });
 }
 

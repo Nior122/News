@@ -100,6 +100,16 @@
     </noscript>
 
     <div id="root"></div>
+    <script>
+      // Remove SSR pre-render shell once React mounts
+      (function () {
+        var o = new MutationObserver(function () {
+          var el = document.getElementById("ssr");
+          if (el) { el.remove(); o.disconnect(); }
+        });
+        o.observe(document.getElementById("root"), { childList: true });
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
