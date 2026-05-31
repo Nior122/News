@@ -86,12 +86,20 @@ router.get("/robots.txt", (req, res) => {
 
   const content = `User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
 
 Sitemap: ${siteUrl}/sitemap.xml`;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "public, max-age=86400");
   res.send(content);
+});
+
+router.get("/ads.txt", (_req, res) => {
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Cache-Control", "public, max-age=86400");
+  res.send("google.com, pub-3931662977705623, DIRECT, f08c47fec0942fa0\n");
 });
 
 export default router;

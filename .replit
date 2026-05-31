@@ -82,6 +82,7 @@ channel = "stable-25_05"
 [userenv]
 
 [userenv.shared]
+SITE_URL = "https://scrolltek.com"
 
 [userenv.development]
 PORT = "8080"
