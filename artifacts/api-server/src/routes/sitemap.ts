@@ -89,6 +89,27 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
 Sitemap: ${siteUrl}/sitemap.xml`;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
