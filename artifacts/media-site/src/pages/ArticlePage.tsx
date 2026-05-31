@@ -83,26 +83,17 @@ interface FaqEntry {
   answer: string;
 }
 
+function isFaqHeading(text: string) {
+  return /faq|frequently asked/i.test(text);
+}
+
 function processBody(html: string): { processed: string; toc: TocEntry[]; faq: FaqEntry[] } {
   if (typeof document === "undefined") return { processed: html, toc: [], faq: [] };
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
 
-  const toc: TocEntry[] = [];
-  const headings = doc.querySelectorAll("h2, h3");
-  headings.forEach((el, i) => {
-    const text = el.textContent?.trim() || "";
-    const slug = text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .slice(0, 60) || `heading-${i}`;
-    const id = `toc-${slug}-${i}`;
-    el.setAttribute("id", id);
-    toc.push({ id, text, level: parseInt(el.tagName[1]) });
-  });
-
+  // Extract FAQ from <details>/<summary> blocks and remove them (+ any FAQ heading) from the body
   const faq: FaqEntry[] = [];
   const details = doc.querySelectorAll("details");
   details.forEach((d) => {
@@ -112,6 +103,29 @@ function processBody(html: string): { processed: string; toc: TocEntry[]; faq: F
     const answer = d.innerHTML.trim();
     if (question) faq.push({ question, answer });
     d.remove();
+  });
+
+  // Remove standalone FAQ headings from body so they don't appear in TOC or prose
+  doc.querySelectorAll("h2, h3").forEach((el) => {
+    if (isFaqHeading(el.textContent?.trim() || "")) {
+      el.remove();
+    }
+  });
+
+  // Build TOC from remaining headings (FAQ headings already removed above)
+  const toc: TocEntry[] = [];
+  let headingIndex = 0;
+  doc.querySelectorAll("h2, h3").forEach((el) => {
+    const text = el.textContent?.trim() || "";
+    const slug = text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 60) || `heading-${headingIndex}`;
+    const id = `toc-${slug}-${headingIndex}`;
+    el.setAttribute("id", id);
+    toc.push({ id, text, level: parseInt(el.tagName[1]) });
+    headingIndex++;
   });
 
   return {
