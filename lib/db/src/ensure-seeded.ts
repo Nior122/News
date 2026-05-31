@@ -2188,7 +2188,7 @@ const ARTICLE_BODY_DUMB_TECH = `<p>It starts with a small observation. A friend 
 
 <figure>
   <img
-    src="https://images.pexels.com/photos/1661678/pexels-photo-1661678.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    src="https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200"
     alt="Simple minimalist feature phone on wooden surface representing the dumb tech comeback trend and distraction free gadgets 2026"
     data-search="minimalist simple feature phone wooden surface minimalist technology"
     data-source="pexels.com"
@@ -4814,7 +4814,7 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
     authorId: 2,
     publishedAt: new Date("2026-06-07T10:00:00Z"),
     readTime: 7,
-    imageUrl: "https://images.pexels.com/photos/1661678/pexels-photo-1661678.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageUrl: "https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200",
     views: 0, featured: false, editorsPick: false,
     tags: ["Dumb Tech", "Minimalist Gadgets", "Distraction Free", "Digital Detox", "Simple Technology", "Lifestyle Tech"],
   },

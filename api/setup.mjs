@@ -4426,7 +4426,7 @@ async function runSetup(pool) {
 
 <figure>
   <img
-    src="https://images.pexels.com/photos/1661678/pexels-photo-1661678.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    src="https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200"
     alt="Simple minimalist feature phone on wooden surface representing the dumb tech comeback trend and distraction free gadgets 2026"
     data-search="minimalist simple feature phone wooden surface minimalist technology"
     data-source="pexels.com"
@@ -4977,7 +4977,7 @@ async function runSetup(pool) {
       subtitle: 'Feature phones, film cameras, and alarm clocks are making a genuine comeback — and the people buying them are not who you think',
       excerpt: 'Minimalist gadgets and distraction-free devices are making a surprising comeback in 2026. Here is why people are getting tired of hyper-connected tech.',
       category: 'Lifestyle', authorId: 2,
-      imageUrl: 'https://images.pexels.com/photos/1661678/pexels-photo-1661678.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      imageUrl: 'https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200',
       publishedAt: '2026-06-07T10:00:00Z',
       readTime: 7, featured: false, editorsPick: false,
       tags: ['Dumb Tech', 'Minimalist Gadgets', 'Distraction Free', 'Digital Detox', 'Simple Technology', 'Lifestyle Tech'],
