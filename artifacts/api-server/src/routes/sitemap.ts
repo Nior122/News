@@ -16,6 +16,11 @@ const STATIC_PAGES = [
   { path: "/category/phone-tips", priority: "0.8", changefreq: "daily" },
   { path: "/category/productivity", priority: "0.8", changefreq: "daily" },
   { path: "/category/trending", priority: "0.8", changefreq: "daily" },
+  { path: "/author/maya-chen", priority: "0.6", changefreq: "weekly" },
+  { path: "/author/james-okafor", priority: "0.6", changefreq: "weekly" },
+  { path: "/author/sofia-reyes", priority: "0.6", changefreq: "weekly" },
+  { path: "/author/liam-park", priority: "0.6", changefreq: "weekly" },
+  { path: "/author/anya-patel", priority: "0.6", changefreq: "weekly" },
 ];
 
 function escapeXml(str: string): string {
