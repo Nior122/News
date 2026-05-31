@@ -13,20 +13,24 @@ export function HeroSection({ articles, isLoading }: HeroSectionProps) {
   const [current, setCurrent] = useState<Article | null>(null);
   const [fading, setFading] = useState(false);
 
+  const recentArticles = [...articles]
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, 5);
+
   function pickRandom(arr: Article[]) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
   useEffect(() => {
-    if (articles.length > 0) setCurrent(pickRandom(articles));
+    if (recentArticles.length > 0) setCurrent(recentArticles[0]);
   }, [articles.length]);
 
   useEffect(() => {
-    if (articles.length === 0) return;
+    if (recentArticles.length === 0) return;
     const id = setInterval(() => {
       setFading(true);
       setTimeout(() => {
-        setCurrent(pickRandom(articles));
+        setCurrent(pickRandom(recentArticles));
         setFading(false);
       }, 500);
     }, 10000);
