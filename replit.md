@@ -142,6 +142,8 @@ Add TWO entries inside `ensureSeeded()`:
 | second-brain-apps-2026 | Productivity | Anya Patel |
 | camera-culture-2026 | Culture | James Okafor |
 | ai-emotional-support-2026 | AI Tools | Maya Chen |
+| silent-internet-content-2026 | Culture | Sofia Reyes |
+| dumb-tech-trend-2026 | Lifestyle | James Okafor |
 
 ## User preferences
 

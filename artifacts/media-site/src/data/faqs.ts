@@ -180,6 +180,63 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
       answer: "Yes — churn rates are rising across streaming and software platforms. Companies are responding with bundles, annual discount offers, and pause options to retain customers who are cutting back.",
     },
   ],
+
+  "e-ink-gadgets-comeback-2026": [
+    {
+      question: "What is the best e-ink device to buy in 2026?",
+      answer: "For reading: the Kindle Paperwhite or Kobo Libra 2 are the gold standard. For note-taking and handwriting: the reMarkable 2 or Supernote A5X are most popular with professionals. For a minimal phone: the Light Phone III uses an e-ink display and is the leading choice for people replacing a smartphone.",
+    },
+    {
+      question: "Is e-ink better for your eyes than a regular screen?",
+      answer: "For most people, yes — especially during long reading sessions. E-ink reflects ambient light rather than emitting it directly, which reduces eye strain. It also eliminates flicker. Many people who struggle to read on tablets or laptops find e-ink significantly more comfortable for extended use.",
+    },
+    {
+      question: "Can you use an e-ink tablet for work?",
+      answer: "For reading-intensive work — reviewing documents, annotating PDFs, long-form research — e-ink tablets are genuinely better than laptops. For note-taking and drafting, stylus-equipped e-ink tablets work well. For tasks requiring software, multiple windows, or frequent switching, a traditional laptop is still necessary.",
+    },
+    {
+      question: "Why does e-ink have such good battery life?",
+      answer: "E-ink only uses power when the display changes — not when it's holding a static image. A page of text drawn on an e-ink screen remains visible indefinitely with zero power consumption. Power is only consumed during the brief page-turn refresh, which is why Kindle batteries last weeks rather than hours.",
+    },
+  ],
+
+  "silent-internet-content-2026": [
+    {
+      question: "What is silent internet content?",
+      answer: "Silent internet content is any digital content that deliberately removes voiceovers, music, text overlays, and fast cuts — leaving only the image or ambient sound. It includes ambient YouTube videos, TikTok silent edits, ASMR-adjacent content, slow vlogs, and long-form newsletters written in unhurried prose without skimmable headers.",
+    },
+    {
+      question: "Where can I find silent internet content?",
+      answer: "YouTube is the best starting point — search for 'ambient,' 'no commentary,' 'silent vlog,' 'study with me,' or 'cosy [activity].' On TikTok, search 'silent edit' or 'aesthetic edit.' Substack has a growing library of essay-format newsletters. YouTube playlists around lo-fi and ASMR content also index the genre well.",
+    },
+    {
+      question: "Is ASMR the same as silent internet content?",
+      answer: "ASMR was the first mainstream version of the idea, but silent internet content is broader. ASMR focuses specifically on sounds that produce a tingling relaxation response. Silent internet content includes visual-only content, ambient spaces with no intentional ASMR sounds, slow-living vlogs, and text formats — the underlying principle is reduced stimulation, not a specific audio effect.",
+    },
+    {
+      question: "Why does calm content feel better than regular social media?",
+      answer: "High-stimulation content engages your brain's threat detection systems repeatedly — which is fatiguing over long sessions. Low-stimulation content activates the default mode network, the brain state associated with mind-wandering and passive processing. Neurologically, it's similar to the rest you get from a long walk or shower. It feels better because it genuinely is rest.",
+    },
+  ],
+
+  "dumb-tech-trend-2026": [
+    {
+      question: "What is the best minimal or dumb phone to buy in 2026?",
+      answer: "The Light Phone III is the most popular choice — it makes calls, sends texts, and has basic navigation with an e-ink display. No social media, no browser. The Mudita Pure is another option with a focus on sleep-friendly design. The Punkt MP02 offers a minimal phone with end-to-end encrypted calls for privacy-focused users.",
+    },
+    {
+      question: "Do I have to give up my smartphone entirely to try dumb tech?",
+      answer: "No — most dumb tech adopters still have smartphones. The idea is selective subtraction: replacing specific behaviours (sleeping next to your phone, reaching for it mindlessly in the morning) with single-purpose objects like alarm clocks or notebooks. You don't need to commit to a second phone to experiment with the principles.",
+    },
+    {
+      question: "Is buying dumb tech expensive?",
+      answer: "It depends what you're buying. A physical alarm clock costs $10–$30. A paper notebook costs $5. A basic analogue watch can be had for $30–$80. Film cameras range from $50 (secondhand point-and-shoot) to several hundred for new models. The Light Phone III costs $399. Most dumb tech entry points are inexpensive — the expensive options are dedicated minimal phones.",
+    },
+    {
+      question: "What is the easiest way to use my phone less without buying new gadgets?",
+      answer: "The single most effective low-effort change: charge your phone in a different room overnight. It removes the justification for sleeping next to it and changes your morning routine immediately. Beyond that, both Android's Digital Wellbeing and iPhone's Screen Time have built-in app timers, focus modes, and notification controls that most users have never turned on.",
+    },
+  ],
 };
 
 export function getArticleFaqs(slug: string): FaqItem[] {
