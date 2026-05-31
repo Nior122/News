@@ -187,47 +187,20 @@ function TableOfContents({ toc }: { toc: TocEntry[] }) {
 }
 
 function FaqSection({ faq }: { faq: FaqEntry[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   if (faq.length === 0) return null;
 
   return (
     <div className="mt-12 pt-8 border-t border-border">
-      <h2 className="font-display text-xl font-bold mb-6 flex items-center gap-2">
+      <h2 className="font-display text-xl font-bold mb-6">
         Frequently Asked Questions
       </h2>
-      <div className="space-y-3">
-        {faq.map((item, i) => {
-          const isOpen = openIndex === i;
-          return (
-            <div
-              key={i}
-              className="rounded-xl border border-border overflow-hidden bg-card"
-            >
-              <button
-                onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-muted/50 transition-colors"
-                aria-expanded={isOpen}
-              >
-                <span className="font-semibold text-sm leading-snug">{item.question}</span>
-                <span className={cn("shrink-0 transition-transform duration-200", isOpen && "rotate-180")}>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                </span>
-              </button>
-              <div
-                className={cn(
-                  "overflow-hidden transition-all duration-300 ease-in-out",
-                  isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
-                )}
-              >
-                <div
-                  className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed prose prose-sm dark:prose-invert max-w-none border-t border-border/60 pt-4"
-                  dangerouslySetInnerHTML={{ __html: item.answer }}
-                />
-              </div>
-            </div>
-          );
-        })}
+      <div className="space-y-6">
+        {faq.map((item, i) => (
+          <div key={i} className="rounded-xl border border-border bg-card px-5 py-5">
+            <p className="font-semibold text-sm leading-snug mb-2">{item.question}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{item.answer}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
