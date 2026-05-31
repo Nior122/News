@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRoute, Link, useLocation } from "wouter";
 import { useGetArticle, getGetArticleQueryKey, useListRelatedArticles, getListRelatedArticlesQueryKey } from "@workspace/api-client-react";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { ArticleCard, CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2 } from "lucide-react";
+import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2, CalendarClock, List, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
@@ -52,6 +52,151 @@ function ShareButtons({ url, title, className }: { url: string; title: string; c
   );
 }
 
+interface TocEntry {
+  id: string;
+  text: string;
+  level: number;
+}
+
+interface FaqEntry {
+  question: string;
+  answer: string;
+}
+
+function processBody(html: string): { processed: string; toc: TocEntry[]; faq: FaqEntry[] } {
+  if (typeof document === "undefined") return { processed: html, toc: [], faq: [] };
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const toc: TocEntry[] = [];
+  const headings = doc.querySelectorAll("h2, h3");
+  headings.forEach((el, i) => {
+    const text = el.textContent?.trim() || "";
+    const slug = text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 60) || `heading-${i}`;
+    const id = `toc-${slug}-${i}`;
+    el.setAttribute("id", id);
+    toc.push({ id, text, level: parseInt(el.tagName[1]) });
+  });
+
+  const faq: FaqEntry[] = [];
+  const details = doc.querySelectorAll("details");
+  details.forEach((d) => {
+    const summary = d.querySelector("summary");
+    const question = summary?.textContent?.trim() || "";
+    summary?.remove();
+    const answer = d.innerHTML.trim();
+    if (question) faq.push({ question, answer });
+    d.remove();
+  });
+
+  return {
+    processed: doc.body.innerHTML,
+    toc,
+    faq,
+  };
+}
+
+function TableOfContents({ toc }: { toc: TocEntry[] }) {
+  const [open, setOpen] = useState(true);
+
+  if (toc.length < 3) return null;
+
+  return (
+    <div className="my-8 rounded-xl border border-border bg-muted/50 overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-muted/80 transition-colors"
+        aria-expanded={open}
+      >
+        <span className="flex items-center gap-2 font-semibold text-sm">
+          <List className="w-4 h-4 text-primary shrink-0" />
+          Table of Contents
+        </span>
+        {open ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />}
+      </button>
+      {open && (
+        <ol className="px-5 pb-4 space-y-1.5 border-t border-border/60">
+          {toc.map((entry, i) => (
+            <li
+              key={entry.id}
+              className={cn(
+                "text-sm leading-snug",
+                entry.level === 3 && "pl-4"
+              )}
+            >
+              <a
+                href={`#${entry.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(entry.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="flex items-start gap-2 text-muted-foreground hover:text-primary transition-colors py-0.5 group"
+              >
+                <span className="shrink-0 text-primary/50 font-mono text-xs mt-0.5 group-hover:text-primary transition-colors">
+                  {entry.level === 2 ? String(i + 1).padStart(2, "0") : "↳"}
+                </span>
+                <span>{entry.text}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
+
+function FaqSection({ faq }: { faq: FaqEntry[] }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  if (faq.length === 0) return null;
+
+  return (
+    <div className="mt-12 pt-8 border-t border-border">
+      <h2 className="font-display text-xl font-bold mb-6 flex items-center gap-2">
+        Frequently Asked Questions
+      </h2>
+      <div className="space-y-3">
+        {faq.map((item, i) => {
+          const isOpen = openIndex === i;
+          return (
+            <div
+              key={i}
+              className="rounded-xl border border-border overflow-hidden bg-card"
+            >
+              <button
+                onClick={() => setOpenIndex(isOpen ? null : i)}
+                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-muted/50 transition-colors"
+                aria-expanded={isOpen}
+              >
+                <span className="font-semibold text-sm leading-snug">{item.question}</span>
+                <span className={cn("shrink-0 transition-transform duration-200", isOpen && "rotate-180")}>
+                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                </span>
+              </button>
+              <div
+                className={cn(
+                  "overflow-hidden transition-all duration-300 ease-in-out",
+                  isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+                )}
+              >
+                <div
+                  className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed prose prose-sm dark:prose-invert max-w-none border-t border-border/60 pt-4"
+                  dangerouslySetInnerHTML={{ __html: item.answer }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function ArticlePage() {
   const [, params] = useRoute("/article/:slug");
   const slug = params?.slug || "";
@@ -82,7 +227,6 @@ export default function ArticlePage() {
     canonical: article ? `${window.location.origin}/article/${article.slug}` : undefined,
   });
 
-  // Tell MobileNav which category tab to highlight
   useEffect(() => {
     if (article?.category) {
       setActiveCategory(article.category.toLowerCase().replace(/\s+/g, "-"));
@@ -112,6 +256,11 @@ export default function ArticlePage() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const { processed: processedBody, toc, faq } = useMemo(
+    () => (article?.body ? processBody(article.body) : { processed: "", toc: [], faq: [] }),
+    [article?.body]
+  );
 
   if (isLoading) {
     return (
@@ -145,28 +294,24 @@ export default function ArticlePage() {
   const articleUrl = typeof window !== "undefined" ? window.location.href : "";
   const origin = typeof window !== "undefined" ? window.location.origin : "";
 
+  const formattedDate = new Date(article.publishedAt).toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: article.title,
     description: article.excerpt,
     image: article.imageUrl
-      ? [
-          {
-            "@type": "ImageObject",
-            url: article.imageUrl,
-            width: 1200,
-            height: 630,
-          },
-        ]
+      ? [{ "@type": "ImageObject", url: article.imageUrl, width: 1200, height: 630 }]
       : undefined,
     datePublished: new Date(article.publishedAt).toISOString(),
     dateModified: new Date(article.publishedAt).toISOString(),
     url: articleUrl,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": articleUrl,
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: {
       "@type": "Person",
       name: article.author.name,
@@ -175,10 +320,7 @@ export default function ArticlePage() {
     publisher: {
       "@type": "Organization",
       name: "Scrolltek",
-      logo: {
-        "@type": "ImageObject",
-        url: `${origin}/favicon.svg`,
-      },
+      logo: { "@type": "ImageObject", url: `${origin}/favicon.svg` },
     },
     articleSection: article.category,
     keywords: article.tags?.join(", ") || article.category,
@@ -188,11 +330,9 @@ export default function ArticlePage() {
   return (
     <>
       <JsonLd data={jsonLdData} />
+
       {/* Reading progress bar */}
-      <div
-        className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]"
-        aria-hidden="true"
-      >
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]" aria-hidden="true">
         <div
           className="h-full bg-primary transition-[width] duration-75 ease-out shadow-[0_0_8px_0px] shadow-primary/60"
           style={{ width: `${scrollProgress}%` }}
@@ -249,6 +389,18 @@ export default function ArticlePage() {
                 </p>
               )}
 
+              {/* Reading time + Last updated badges */}
+              <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 text-primary px-3 py-1 text-xs font-semibold border border-primary/20">
+                  <Clock className="w-3.5 h-3.5" />
+                  {article.readTime} min read
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-muted/80 text-muted-foreground px-3 py-1 text-xs font-semibold border border-border/60">
+                  <CalendarClock className="w-3.5 h-3.5" />
+                  Updated {formattedDate}
+                </span>
+              </div>
+
               <div className="flex items-center justify-center border-t border-border/50 pt-4 flex-wrap gap-4">
                 <div className="flex items-center gap-3" itemProp="author" itemScope itemType="https://schema.org/Person">
                   {article.author.avatarUrl ? (
@@ -266,27 +418,18 @@ export default function ArticlePage() {
                   )}
                   <div>
                     <div className="font-semibold text-sm" itemProp="name">{article.author.name}</div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                    <div className="text-xs text-muted-foreground">
                       <time
                         dateTime={new Date(article.publishedAt).toISOString()}
                         itemProp="datePublished"
                       >
-                        {new Date(article.publishedAt).toLocaleDateString(undefined, {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {formattedDate}
                       </time>
-                      <span>·</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {article.readTime} min read
-                      </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Desktop share — visible alongside author */}
+                {/* Desktop share */}
                 <div className="hidden sm:block">
                   <ShareButtons url={articleUrl} title={article.title} />
                 </div>
@@ -304,12 +447,18 @@ export default function ArticlePage() {
           </div>
 
           <div className="flex-1 max-w-[740px] mx-auto w-full">
+
+            {/* Table of Contents */}
+            <TableOfContents toc={toc} />
+
             <div
               className="prose prose-lg dark:prose-invert prose-headings:font-display prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-blockquote:border-primary prose-blockquote:not-italic prose-blockquote:font-medium [&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:mb-6 [&_h1]:mt-0 [&_figure]:my-8 [&_figcaption]:text-sm [&_figcaption]:text-center [&_figcaption]:italic [&_figcaption]:text-muted-foreground [&_figcaption]:mt-3 [&_img]:w-full [&_img]:object-cover"
               itemProp="articleBody"
               onClick={handleBodyClick}
             >
-              {article.body ? (
+              {processedBody ? (
+                <div dangerouslySetInnerHTML={{ __html: processedBody }} />
+              ) : article.body ? (
                 <div dangerouslySetInnerHTML={{ __html: article.body }} />
               ) : (
                 <>
@@ -318,6 +467,9 @@ export default function ArticlePage() {
                 </>
               )}
             </div>
+
+            {/* FAQ Section */}
+            <FaqSection faq={faq} />
 
             {/* Tags */}
             {article.tags && article.tags.length > 0 && (
