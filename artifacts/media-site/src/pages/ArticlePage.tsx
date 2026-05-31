@@ -4,10 +4,11 @@ import { useGetArticle, getGetArticleQueryKey, useListRelatedArticles, getListRe
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { ArticleCard, CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2, CalendarClock, List, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2, CalendarClock, List, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
+import { useToast } from "@/hooks/use-toast";
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   useEffect(() => {
@@ -26,12 +27,20 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 function ShareButtons({ url, title, className }: { url: string; title: string; className?: string }) {
   const encoded = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
+  const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
 
   const shareTwitter = () => window.open(`https://twitter.com/intent/tweet?url=${encoded}&text=${encodedTitle}`, "_blank", "noopener");
   const shareFacebook = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encoded}`, "_blank", "noopener");
   const shareLinkedIn = () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`, "_blank", "noopener");
   const copyLink = () => {
-    navigator.clipboard.writeText(url).catch(() => {});
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      toast({ title: "Link copied!", description: "The article link is ready to paste." });
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      toast({ title: "Couldn't copy", description: "Please copy the URL from your browser.", variant: "destructive" });
+    });
   };
 
   return (
@@ -45,8 +54,19 @@ function ShareButtons({ url, title, className }: { url: string; title: string; c
       <Button onClick={shareLinkedIn} variant="ghost" size="icon" aria-label="Share on LinkedIn" className="rounded-full bg-card shadow-sm border border-border hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all">
         <Linkedin className="w-4 h-4" />
       </Button>
-      <Button onClick={copyLink} variant="ghost" size="icon" aria-label="Copy link" className="rounded-full bg-card shadow-sm border border-border hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all">
-        <BookmarkPlus className="w-4 h-4" />
+      <Button
+        onClick={copyLink}
+        variant="ghost"
+        size="icon"
+        aria-label="Copy link"
+        className={cn(
+          "rounded-full bg-card shadow-sm border transition-all",
+          copied
+            ? "border-green-500/40 bg-green-500/10 text-green-500"
+            : "border-border hover:bg-primary/10 hover:text-primary hover:border-primary/30"
+        )}
+      >
+        {copied ? <Check className="w-4 h-4" /> : <BookmarkPlus className="w-4 h-4" />}
       </Button>
     </div>
   );
