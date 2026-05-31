@@ -122,16 +122,7 @@ function LatestArticles() {
   }, [data, page]);
 
   useEffect(() => {
-    if (pool.length > 0) setDisplayed(shuffleWithPinnedTop(pool));
-  }, [pool]);
-
-  useEffect(() => {
-    if (pool.length < 2) return;
-    const id = setInterval(() => {
-      setFading(true);
-      setTimeout(() => { setDisplayed(shuffleWithPinnedTop(pool)); setFading(false); }, 400);
-    }, 60000);
-    return () => clearInterval(id);
+    if (pool.length > 0) setDisplayed(pool);
   }, [pool]);
 
   const featured = displayed[0];
