@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 import { useToast } from "@/hooks/use-toast";
 import { nameToSlug } from "@/data/authors";
+import { getArticleFaqs } from "@/data/faqs";
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   useEffect(() => {
@@ -292,10 +293,13 @@ export default function ArticlePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const { processed: processedBody, toc, faq } = useMemo(
-    () => (article?.body ? processBody(article.body) : { processed: "", toc: [], faq: [] }),
-    [article?.body]
-  );
+  const { processed: processedBody, toc, faq } = useMemo(() => {
+    const result = article?.body
+      ? processBody(article.body)
+      : { processed: "", toc: [], faq: [] };
+    const staticFaqs = article?.slug ? getArticleFaqs(article.slug) : [];
+    return { ...result, faq: [...result.faq, ...staticFaqs] };
+  }, [article?.body, article?.slug]);
 
   if (isLoading) {
     return (
