@@ -36,6 +36,8 @@ router.get("/sitemap.xml", async (req, res) => {
     const articles = await db
       .select({
         slug: articlesTable.slug,
+        title: articlesTable.title,
+        imageUrl: articlesTable.imageUrl,
         publishedAt: articlesTable.publishedAt,
       })
       .from(articlesTable)
@@ -57,16 +59,26 @@ router.get("/sitemap.xml", async (req, res) => {
 
     for (const article of articles) {
       const lastmod = article.publishedAt.toISOString().split("T")[0];
+      const loc = escapeXml(siteUrl + "/article/" + article.slug);
+      const imageBlock = article.imageUrl
+        ? `
+    <image:image>
+      <image:loc>${escapeXml(article.imageUrl)}</image:loc>
+      <image:title>${escapeXml(article.title)}</image:title>
+    </image:image>`
+        : "";
       urlEntries.push(`  <url>
-    <loc>${escapeXml(siteUrl + "/article/" + article.slug)}</loc>
+    <loc>${loc}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.7</priority>${imageBlock}
   </url>`);
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urlEntries.join("\n")}
 </urlset>`;
 
