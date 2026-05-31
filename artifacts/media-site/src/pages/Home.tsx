@@ -96,14 +96,12 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
   );
 }
 
-/* ── Latest Wire ── magazine layout: featured + 2 stacked, then 3-col grid */
+/* ── Just Now ── magazine layout: featured + 2 stacked, then 3-col grid */
 function LatestArticles() {
   const [page, setPage] = useState(1);
   const [pool, setPool] = useState<Article[]>([]);
-  const [displayed, setDisplayed] = useState<Article[]>([]);
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [fading, setFading] = useState(false);
 
   const { data, isLoading } = useListArticles({ page, limit: 9 });
 
@@ -121,9 +119,9 @@ function LatestArticles() {
     setHasMore(data.hasMore ?? false);
   }, [data, page]);
 
-  useEffect(() => {
-    if (pool.length > 0) setDisplayed(pool);
-  }, [pool]);
+  const displayed = [...pool].sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
 
   const featured = displayed[0];
   const stacked = displayed.slice(1, 3);
@@ -131,7 +129,7 @@ function LatestArticles() {
 
   return (
     <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
-      <SectionHeader title="Latest Wire" />
+      <SectionHeader title="Just Now" />
       {isLoading && page === 1 ? (
         <div className="space-y-6">
           {/* Featured skeleton */}
@@ -154,7 +152,7 @@ function LatestArticles() {
         </div>
       ) : (
         <>
-          <div style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}>
+          <div>
             {/* Magazine top row: 1 featured (2/3 width) + 2 stacked (1/3 width) */}
             {featured && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
