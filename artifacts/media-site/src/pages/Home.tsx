@@ -55,46 +55,11 @@ function SectionHeader({
   );
 }
 
-function TrendingCard({ article, index }: { article: Article; index: number }) {
-  return (
-    <Link
-      href={`/article/${article.slug}`}
-      className="flex gap-3 items-center bg-card p-3 rounded-xl border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group touch-manipulation"
-    >
-      <span className="font-display text-3xl font-extrabold text-muted-foreground/20 group-hover:text-primary/30 transition-colors shrink-0 w-8 text-center leading-none">
-        {index + 1}
-      </span>
-      {article.imageUrl && (
-        <div className="relative shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-muted">
-          <img
-            src={article.imageUrl}
-            alt={article.title}
-            width={64}
-            height={64}
-            loading="lazy"
-            decoding="async"
-            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-          />
-        </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-bold font-display leading-snug line-clamp-2 mb-1.5 group-hover:text-primary transition-colors text-sm md:text-base">
-          {article.title}
-        </h3>
-        <div className="text-xs text-muted-foreground flex items-center gap-2">
-          <span className="font-medium text-primary/70">{article.category}</span>
-          <span>·</span>
-          <span>{article.readTime} min</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
+/* ── Trending Now ── image card grid, no numbers */
 function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
   const [visible, setVisible] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
-  const SHOW = 5;
+  const SHOW = 6;
 
   useEffect(() => {
     if (allArticles.length > 0) setVisible(shuffle(allArticles).slice(0, SHOW));
@@ -119,11 +84,11 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
       <div className="container max-w-screen-2xl px-4 md:px-8">
         <SectionHeader title="Trending Now" icon={<Flame className="w-5 h-5" />} />
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
         >
-          {visible.map((article, index) => (
-            <TrendingCard key={`${article.id}-${index}`} article={article} index={index} />
+          {visible.map((article) => (
+            <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       </div>
@@ -131,6 +96,7 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
   );
 }
 
+/* ── Latest Wire ── magazine layout: featured + 2 stacked, then 3-col grid */
 function LatestArticles() {
   const [page, setPage] = useState(1);
   const [pool, setPool] = useState<Article[]>([]);
@@ -139,7 +105,7 @@ function LatestArticles() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [fading, setFading] = useState(false);
 
-  const { data, isLoading } = useListArticles({ page, limit: 8 });
+  const { data, isLoading } = useListArticles({ page, limit: 9 });
 
   useEffect(() => {
     if (!data?.articles) return;
@@ -168,41 +134,72 @@ function LatestArticles() {
     return () => clearInterval(id);
   }, [pool]);
 
+  const featured = displayed[0];
+  const stacked = displayed.slice(1, 3);
+  const rest = displayed.slice(3);
+
   return (
     <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
       <SectionHeader title="Latest Wire" />
       {isLoading && page === 1 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="space-y-4">
-              <Skeleton className="w-full rounded-xl" style={{ aspectRatio: "16/9" }} />
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-5 w-full" />
-              <Skeleton className="h-5 w-2/3" />
+        <div className="space-y-6">
+          {/* Featured skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Skeleton className="lg:col-span-2 w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
+            <div className="flex flex-col gap-6">
+              <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
+              <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
             </div>
-          ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
-          >
-            {displayed.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
+          <div style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}>
+            {/* Magazine top row: 1 featured (2/3 width) + 2 stacked (1/3 width) */}
+            {featured && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div className="lg:col-span-2">
+                  <ArticleCard article={featured} featured className="h-full" />
+                </div>
+                <div className="flex flex-col gap-6">
+                  {stacked.map((article) => (
+                    <ArticleCard key={article.id} article={article} className="flex-1" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Remaining articles in 3-col grid */}
+            {rest.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rest.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
+            )}
           </div>
+
           {loadingMore && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="space-y-4">
-                  <Skeleton className="w-full rounded-xl" style={{ aspectRatio: "16/9" }} />
-                  <Skeleton className="h-4 w-24" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-3">
+                  <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
                   <Skeleton className="h-5 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
                 </div>
               ))}
             </div>
           )}
+
           {hasMore && !loadingMore && (
             <div className="mt-12 text-center">
               <Button
@@ -221,6 +218,7 @@ function LatestArticles() {
   );
 }
 
+/* ── Popular This Week ── 3-col image card grid (no numbered list) */
 function PopularArticles({ allArticles }: { allArticles: Article[] }) {
   const [visible, setVisible] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
@@ -245,19 +243,11 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
       <div className="container max-w-screen-2xl px-4 md:px-8">
         <SectionHeader title="Popular This Week" icon={<TrendingUp className="w-5 h-5" />} />
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
         >
-          {visible.map((article, index) => (
-            <div
-              key={article.id}
-              className="flex items-start gap-4 bg-background p-4 rounded-xl border border-border hover:border-primary/20 hover:shadow-md transition-all duration-200"
-            >
-              <span className="font-display text-2xl font-extrabold text-muted-foreground/25 shrink-0 w-7 leading-none mt-1">
-                {index + 1}
-              </span>
-              <ArticleCard article={article} layout="horizontal" className="flex-1" />
-            </div>
+          {visible.map((article) => (
+            <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       </div>
@@ -265,6 +255,7 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
   );
 }
 
+/* ── Editor's Picks ── 1 featured wide + 2 stacked horizontals */
 function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
   const [visible, setVisible] = useState<Article[]>([]);
   const [fading, setFading] = useState(false);
@@ -294,7 +285,7 @@ function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
         style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
       >
         <div className="lg:col-span-7">
-          {featured && <ArticleCard article={featured} className="h-full" />}
+          {featured && <ArticleCard article={featured} featured className="h-full" />}
         </div>
         <div className="lg:col-span-5 flex flex-col gap-4">
           {rest.map((article) => (
@@ -311,6 +302,7 @@ function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
   );
 }
 
+/* ── Category Spotlight ── 1 featured + horizontal list */
 function CategorySpotlight({
   category,
   allArticles,
@@ -350,7 +342,7 @@ function CategorySpotlight({
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
         style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
       >
-        {featured && <ArticleCard article={featured} />}
+        {featured && <ArticleCard article={featured} featured />}
         <div className="flex flex-col gap-4 justify-between">
           {rest.map((article) => (
             <ArticleCard
@@ -421,8 +413,14 @@ export default function Home() {
       {isLoading ? (
         <div className="container max-w-screen-2xl px-4 md:px-8 py-10">
           <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5].map((i) => <Skeleton key={i} className="h-24 rounded-xl" />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            ))}
           </div>
         </div>
       ) : (

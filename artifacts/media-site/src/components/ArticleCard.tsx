@@ -3,11 +3,11 @@ import { Link } from "wouter";
 import { Article } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Clock } from "lucide-react";
 
 interface ArticleCardProps {
   article: Article;
-  layout?: "grid" | "horizontal" | "hero";
+  layout?: "grid" | "horizontal";
+  featured?: boolean;
   className?: string;
 }
 
@@ -38,7 +38,6 @@ function categorySlug(category: string) {
   return CATEGORY_SLUGS[category.toLowerCase()] ?? category.toLowerCase().replace(/\s+/g, "-");
 }
 
-/** Standalone badge — links directly to the category page. Safe to use outside of card links. */
 export function CategoryBadge({
   category,
   className,
@@ -63,20 +62,15 @@ export function CategoryBadge({
   );
 }
 
-export function ArticleCard({ article, layout = "grid", className }: ArticleCardProps) {
+export function ArticleCard({ article, layout = "grid", featured = false, className }: ArticleCardProps) {
   if (layout === "horizontal") {
     return (
-      /* Stretched-link pattern: card is a div, the article anchor covers it,
-         and the category badge is a separate sibling link above the overlay. */
       <div className={cn("group relative flex gap-4 items-start touch-manipulation", className)}>
-        {/* Invisible stretched article link */}
         <Link
           href={`/article/${article.slug}`}
           className="absolute inset-0 z-0"
           aria-label={article.title}
         />
-
-        {/* Thumbnail */}
         <div
           className="relative z-10 shrink-0 rounded-xl overflow-hidden bg-muted pointer-events-none"
           style={{ width: 120, height: 90 }}
@@ -91,81 +85,86 @@ export function ArticleCard({ article, layout = "grid", className }: ArticleCard
             className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
         </div>
-
-        {/* Text content */}
         <div className="relative z-10 flex flex-col flex-1 py-0.5 min-w-0 pointer-events-none">
-          {/* Category badge — real link above the stretched article link */}
           <div className="pointer-events-auto w-fit mb-2">
             <CategoryBadge category={article.category} className="text-xs" />
           </div>
           <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 group-hover:text-primary transition-colors line-clamp-2 pointer-events-none">
             {article.title}
           </h3>
-          <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 flex-wrap pointer-events-none">
-            <span className="font-medium text-foreground/70 truncate max-w-[100px]">{article.author.name}</span>
+          <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 pointer-events-none">
+            <span className="font-medium text-foreground/70 truncate max-w-[110px]">{article.author.name}</span>
             <span className="text-border">·</span>
             <span>{new Date(article.publishedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
-            <span className="text-border">·</span>
-            <span className="flex items-center gap-0.5">
-              <Clock className="w-3 h-3" />
-              {article.readTime}m
-            </span>
           </div>
         </div>
       </div>
     );
   }
 
-  /* Grid / default layout */
   return (
     <div
       className={cn(
-        "group relative flex flex-col touch-manipulation bg-card rounded-xl overflow-hidden border border-border/50 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300",
+        "group relative flex flex-col touch-manipulation rounded-2xl overflow-hidden bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300",
         className,
       )}
     >
-      {/* Stretched article link (behind everything) */}
       <Link
         href={`/article/${article.slug}`}
         className="absolute inset-0 z-0"
         aria-label={article.title}
       />
 
-      {/* Image */}
-      <div className="relative w-full overflow-hidden bg-muted pointer-events-none" style={{ aspectRatio: "16/9" }}>
+      {/* Image with category badge overlay */}
+      <div
+        className="relative w-full overflow-hidden bg-muted pointer-events-none"
+        style={{ aspectRatio: featured ? "16/9" : "16/9" }}
+      >
         <img
           src={article.imageUrl}
           alt={article.title}
-          width={640}
-          height={360}
+          width={featured ? 1200 : 640}
+          height={featured ? 675 : 360}
           loading="lazy"
           decoding="async"
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
+        {/* Gradient for legibility of overlaid badge */}
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+        {/* Category badge overlaid on image */}
+        <div className="absolute bottom-3 left-3 pointer-events-auto z-10">
+          <CategoryBadge
+            category={article.category}
+            className="backdrop-blur-sm shadow-sm text-xs"
+          />
+        </div>
       </div>
 
-      {/* Card body */}
-      <div className="relative z-10 flex flex-col flex-1 p-4 pointer-events-none">
-        {/* Category badge is a real link above the stretched overlay */}
-        <div className="pointer-events-auto w-fit mb-3">
-          <CategoryBadge category={article.category} />
-        </div>
-        <h3 className="font-display font-bold text-base md:text-lg leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2 pointer-events-none">
+      {/* Card body — lean, image-first */}
+      <div className={cn("relative z-10 flex flex-col flex-1 pointer-events-none", featured ? "p-5" : "p-4")}>
+        <h3
+          className={cn(
+            "font-display font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2 pointer-events-none",
+            featured ? "text-xl md:text-2xl mb-3" : "text-base md:text-lg mb-2"
+          )}
+        >
           {article.title}
         </h3>
-        {article.excerpt && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3 leading-relaxed flex-1 pointer-events-none">
+
+        {/* Excerpt: shown on featured cards or when article has one and we're in full width */}
+        {featured && article.excerpt && (
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-3 leading-relaxed pointer-events-none">
             {article.excerpt}
           </p>
         )}
-        <div className="flex items-center text-xs text-muted-foreground mt-auto pt-3 border-t border-border/50 flex-wrap gap-x-2 gap-y-1 pointer-events-none">
-          <span className="font-medium text-foreground/80">{article.author.name}</span>
+
+        {/* Footer */}
+        <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 flex-wrap pointer-events-none">
+          <span className="font-medium text-foreground/70">{article.author.name}</span>
           <span className="text-border">·</span>
           <span>{new Date(article.publishedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
-          <span className="ml-auto flex items-center gap-1 text-muted-foreground/70">
-            <Clock className="w-3 h-3" />
-            {article.readTime} min
-          </span>
+          <span className="text-border">·</span>
+          <span>{article.readTime} min read</span>
         </div>
       </div>
     </div>
