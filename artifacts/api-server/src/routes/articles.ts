@@ -287,16 +287,28 @@ router.get("/articles/search", async (req, res) => {
     }
 
     const searchPattern = `%${q}%`;
+
+    const allAuthors = await getAuthors();
+    const matchingAuthorIds = allAuthors
+      .filter((a) => a.name.toLowerCase().includes(q.toLowerCase()))
+      .map((a) => a.id);
+
+    const searchConditions = [
+      ilike(articlesTable.title, searchPattern),
+      ilike(articlesTable.excerpt, searchPattern),
+      ilike(articlesTable.category, searchPattern),
+      sql<boolean>`array_to_string(${articlesTable.tags}, ' ') ILIKE ${searchPattern}`,
+      ...(matchingAuthorIds.length > 0
+        ? [sql<boolean>`${articlesTable.authorId} = ANY(ARRAY[${sql.join(matchingAuthorIds.map((id) => sql`${id}`), sql`, `)}]::int[])`]
+        : []),
+    ];
+
     const whereClause = and(
       eq(articlesTable.published, true),
-      or(
-        ilike(articlesTable.title, searchPattern),
-        ilike(articlesTable.excerpt, searchPattern),
-        ilike(articlesTable.category, searchPattern)
-      )
+      or(...searchConditions)
     );
 
-    const [articles, authors, countResult] = await Promise.all([
+    const [articles, countResult] = await Promise.all([
       db
         .select()
         .from(articlesTable)
@@ -304,11 +316,10 @@ router.get("/articles/search", async (req, res) => {
         .orderBy(desc(articlesTable.publishedAt))
         .limit(limit)
         .offset(offset),
-      getAuthors(),
       db.select({ count: sql<number>`count(*)` }).from(articlesTable).where(whereClause),
     ]);
 
-    const authorMap = new Map(authors.map((a) => [a.id, a]));
+    const authorMap = new Map(allAuthors.map((a) => [a.id, a]));
     const total = Number(countResult[0]?.count ?? 0);
 
     res.json({

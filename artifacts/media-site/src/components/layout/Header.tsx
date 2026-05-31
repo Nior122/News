@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
+import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { LiveSearch } from "@/components/LiveSearch";
 
 const CATEGORIES = [
   { label: "Tech", slug: "tech" },
@@ -60,12 +61,8 @@ export function Header() {
 
           {/* Right icons */}
           <div className="flex items-center gap-1">
-            {/* Search — visible on all screen sizes, right before theme toggle */}
-            <Link href="/search">
-              <Button variant="ghost" size="icon" aria-label="Search">
-                <Search className="h-5 w-5" />
-              </Button>
-            </Link>
+            {/* Live search — visible on all screen sizes */}
+            <LiveSearch />
 
             {/* Theme toggle */}
             <Button
