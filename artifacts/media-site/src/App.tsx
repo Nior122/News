@@ -38,6 +38,7 @@ const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const AdminLogin = lazy(() => import("@/pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+const AuthorPage = lazy(() => import("@/pages/AuthorPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,6 +86,7 @@ function Router() {
               <Route path="/article/:slug" component={ArticlePage} />
               <Route path="/category/:slug" component={CategoryPage} />
               <Route path="/search" component={SearchPage} />
+              <Route path="/author/:slug" component={AuthorPage} />
               <Route path="/about" component={AboutPage} />
               <Route path="/contact" component={ContactPage} />
               <Route path="/privacy" component={PrivacyPage} />

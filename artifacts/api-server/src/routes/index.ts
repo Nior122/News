@@ -4,6 +4,7 @@ import articlesRouter from "./articles";
 import categoriesRouter from "./categories";
 import newsletterRouter from "./newsletter";
 import adminRouter from "./admin";
+import authorsRouter from "./authors";
 const router: IRouter = Router();
 
 router.use(healthRouter);
@@ -11,5 +12,6 @@ router.use(adminRouter);
 router.use(articlesRouter);
 router.use(categoriesRouter);
 router.use(newsletterRouter);
+router.use(authorsRouter);
 
 export default router;

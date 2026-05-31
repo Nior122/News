@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 import { useToast } from "@/hooks/use-toast";
+import { nameToSlug } from "@/data/authors";
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   useEffect(() => {
@@ -436,12 +437,12 @@ export default function ArticlePage() {
               </div>
 
               <div className="flex items-center justify-center border-t border-border/50 pt-4 flex-wrap gap-4">
-                <div className="flex items-center gap-3" itemProp="author" itemScope itemType="https://schema.org/Person">
+                <Link href={`/author/${nameToSlug(article.author.name)}`} className="flex items-center gap-3 group" itemProp="author" itemScope itemType="https://schema.org/Person">
                   {article.author.avatarUrl ? (
                     <img
                       src={article.author.avatarUrl}
                       alt={article.author.name}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-border shrink-0"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-border shrink-0 group-hover:border-primary transition-colors"
                     />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
@@ -451,7 +452,7 @@ export default function ArticlePage() {
                     </div>
                   )}
                   <div>
-                    <div className="font-semibold text-sm" itemProp="name">{article.author.name}</div>
+                    <div className="font-semibold text-sm group-hover:text-primary transition-colors" itemProp="name">{article.author.name}</div>
                     <div className="text-xs text-muted-foreground">
                       <time
                         dateTime={new Date(article.publishedAt).toISOString()}
@@ -461,7 +462,7 @@ export default function ArticlePage() {
                       </time>
                     </div>
                   </div>
-                </div>
+                </Link>
 
                 {/* Desktop share */}
                 <div className="hidden sm:block">
