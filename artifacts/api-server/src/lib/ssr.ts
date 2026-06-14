@@ -126,6 +126,62 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   return result;
 }
 
+async function renderAuthor(slug: string): Promise<RenderResult> {
+  const cacheKey = `ssr:author:${slug}`;
+  const cached = getCached<RenderResult>(cacheKey);
+  if (cached) return cached;
+
+  const AUTHORS: Record<string, { name: string; title: string; bio: string }> = {
+    "maya-chen":     { name: "Maya Chen",    title: "Senior Tech & AI Writer",          bio: "Covering the intersection of AI and everyday technology for over 8 years." },
+    "james-okafor":  { name: "James Okafor", title: "Tech & Culture Writer",            bio: "Writing at the crossroads of technology and culture since 2018." },
+    "sofia-reyes":   { name: "Sofia Reyes",  title: "Lifestyle & Culture Editor",       bio: "Exploring wellness, digital culture, and how technology shapes the way we live." },
+    "liam-park":     { name: "Liam Park",    title: "Mobile & On-Device AI Specialist", bio: "Former software engineer turned mobile writer — obsessed with squeezing every bit of performance from your devices." },
+    "anya-patel":    { name: "Anya Patel",   title: "AI Tools & Productivity Writer",   bio: "Testing AI productivity tools so you don't have to — with thousands of hours logged across ChatGPT, Claude, Gemini, and beyond." },
+  };
+
+  const author = AUTHORS[slug];
+  if (!author) return { bodyHtml: "", meta: { title: SITE_NAME, description: SITE_DESC, canonical: SITE_URL }, jsonLd: "" };
+
+  const authorRows = await db.select().from(authorsTable).where(eq(authorsTable.slug, slug)).limit(1);
+  const authorId = authorRows[0]?.id;
+  const authorArticles = authorId
+    ? await db.select({ slug: articlesTable.slug, title: articlesTable.title, excerpt: articlesTable.excerpt, category: articlesTable.category })
+        .from(articlesTable)
+        .where(and(eq(articlesTable.published, true), eq(articlesTable.authorId, authorId)))
+        .orderBy(desc(articlesTable.publishedAt))
+    : [];
+
+  const cards = authorArticles.map(a => articleCard(a.slug, a.title, a.excerpt ?? "", a.category)).join("");
+  const bodyHtml = `<main id="ssr">
+    <h1>${esc(author.name)} — ${esc(author.title)}</h1>
+    <p>${esc(author.bio)}</p>
+    ${cards}
+  </main>`;
+
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: author.name,
+    jobTitle: author.title,
+    description: author.bio,
+    url: `${SITE_URL}/author/${slug}`,
+    worksFor: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+  });
+
+  const result: RenderResult = {
+    bodyHtml,
+    meta: {
+      title: `${author.name} — ${SITE_NAME}`,
+      description: `${author.bio} Read all articles by ${author.name} on ${SITE_NAME}.`,
+      canonical: `${SITE_URL}/author/${slug}`,
+    },
+    jsonLd,
+  };
+
+  setCached(cacheKey, result, 5 * 60 * 1000);
+  return result;
+}
+
 async function renderCategory(slug: string): Promise<RenderResult> {
   const SLUG_TO_LABEL: Record<string, string> = {
     tech: "Tech", culture: "Culture", lifestyle: "Lifestyle",
@@ -166,6 +222,9 @@ export async function renderForPath(urlPath: string): Promise<RenderResult | nul
 
     const categoryMatch = clean.match(/^\/category\/([^/]+)$/);
     if (categoryMatch) return renderCategory(categoryMatch[1]);
+
+    const authorMatch = clean.match(/^\/author\/([^/]+)$/);
+    if (authorMatch) return renderAuthor(authorMatch[1]);
 
     return null;
   } catch {

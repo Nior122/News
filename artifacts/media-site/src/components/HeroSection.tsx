@@ -57,10 +57,12 @@ export function HeroSection({ articles, isLoading }: HeroSectionProps) {
           transition: "opacity 0.5s ease",
         }}
       >
+        {/* Invisible overlay for mouse/touch click coverage — aria-hidden so only title link is announced */}
         <Link
           href={`/article/${current.slug}`}
           className="absolute inset-0 z-0"
-          aria-label={current.title}
+          aria-hidden="true"
+          tabIndex={-1}
         />
         <img
           src={current.imageUrl}
@@ -72,15 +74,20 @@ export function HeroSection({ articles, isLoading }: HeroSectionProps) {
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
-        <div className="relative z-10 mt-auto p-5 md:p-10 w-full md:w-3/4 pointer-events-none">
+        <div className="relative z-10 mt-auto p-5 md:p-10 w-full md:w-3/4">
           <div className="pointer-events-auto w-fit mb-3">
             <CategoryBadge
               category={current.category}
               className="bg-primary text-primary-foreground border-none"
             />
           </div>
-          <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-3 md:mb-4 group-hover:text-primary transition-colors pointer-events-none">
-            {current.title}
+          <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-3 md:mb-4">
+            <Link
+              href={`/article/${current.slug}`}
+              className="relative z-10 group-hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
+              {current.title}
+            </Link>
           </h1>
           <p className="hidden sm:block text-white/80 text-base md:text-xl line-clamp-2 mb-5 max-w-2xl pointer-events-none">
             {current.excerpt}

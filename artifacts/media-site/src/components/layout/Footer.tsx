@@ -17,10 +17,10 @@ export function Footer() {
               Your go-to source for tech, digital culture, AI tools, lifestyle, and the trends shaping how we live online.
             </p>
             <div className="flex items-center gap-4 text-muted-foreground">
-              <a href="#" className="hover:text-primary transition-colors"><SiX className="h-5 w-5" /></a>
-              <a href="#" className="hover:text-primary transition-colors"><SiInstagram className="h-5 w-5" /></a>
-              <a href="#" className="hover:text-primary transition-colors"><SiYoutube className="h-5 w-5" /></a>
-              <a href="#" className="hover:text-primary transition-colors"><SiTiktok className="h-5 w-5" /></a>
+              <a href="https://twitter.com/scrolltek" target="_blank" rel="noopener noreferrer" aria-label="Scrolltek on X (Twitter)" className="hover:text-primary transition-colors"><SiX className="h-5 w-5" /></a>
+              <a href="https://instagram.com/scrolltek" target="_blank" rel="noopener noreferrer" aria-label="Scrolltek on Instagram" className="hover:text-primary transition-colors"><SiInstagram className="h-5 w-5" /></a>
+              <a href="https://youtube.com/@scrolltek" target="_blank" rel="noopener noreferrer" aria-label="Scrolltek on YouTube" className="hover:text-primary transition-colors"><SiYoutube className="h-5 w-5" /></a>
+              <a href="https://tiktok.com/@scrolltek" target="_blank" rel="noopener noreferrer" aria-label="Scrolltek on TikTok" className="hover:text-primary transition-colors"><SiTiktok className="h-5 w-5" /></a>
             </div>
           </div>
 

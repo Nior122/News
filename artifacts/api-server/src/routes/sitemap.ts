@@ -4,23 +4,25 @@ import { eq, desc } from "drizzle-orm";
 
 const router = Router();
 
+// lastmod for truly static pages — use the date they were last meaningfully edited.
+// Do NOT use today's date here — Google learns to ignore lastmod when it's always "now".
 const STATIC_PAGES = [
-  { path: "/", priority: "1.0", changefreq: "daily" },
-  { path: "/about", priority: "0.5", changefreq: "monthly" },
-  { path: "/contact", priority: "0.5", changefreq: "monthly" },
-  { path: "/privacy", priority: "0.3", changefreq: "yearly" },
-  { path: "/category/tech", priority: "0.8", changefreq: "daily" },
-  { path: "/category/culture", priority: "0.8", changefreq: "daily" },
-  { path: "/category/lifestyle", priority: "0.8", changefreq: "daily" },
-  { path: "/category/ai-tools", priority: "0.8", changefreq: "daily" },
-  { path: "/category/phone-tips", priority: "0.8", changefreq: "daily" },
-  { path: "/category/productivity", priority: "0.8", changefreq: "daily" },
-  { path: "/category/trending", priority: "0.8", changefreq: "daily" },
-  { path: "/author/maya-chen", priority: "0.6", changefreq: "weekly" },
-  { path: "/author/james-okafor", priority: "0.6", changefreq: "weekly" },
-  { path: "/author/sofia-reyes", priority: "0.6", changefreq: "weekly" },
-  { path: "/author/liam-park", priority: "0.6", changefreq: "weekly" },
-  { path: "/author/anya-patel", priority: "0.6", changefreq: "weekly" },
+  { path: "/", priority: "1.0", changefreq: "daily", lastmod: null }, // null = use today (genuinely fresh)
+  { path: "/about", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
+  { path: "/contact", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
+  { path: "/privacy", priority: "0.3", changefreq: "yearly", lastmod: "2026-05-25" },
+  { path: "/category/tech", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/culture", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/lifestyle", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/ai-tools", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/phone-tips", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/productivity", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/category/trending", priority: "0.8", changefreq: "daily", lastmod: null },
+  { path: "/author/maya-chen", priority: "0.6", changefreq: "weekly", lastmod: null },
+  { path: "/author/james-okafor", priority: "0.6", changefreq: "weekly", lastmod: null },
+  { path: "/author/sofia-reyes", priority: "0.6", changefreq: "weekly", lastmod: null },
+  { path: "/author/liam-park", priority: "0.6", changefreq: "weekly", lastmod: null },
+  { path: "/author/anya-patel", priority: "0.6", changefreq: "weekly", lastmod: null },
 ];
 
 function escapeXml(str: string): string {
@@ -56,7 +58,7 @@ router.get("/sitemap.xml", async (req, res) => {
     for (const page of STATIC_PAGES) {
       urlEntries.push(`  <url>
     <loc>${escapeXml(siteUrl + page.path)}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${page.lastmod ?? today}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`);
