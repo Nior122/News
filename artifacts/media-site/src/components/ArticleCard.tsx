@@ -66,10 +66,12 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
   if (layout === "horizontal") {
     return (
       <div className={cn("group relative flex gap-4 items-start touch-manipulation", className)}>
+        {/* Invisible overlay makes the whole card clickable for mouse/touch — aria-hidden so screen readers only use the title link */}
         <Link
           href={`/article/${article.slug}`}
           className="absolute inset-0 z-0"
-          aria-label={article.title}
+          aria-hidden="true"
+          tabIndex={-1}
         />
         <div
           className="relative z-10 shrink-0 rounded-xl overflow-hidden bg-muted pointer-events-none"
@@ -85,12 +87,17 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
             className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
         </div>
-        <div className="relative z-10 flex flex-col flex-1 py-0.5 min-w-0 pointer-events-none">
+        <div className="relative z-10 flex flex-col flex-1 py-0.5 min-w-0">
           <div className="pointer-events-auto w-fit mb-2">
             <CategoryBadge category={article.category} className="text-xs" />
           </div>
-          <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 group-hover:text-primary transition-colors line-clamp-2 pointer-events-none">
-            {article.title}
+          <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 transition-colors line-clamp-2">
+            <Link
+              href={`/article/${article.slug}`}
+              className="relative z-10 group-hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
+              {article.title}
+            </Link>
           </h3>
           <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 pointer-events-none">
             <span className="font-medium text-foreground/70 truncate max-w-[110px]">{article.author.name}</span>
@@ -109,16 +116,18 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
         className,
       )}
     >
+      {/* Invisible overlay makes the whole card clickable — aria-hidden so screen readers only use the title link */}
       <Link
         href={`/article/${article.slug}`}
         className="absolute inset-0 z-0"
-        aria-label={article.title}
+        aria-hidden="true"
+        tabIndex={-1}
       />
 
       {/* Image with category badge overlay */}
       <div
         className="relative w-full overflow-hidden bg-muted pointer-events-none"
-        style={{ aspectRatio: featured ? "16/9" : "16/9" }}
+        style={{ aspectRatio: "16/9" }}
       >
         <img
           src={article.imageUrl}
@@ -129,9 +138,7 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
           decoding="async"
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
-        {/* Gradient for legibility of overlaid badge */}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
-        {/* Category badge overlaid on image */}
         <div className="absolute bottom-3 left-3 pointer-events-auto z-10">
           <CategoryBadge
             category={article.category}
@@ -140,25 +147,28 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
         </div>
       </div>
 
-      {/* Card body — lean, image-first */}
-      <div className={cn("relative z-10 flex flex-col flex-1 pointer-events-none", featured ? "p-5" : "p-4")}>
+      {/* Card body */}
+      <div className={cn("relative z-10 flex flex-col flex-1", featured ? "p-5" : "p-4")}>
         <h3
           className={cn(
-            "font-display font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2 pointer-events-none",
+            "font-display font-bold leading-snug transition-colors line-clamp-2",
             featured ? "text-xl md:text-2xl mb-3" : "text-base md:text-lg mb-2"
           )}
         >
-          {article.title}
+          <Link
+            href={`/article/${article.slug}`}
+            className="relative z-10 group-hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+          >
+            {article.title}
+          </Link>
         </h3>
 
-        {/* Excerpt: shown on featured cards or when article has one and we're in full width */}
         {featured && article.excerpt && (
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3 leading-relaxed pointer-events-none">
             {article.excerpt}
           </p>
         )}
 
-        {/* Footer */}
         <div className="flex items-center text-xs text-muted-foreground mt-auto gap-1.5 flex-wrap pointer-events-none">
           <span className="font-medium text-foreground/70">{article.author.name}</span>
           <span className="text-border">·</span>

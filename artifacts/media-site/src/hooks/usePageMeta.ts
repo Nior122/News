@@ -39,13 +39,17 @@ function removeMeta(name: string) {
   el?.remove();
 }
 
+const HOME_CANONICAL = "https://scrolltek.com/";
+const HOME_TITLE = `${SITE_NAME} — Tech, Culture, Lifestyle & AI Tools`;
+
 export function usePageMeta(meta: PageMeta) {
   useEffect(() => {
     const prevTitle = document.title;
+    const prevCanonical = document.querySelector<HTMLLinkElement>("link[rel='canonical']")?.href ?? HOME_CANONICAL;
 
     const pageTitle = meta.title
       ? `${meta.title} — ${SITE_NAME}`
-      : `${SITE_NAME} — Tech, Culture, Lifestyle & AI Tools`;
+      : HOME_TITLE;
 
     document.title = pageTitle;
 
@@ -72,18 +76,21 @@ export function usePageMeta(meta: PageMeta) {
       removeMeta("twitter:image");
     }
 
-    if (meta.canonical) {
-      let link = document.querySelector<HTMLLinkElement>("link[rel='canonical']");
-      if (!link) {
-        link = document.createElement("link");
-        link.rel = "canonical";
-        document.head.appendChild(link);
-      }
-      link.href = meta.canonical;
+    // Always update canonical — fall back to home if not provided
+    const canonicalHref = meta.canonical ?? HOME_CANONICAL;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='canonical']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "canonical";
+      document.head.appendChild(link);
     }
+    link.href = canonicalHref;
 
     return () => {
       document.title = prevTitle;
+      // Reset canonical to its previous value on unmount (handles back-navigation)
+      const l = document.querySelector<HTMLLinkElement>("link[rel='canonical']");
+      if (l) l.href = prevCanonical;
     };
   }, [
     meta.title,
@@ -92,5 +99,6 @@ export function usePageMeta(meta: PageMeta) {
     meta.ogImageWidth,
     meta.ogImageHeight,
     meta.ogType,
+    meta.canonical,
   ]);
 }

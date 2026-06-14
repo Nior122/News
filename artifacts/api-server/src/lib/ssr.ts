@@ -179,28 +179,48 @@ export function injectIntoHtml(
 ): string {
   let html = template;
 
-  html = html.replace(
-    /<title>[^<]*<\/title>/,
-    `<title>${result.meta.title}</title>`
-  );
+  // Title
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${result.meta.title}</title>`);
 
+  // Meta description
   html = html.replace(
-    /<meta name="description"[^>]*>/,
+    /<meta name="description"[^>]*\/?>/,
     `<meta name="description" content="${esc(result.meta.description)}" />`
   );
 
+  // Canonical
   html = html.replace(
-    /<link rel="canonical"[^>]*>/,
+    /<link rel="canonical"[^>]*\/?>/,
     `<link rel="canonical" href="${esc(result.meta.canonical)}" />`
   );
 
+  // OG title
+  html = html.replace(
+    /<meta property="og:title"[^>]*\/?>/,
+    `<meta property="og:title" content="${esc(result.meta.title)}" />`
+  );
+
+  // OG description
+  html = html.replace(
+    /<meta property="og:description"[^>]*\/?>/,
+    `<meta property="og:description" content="${esc(result.meta.description)}" />`
+  );
+
+  // OG URL
+  html = html.replace(
+    /<meta property="og:url"[^>]*\/?>/,
+    `<meta property="og:url" content="${esc(result.meta.canonical)}" />`
+  );
+
+  // OG image (only if article has one)
   if (result.meta.ogImage) {
     html = html.replace(
-      /(<meta property="og:description"[^>]*>)/,
-      `$1\n    <meta property="og:image" content="${esc(result.meta.ogImage)}" />`
+      /(<meta property="og:url"[^>]*\/>)/,
+      `$1\n    <meta property="og:image" content="${esc(result.meta.ogImage)}" />\n    <meta name="twitter:image" content="${esc(result.meta.ogImage)}" />`
     );
   }
 
+  // JSON-LD structured data
   if (result.jsonLd) {
     html = html.replace(
       /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
@@ -208,6 +228,7 @@ export function injectIntoHtml(
     );
   }
 
+  // Pre-rendered body content
   html = html.replace(
     '<div id="root"></div>',
     `<div id="root">${result.bodyHtml}</div>`

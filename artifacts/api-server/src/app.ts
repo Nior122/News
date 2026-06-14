@@ -55,6 +55,19 @@ app.use("/uploads", express.static(uploadsDir));
 app.use(sitemapRouter);
 app.use("/api", router);
 
+// 301 redirect duplicate article slugs to canonical versions
+const ARTICLE_REDIRECTS: Record<string, string> = {
+  "why-ai-phones-are-becoming-the-future": "why-ai-phones-are-the-future-2026",
+};
+app.get("/article/:slug", (req: Request, res: Response, next: NextFunction) => {
+  const target = ARTICLE_REDIRECTS[req.params.slug];
+  if (target) {
+    res.redirect(301, `/article/${target}`);
+    return;
+  }
+  next();
+});
+
 if (process.env.NODE_ENV === "production") {
   const frontendDist = path.resolve(__dirname, "../../media-site/dist/public");
   const templatePath = path.join(frontendDist, "index.html");
