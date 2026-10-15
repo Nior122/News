@@ -5,7 +5,7 @@
  */
 
 import { neon } from '@neondatabase/serverless';
-import { ensureReady, forceRefreshBodies } from './setup.mjs';
+import { forceRefreshBodies } from './setup.mjs';
 
 // ── DB client ─────────────────────────────────────────────────────────────────
 function getDb(env) {
@@ -51,28 +51,32 @@ async function makeToken(payload, secret) {
 }
 
 async function verifyToken(token, secret) {
-  const parts = token.split('.');
-  if (parts.length !== 3) return null;
-  const [header, body, sig] = parts;
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'],
-  );
-  const sigBytes = Uint8Array.from(
-    atob(sig.replace(/-/g, '+').replace(/_/g, '/')),
-    c => c.charCodeAt(0),
-  );
-  const valid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${header}.${body}`));
-  if (!valid) return null;
-  const payload = JSON.parse(atob(body.replace(/-/g, '+').replace(/_/g, '/')));
-  if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-  return payload;
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const [header, body, sig] = parts;
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'],
+    );
+    const sigBytes = Uint8Array.from(
+      atob(sig.replace(/-/g, '+').replace(/_/g, '/')),
+      c => c.charCodeAt(0),
+    );
+    const valid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${header}.${body}`));
+    if (!valid) return null;
+    const payload = JSON.parse(atob(body.replace(/-/g, '+').replace(/_/g, '/')));
+    if (payload.admin !== true || payload.exp < Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
 }
 
 async function requireAdmin(req, env) {
   const auth = req.headers.get('Authorization') ?? '';
   if (!auth.startsWith('Bearer ')) return null;
-  return verifyToken(auth.slice(7), env.ADMIN_PASSWORD ?? '');
+  return verifyToken(auth.slice(7), env?.ADMIN_PASSWORD ?? '');
 }
 
 // ── Row formatter ─────────────────────────────────────────────────────────────
@@ -113,9 +117,46 @@ function slugToCategory(slug) {
   return SLUG_TO_CATEGORY[slug.toLowerCase()] ?? slug;
 }
 
+// Validate the route and method before creating a database client. Admin routes
+// are marked so authentication can happen before any database operation.
+const API_ROUTES = new Map([
+  ['/health', { methods: ['GET'], kind: 'health' }],
+  ['/categories', { methods: ['GET'], kind: 'public' }],
+  ['/newsletter/subscribe', { methods: ['POST'], kind: 'public' }],
+  ['/admin/force-seed', { methods: ['POST'], kind: 'admin-force-seed', admin: true }],
+  ['/admin/login', { methods: ['POST'], kind: 'admin-login' }],
+  ['/admin/upload', { methods: ['POST'], kind: 'admin-upload', admin: true }],
+  ['/admin/articles', { methods: ['GET', 'POST'], kind: 'admin', admin: true }],
+  ['/articles/featured', { methods: ['GET'], kind: 'public' }],
+  ['/articles/trending', { methods: ['GET'], kind: 'public' }],
+  ['/articles/editors-picks', { methods: ['GET'], kind: 'public' }],
+  ['/articles/popular', { methods: ['GET'], kind: 'public' }],
+  ['/articles/ticker', { methods: ['GET'], kind: 'public' }],
+  ['/articles/search', { methods: ['GET'], kind: 'public' }],
+  ['/articles', { methods: ['GET'], kind: 'public' }],
+]);
+
+function classifyRoute(path, method) {
+  const route = API_ROUTES.get(path);
+  if (route?.methods.includes(method)) return route;
+
+  if (/^\/admin\/articles\/\d+\/publish$/.test(path) && method === 'PATCH') {
+    return { kind: 'admin', admin: true };
+  }
+  if (/^\/admin\/articles\/\d+$/.test(path) && ['PUT', 'DELETE'].includes(method)) {
+    return { kind: 'admin', admin: true };
+  }
+  if (/^\/articles\/[^/]+\/related$/.test(path) && method === 'GET') return { kind: 'public' };
+  if (/^\/articles\/[^/]+$/.test(path) && method === 'GET') return { kind: 'public' };
+  return null;
+}
+
 // ── Main handler ──────────────────────────────────────────────────────────────
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, _context, {
+    databaseFactory = getDb,
+    refreshSetup = forceRefreshBodies,
+  } = {}) {
     if (request.method === 'OPTIONS') {
       return cors(new Response(null, { status: 204 }));
     }
@@ -124,13 +165,36 @@ export default {
     const path = url.pathname.replace(/^\/api/, '') || '/';
     const method = request.method;
 
-    const db = getDb(env);
-    await ensureReady(db);
+    const route = classifyRoute(path, method);
+    if (!route) return cors(json({ error: 'Not found' }, 404));
+    if (route.kind === 'health') return cors(json({ ok: true }));
+
+    if (route.kind === 'admin-login') {
+      const body = await request.json().catch(() => ({}));
+      if (!body.password || body.password !== env?.ADMIN_PASSWORD) {
+        return cors(json({ error: 'Invalid password' }, 401));
+      }
+      const token = await makeToken({ admin: true }, env.ADMIN_PASSWORD);
+      return cors(json({ token }));
+    }
+
+    // Check admin credentials before constructing a database client.
+    if (route.admin && !(await requireAdmin(request, env ?? {}))) {
+      return cors(json({ error: 'Unauthorized' }, 401));
+    }
+    if (route.kind === 'admin-upload') {
+      return cors(json({ error: 'File upload not supported in edge mode. Use an image URL instead.' }, 400));
+    }
+
+    if (!env?.DATABASE_URL) return cors(json({ error: 'Service unavailable' }, 503));
 
     try {
-      // Health
-      if (path === '/health' && method === 'GET') {
-        return cors(json({ ok: true }));
+      const db = databaseFactory(env);
+
+      // Setup is an explicit authenticated operation, never request startup.
+      if (route.kind === 'admin-force-seed') {
+        const count = await refreshSetup(db);
+        return cors(json({ success: true, total: count, message: `Setup complete. ${count} articles now in database.` }));
       }
 
       // Categories
@@ -148,33 +212,8 @@ export default {
         return cors(json({ success: true }));
       }
 
-      // Force seed
-      if (path === '/admin/force-seed' && method === 'GET') {
-        const key = url.searchParams.get('key');
-        if (!key || key !== env.ADMIN_PASSWORD) return cors(json({ error: 'Unauthorized' }, 401));
-        const count = await forceRefreshBodies(db);
-        return cors(json({ success: true, total: count, message: `Setup complete. ${count} articles now in database.` }));
-      }
-
-      // Admin login
-      if (path === '/admin/login' && method === 'POST') {
-        const body = await request.json().catch(() => ({}));
-        if (!body.password || body.password !== env.ADMIN_PASSWORD) {
-          return cors(json({ error: 'Invalid password' }, 401));
-        }
-        const token = await makeToken({ admin: true }, env.ADMIN_PASSWORD);
-        return cors(json({ token }));
-      }
-
-      // Admin upload (not supported in Workers)
-      if (path === '/admin/upload' && method === 'POST') {
-        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
-        return cors(json({ error: 'File upload not supported in edge mode. Use an image URL instead.' }, 400));
-      }
-
       // Admin list articles
       if (path === '/admin/articles' && method === 'GET') {
-        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const rows = await db`
           SELECT a.*, au.name AS author_name, au.avatar_url
           FROM articles a JOIN authors au ON a.author_id = au.id
@@ -184,7 +223,6 @@ export default {
 
       // Admin create article
       if (path === '/admin/articles' && method === 'POST') {
-        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const b = await request.json().catch(() => ({}));
         const tags = Array.isArray(b.tags) ? b.tags : String(b.tags ?? '').split(',').map(t => t.trim()).filter(Boolean);
         const rows = await db`
@@ -198,7 +236,6 @@ export default {
       // Admin article by ID (PUT / DELETE)
       const idMatch = path.match(/^\/admin\/articles\/(\d+)$/);
       if (idMatch) {
-        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const id = parseInt(idMatch[1], 10);
         if (method === 'PUT') {
           const b = await request.json().catch(() => ({}));
@@ -223,7 +260,6 @@ export default {
       // Admin publish toggle
       const pubMatch = path.match(/^\/admin\/articles\/(\d+)\/publish$/);
       if (pubMatch && method === 'PATCH') {
-        if (!(await requireAdmin(request, env))) return cors(json({ error: 'Unauthorized' }, 401));
         const id = parseInt(pubMatch[1], 10);
         const cur = await db`SELECT published FROM articles WHERE id = ${id}`;
         if (!cur.length) return cors(json({ error: 'Not found' }, 404));
@@ -354,7 +390,6 @@ export default {
           FROM articles a JOIN authors au ON a.author_id = au.id
           WHERE a.slug = ${slug}`;
         if (!rows.length) return cors(json({ error: 'Not found' }, 404));
-        await db`UPDATE articles SET views = views + 1 WHERE slug = ${slug}`;
         return cors(json(fmt(rows[0])));
       }
 

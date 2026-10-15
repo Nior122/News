@@ -8,14 +8,14 @@
     <title>Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools</title>
     <meta name="description" content="Scrolltek is your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://scrolltek.com/" />
+    <link rel="canonical" href="https://scrolltek.name.ng/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Scrolltek" />
     <meta property="og:title" content="Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools" />
     <meta property="og:description" content="Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
-    <meta property="og:url" content="https://scrolltek.com/" />
+    <meta property="og:url" content="https://scrolltek.name.ng/" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -54,18 +54,18 @@
     </noscript>
 
     <!-- Structured data: Website + SearchAction -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" id="website-jsonld">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Scrolltek",
-      "url": "https://scrolltek.com/",
+      "url": "https://scrolltek.name.ng/",
       "description": "Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://scrolltek.com/search?q={search_term_string}"
+          "urlTemplate": "https://scrolltek.name.ng/search?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
@@ -77,13 +77,15 @@
       html { background: #0a0a0f; color-scheme: dark; }
       body { margin: 0; background: #0a0a0f; }
       #root { min-height: 100dvh; }
+      #seo-prerender:empty { display: none; }
+      #seo-prerender[data-pending="true"] ~ #root { display: none; }
       /* Reserve header height to prevent layout shift */
       #root-header-placeholder { height: 64px; }
     </style>
   </head>
 
   <body>
-    <noscript>
+    <noscript id="homepage-fallback">
       <style>
         .ns-wrap{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:2rem 1.5rem;color:#e2e8f0;background:#0a0a0f}
         .ns-wrap h1{font-size:2rem;font-weight:800;margin:0 0 .5rem}
@@ -205,17 +207,8 @@
       </div>
     </noscript>
 
+    <div id="seo-prerender"></div>
     <div id="root"></div>
-    <script>
-      // Remove SSR pre-render shell once React mounts
-      (function () {
-        var o = new MutationObserver(function () {
-          var el = document.getElementById("ssr");
-          if (el) { el.remove(); o.disconnect(); }
-        });
-        o.observe(document.getElementById("root"), { childList: true });
-      })();
-    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

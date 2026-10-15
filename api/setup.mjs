@@ -1,7 +1,7 @@
 /**
- * Auto-setup for Vercel serverless deployments.
- * Creates tables and seeds initial articles if the database is empty.
- * Runs once per cold start, cached as a promise to avoid duplicate calls.
+ * Explicit setup helpers for Vercel serverless deployments.
+ * Creates tables and synchronizes seed content only when an authorized setup
+ * operation calls it; ordinary request startup does not run these mutations.
  */
 
 /**
@@ -18,10 +18,11 @@
  *  Both are inside runSetup(). Adding to only one will result in an article
  *  with missing content OR an article that is never inserted.
  *
- *  After making changes here, redeploy to Vercel, then immediately call:
- *    GET /api/admin/force-seed?key=ADMIN_PASSWORD
- *  This pushes all changes into the live Neon database without waiting for
- *  a cold start. It is safe to call repeatedly — all operations are idempotent.
+ *  After making changes here, use the explicit authenticated setup workflow
+ *  only after separate approval: POST /api/admin/login to obtain an admin JWT,
+ *  then POST /api/admin/force-seed with that JWT in the Authorization header.
+ *  This syncs configured article content into the database. It is not part of
+ *  request startup and should not be used as a routine health check.
  *
  *  PARALLEL FILE: lib/db/src/ensure-seeded.ts is the equivalent for the
  *  Replit development database. Keep both files in sync when adding articles.
@@ -1145,7 +1146,7 @@ async function runSetup(pool) {
 
 <p>Your Android phone is more powerful than you are giving it credit for. These seven features are sitting there right now — installed, ready, and free. None require a new phone or a paid app.</p>
 
-<p>And if you are curious about how AI is being built directly into these same phones to make them even smarter, read our full breakdown of <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a>.</p>`,
+<p>And if you are curious about how AI is being built directly into these same phones to make them even smarter, read our full breakdown of <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a>.</p>`,
 
     'ai-tools-for-students-2026': `<figure>
   <img src="https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Student studying with laptop and AI tools open on screen" width="1200" height="630" />
@@ -1384,7 +1385,7 @@ async function runSetup(pool) {
   <li><strong>Identify objects and places</strong> — Point your glasses at a restaurant menu, a sign, or a product and ask what it says or means.</li>
 </ul>
 
-<p>These features might sound like small conveniences, but together they represent a fundamental shift in how we interact with information. If you are curious how this connects to the wider trend of AI being embedded in everyday devices, our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how manufacturers are rethinking what a personal device can do.</p>
+<p>These features might sound like small conveniences, but together they represent a fundamental shift in how we interact with information. If you are curious how this connects to the wider trend of AI being embedded in everyday devices, our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how manufacturers are rethinking what a personal device can do.</p>
 
 <h2>How Smart Glasses Differ From Phones and Earbuds</h2>
 
@@ -1578,7 +1579,7 @@ async function runSetup(pool) {
 
 <p>A smartwatch can now act as the command centre for your entire digital life. Trigger your smart home lights, lock your front door, start a playlist on your speaker, or navigate to a destination — all from your wrist. When combined with AI glasses or a powerful smartphone, the experience becomes genuinely effortless.</p>
 
-<p>For context on how AI phones are driving this connected ecosystem, our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how the smartphone is evolving to act as the hub for all these connected devices.</p>
+<p>For context on how AI phones are driving this connected ecosystem, our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how the smartphone is evolving to act as the hub for all these connected devices.</p>
 
 <figure>
   <img
@@ -1720,7 +1721,7 @@ async function runSetup(pool) {
 
 <p>The key change is that these appliances are actually learning your preferences rather than just following generic settings. After a month of use, a smart washing machine knows you prefer your white shirts on a cooler cycle to protect the fabric. That personalisation is what turns a gimmick into a genuinely useful tool.</p>
 
-<p>If you are also interested in how AI is reshaping the devices you carry rather than the ones in your home, check out our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> for a broader picture of where personal tech is heading.</p>
+<p>If you are also interested in how AI is reshaping the devices you carry rather than the ones in your home, check out our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> for a broader picture of where personal tech is heading.</p>
 
 <figure>
   <img
@@ -1817,7 +1818,7 @@ async function runSetup(pool) {
 
 <p>The Galaxy S26 is one of the best-selling premium Android phones in the world. Its price increase is not an isolated decision — it reflects a cost reality that every major phone maker is facing. Apple, Google, and others are navigating the same pressures, with similar implications for their upcoming device launches.</p>
 
-<p>If you want to understand the full picture of what modern AI phones offer and why people are willing to pay more for them, our breakdown of <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> covers everything the new hardware enables.</p>
+<p>If you want to understand the full picture of what modern AI phones offer and why people are willing to pay more for them, our breakdown of <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> covers everything the new hardware enables.</p>
 
 <h2>Premium Feature Creep: Why Brands Keep Adding AI to Everything</h2>
 
@@ -5005,7 +5006,7 @@ async function runSetup(pool) {
   }
 
   // ── 6. Always sync content fields from code → database ───────────────────
-  // Runs on every cold start and every force-seed call.
+  // Runs only when an explicit setup/force-seed operation calls runSetup.
   // Updates: title, subtitle, excerpt, imageUrl, readTime, body.
   // Does NOT touch: views, featured, editors_pick, published (admin-managed).
   for (const a of articles) {
@@ -5035,7 +5036,7 @@ async function runSetup(pool) {
  * - Inserts any articles missing from the database (ON CONFLICT DO NOTHING)
  * - Syncs title, subtitle, excerpt, imageUrl, readTime, body for all articles
  * - Safe to call repeatedly on a populated database — fully idempotent
- * - Call via: GET /api/admin/force-seed?key=ADMIN_PASSWORD
+ * - Call via the authenticated POST /api/admin/force-seed route only after approval.
  */
 export async function forceRefreshBodies(pool) {
   setupPromise = null;          // clear cache so ensureReady re-runs setup

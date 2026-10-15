@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { usePageMeta } from "@/hooks/usePageMeta";
+import { canonicalUrlForPath, SITE_ORIGIN, usePageMeta } from "@/hooks/usePageMeta";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { getAuthorProfile, nameToSlug } from "@/data/authors";
 import { Twitter, Linkedin, BookOpen, Eye, Award, Briefcase } from "lucide-react";
 
 interface AuthorApiResponse {
-  id: number;
+  id: number | null;
   name: string;
   avatarUrl: string;
   slug: string;
@@ -35,12 +35,13 @@ interface AuthorApiResponse {
 
 function JsonLdPerson({ data }: { data: Record<string, unknown> }) {
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = (document.getElementById("author-jsonld") as HTMLScriptElement | null)
+      ?? document.createElement("script");
     script.type = "application/ld+json";
     script.id = "author-jsonld";
     script.textContent = JSON.stringify(data);
-    document.head.appendChild(script);
-    return () => { document.getElementById("author-jsonld")?.remove(); };
+    if (!script.isConnected) document.head.appendChild(script);
+    return () => script.remove();
   }, [data]);
   return null;
 }
@@ -90,28 +91,37 @@ export default function AuthorPage() {
   const profile = getAuthorProfile(slug);
   const displayName = authorData?.name ?? profile?.name ?? slug;
   const displayTitle = profile?.title ?? "Staff Writer";
+  const authorNotFound = !isLoading && (isError || !authorData);
 
   usePageMeta({
-    title: `${displayName} — Scrolltek`,
-    description: profile?.bio ?? `Articles by ${displayName} on Scrolltek.`,
+    title: authorNotFound ? "Author Not Found" : displayName,
+    description: authorNotFound
+      ? "The requested author profile could not be found on Scrolltek."
+      : profile?.bio ?? `Articles by ${displayName} on Scrolltek.`,
     ogImage: authorData?.avatarUrl,
+    canonical: authorNotFound ? null : canonicalUrlForPath(`/author/${encodeURIComponent(slug)}`),
+    robots: authorNotFound ? "noindex, follow" : undefined,
+    enabled: !isLoading,
   });
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = SITE_ORIGIN;
+  const isEditorialTeam = slug === "scrolltek-editorial";
   const jsonLd = authorData ? {
     "@context": "https://schema.org",
-    "@type": "Person",
+    "@type": isEditorialTeam ? "Organization" : "Person",
     name: displayName,
-    url: `${origin}/author/${slug}`,
+    url: `${origin}/author/${encodeURIComponent(slug)}`,
     image: authorData.avatarUrl || undefined,
-    jobTitle: displayTitle,
+    ...(isEditorialTeam ? {} : {
+      jobTitle: displayTitle,
+      knowsAbout: profile?.expertise ?? [],
+      worksFor: {
+        "@type": "Organization",
+        name: "Scrolltek",
+        url: origin,
+      },
+    }),
     description: profile?.longBio ?? profile?.bio,
-    knowsAbout: profile?.expertise ?? [],
-    worksFor: {
-      "@type": "Organization",
-      name: "Scrolltek",
-      url: origin,
-    },
   } : null;
 
   if (isLoading) return <AuthorSkeleton />;

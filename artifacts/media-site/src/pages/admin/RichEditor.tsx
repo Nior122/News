@@ -184,7 +184,7 @@ export default function RichEditor({ value, onChange }: RichEditorProps) {
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || "", false, { preserveWhitespace: "full" });
+      editor.commands.setContent(value || "", { emitUpdate: false, parseOptions: { preserveWhitespace: "full" } });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);

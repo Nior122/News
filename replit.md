@@ -63,11 +63,11 @@ This project has TWO separate databases and TWO seed files. They must both be up
 - **How it works**: `ensureSeeded()` runs on every API server start. It inserts missing articles and updates article bodies. Changes appear immediately on next server restart.
 - **To apply changes**: Restart the `artifacts/api-server: API Server` workflow (or `API Server`).
 
-### Production (Vercel + Neon)
+### Production (legacy Vercel + Neon)
 - **Database**: Neon PostgreSQL — separate from Replit, configured in Vercel env vars
 - **Seed file**: `api/setup.mjs`
-- **How it works**: `runSetup()` runs on each cold start. It inserts missing articles and syncs all content fields (title, subtitle, excerpt, imageUrl, readTime, body) from code to database.
-- **To apply changes after deploy**: Call `GET /api/admin/force-seed?key=ADMIN_PASSWORD` — this immediately inserts missing articles and syncs all content without waiting for a cold start. It is fully idempotent and safe to call any time.
+- **How it works**: `runSetup()` is not part of request startup. Public reads, health checks, and unknown routes do not create schema or seed content. The legacy Vercel `POST /api/admin/force-seed` operation invokes setup only after admin JWT authentication. Setup can insert missing articles and sync configured content fields (title, subtitle, excerpt, imageUrl, readTime, body), so it is a content-changing maintenance operation—not a routine health check.
+- **To apply changes after separately approved deployment**: Obtain an admin JWT from `POST /api/admin/login`, then call `POST /api/admin/force-seed` with `Authorization: Bearer <JWT>`. Do not place the password or token in a URL; do not run this operation without explicit approval.
 
 ## How to Add a New Article
 
@@ -84,10 +84,11 @@ Add TWO entries inside `ensureSeeded()`:
 1. **`ARTICLE_BODY_*` constant** (or inline template literal): the full HTML body
 2. **`articles` array** near the end: the metadata object with the same fields
 
-### Step 3 — Deploy and sync
-- Redeploy to Vercel (push a git commit or click Redeploy in Vercel dashboard)
-- Then call: `https://your-vercel-url.vercel.app/api/admin/force-seed?key=ADMIN_PASSWORD`
+### Step 3 — Deploy and sync (only when separately approved)
+- Deploy through the approved release process.
+- Obtain an admin JWT from `POST /api/admin/login`, then send an authenticated `POST /api/admin/force-seed` with `Authorization: Bearer <JWT>`.
 - Expected response: `{"success":true,"total":N,"message":"Setup complete. N articles now in database."}`
+- This operation can insert missing articles and synchronize content fields. Do not use it as an automatic or routine post-deploy step without approval.
 
 ## Authors
 

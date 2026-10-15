@@ -1,5 +1,6 @@
 /**
- * Cloudflare Worker setup — creates tables and seeds articles on cold start.
+ * Cloudflare Worker setup helpers — create tables and sync seeded articles only
+ * when an explicit authorized maintenance operation invokes them.
  * Uses Neon HTTP driver tagged-template syntax (works in Workers runtime).
  * Functionally identical to api/setup.mjs but adapted for the edge.
  *
@@ -111,7 +112,7 @@ async function runSetup(db) {
 
   // ── 4. Articles ───────────────────────────────────────────────────────────
   // Bodies are empty here — bodies already exist in Neon from Vercel's setup.
-  // If deploying to a fresh DB, run force-seed via Vercel first.
+  // For a fresh DB, use only the separately approved authenticated Vercel setup operation.
   // To add bodies, copy from api/setup.mjs BODIES object.
   const BODIES = {};
 

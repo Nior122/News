@@ -12,6 +12,12 @@ function bustCache() {
   invalidatePrefix("articles:");
 }
 
+function parseArticleId(value: unknown): number | null {
+  if (typeof value !== "string") return null;
+  const id = Number.parseInt(value, 10);
+  return Number.isSafeInteger(id) && id > 0 ? id : null;
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.resolve(__dirname, "../../../uploads");
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
@@ -94,7 +100,11 @@ router.get("/admin/articles", requireAdmin, async (req: Request, res: Response):
 
 router.put("/admin/articles/:id", requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseArticleId(req.params.id);
+    if (id === null) {
+      res.status(400).json({ error: "Invalid article id" });
+      return;
+    }
     const {
       title, subtitle, excerpt, body, category, imageUrl,
       readTime, authorId, featured, editorsPick, published, tags,
@@ -169,7 +179,11 @@ router.post("/admin/articles", requireAdmin, async (req: Request, res: Response)
 
 router.patch("/admin/articles/:id/publish", requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseArticleId(req.params.id);
+    if (id === null) {
+      res.status(400).json({ error: "Invalid article id" });
+      return;
+    }
     const current = await db
       .select()
       .from(articlesTable)
@@ -196,7 +210,11 @@ router.patch("/admin/articles/:id/publish", requireAdmin, async (req: Request, r
 
 router.delete("/admin/articles/:id", requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseArticleId(req.params.id);
+    if (id === null) {
+      res.status(400).json({ error: "Invalid article id" });
+      return;
+    }
     await db.delete(articlesTable).where(eq(articlesTable.id, id));
     bustCache();
     res.json({ success: true });

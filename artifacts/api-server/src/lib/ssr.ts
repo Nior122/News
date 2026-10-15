@@ -1,5 +1,5 @@
 import { db, articlesTable, authorsTable } from "@workspace/db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, inArray } from "drizzle-orm";
 import { getCached, setCached } from "./cache";
 
 function esc(s: string): string {
@@ -11,11 +11,11 @@ function esc(s: string): string {
 }
 
 const SITE_NAME = "Scrolltek";
-const SITE_URL = process.env.SITE_URL ?? "https://scrolltek.com";
+const SITE_URL = "https://scrolltek.name.ng";
 const SITE_DESC =
   "Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online.";
 
-type MetaTags = { title: string; description: string; canonical: string; ogImage?: string };
+type MetaTags = { title: string; description: string; canonical: string; ogImage?: string; robots?: string };
 
 interface RenderResult {
   bodyHtml: string;
@@ -59,7 +59,7 @@ async function renderHome(): Promise<RenderResult> {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_NAME,
-    url: SITE_URL,
+    url: `${SITE_URL}/`,
     description: SITE_DESC,
     potentialAction: {
       "@type": "SearchAction",
@@ -70,7 +70,7 @@ async function renderHome(): Promise<RenderResult> {
 
   return {
     bodyHtml,
-    meta: { title: `${SITE_NAME} — Tech, Culture, Lifestyle & AI Tools`, description: SITE_DESC, canonical: SITE_URL },
+    meta: { title: `${SITE_NAME} — Tech, Culture, Lifestyle & AI Tools`, description: SITE_DESC, canonical: `${SITE_URL}/` },
     jsonLd,
   };
 }
@@ -106,17 +106,23 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
     description: a.excerpt ?? "",
     image: a.imageUrl ?? undefined,
     datePublished: a.publishedAt.toISOString(),
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/article/${encodeURIComponent(slug)}` },
     author: author ? { "@type": "Person", name: author.name } : undefined,
-    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    url: `${SITE_URL}/article/${slug}`,
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.svg` },
+    },
+    url: `${SITE_URL}/article/${encodeURIComponent(slug)}`,
   });
 
   const result: RenderResult = {
     bodyHtml,
     meta: {
-      title: `${esc(a.title)} — ${SITE_NAME}`,
+      title: `${a.title} — ${SITE_NAME}`,
       description: a.excerpt ?? SITE_DESC,
-      canonical: `${SITE_URL}/article/${slug}`,
+      canonical: `${SITE_URL}/article/${encodeURIComponent(slug)}`,
       ogImage: a.imageUrl ?? undefined,
     },
     jsonLd,
@@ -126,7 +132,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   return result;
 }
 
-async function renderAuthor(slug: string): Promise<RenderResult> {
+async function renderAuthor(slug: string): Promise<RenderResult | null> {
   const cacheKey = `ssr:author:${slug}`;
   const cached = getCached<RenderResult>(cacheKey);
   if (cached) return cached;
@@ -137,12 +143,13 @@ async function renderAuthor(slug: string): Promise<RenderResult> {
     "sofia-reyes":   { name: "Sofia Reyes",  title: "Lifestyle & Culture Editor",       bio: "Exploring wellness, digital culture, and how technology shapes the way we live." },
     "liam-park":     { name: "Liam Park",    title: "Mobile & On-Device AI Specialist", bio: "Former software engineer turned mobile writer — obsessed with squeezing every bit of performance from your devices." },
     "anya-patel":    { name: "Anya Patel",   title: "AI Tools & Productivity Writer",   bio: "Testing AI productivity tools so you don't have to — with thousands of hours logged across ChatGPT, Claude, Gemini, and beyond." },
+    "scrolltek-editorial": { name: "Scrolltek Editorial", title: "Editorial Team", bio: "The Scrolltek editorial team covers breaking stories and collaborative features across all categories." },
   };
 
   const author = AUTHORS[slug];
-  if (!author) return { bodyHtml: "", meta: { title: SITE_NAME, description: SITE_DESC, canonical: SITE_URL }, jsonLd: "" };
+  if (!author) return null;
 
-  const authorRows = await db.select().from(authorsTable).where(eq(authorsTable.slug, slug)).limit(1);
+  const authorRows = await db.select().from(authorsTable).where(eq(authorsTable.name, author.name)).limit(1);
   const authorId = authorRows[0]?.id;
   const authorArticles = authorId
     ? await db.select({ slug: articlesTable.slug, title: articlesTable.title, excerpt: articlesTable.excerpt, category: articlesTable.category })
@@ -182,20 +189,45 @@ async function renderAuthor(slug: string): Promise<RenderResult> {
   return result;
 }
 
-async function renderCategory(slug: string): Promise<RenderResult> {
-  const SLUG_TO_LABEL: Record<string, string> = {
-    tech: "Tech", culture: "Culture", lifestyle: "Lifestyle",
-    "ai-tools": "AI Tools", "phone-tips": "Phone Tips",
-    productivity: "Productivity", trending: "Trending",
-  };
-  const label = SLUG_TO_LABEL[slug] ?? slug;
+const CATEGORY_LABELS: Record<string, string> = {
+  tech: "Tech",
+  culture: "Culture",
+  lifestyle: "Lifestyle",
+  "ai-tools": "AI Tools",
+  "phone-tips": "Phone Tips",
+  productivity: "Productivity",
+  trending: "Trending",
+  "ai-productivity": "AI & Productivity",
+  "culture-lifestyle": "Culture & Lifestyle",
+};
+const MIXED_CATEGORY_SLUGS: Record<string, string[]> = {
+  "ai-productivity": ["ai-tools", "productivity"],
+  "culture-lifestyle": ["culture", "lifestyle"],
+};
 
-  const rows = await db
-    .select()
-    .from(articlesTable)
-    .where(and(eq(articlesTable.published, true), eq(articlesTable.category, label)))
-    .orderBy(desc(articlesTable.publishedAt))
-    .limit(20);
+async function renderCategory(slug: string): Promise<RenderResult | null> {
+  const label = CATEGORY_LABELS[slug];
+  if (!label) return null;
+
+  const query = db.select().from(articlesTable);
+  let rows: (typeof articlesTable.$inferSelect)[];
+  if (slug === "trending") {
+    rows = await query
+      .where(eq(articlesTable.published, true))
+      .orderBy(desc(articlesTable.views), desc(articlesTable.publishedAt))
+      .limit(100);
+  } else {
+    const categoryNames: string[] = (MIXED_CATEGORY_SLUGS[slug] ?? [slug]).map((categorySlug) => {
+      return CATEGORY_LABELS[categorySlug];
+    });
+    const categoryFilter = categoryNames.length > 1
+      ? inArray(articlesTable.category, categoryNames)
+      : eq(articlesTable.category, categoryNames[0]);
+    rows = await query
+      .where(and(eq(articlesTable.published, true), categoryFilter))
+      .orderBy(desc(articlesTable.publishedAt))
+      .limit(100);
+  }
 
   const cards = rows.map((a) => articleCard(a.slug, a.title, a.excerpt ?? "", a.category)).join("");
   const bodyHtml = `<main id="ssr"><h1>${esc(label)} — ${SITE_NAME}</h1>${cards}</main>`;
@@ -212,24 +244,25 @@ async function renderCategory(slug: string): Promise<RenderResult> {
 }
 
 export async function renderForPath(urlPath: string): Promise<RenderResult | null> {
-  try {
-    const clean = urlPath.split("?")[0];
+  const clean = urlPath.split("?")[0].replace(/\/+$/, "") || "/";
 
-    if (clean === "/" || clean === "") return renderHome();
+  if (clean === "/") return renderHome();
 
-    const articleMatch = clean.match(/^\/article\/([^/]+)$/);
-    if (articleMatch) return renderArticle(articleMatch[1]);
+  const articleMatch = clean.match(/^\/article\/([^/]+)$/);
+  if (articleMatch) return renderArticle(articleMatch[1]);
 
-    const categoryMatch = clean.match(/^\/category\/([^/]+)$/);
-    if (categoryMatch) return renderCategory(categoryMatch[1]);
+  const categoryMatch = clean.match(/^\/category\/([^/]+)$/);
+  if (categoryMatch) return renderCategory(categoryMatch[1]);
 
-    const authorMatch = clean.match(/^\/author\/([^/]+)$/);
-    if (authorMatch) return renderAuthor(authorMatch[1]);
+  const authorMatch = clean.match(/^\/author\/([^/]+)$/);
+  if (authorMatch) return renderAuthor(authorMatch[1]);
 
-    return null;
-  } catch {
-    return null;
-  }
+  return null;
+}
+
+function replaceOrInsertHeadTag(html: string, matcher: RegExp, tag: string): string {
+  if (matcher.test(html)) return html.replace(matcher, tag);
+  return html.replace(/<\/head\s*>/i, `${tag}\n</head>`);
 }
 
 export function injectIntoHtml(
@@ -237,61 +270,208 @@ export function injectIntoHtml(
   result: RenderResult
 ): string {
   let html = template;
-
-  // Title
-  html = html.replace(/<title>[^<]*<\/title>/, `<title>${result.meta.title}</title>`);
-
-  // Meta description
-  html = html.replace(
-    /<meta name="description"[^>]*\/?>/,
-    `<meta name="description" content="${esc(result.meta.description)}" />`
+  html = replaceOrInsertHeadTag(
+    html,
+    /<title\b[^>]*>[\s\S]*?<\/title>/i,
+    `<title>${esc(result.meta.title)}</title>`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+name=["']description["'][^>]*>/i,
+    `<meta name="description" content="${esc(result.meta.description)}" />`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+property=["']og:title["'][^>]*>/i,
+    `<meta property="og:title" content="${esc(result.meta.title)}" />`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+property=["']og:description["'][^>]*>/i,
+    `<meta property="og:description" content="${esc(result.meta.description)}" />`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+name=["']twitter:title["'][^>]*>/i,
+    `<meta name="twitter:title" content="${esc(result.meta.title)}" />`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+name=["']twitter:description["'][^>]*>/i,
+    `<meta name="twitter:description" content="${esc(result.meta.description)}" />`,
   );
 
-  // Canonical
-  html = html.replace(
-    /<link rel="canonical"[^>]*\/?>/,
-    `<link rel="canonical" href="${esc(result.meta.canonical)}" />`
-  );
+  if (result.meta.canonical) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<link\s+rel=["']canonical["'][^>]*>/i,
+      `<link rel="canonical" href="${esc(result.meta.canonical)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']og:url["'][^>]*>/i,
+      `<meta property="og:url" content="${esc(result.meta.canonical)}" />`,
+    );
+  } else {
+    html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/gi, "");
+    html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/gi, "");
+  }
 
-  // OG title
-  html = html.replace(
-    /<meta property="og:title"[^>]*\/?>/,
-    `<meta property="og:title" content="${esc(result.meta.title)}" />`
-  );
-
-  // OG description
-  html = html.replace(
-    /<meta property="og:description"[^>]*\/?>/,
-    `<meta property="og:description" content="${esc(result.meta.description)}" />`
-  );
-
-  // OG URL
-  html = html.replace(
-    /<meta property="og:url"[^>]*\/?>/,
-    `<meta property="og:url" content="${esc(result.meta.canonical)}" />`
-  );
-
-  // OG image (only if article has one)
   if (result.meta.ogImage) {
-    html = html.replace(
-      /(<meta property="og:url"[^>]*\/>)/,
-      `$1\n    <meta property="og:image" content="${esc(result.meta.ogImage)}" />\n    <meta name="twitter:image" content="${esc(result.meta.ogImage)}" />`
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']og:image["'][^>]*>/i,
+      `<meta property="og:image" content="${esc(result.meta.ogImage)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']twitter:image["'][^>]*>/i,
+      `<meta name="twitter:image" content="${esc(result.meta.ogImage)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']twitter:card["'][^>]*>/i,
+      '<meta name="twitter:card" content="summary_large_image" />',
+    );
+  } else {
+    html = html.replace(/<meta\s+property=["']og:image["'][^>]*>/gi, "");
+    html = html.replace(/<meta\s+name=["']twitter:image["'][^>]*>/gi, "");
+  }
+
+  if (result.meta.robots) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']robots["'][^>]*>/i,
+      `<meta name="robots" content="${esc(result.meta.robots)}" />`,
     );
   }
 
-  // JSON-LD structured data
   if (result.jsonLd) {
-    html = html.replace(
-      /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
-      `<script type="application/ld+json">\n    ${result.jsonLd}\n    </script>`
+    const safeJsonLd = result.jsonLd
+      .replace(/</g, "\\u003c")
+      .replace(/>/g, "\\u003e")
+      .replace(/&/g, "\\u0026")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029");
+    let schemaType = "";
+    try {
+      schemaType = JSON.parse(result.jsonLd)["@type"] ?? "";
+    } catch {
+      // Keep malformed structured data out of the response.
+      schemaType = "";
+    }
+    const scriptId = schemaType === "NewsArticle"
+      ? "article-jsonld"
+      : schemaType === "Person"
+        ? "author-jsonld"
+        : schemaType === "WebSite"
+          ? "website-jsonld"
+          : "page-jsonld";
+    if (schemaType) {
+      const script = `<script type="application/ld+json" id="${scriptId}">${safeJsonLd}</script>`;
+      const matcher = new RegExp(`<script\\b(?=[^>]*\\bid=["']${scriptId}["'])[^>]*>[\\s\\S]*?<\\/script>`, "i");
+      html = replaceOrInsertHeadTag(html, matcher, script);
+    }
+  }
+
+  html = html.replace(
+    /<div\s+id=["']root["']\s*>\s*<\/div>/i,
+    `<div id="root">${result.bodyHtml}</div>`,
+  );
+  return html;
+}
+
+export function injectCanonicalIntoHtml(
+  template: string,
+  pathname: string,
+  robots?: string,
+  pageMeta: { title?: string; description?: string } = {},
+): string {
+  const path = pathname.split(/[?#]/, 1)[0].replace(/\/{2,}/g, "/");
+  const canonicalPath = path.length > 1 ? path.replace(/\/+$/, "") : "/";
+  const canonical = `${SITE_URL}${canonicalPath}`;
+  let html = template;
+
+  if (pageMeta.title) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<title\b[^>]*>[\s\S]*?<\/title>/i,
+      `<title>${esc(pageMeta.title)}</title>`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']og:title["'][^>]*>/i,
+      `<meta property="og:title" content="${esc(pageMeta.title)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']twitter:title["'][^>]*>/i,
+      `<meta name="twitter:title" content="${esc(pageMeta.title)}" />`,
     );
   }
 
-  // Pre-rendered body content
-  html = html.replace(
-    '<div id="root"></div>',
-    `<div id="root">${result.bodyHtml}</div>`
+  if (pageMeta.description) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']description["'][^>]*>/i,
+      `<meta name="description" content="${esc(pageMeta.description)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']og:description["'][^>]*>/i,
+      `<meta property="og:description" content="${esc(pageMeta.description)}" />`,
+    );
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']twitter:description["'][^>]*>/i,
+      `<meta name="twitter:description" content="${esc(pageMeta.description)}" />`,
+    );
+  }
+
+  html = replaceOrInsertHeadTag(
+    html,
+    /<link\s+rel=["']canonical["'][^>]*>/i,
+    `<link rel="canonical" href="${esc(canonical)}" />`,
+  );
+  html = replaceOrInsertHeadTag(
+    html,
+    /<meta\s+property=["']og:url["'][^>]*>/i,
+    `<meta property="og:url" content="${esc(canonical)}" />`,
   );
 
+  if (robots) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+name=["']robots["'][^>]*>/i,
+      `<meta name="robots" content="${esc(robots)}" />`,
+    );
+  }
   return html;
+}
+
+export function injectNotFoundIntoHtml(template: string, pathname: string): string {
+  const path = esc(pathname || "/");
+  return injectIntoHtml(template, {
+    bodyHtml: `<main id="ssr"><h1>Page not found</h1><p>We couldn't find a page at ${path}.</p><p><a href="/">Return to Scrolltek</a></p></main>`,
+    meta: {
+      title: `Page Not Found — ${SITE_NAME}`,
+      description: "The requested Scrolltek page could not be found.",
+      canonical: "",
+      robots: "noindex, follow",
+    },
+    jsonLd: "",
+  });
+}
+
+export function injectUnavailableIntoHtml(template: string): string {
+  return injectIntoHtml(template, {
+    bodyHtml: "<main id=\"ssr\"><h1>Page temporarily unavailable</h1><p>Please try again shortly.</p></main>",
+    meta: {
+      title: `Temporarily Unavailable — ${SITE_NAME}`,
+      description: "This Scrolltek page is temporarily unavailable. Please try again shortly.",
+      canonical: "",
+      robots: "noindex, follow",
+    },
+    jsonLd: "",
+  });
 }

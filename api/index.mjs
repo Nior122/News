@@ -7,15 +7,15 @@
 
 import pg from 'pg';
 import crypto from 'crypto';
-import { ensureReady, forceRefreshBodies } from './setup.mjs';
+import { forceRefreshBodies } from './setup.mjs';
 
 const { Pool } = pg;
 
 // ── DB pool (reused across warm invocations) ─────────────────────────────────
 let pool;
-function getPool() {
+function getPool(env = process.env) {
   if (!pool) {
-    const connStr = process.env.DATABASE_URL ?? '';
+    const connStr = env.DATABASE_URL ?? '';
     // Strip channel_binding param — not supported by all pg versions
     const sanitized = connStr.replace(/[&?]channel_binding=[^&]*/g, '').replace(/\?&/, '?');
     pool = new Pool({ connectionString: sanitized });
@@ -30,10 +30,10 @@ function send(res, data, status = 200) {
   res.end(JSON.stringify(data));
 }
 
-function getSecret() {
-  const s = process.env.ADMIN_PASSWORD;
-  if (!s) throw new Error('ADMIN_PASSWORD not set');
-  return s;
+function getSecret(env = process.env) {
+  const secret = env.ADMIN_PASSWORD;
+  if (!secret) throw new Error('ADMIN_PASSWORD not set');
+  return secret;
 }
 
 // ── JWT using Node built-in crypto (no jsonwebtoken needed) ──────────────────
@@ -41,27 +41,31 @@ function b64url(buf) {
   return Buffer.from(buf).toString('base64url');
 }
 
-function makeToken(payload) {
+function makeToken(payload, env = process.env) {
   const header = b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const body = b64url(JSON.stringify({ ...payload, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 7 * 86400 }));
-  const sig = b64url(crypto.createHmac('sha256', getSecret()).update(`${header}.${body}`).digest());
+  const sig = b64url(crypto.createHmac('sha256', getSecret(env)).update(`${header}.${body}`).digest());
   return `${header}.${body}.${sig}`;
 }
 
-function verifyToken(token) {
-  const [header, body, sig] = token.split('.');
-  if (!header || !body || !sig) return null;
-  const expected = b64url(crypto.createHmac('sha256', getSecret()).update(`${header}.${body}`).digest());
-  if (sig !== expected) return null;
-  const payload = JSON.parse(Buffer.from(body, 'base64url').toString());
-  if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-  return payload;
+function verifyToken(token, env = process.env) {
+  try {
+    const [header, body, sig] = token.split('.');
+    if (!header || !body || !sig) return null;
+    const expected = b64url(crypto.createHmac('sha256', getSecret(env)).update(`${header}.${body}`).digest());
+    if (sig !== expected) return null;
+    const payload = JSON.parse(Buffer.from(body, 'base64url').toString());
+    if (payload.admin !== true || payload.exp < Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
 }
 
-function requireAdmin(req, res) {
-  const auth = req.headers.authorization;
+function requireAdmin(req, res, env = process.env) {
+  const auth = req.headers?.authorization;
   if (!auth?.startsWith('Bearer ')) { send(res, { error: 'Unauthorized' }, 401); return false; }
-  const payload = verifyToken(auth.slice(7));
+  const payload = verifyToken(auth.slice(7), env);
   if (!payload) { send(res, { error: 'Invalid or expired token' }, 401); return false; }
   return true;
 }
@@ -118,24 +122,96 @@ function slugToCategory(slug) {
   return SLUG_TO_CATEGORY[slug.toLowerCase()] ?? slug;
 }
 
+// Match route and method before creating a pool. Admin routes are marked so their
+// bearer token can be checked before any database operation.
+const API_ROUTES = new Map([
+  ['/health', { methods: ['GET'], kind: 'health' }],
+  ['/categories', { methods: ['GET'], kind: 'public' }],
+  ['/newsletter/subscribe', { methods: ['POST'], kind: 'public' }],
+  ['/admin/force-seed', { methods: ['POST'], kind: 'admin-force-seed', admin: true }],
+  ['/admin/login', { methods: ['POST'], kind: 'admin-login' }],
+  ['/admin/upload', { methods: ['POST'], kind: 'admin-upload', admin: true }],
+  ['/admin/articles', { methods: ['GET', 'POST'], kind: 'admin-articles', admin: true }],
+  ['/articles/featured', { methods: ['GET'], kind: 'public' }],
+  ['/articles/trending', { methods: ['GET'], kind: 'public' }],
+  ['/articles/editors-picks', { methods: ['GET'], kind: 'public' }],
+  ['/articles/popular', { methods: ['GET'], kind: 'public' }],
+  ['/articles/ticker', { methods: ['GET'], kind: 'public' }],
+  ['/articles/search', { methods: ['GET'], kind: 'public' }],
+  ['/articles', { methods: ['GET'], kind: 'public' }],
+]);
+
+function classifyRoute(path, method) {
+  const route = API_ROUTES.get(path);
+  if (route?.methods.includes(method)) return route;
+
+  if (/^\/admin\/articles\/\d+\/publish$/.test(path) && method === 'PATCH') {
+    return { kind: 'admin-publish', admin: true };
+  }
+  if (/^\/admin\/articles\/\d+$/.test(path) && ['PUT', 'DELETE'].includes(method)) {
+    return { kind: 'admin-article', admin: true };
+  }
+  if (/^\/articles\/[^/]+\/related$/.test(path) && method === 'GET') {
+    return { kind: 'public' };
+  }
+  if (/^\/articles\/[^/]+$/.test(path) && method === 'GET') {
+    return { kind: 'public' };
+  }
+  return null;
+}
+
 // ── Main handler ─────────────────────────────────────────────────────────────
-export default async function handler(req, res) {
+export async function handler(req, res, {
+  databaseFactory = getPool,
+  refreshSetup = forceRefreshBodies,
+  env = process.env,
+} = {}) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') { res.statusCode = 204; res.end(); return; }
 
-  const db = getPool();
-  await ensureReady(db);
-
+  const runtimeEnv = env ?? process.env;
   const rawUrl = req.url ?? '/';
-  const url = new URL(rawUrl, `http://${req.headers.host ?? 'localhost'}`);
+  const url = new URL(rawUrl, `http://${req.headers?.host ?? 'localhost'}`);
   const path = url.pathname.replace(/^\/api/, '') || '/';
   const method = req.method ?? 'GET';
 
+  const route = classifyRoute(path, method);
+  if (!route) { send(res, { error: 'Not found' }, 404); return; }
+  if (route.kind === 'health') { send(res, { ok: true }); return; }
+
+  if (route.kind === 'admin-login') {
+    const body = await readBody(req);
+    if (!body.password || body.password !== runtimeEnv.ADMIN_PASSWORD) {
+      send(res, { error: 'Invalid password' }, 401);
+      return;
+    }
+    send(res, { token: makeToken({ admin: true }, runtimeEnv) });
+    return;
+  }
+
+  // Validate admin credentials before creating a pool or executing SQL.
+  if (route.admin && !requireAdmin(req, res, runtimeEnv)) return;
+  if (route.kind === 'admin-upload') {
+    send(res, { error: 'File upload not supported in serverless mode. Use an image URL instead.' }, 400);
+    return;
+  }
+
+  if (!runtimeEnv.DATABASE_URL) {
+    send(res, { error: 'Service unavailable' }, 503);
+    return;
+  }
+
   try {
-    // Health
-    if (path === '/health' && method === 'GET') { send(res, { ok: true }); return; }
+    const db = databaseFactory(runtimeEnv);
+
+    // Setup is an explicit authenticated operation, never request startup.
+    if (route.kind === 'admin-force-seed') {
+      const count = await refreshSetup(db);
+      send(res, { success: true, total: count, message: `Setup complete. ${count} articles now in database.` });
+      return;
+    }
 
     // Categories
     if (path === '/categories' && method === 'GET') {
@@ -152,37 +228,14 @@ export default async function handler(req, res) {
       send(res, { success: true }); return;
     }
 
-    // Force-refresh all article bodies (bypasses cold-start caching)
-    if (path === '/admin/force-seed' && method === 'GET') {
-      const key = url.searchParams.get('key');
-      if (!key || key !== process.env.ADMIN_PASSWORD) { send(res, { error: 'Unauthorized' }, 401); return; }
-      const count = await forceRefreshBodies(db);
-      send(res, { success: true, total: count, message: `Setup complete. ${count} articles now in database.` }); return;
-    }
-
-    // Admin login
-    if (path === '/admin/login' && method === 'POST') {
-      const body = await readBody(req);
-      if (!body.password || body.password !== process.env.ADMIN_PASSWORD) { send(res, { error: 'Invalid password' }, 401); return; }
-      send(res, { token: makeToken({ admin: true }) }); return;
-    }
-
-    // Admin upload (not supported in serverless)
-    if (path === '/admin/upload' && method === 'POST') {
-      if (!requireAdmin(req, res)) return;
-      send(res, { error: 'File upload not supported in serverless mode. Use an image URL instead.' }, 400); return;
-    }
-
     // Admin list articles
     if (path === '/admin/articles' && method === 'GET') {
-      if (!requireAdmin(req, res)) return;
       const { rows } = await db.query(`${JOIN} ORDER BY a.published_at DESC`);
       send(res, rows.map(fmt)); return;
     }
 
     // Admin create article
     if (path === '/admin/articles' && method === 'POST') {
-      if (!requireAdmin(req, res)) return;
       const b = await readBody(req);
       const tags = Array.isArray(b.tags) ? b.tags : String(b.tags ?? '').split(',').map(t => t.trim()).filter(Boolean);
       const { rows } = await db.query(
@@ -198,7 +251,6 @@ export default async function handler(req, res) {
     // Admin article by ID (PUT / DELETE)
     const idMatch = path.match(/^\/admin\/articles\/(\d+)$/);
     if (idMatch) {
-      if (!requireAdmin(req, res)) return;
       const id = parseInt(idMatch[1], 10);
       if (method === 'PUT') {
         const b = await readBody(req);
@@ -220,7 +272,6 @@ export default async function handler(req, res) {
     // Admin publish toggle
     const pubMatch = path.match(/^\/admin\/articles\/(\d+)\/publish$/);
     if (pubMatch && method === 'PATCH') {
-      if (!requireAdmin(req, res)) return;
       const id = parseInt(pubMatch[1], 10);
       const cur = await db.query('SELECT published FROM articles WHERE id=$1', [id]);
       if (!cur.rows.length) { send(res, { error: 'Not found' }, 404); return; }
@@ -322,7 +373,6 @@ export default async function handler(req, res) {
       const slug = slugMatch[1];
       const { rows } = await db.query(`${JOIN} WHERE a.slug=$1`, [slug]);
       if (!rows.length) { send(res, { error: 'Not found' }, 404); return; }
-      await db.query('UPDATE articles SET views=views+1 WHERE slug=$1', [slug]);
       send(res, fmt(rows[0])); return;
     }
 
@@ -332,3 +382,5 @@ export default async function handler(req, res) {
     send(res, { error: 'Internal server error' }, 500);
   }
 }
+
+export default handler;

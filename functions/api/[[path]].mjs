@@ -8,6 +8,8 @@
  */
 
 import { neon } from '@neondatabase/serverless';
+import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUG } from '../lib/article-routing.mjs';
+import { hasMeaningfulArticleBody, sanitizeArticleHtml } from '../lib/seo-html.mjs';
 
 // ── DB client ─────────────────────────────────────────────────────────────────
 function getDb(env) {
@@ -26,6 +28,25 @@ function json(data, status = 200) {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   });
+}
+
+function permanentRedirect(location) {
+  return new Response(null, {
+    status: 301,
+    headers: {
+      Location: location,
+      'Cache-Control': 'public, max-age=86400',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
+function redirectArticleApiUrl(url, targetSlug, suffix = '') {
+  const target = new URL(`/api/articles/${encodeURIComponent(targetSlug)}${suffix}`, url.origin);
+  target.search = url.search;
+  return permanentRedirect(target.toString());
 }
 
 // ── JWT (Web Crypto — built into Pages Functions) ─────────────────────────────
@@ -50,21 +71,26 @@ async function makeToken(payload, secret) {
 }
 
 async function verifyToken(token, secret) {
-  const parts = token.split('.');
-  if (parts.length !== 3) return null;
-  const [header, body, sig] = parts;
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'],
-  );
-  const sigBytes = Uint8Array.from(
-    atob(sig.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0),
-  );
-  const valid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${header}.${body}`));
-  if (!valid) return null;
-  const payload = JSON.parse(atob(body.replace(/-/g, '+').replace(/_/g, '/')));
-  if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-  return payload;
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const [header, body, sig] = parts;
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'],
+    );
+    const sigBytes = Uint8Array.from(
+      atob(sig.replace(/-/g, '+').replace(/_/g, '/')),
+      c => c.charCodeAt(0),
+    );
+    const valid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${header}.${body}`));
+    if (!valid) return null;
+    const payload = JSON.parse(atob(body.replace(/-/g, '+').replace(/_/g, '/')));
+    if (payload.admin !== true || payload.exp < Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
 }
 
 async function requireAdmin(request, env) {
@@ -100,14 +126,94 @@ function fmt(row) {
   };
 }
 
+function publicFmt(row) {
+  const article = fmt(row);
+  return {
+    ...article,
+    body: row.body == null ? null : sanitizeArticleHtml(row.body),
+  };
+}
+
 const CATEGORY_MAP = {
   tech: 'Tech', culture: 'Culture', lifestyle: 'Lifestyle',
   'ai-tools': 'AI Tools', 'phone-tips': 'Phone Tips',
   productivity: 'Productivity', trending: 'Trending',
 };
+const AUTHOR_NAMES_BY_SLUG = {
+  'maya-chen': 'Maya Chen',
+  'james-okafor': 'James Okafor',
+  'sofia-reyes': 'Sofia Reyes',
+  'liam-park': 'Liam Park',
+  'anya-patel': 'Anya Patel',
+  'scrolltek-editorial': 'Scrolltek Editorial',
+};
 function slugToCategory(slug) {
   if (!slug) return null;
   return CATEGORY_MAP[slug.toLowerCase()] ?? slug;
+}
+
+const DEFAULT_PAGE_SIZE = 12;
+const MAX_PAGE_SIZE = 50;
+const MAX_PAGE_NUMBER = 10_000;
+const MAX_SEARCH_LENGTH = 100;
+
+function parsePositiveIntegerParam(searchParams, name, fallback, maximum) {
+  const raw = searchParams.get(name);
+  if (raw === null) return fallback;
+  if (!/^\d+$/.test(raw)) return null;
+
+  const value = Number(raw);
+  return Number.isSafeInteger(value) && value > 0 && value <= maximum ? value : null;
+}
+
+function getPagination(searchParams) {
+  const page = parsePositiveIntegerParam(searchParams, 'page', 1, MAX_PAGE_NUMBER);
+  const limit = parsePositiveIntegerParam(searchParams, 'limit', DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
+  if (page === null || limit === null) return null;
+
+  const offset = (page - 1) * limit;
+  if (!Number.isSafeInteger(offset)) return null;
+  return { page, limit, offset };
+}
+
+function escapeLikePattern(value) {
+  return value.replace(/[\\%_]/g, '\\$&');
+}
+
+// Recognize the route and its allowed method before creating a database client.
+// Admin metadata lets the handler authenticate before any database access.
+const API_ROUTES = new Map([
+  ['/healthz', { methods: ['GET'], kind: 'health' }],
+  ['/health', { methods: ['GET'], kind: 'health' }],
+  ['/categories', { methods: ['GET'], kind: 'public' }],
+  ['/newsletter/subscribe', { methods: ['POST'], kind: 'public' }],
+  ['/admin/force-seed', { methods: ['POST'], kind: 'force-seed' }],
+  ['/admin/login', { methods: ['POST'], kind: 'admin-login' }],
+  ['/admin/upload', { methods: ['POST'], kind: 'admin', admin: true }],
+  ['/admin/articles', { methods: ['GET', 'POST'], kind: 'admin', admin: true }],
+  ['/articles/featured', { methods: ['GET'], kind: 'public' }],
+  ['/articles/trending', { methods: ['GET'], kind: 'public' }],
+  ['/articles/editors-picks', { methods: ['GET'], kind: 'public' }],
+  ['/articles/popular', { methods: ['GET'], kind: 'public' }],
+  ['/articles/ticker', { methods: ['GET'], kind: 'public' }],
+  ['/articles/search', { methods: ['GET'], kind: 'public' }],
+  ['/articles', { methods: ['GET'], kind: 'public' }],
+]);
+
+function classifyRoute(path, method) {
+  const route = API_ROUTES.get(path);
+  if (route?.methods.includes(method)) return route;
+
+  if (/^\/admin\/articles\/\d+\/publish$/.test(path) && method === 'PATCH') {
+    return { kind: 'admin', admin: true };
+  }
+  if (/^\/admin\/articles\/\d+$/.test(path) && ['PUT', 'DELETE'].includes(method)) {
+    return { kind: 'admin', admin: true };
+  }
+  if (/^\/authors\/[^/]+$/.test(path) && method === 'GET') return { kind: 'public' };
+  if (/^\/articles\/[^/]+\/related$/.test(path) && method === 'GET') return { kind: 'public' };
+  if (/^\/articles\/[^/]+$/.test(path) && method === 'GET') return { kind: 'public' };
+  return null;
 }
 
 // ── Ensure tables exist ───────────────────────────────────────────────────────
@@ -147,16 +253,8 @@ async function ensureTables(db) {
     ON CONFLICT (slug) DO NOTHING`;
 }
 
-let tablesReady = false;
-async function maybeInit(db) {
-  if (!tablesReady) {
-    await ensureTables(db);
-    tablesReady = true;
-  }
-}
-
 // ── Main handler ──────────────────────────────────────────────────────────────
-export async function onRequest({ request, env }) {
+export async function handleApiRequest({ request, env, databaseFactory = getDb }) {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
@@ -168,22 +266,57 @@ export async function onRequest({ request, env }) {
     });
   }
 
-  if (!env.DATABASE_URL) {
-    return json({ error: 'DATABASE_URL not configured. Add it in Pages project → Settings → Variables.' }, 500);
-  }
-
-  const db = getDb(env);
   const url = new URL(request.url);
   // Strip /api prefix — Pages Functions receive the full path
   const path = url.pathname.replace(/^\/api/, '') || '/';
   const method = request.method;
 
-  try {
-    await maybeInit(db);
+  // Reject unknown paths and unsupported methods before creating a database client.
+  const route = classifyRoute(path, method);
+  if (!route) return json({ error: 'Not found' }, 404);
 
-    // Health check (/healthz matches OpenAPI spec, /health for legacy)
-    if ((path === '/healthz' || path === '/health') && method === 'GET') {
-      return json({ status: 'ok' });
+  // Health and login are intentionally independent of database availability.
+  if (route.kind === 'health') return json({ status: 'ok' });
+  if (route.kind === 'admin-login') {
+    const body = await request.json().catch(() => ({}));
+    if (!body.password || body.password !== env?.ADMIN_PASSWORD) {
+      return json({ error: 'Invalid password' }, 401);
+    }
+    const token = await makeToken({ admin: true }, env.ADMIN_PASSWORD);
+    return json({ token });
+  }
+
+  // Setup uses the existing shared admin password, checked before DB creation.
+  if (route.kind === 'force-seed') {
+    const body = await request.json().catch(() => ({}));
+    const key = typeof body.key === 'string' ? body.key : '';
+    if (!key || key !== env?.ADMIN_PASSWORD) return json({ error: 'Unauthorized' }, 401);
+  } else if (route.admin && !(await requireAdmin(request, env ?? {}))) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
+  // Upload is intentionally unsupported in this runtime and needs no DB.
+  if (path === '/admin/upload') {
+    return json({ error: 'File upload not supported in edge mode. Use an image URL instead.' }, 400);
+  }
+
+  if (!env?.DATABASE_URL) {
+    return json({ error: 'Service unavailable' }, 503);
+  }
+
+  try {
+    const db = databaseFactory(env);
+
+    // Explicit, authenticated setup; never run as part of ordinary request startup.
+    if (route.kind === 'force-seed') {
+      await ensureTables(db);
+      const rows = await db`SELECT COUNT(*) AS c FROM articles`;
+      const count = parseInt(rows[0].c, 10);
+      return json({
+        success: true,
+        total: count,
+        message: `Setup complete. ${count} article${count === 1 ? '' : 's'} currently in the database; no article records were seeded or restored.`,
+      });
     }
 
     // Categories
@@ -207,35 +340,8 @@ export async function onRequest({ request, env }) {
       return json({ success: true });
     }
 
-    // Force seed (runs api/setup.mjs logic — articles already in Neon from Vercel)
-    if (path === '/admin/force-seed' && method === 'GET') {
-      const key = url.searchParams.get('key');
-      if (!key || key !== env.ADMIN_PASSWORD) return json({ error: 'Unauthorized' }, 401);
-      await ensureTables(db);
-      const rows = await db`SELECT COUNT(*) AS c FROM articles`;
-      const count = parseInt(rows[0].c, 10);
-      return json({ success: true, total: count, message: `Setup complete. ${count} articles now in database.` });
-    }
-
-    // Admin login
-    if (path === '/admin/login' && method === 'POST') {
-      const body = await request.json().catch(() => ({}));
-      if (!body.password || body.password !== env.ADMIN_PASSWORD) {
-        return json({ error: 'Invalid password' }, 401);
-      }
-      const token = await makeToken({ admin: true }, env.ADMIN_PASSWORD);
-      return json({ token });
-    }
-
-    // Admin upload (not supported in edge)
-    if (path === '/admin/upload' && method === 'POST') {
-      if (!(await requireAdmin(request, env))) return json({ error: 'Unauthorized' }, 401);
-      return json({ error: 'File upload not supported in edge mode. Use an image URL instead.' }, 400);
-    }
-
     // Admin list articles
     if (path === '/admin/articles' && method === 'GET') {
-      if (!(await requireAdmin(request, env))) return json({ error: 'Unauthorized' }, 401);
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
@@ -245,7 +351,6 @@ export async function onRequest({ request, env }) {
 
     // Admin create article
     if (path === '/admin/articles' && method === 'POST') {
-      if (!(await requireAdmin(request, env))) return json({ error: 'Unauthorized' }, 401);
       const b = await request.json().catch(() => ({}));
       const tags = Array.isArray(b.tags) ? b.tags : String(b.tags ?? '').split(',').map(t => t.trim()).filter(Boolean);
       const rows = await db`
@@ -259,7 +364,6 @@ export async function onRequest({ request, env }) {
     // Admin article by ID (PUT / DELETE)
     const idMatch = path.match(/^\/admin\/articles\/(\d+)$/);
     if (idMatch) {
-      if (!(await requireAdmin(request, env))) return json({ error: 'Unauthorized' }, 401);
       const id = parseInt(idMatch[1], 10);
       if (method === 'PUT') {
         const b = await request.json().catch(() => ({}));
@@ -284,7 +388,6 @@ export async function onRequest({ request, env }) {
     // Admin publish toggle
     const pubMatch = path.match(/^\/admin\/articles\/(\d+)\/publish$/);
     if (pubMatch && method === 'PATCH') {
-      if (!(await requireAdmin(request, env))) return json({ error: 'Unauthorized' }, 401);
       const id = parseInt(pubMatch[1], 10);
       const cur = await db`SELECT published FROM articles WHERE id = ${id}`;
       if (!cur.length) return json({ error: 'Not found' }, 404);
@@ -293,15 +396,72 @@ export async function onRequest({ request, env }) {
       return json(fmt({ ...rows[0], author_name: au[0]?.name, avatar_url: au[0]?.avatar_url }));
     }
 
+    // Public author profile and published article list.
+    const authorMatch = path.match(/^\/authors\/([^/]+)$/);
+    if (authorMatch && method === 'GET') {
+      let slug;
+      try {
+        slug = decodeURIComponent(authorMatch[1]);
+      } catch {
+        return json({ error: 'Not found' }, 404);
+      }
+      if (slug.includes('/')) return json({ error: 'Not found' }, 404);
+      const name = AUTHOR_NAMES_BY_SLUG[slug];
+      if (!name) return json({ error: 'Not found' }, 404);
+
+      const authorRows = await db`
+        SELECT id, name, avatar_url
+        FROM authors
+        WHERE name = ${name}
+        LIMIT 1`;
+      if (!authorRows.length) {
+        if (slug !== 'scrolltek-editorial') return json({ error: 'Not found' }, 404);
+        return json({
+          id: null,
+          name,
+          avatarUrl: '',
+          slug,
+          articleCount: 0,
+          totalViews: 0,
+          articles: [],
+        });
+      }
+      const author = authorRows[0];
+      const statsRows = await db`
+        SELECT COUNT(*) AS article_count, COALESCE(SUM(views), 0) AS total_views
+        FROM articles
+        WHERE author_id = ${author.id} AND published = true
+          AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
+      const articleRows = await db`
+        SELECT a.*, au.name AS author_name, au.avatar_url
+        FROM articles a JOIN authors au ON a.author_id = au.id
+        WHERE a.author_id = ${author.id} AND a.published = true
+          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+        ORDER BY a.published_at DESC
+        LIMIT 100`;
+      const stats = statsRows[0] ?? {};
+
+      return json({
+        id: author.id,
+        name: author.name,
+        avatarUrl: author.avatar_url ?? '',
+        slug,
+        articleCount: Number(stats.article_count ?? 0),
+        totalViews: Number(stats.total_views ?? 0),
+        articles: articleRows.map(publicFmt),
+      });
+    }
+
     // Articles: featured
     if (path === '/articles/featured' && method === 'GET') {
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.featured = true AND a.published = true
+          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
         ORDER BY a.published_at DESC LIMIT 1`;
       if (!rows.length) return json({ error: 'Not found' }, 404);
-      return json(fmt(rows[0]));
+      return json(publicFmt(rows[0]));
     }
 
     // Articles: trending
@@ -309,9 +469,9 @@ export async function onRequest({ request, env }) {
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true
+        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
         ORDER BY a.views DESC, a.published_at DESC LIMIT 5`;
-      return json(rows.map(fmt));
+      return json(rows.map(publicFmt));
     }
 
     // Articles: editors-picks
@@ -320,8 +480,9 @@ export async function onRequest({ request, env }) {
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.editors_pick = true AND a.published = true
+          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
         ORDER BY a.published_at DESC LIMIT 6`;
-      return json(rows.map(fmt));
+      return json(rows.map(publicFmt));
     }
 
     // Articles: popular
@@ -329,47 +490,65 @@ export async function onRequest({ request, env }) {
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true
+        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
         ORDER BY a.views DESC, a.published_at DESC LIMIT 10`;
-      return json(rows.map(fmt));
+      return json(rows.map(publicFmt));
     }
 
     // Articles: ticker
     if (path === '/articles/ticker' && method === 'GET') {
       const rows = await db`
         SELECT id, slug, title, category FROM articles
-        WHERE published = true ORDER BY published_at DESC LIMIT 10`;
+        WHERE published = true AND slug != ${REDIRECTED_ARTICLE_SLUG}
+        ORDER BY published_at DESC LIMIT 10`;
       return json(rows);
     }
 
     // Articles: search
     if (path === '/articles/search' && method === 'GET') {
-      const q = url.searchParams.get('q') ?? '';
-      const page = parseInt(url.searchParams.get('page') ?? '1', 10);
-      const limit = parseInt(url.searchParams.get('limit') ?? '12', 10);
-      const offset = (page - 1) * limit;
-      if (!q.trim()) return json({ articles: [], total: 0, page, limit, hasMore: false });
-      const pattern = `%${q}%`;
+      const pagination = getPagination(url.searchParams);
+      if (!pagination) return json({ error: 'Invalid pagination parameters' }, 400);
+      const { page, limit, offset } = pagination;
+      const q = (url.searchParams.get('q') ?? '').trim();
+      if (q.length > MAX_SEARCH_LENGTH) {
+        return json({ error: `Search query must be ${MAX_SEARCH_LENGTH} characters or fewer` }, 400);
+      }
+      if (!q) return json({ articles: [], total: 0, page, limit, hasMore: false });
+
+      const pattern = `%${escapeLikePattern(q)}%`;
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true
-          AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern})
+        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND (
+            a.title ILIKE ${pattern}
+            OR a.excerpt ILIKE ${pattern}
+            OR a.category ILIKE ${pattern}
+            OR array_to_string(a.tags, ' ') ILIKE ${pattern}
+            OR au.name ILIKE ${pattern}
+          )
         ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
       const countRows = await db`
-        SELECT COUNT(*) AS total FROM articles a
-        WHERE a.published = true
-          AND (a.title ILIKE ${pattern} OR a.excerpt ILIKE ${pattern} OR a.category ILIKE ${pattern})`;
+        SELECT COUNT(*) AS total
+        FROM articles a JOIN authors au ON a.author_id = au.id
+        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND (
+            a.title ILIKE ${pattern}
+            OR a.excerpt ILIKE ${pattern}
+            OR a.category ILIKE ${pattern}
+            OR array_to_string(a.tags, ' ') ILIKE ${pattern}
+            OR au.name ILIKE ${pattern}
+          )`;
       const total = parseInt(countRows[0].total, 10);
-      return json({ articles: rows.map(fmt), total, page, limit, hasMore: offset + rows.length < total });
+      return json({ articles: rows.map(publicFmt), total, page, limit, hasMore: offset + rows.length < total });
     }
 
     // Articles: list (with optional category filter)
     if (path === '/articles' && method === 'GET') {
       const category = slugToCategory(url.searchParams.get('category'));
-      const page = Math.max(1, parseInt(url.searchParams.get('page') ?? '1', 10));
-      const limit = Math.min(Math.max(1, parseInt(url.searchParams.get('limit') ?? '12', 10)), 50);
-      const offset = (page - 1) * limit;
+      const pagination = getPagination(url.searchParams);
+      if (!pagination) return json({ error: 'Invalid pagination parameters' }, 400);
+      const { page, limit, offset } = pagination;
 
       let rows, countRows;
       if (category) {
@@ -377,52 +556,80 @@ export async function onRequest({ request, env }) {
           SELECT a.*, au.name AS author_name, au.avatar_url
           FROM articles a JOIN authors au ON a.author_id = au.id
           WHERE a.published = true AND a.category = ${category}
+            AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
           ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
         countRows = await db`
           SELECT COUNT(*) AS total FROM articles
-          WHERE published = true AND category = ${category}`;
+          WHERE published = true AND category = ${category}
+            AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
       } else {
         rows = await db`
           SELECT a.*, au.name AS author_name, au.avatar_url
           FROM articles a JOIN authors au ON a.author_id = au.id
-          WHERE a.published = true
+          WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
           ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
-        countRows = await db`SELECT COUNT(*) AS total FROM articles WHERE published = true`;
+        countRows = await db`
+          SELECT COUNT(*) AS total FROM articles
+          WHERE published = true AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
       }
       const total = parseInt(countRows[0].total, 10);
-      return json({ articles: rows.map(fmt), total, page, limit, hasMore: offset + rows.length < total });
+      return json({ articles: rows.map(publicFmt), total, page, limit, hasMore: offset + rows.length < total });
     }
 
     // Articles: related
     const relMatch = path.match(/^\/articles\/([^/]+)\/related$/);
     if (relMatch && method === 'GET') {
-      const slug = relMatch[1];
-      const base = await db`SELECT category FROM articles WHERE slug = ${slug}`;
-      if (!base.length) return json([]);
+      let slug;
+      try {
+        slug = decodeURIComponent(relMatch[1]);
+      } catch {
+        return json({ error: 'Not found' }, 404);
+      }
+      if (slug.includes('/')) return json({ error: 'Not found' }, 404);
+      const redirectTarget = getArticleRedirectTarget(slug);
+      if (redirectTarget) return redirectArticleApiUrl(url, redirectTarget, '/related');
+      const base = await db`SELECT category FROM articles WHERE slug = ${slug} AND published = true`;
+      if (!base.length) return json({ error: 'Not found' }, 404);
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.category = ${base[0].category} AND a.slug != ${slug} AND a.published = true
+          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
         ORDER BY a.published_at DESC LIMIT 4`;
-      return json(rows.map(fmt));
+      return json(rows.map(publicFmt));
     }
 
     // Articles: single by slug
     const slugMatch = path.match(/^\/articles\/([^/]+)$/);
     if (slugMatch && method === 'GET') {
-      const slug = slugMatch[1];
+      let slug;
+      try {
+        slug = decodeURIComponent(slugMatch[1]);
+      } catch {
+        return json({ error: 'Not found' }, 404);
+      }
+      if (slug.includes('/')) return json({ error: 'Not found' }, 404);
+      const redirectTarget = getArticleRedirectTarget(slug);
+      if (redirectTarget) return redirectArticleApiUrl(url, redirectTarget);
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.slug = ${slug}`;
+        WHERE a.slug = ${slug} AND a.published = true
+          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}`;
       if (!rows.length) return json({ error: 'Not found' }, 404);
-      await db`UPDATE articles SET views = views + 1 WHERE slug = ${slug}`;
-      return json(fmt(rows[0]));
+      if (!String(rows[0].title ?? '').trim() || !hasMeaningfulArticleBody(rows[0].body)) {
+        return json({ error: 'Article temporarily unavailable' }, 503);
+      }
+      return json(publicFmt(rows[0]));
     }
 
     return json({ error: 'Not found' }, 404);
-  } catch (err) {
-    console.error('[pages-fn] error:', err?.message ?? err);
-    return json({ error: 'Internal server error', detail: err?.message }, 500);
+  } catch {
+    console.error('[pages-fn] request failed');
+    return json({ error: 'Internal server error' }, 500);
   }
+}
+
+export async function onRequest(context) {
+  return handleApiRequest(context);
 }

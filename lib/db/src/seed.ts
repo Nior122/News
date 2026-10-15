@@ -128,7 +128,7 @@ const ARTICLE_BODY_GOOGLE_IO = `<p>Every year, Google throws a party for develop
 
 <p><strong>Which of these Google updates are you most excited about? Share this article with a friend who needs to catch up.</strong></p>`;
 
-const articles: schema.NewArticle[] = [
+const articles: schema.InsertArticle[] = [
   {
     slug: "google-io-2026-ai-announcements",
     title: "Google Just Changed Everything at I/O 2026 — Here Is What It Means For You",

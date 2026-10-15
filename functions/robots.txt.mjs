@@ -1,14 +1,14 @@
 /**
- * Cloudflare Pages Function — serves /robots.txt
+ * Cloudflare Pages Function — serves /robots.txt.
  */
 
-export async function onRequest({ request }) {
-  const origin = new URL(request.url).origin;
+const SITE_ORIGIN = 'https://scrolltek.name.ng';
 
+export async function onRequest() {
   const content = `User-agent: *
 Allow: /
 
-Sitemap: ${origin}/sitemap.xml`;
+Sitemap: ${SITE_ORIGIN}/sitemap.xml`;
 
   return new Response(content, {
     status: 200,
