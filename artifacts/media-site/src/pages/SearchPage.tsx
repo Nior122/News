@@ -46,6 +46,7 @@ export default function SearchPage() {
     description: debouncedQuery
       ? `Scrolltek search results for "${debouncedQuery}" — tech, culture, lifestyle, AI tools and more.`
       : "Search Scrolltek for articles on tech, culture, lifestyle, AI tools, phone tips, productivity and trending topics.",
+    robots: "noindex, follow",
   });
 
   return (

@@ -3,11 +3,12 @@ import { db, articlesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 
 const router = Router();
+const SITE_URL = "https://scrolltek.name.ng";
 
-// lastmod for truly static pages — use the date they were last meaningfully edited.
-// Do NOT use today's date here — Google learns to ignore lastmod when it's always "now".
+// Only emit lastmod where a meaningful last-edit date is known. Dynamic pages
+// and pages without tracked update dates omit the field rather than using today.
 const STATIC_PAGES = [
-  { path: "/", priority: "1.0", changefreq: "daily", lastmod: null }, // null = use today (genuinely fresh)
+  { path: "/", priority: "1.0", changefreq: "daily", lastmod: null },
   { path: "/about", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
   { path: "/contact", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
   { path: "/privacy", priority: "0.3", changefreq: "yearly", lastmod: "2026-05-25" },
@@ -36,37 +37,29 @@ function escapeXml(str: string): string {
 
 router.get("/sitemap.xml", async (req, res) => {
   try {
-    const siteUrl =
-      process.env.SITE_URL ??
-      `https://${req.headers.host}`;
-
     const articles = await db
       .select({
         slug: articlesTable.slug,
         title: articlesTable.title,
         imageUrl: articlesTable.imageUrl,
-        publishedAt: articlesTable.publishedAt,
       })
       .from(articlesTable)
       .where(eq(articlesTable.published, true))
       .orderBy(desc(articlesTable.publishedAt));
 
-    const today = new Date().toISOString().split("T")[0];
-
     const urlEntries: string[] = [];
 
     for (const page of STATIC_PAGES) {
+      const lastmod = page.lastmod ? `\n    <lastmod>${page.lastmod}</lastmod>` : "";
       urlEntries.push(`  <url>
-    <loc>${escapeXml(siteUrl + page.path)}</loc>
-    <lastmod>${page.lastmod ?? today}</lastmod>
+    <loc>${escapeXml(SITE_URL + page.path)}</loc>${lastmod}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`);
     }
 
     for (const article of articles) {
-      const lastmod = article.publishedAt.toISOString().split("T")[0];
-      const loc = escapeXml(siteUrl + "/article/" + article.slug);
+      const loc = escapeXml(SITE_URL + "/article/" + encodeURIComponent(article.slug));
       const imageBlock = article.imageUrl
         ? `
     <image:image>
@@ -76,7 +69,6 @@ router.get("/sitemap.xml", async (req, res) => {
         : "";
       urlEntries.push(`  <url>
     <loc>${loc}</loc>
-    <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>${imageBlock}
   </url>`);
@@ -98,11 +90,7 @@ ${urlEntries.join("\n")}
   }
 });
 
-router.get("/robots.txt", (req, res) => {
-  const siteUrl =
-    process.env.SITE_URL ??
-    `https://${req.headers.host}`;
-
+router.get("/robots.txt", (_req, res) => {
   const content = `User-agent: *
 Allow: /
 Disallow: /admin
@@ -129,7 +117,7 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-Sitemap: ${siteUrl}/sitemap.xml`;
+Sitemap: ${SITE_URL}/sitemap.xml`;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "public, max-age=86400");

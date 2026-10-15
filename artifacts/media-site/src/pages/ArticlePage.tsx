@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRoute, Link, useLocation } from "wouter";
 import { useGetArticle, getGetArticleQueryKey, useListRelatedArticles, getListRelatedArticlesQueryKey } from "@workspace/api-client-react";
-import { usePageMeta } from "@/hooks/usePageMeta";
+import { canonicalUrlForPath, SITE_ORIGIN, usePageMeta } from "@/hooks/usePageMeta";
 import { ArticleCard, CategoryBadge } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUp, BookmarkPlus, Twitter, Facebook, Linkedin, Clock, Share2, CalendarClock, List, ChevronDown, ChevronUp, Check } from "lucide-react";
@@ -11,17 +11,60 @@ import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 import { useToast } from "@/hooks/use-toast";
 import { nameToSlug } from "@/data/authors";
 import { getArticleFaqs } from "@/data/faqs";
+import { completeArticleSsrHandoff } from "@/lib/article-ssr-handoff";
+
+type ArticleLoadFailure = "not-found" | "server" | "network" | "request";
+
+function classifyArticleLoadFailure(error: unknown): ArticleLoadFailure {
+  const status = typeof error === "object" && error !== null && "status" in error
+    ? (error as { status?: unknown }).status
+    : null;
+  if (status === 404) return "not-found";
+  if (typeof status === "number") return status >= 500 || status === 408 || status === 429 ? "server" : "request";
+  return "network";
+}
+
+function getArticleDescription(article: { title: string; excerpt?: string | null; body?: string | null } | null | undefined) {
+  if (!article) return undefined;
+  const excerpt = String(article.excerpt ?? "").trim();
+  if (excerpt) return excerpt;
+
+  const bodyText = String(article.body ?? "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;|&#xA0;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return bodyText.slice(0, 180) || article.title;
+}
+
+const ARTICLE_LOAD_FAILURE_COPY: Record<ArticleLoadFailure, { title: string; description: string }> = {
+  "not-found": {
+    title: "Article Not Found",
+    description: "This article may have been removed or the link is incorrect.",
+  },
+  server: {
+    title: "Article Temporarily Unavailable",
+    description: "The server could not load this article. Please try again shortly.",
+  },
+  network: {
+    title: "Connection Problem",
+    description: "We could not connect to load this article. Check your connection and try again.",
+  },
+  request: {
+    title: "Unable to Load Article",
+    description: "We could not load this article. Please try again.",
+  },
+};
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = (document.getElementById("article-jsonld") as HTMLScriptElement | null)
+      ?? document.createElement("script");
     script.type = "application/ld+json";
     script.id = "article-jsonld";
     script.textContent = JSON.stringify(data);
-    document.head.appendChild(script);
-    return () => {
-      document.getElementById("article-jsonld")?.remove();
-    };
+    if (!script.isConnected) document.head.appendChild(script);
+    return () => script.remove();
   }, [data]);
   return null;
 }
@@ -212,12 +255,31 @@ export default function ArticlePage() {
   const [, navigate] = useLocation();
   const { setActiveCategory } = useActiveCategory();
 
-  const { data: article, isLoading } = useGetArticle(slug, {
+  const {
+    data: article,
+    isLoading,
+    isError: articleQueryFailed,
+    error: articleQueryError,
+    refetch: refetchArticle,
+  } = useGetArticle(slug, {
     query: {
       enabled: !!slug,
       queryKey: getGetArticleQueryKey(slug),
     },
   });
+  const articleFailure = !isLoading && !article
+    ? articleQueryFailed
+      ? classifyArticleLoadFailure(articleQueryError)
+      : "not-found"
+    : null;
+  const hasPendingArticleSsr = typeof document !== "undefined"
+    && document.getElementById("seo-prerender")?.dataset.pending === "true";
+
+  useEffect(() => {
+    if (!isLoading && article) {
+      completeArticleSsrHandoff();
+    }
+  }, [article, isLoading]);
 
   const { data: related, isLoading: relatedLoading } = useListRelatedArticles(slug, {
     query: {
@@ -225,16 +287,30 @@ export default function ArticlePage() {
       queryKey: getListRelatedArticlesQueryKey(slug),
     },
   });
+  const articleDescription = getArticleDescription(article);
 
   usePageMeta({
-    title: article?.title,
-    description: article?.excerpt ?? undefined,
+    title: article?.title ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
+    description: articleDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
     ogImage: article?.imageUrl ?? undefined,
-    ogImageWidth: 1200,
-    ogImageHeight: 630,
-    ogType: "article",
-    canonical: article ? `${window.location.origin}/article/${article.slug}` : undefined,
+    ogType: article ? "article" : "website",
+    canonical: article
+      ? canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`)
+      : articleFailure === "not-found"
+        ? null
+        : undefined,
+    robots: articleFailure === "not-found" ? "noindex, follow" : undefined,
+    enabled: !isLoading && (
+      articleFailure === null
+      || (articleFailure === "not-found" && !hasPendingArticleSsr)
+    ),
   });
+
+  useEffect(() => {
+    if (article && article.slug !== slug) {
+      navigate(`/article/${encodeURIComponent(article.slug)}`, { replace: true });
+    }
+  }, [article?.slug, slug, navigate]);
 
   useEffect(() => {
     if (article?.category) {
@@ -292,19 +368,32 @@ export default function ArticlePage() {
   }
 
   if (!article) {
+    const failureKind = articleFailure ?? "not-found";
+    const failure = ARTICLE_LOAD_FAILURE_COPY[failureKind];
     return (
-      <div className="container max-w-screen-xl px-4 py-24 text-center">
-        <h1 className="font-display text-3xl font-bold mb-4">Article Not Found</h1>
-        <p className="text-muted-foreground mb-8">This article may have been removed or the link is incorrect.</p>
-        <Link href="/">
-          <Button>Back to Home</Button>
-        </Link>
+      <div className="container max-w-screen-xl px-4 py-24 text-center" role="alert">
+        <h1 className="font-display text-3xl font-bold mb-4">{failure.title}</h1>
+        <p className="text-muted-foreground mb-8">{failure.description}</p>
+        <div className="flex justify-center gap-3">
+          {failureKind === "not-found" ? (
+            <Link href="/">
+              <Button>Back to Home</Button>
+            </Link>
+          ) : (
+            <Button onClick={() => { void refetchArticle(); }}>Try again</Button>
+          )}
+          {failureKind !== "not-found" && (
+            <Link href="/">
+              <Button variant="outline">Back to Home</Button>
+            </Link>
+          )}
+        </div>
       </div>
     );
   }
 
-  const articleUrl = typeof window !== "undefined" ? window.location.href : "";
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const articleUrl = canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`);
+  const origin = SITE_ORIGIN;
 
   const formattedDate = new Date(article.publishedAt).toLocaleDateString(undefined, {
     month: "long",
@@ -316,16 +405,15 @@ export default function ArticlePage() {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: article.title,
-    description: article.excerpt,
+    description: articleDescription,
     image: article.imageUrl
-      ? [{ "@type": "ImageObject", url: article.imageUrl, width: 1200, height: 630 }]
+      ? [{ "@type": "ImageObject", url: article.imageUrl }]
       : undefined,
     datePublished: new Date(article.publishedAt).toISOString(),
-    dateModified: new Date(article.publishedAt).toISOString(),
     url: articleUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: {
-      "@type": "Person",
+      "@type": article.author.name === "Scrolltek Editorial" ? "Organization" : "Person",
       name: article.author.name,
       image: article.author.avatarUrl || undefined,
     },
@@ -401,7 +489,7 @@ export default function ArticlePage() {
                 </p>
               )}
 
-              {/* Reading time + Last updated badges */}
+              {/* Reading time + publication date */}
               <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 text-primary px-3 py-1 text-xs font-semibold border border-primary/20">
                   <Clock className="w-3.5 h-3.5" />
@@ -409,12 +497,18 @@ export default function ArticlePage() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-muted/80 text-muted-foreground px-3 py-1 text-xs font-semibold border border-border/60">
                   <CalendarClock className="w-3.5 h-3.5" />
-                  Updated {formattedDate}
+                  Published {formattedDate}
                 </span>
               </div>
 
               <div className="flex items-center justify-center border-t border-border/50 pt-4 flex-wrap gap-4">
-                <Link href={`/author/${nameToSlug(article.author.name)}`} className="flex items-center gap-3 group" itemProp="author" itemScope itemType="https://schema.org/Person">
+                <Link
+                  href={`/author/${nameToSlug(article.author.name)}`}
+                  className="flex items-center gap-3 group"
+                  itemProp="author"
+                  itemScope
+                  itemType={`https://schema.org/${article.author.name === "Scrolltek Editorial" ? "Organization" : "Person"}`}
+                >
                   {article.author.avatarUrl ? (
                     <img
                       src={article.author.avatarUrl}
@@ -433,7 +527,6 @@ export default function ArticlePage() {
                     <div className="text-xs text-muted-foreground">
                       <time
                         dateTime={new Date(article.publishedAt).toISOString()}
-                        itemProp="datePublished"
                       >
                         {formattedDate}
                       </time>

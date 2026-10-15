@@ -4,6 +4,10 @@
  */
 
 import { neon } from '@neondatabase/serverless';
+import { getArticleRedirectTarget } from './lib/article-routing.mjs';
+import { hasMeaningfulArticleBody } from './lib/seo-html.mjs';
+
+const SITE_ORIGIN = 'https://scrolltek.name.ng';
 
 function getDb(env) {
   const connStr = (env.DATABASE_URL ?? '').replace(/[&?]channel_binding=[^&]*/g, '').replace(/\?&/, '?');
@@ -20,71 +24,79 @@ function escapeXml(str) {
 }
 
 const STATIC_PAGES = [
-  { path: '/',                    priority: '1.0', changefreq: 'daily'   },
-  { path: '/about',               priority: '0.5', changefreq: 'monthly' },
-  { path: '/contact',             priority: '0.5', changefreq: 'monthly' },
-  { path: '/privacy',             priority: '0.3', changefreq: 'yearly'  },
-  { path: '/category/tech',       priority: '0.8', changefreq: 'daily'   },
-  { path: '/category/culture',    priority: '0.8', changefreq: 'daily'   },
-  { path: '/category/lifestyle',  priority: '0.8', changefreq: 'daily'   },
-  { path: '/category/ai-tools',   priority: '0.8', changefreq: 'daily'   },
-  { path: '/category/phone-tips', priority: '0.8', changefreq: 'daily'   },
-  { path: '/category/productivity', priority: '0.8', changefreq: 'daily' },
-  { path: '/category/trending',   priority: '0.8', changefreq: 'daily'   },
+  '/',
+  '/about',
+  '/contact',
+  '/privacy',
+  '/category/tech',
+  '/category/culture',
+  '/category/lifestyle',
+  '/category/ai-tools',
+  '/category/phone-tips',
+  '/category/productivity',
+  '/category/trending',
 ];
 
-export async function onRequest({ request, env }) {
-  if (!env.DATABASE_URL) {
-    return new Response('DATABASE_URL not configured', { status: 500 });
-  }
+export function buildSitemapXml(articles) {
+  const locations = new Set(STATIC_PAGES.map((path) => `${SITE_ORIGIN}${path}`));
 
-  try {
-    const db = getDb(env);
-    const origin = new URL(request.url).origin;
-    const today = new Date().toISOString().split('T')[0];
-
-    const articles = await db`
-      SELECT slug, published_at
-      FROM articles
-      WHERE published = true
-      ORDER BY published_at DESC
-    `;
-
-    const urlEntries = [];
-
-    for (const page of STATIC_PAGES) {
-      urlEntries.push(`  <url>
-    <loc>${escapeXml(origin + page.path)}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`);
-    }
-
-    for (const article of articles) {
-      const lastmod = new Date(article.published_at).toISOString().split('T')[0];
-      urlEntries.push(`  <url>
-    <loc>${escapeXml(origin + '/article/' + article.slug)}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`);
-    }
-
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urlEntries.join('\n')}
-</urlset>`;
-
-    return new Response(xml, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-      },
+  for (const article of Array.isArray(articles) ? articles : []) {
+    if (article?.published !== true || !hasMeaningfulArticleBody(article.body)) continue;
+    const slug = String(article.slug ?? '').trim();
+    const hasUnsafePathCharacter = [...slug].some((character) => {
+      const codePoint = character.codePointAt(0);
+      return character === '/' || character === "\\" || character === '?' || character === '#'
+        || codePoint < 0x20 || codePoint === 0x7f;
     });
-  } catch (err) {
-    console.error('[sitemap] error:', err?.message ?? err);
-    return new Response('Failed to generate sitemap', { status: 500 });
+    if (!slug || slug === "." || slug === ".." || hasUnsafePathCharacter) continue;
+    if (getArticleRedirectTarget(slug)) continue;
+
+    try {
+      locations.add(`${SITE_ORIGIN}/article/${encodeURIComponent(slug)}`);
+    } catch {
+      // Skip malformed database values rather than publishing broken URLs.
+    }
   }
+
+  const urlEntries = [...locations].map((location) => `  <url>
+    <loc>${escapeXml(location)}</loc>
+  </url>`);
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlEntries.join(String.fromCharCode(10))}
+</urlset>`;
 }
+
+export function createSitemapHandler({ databaseFactory = getDb } = {}) {
+  return async function onRequest({ env }) {
+    if (!env?.DATABASE_URL) {
+      return new Response('Sitemap temporarily unavailable', { status: 503 });
+    }
+
+    try {
+      const db = databaseFactory(env);
+      const articles = await db`
+        SELECT slug, published, body
+        FROM articles
+        WHERE published = true
+          AND BTRIM(COALESCE(title, '')) <> ''
+          AND BTRIM(COALESCE(body, '')) <> ''
+        ORDER BY published_at DESC
+      `;
+      const xml = buildSitemapXml(articles);
+
+      return new Response(xml, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=3600',
+        },
+      });
+    } catch {
+      console.error('[sitemap] generation failed');
+      return new Response('Sitemap temporarily unavailable', { status: 503 });
+    }
+  };
+}
+
+export const onRequest = createSitemapHandler();

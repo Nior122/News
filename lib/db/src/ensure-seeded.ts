@@ -268,7 +268,7 @@ const ARTICLE_BODY_AI_SMART_GLASSES_2026 = `<h1>Why AI Smart Glasses Could Be th
   <li><strong>Identify objects and places</strong> — Point your glasses at a restaurant menu, a sign, or a product and ask what it says or means.</li>
 </ul>
 
-<p>These features might sound like small conveniences, but together they represent a fundamental shift in how we interact with information. If you are curious how this connects to the wider trend of AI being embedded in everyday devices, our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how manufacturers are rethinking what a personal device can do.</p>
+<p>These features might sound like small conveniences, but together they represent a fundamental shift in how we interact with information. If you are curious how this connects to the wider trend of AI being embedded in everyday devices, our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how manufacturers are rethinking what a personal device can do.</p>
 
 <h2>How Smart Glasses Differ From Phones and Earbuds</h2>
 
@@ -462,7 +462,7 @@ const ARTICLE_BODY_META_SMARTWATCH = `<h1>Meta's Smartwatch Comeback: Why Wearab
 
 <p>A smartwatch can now act as the command centre for your entire digital life. Trigger your smart home lights, lock your front door, start a playlist on your speaker, or navigate to a destination — all from your wrist. When combined with AI glasses or a powerful smartphone, the experience becomes genuinely effortless.</p>
 
-<p>For context on how AI phones are driving this connected ecosystem, our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how the smartphone is evolving to act as the hub for all these connected devices.</p>
+<p>For context on how AI phones are driving this connected ecosystem, our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> explains how the smartphone is evolving to act as the hub for all these connected devices.</p>
 
 <figure>
   <img
@@ -604,7 +604,7 @@ const ARTICLE_BODY_SMART_HOME = `<h1>Why Smart Home Gadgets Are Suddenly Getting
 
 <p>The key change is that these appliances are actually learning your preferences rather than just following generic settings. After a month of use, a smart washing machine knows you prefer your white shirts on a cooler cycle to protect the fabric. That personalisation is what turns a gimmick into a genuinely useful tool.</p>
 
-<p>If you are also interested in how AI is reshaping the devices you carry rather than the ones in your home, check out our article on <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> for a broader picture of where personal tech is heading.</p>
+<p>If you are also interested in how AI is reshaping the devices you carry rather than the ones in your home, check out our article on <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> for a broader picture of where personal tech is heading.</p>
 
 <figure>
   <img
@@ -701,7 +701,7 @@ const ARTICLE_BODY_GADGET_PRICES = `<h1>Why Gadgets Are Getting More Expensive i
 
 <p>The Galaxy S26 is one of the best-selling premium Android phones in the world. Its price increase is not an isolated decision — it reflects a cost reality that every major phone maker is facing. Apple, Google, and others are navigating the same pressures, with similar implications for their upcoming device launches.</p>
 
-<p>If you want to understand the full picture of what modern AI phones offer and why people are willing to pay more for them, our breakdown of <a href="/article/why-ai-phones-are-becoming-the-future" class="article-backlink">why AI phones are becoming the future of smartphones</a> covers everything the new hardware enables.</p>
+<p>If you want to understand the full picture of what modern AI phones offer and why people are willing to pay more for them, our breakdown of <a href="/article/why-ai-phones-are-the-future-2026" class="article-backlink">why AI phones are becoming the future of smartphones</a> covers everything the new hardware enables.</p>
 
 <h2>Premium Feature Creep: Why Brands Keep Adding AI to Everything</h2>
 

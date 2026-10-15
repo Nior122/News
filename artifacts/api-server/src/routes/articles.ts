@@ -347,10 +347,6 @@ router.get("/articles/:slug", async (req, res) => {
 
     if (cached) {
       res.json(cached);
-      db.update(articlesTable)
-        .set({ views: sql`${articlesTable.views} + 1` })
-        .where(eq(articlesTable.slug, slug))
-        .catch(() => {});
       return;
     }
 
@@ -368,11 +364,6 @@ router.get("/articles/:slug", async (req, res) => {
     const article = articles[0];
     const authors = await getAuthors();
     const authorMap = new Map(authors.map((a) => [a.id, a]));
-
-    await db
-      .update(articlesTable)
-      .set({ views: sql`${articlesTable.views} + 1` })
-      .where(eq(articlesTable.id, article.id));
 
     const result = {
       ...article,

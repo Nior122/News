@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRoute } from "wouter";
+import { Link, useRoute } from "wouter";
 import {
   useListArticles,
   useListTrendingArticles,
@@ -10,7 +10,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Flame } from "lucide-react";
-import { usePageMeta } from "@/hooks/usePageMeta";
+import { canonicalUrlForPath, usePageMeta } from "@/hooks/usePageMeta";
 
 // ── Category metadata ─────────────────────────────────────────────────────────
 
@@ -303,6 +303,7 @@ function StandardCategoryPage({
 export default function CategoryPage() {
   const [, params] = useRoute("/category/:slug");
   const slug = params?.slug || "";
+  const validCategory = Object.hasOwn(SLUG_TO_NAME, slug);
   const displayName =
     SLUG_TO_NAME[slug] ?? slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const description =
@@ -310,9 +311,21 @@ export default function CategoryPage() {
   const gradient = getCategoryColor(slug);
 
   usePageMeta({
-    title: displayName,
-    description,
+    title: validCategory ? displayName : "Category Not Found",
+    description: validCategory ? description : "The requested category could not be found on Scrolltek.",
+    canonical: validCategory ? canonicalUrlForPath(`/category/${encodeURIComponent(slug)}`) : null,
+    robots: validCategory ? undefined : "noindex, follow",
   });
+
+  if (!validCategory) {
+    return (
+      <div className="container max-w-screen-xl px-4 py-24 text-center">
+        <h1 className="font-display text-3xl font-bold mb-4">Category Not Found</h1>
+        <p className="text-muted-foreground mb-8">The requested category could not be found.</p>
+        <Link href="/" className="text-primary hover:underline">Return to Scrolltek</Link>
+      </div>
+    );
+  }
 
   if (slug === "trending") {
     return <TrendingPage displayName={displayName} description={description} gradient={gradient} />;
