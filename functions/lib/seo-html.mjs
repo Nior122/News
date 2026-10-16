@@ -1,6 +1,9 @@
+import { getArticleRedirectTarget } from "./article-routing.mjs";
+
 export const SITE_ORIGIN = "https://scrolltek.name.ng";
 const SITE_NAME = "Scrolltek";
 const SITE_LOGO = `${SITE_ORIGIN}/favicon.svg`;
+const CANONICAL_HOSTNAME = new URL(SITE_ORIGIN).hostname;
 
 const ALLOWED_TAGS = new Set([
   "a", "b", "blockquote", "br", "code", "del", "div", "em", "figcaption",
@@ -71,9 +74,44 @@ function safeUrl(value, { allowMailto = false } = {}) {
   }
 }
 
+/**
+ * Points internal links at retired article aliases to their canonical revision.
+ *
+ * Stored bodies are left untouched; only the rendered copy is rewritten, so a
+ * stored row that still links to an old slug does not publish an internal link
+ * that bounces through a 301. Non-internal and third-party URLs are untouched.
+ */
+function canonicalizeArticleHref(absoluteHref) {
+  let parsed;
+  try {
+    parsed = new URL(absoluteHref);
+  } catch {
+    return absoluteHref;
+  }
+
+  const host = parsed.hostname.toLowerCase();
+  if (host !== CANONICAL_HOSTNAME && host !== `www.${CANONICAL_HOSTNAME}`) return absoluteHref;
+
+  const match = parsed.pathname.match(/^\/article\/([^/]+)$/);
+  if (!match) return absoluteHref;
+
+  let slug;
+  try {
+    slug = decodeURIComponent(match[1]);
+  } catch {
+    return absoluteHref;
+  }
+
+  const target = getArticleRedirectTarget(slug);
+  if (!target) return absoluteHref;
+  // Query and fragment survive so deep links into the canonical revision work.
+  return `${SITE_ORIGIN}/article/${encodeURIComponent(target)}${parsed.search}${parsed.hash}`;
+}
+
 function safeAttributes(tagName, attributes) {
   if (tagName === "a") {
-    const href = safeUrl(readAttribute(attributes, "href"), { allowMailto: true });
+    const safeHref = safeUrl(readAttribute(attributes, "href"), { allowMailto: true });
+    const href = safeHref ? canonicalizeArticleHref(safeHref) : null;
     const title = readAttribute(attributes, "title");
     const target = readAttribute(attributes, "target");
     const output = [];

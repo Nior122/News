@@ -258,7 +258,7 @@ async function fetchHomepageData(sql) {
   const [categoryRows, articles] = await Promise.all([
     sql`SELECT slug, name FROM categories ORDER BY slug`,
     sql`
-      SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
+      SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
       FROM articles a
       WHERE a.published = true
         AND BTRIM(COALESCE(a.title, '')) <> ''
@@ -284,6 +284,10 @@ async function fetchHomepageData(sql) {
     const slug = String(article?.slug ?? "").trim();
     const title = String(article?.title ?? "").trim();
     if (!slug || !title) continue;
+    // Same renderability predicate the sitemap uses. A row whose body sanitizes
+    // to nothing renders as a 503 article page, so the homepage must not link
+    // to it — the two listings have to agree on what "published" means.
+    if (!hasMeaningfulArticleBody(article.body)) continue;
     const categoryName = String(article.category ?? "").trim();
     const categorySlug = categorySlugFromName(categoryName);
     const key = categorySlug || "uncategorized";

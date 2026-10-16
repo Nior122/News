@@ -29,6 +29,7 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
     { slug: "tech" },
     { slug: "culture" },
     { slug: "tech" },
+    { slug: "phone-tips" },
     { slug: "not-a-route" },
     { slug: "bad/slug" },
     { slug: "" },
@@ -68,6 +69,8 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
   // Categories come from the categories table, limited to slugs that render.
   assert.ok(locations.includes(`${ORIGIN}/category/tech`));
   assert.ok(locations.includes(`${ORIGIN}/category/culture`));
+  // A valid category with no published articles is still a real page.
+  assert.ok(locations.includes(`${ORIGIN}/category/phone-tips`));
   assert.ok(!locations.includes(`${ORIGIN}/category/not-a-route`));
   assert.ok(!locations.some((location) => location.includes("bad/slug")));
 
@@ -89,8 +92,8 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
   assert.ok(!locations.includes(`${ORIGIN}/article/executable-only`));
   assert.doesNotMatch(xml, /www\.scrolltek|pages\.dev|scrolltek\.com/i);
 
-  // 4 static + 2 categories (tech, culture) + 5 published articles.
-  assert.equal(locations.length, 11);
+  // 4 static + 3 categories (tech, culture, phone-tips) + 5 published articles.
+  assert.equal(locations.length, 12);
 });
 
 test("sitemap lastmod uses real publication dates and is omitted rather than fabricated", () => {

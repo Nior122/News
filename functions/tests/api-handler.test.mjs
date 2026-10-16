@@ -166,6 +166,42 @@ test("single-article API exposes published rows only and never increments views"
   assert.equal(malformedDb.calls.length, 0);
 });
 
+test("public article API rewrites internal alias links in bodies without touching stored rows", async () => {
+  const storedBody = '<p>See <a href="/article/why-ai-phones-are-becoming-the-future">old phones</a> and '
+    + '<a href="/article/ai-smart-glasses-future">old glasses</a>.</p>';
+  const article = {
+    id: 9,
+    slug: "linking-story",
+    title: "Linking story",
+    excerpt: "Links to retired aliases",
+    body: storedBody,
+    category: "Tech",
+    author_id: 1,
+    author_name: "Maya Chen",
+    image_url: "",
+    read_time: 4,
+    views: 1,
+    featured: false,
+    editors_pick: false,
+    published: true,
+    published_at: new Date("2026-10-01T12:00:00.000Z"),
+    tags: [],
+  };
+  const db = database(({ query }) => (query.includes("WHERE a.slug =") ? [article] : []));
+  const response = await invoke("/articles/linking-story", db.sql);
+  const payload = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.match(payload.body, /href="https:\/\/scrolltek\.name\.ng\/article\/why-ai-phones-are-the-future-2026"/);
+  assert.match(payload.body, /href="https:\/\/scrolltek\.name\.ng\/article\/ai-smart-glasses-2026"/);
+  assert.doesNotMatch(payload.body, /href="[^"]*\/article\/(why-ai-phones-are-becoming-the-future|ai-smart-glasses-future)"/);
+
+  // Rewriting happens on the rendered copy only — the row handed in is unchanged
+  // and the request issued no write.
+  assert.equal(article.body, storedBody);
+  assert.doesNotMatch(db.calls.map(({ query }) => query).join(" "), /UPDATE|INSERT|DELETE|CREATE|ALTER|DROP/i);
+});
+
 test("published article API rows without renderable body content return 503, not a successful placeholder", async () => {
   const incompleteArticle = {
     id: 18,
