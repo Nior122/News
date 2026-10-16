@@ -83,15 +83,101 @@ test("Pages host redirects only on the explicitly configured production branch",
   }
 });
 
-test("homepage and static/search routes return route-aware HTML while preserving hydration assets", async () => {
-  const homeContext = htmlContext("https://scrolltek.name.ng/");
-  const home = await render(homeContext);
-  const homeHtml = await home.text();
-  assert.equal(home.status, 200);
-  assert.match(homeHtml, /Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools/);
-  assert.match(homeHtml, /<main id="ssr"><h1>Scrolltek<\/h1>/);
-  assert.match(homeHtml, /homepage-fallback/);
+test("homepage server-renders every published article grouped by category plus every category link", async () => {
+  const articles = [
+    { slug: "newest-story", title: "Newest Story", excerpt: "Newest excerpt.", category: "Tech", published_at: "2026-09-20T10:00:00.000Z" },
+    { slug: "ai-smart-glasses-2026", title: "AI Smart Glasses 2026", excerpt: "Glasses excerpt.", category: "Tech", published_at: "2026-09-10T10:00:00.000Z" },
+    { slug: "tools-story", title: "Tools Story", excerpt: "Tools excerpt.", category: "AI Tools", published_at: "2026-09-05T10:00:00.000Z" },
+    { slug: "oddball-story", title: "Oddball Story", excerpt: "No category page.", category: "Gaming", published_at: "2026-09-01T10:00:00.000Z" },
+    // Published, but its body sanitizes to nothing, so its page would 503.
+    { slug: "unrenderable-story", title: "Unrenderable Story", excerpt: "Must not be linked.", category: "Tech", body: "<script>alert(1)</script>", published_at: "2026-08-30T10:00:00.000Z" },
+  ];
+  const homeDb = database(({ query }) => {
+    assert.doesNotMatch(query, /INSERT|UPDATE|DELETE|CREATE|ALTER|DROP/i);
+    // The homepage query must select every qualifying published row rather than
+    // filtering to a hardcoded slug allowlist.
+    assert.match(query, /FROM articles/);
+    assert.match(query, /a\.published = true/);
+    assert.doesNotMatch(query, /a\.slug\s*(?:=|IN)\s*[^<]/);
+    // Rows carry their body so the sitemap's renderability check can be reused.
+    assert.match(query, /a\.body/);
+    return articles.map((article) => ({ body: "<p>Real body.</p>", ...article }));
+  });
 
+  const homeContext = htmlContext("https://scrolltek.name.ng/");
+  const home = await render(homeContext, homeDb);
+  const homeHtml = await home.text();
+
+  assert.equal(home.status, 200);
+  assert.match(homeHtml, /<title>Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools<\/title>/);
+  assert.match(homeHtml, /<main id="ssr"><h1>Scrolltek<\/h1>/);
+  assert.match(homeHtml, /rel="canonical" href="https:\/\/scrolltek\.name\.ng\/"/);
+
+  // Every published, renderable title and excerpt is in the server-rendered HTML.
+  for (const article of articles.filter((item) => item.slug !== "unrenderable-story")) {
+    assert.ok(homeHtml.includes(`<a href="/article/${article.slug}">${article.title}</a>`), `renders ${article.slug}`);
+    assert.ok(homeHtml.includes(article.excerpt), `renders excerpt for ${article.slug}`);
+  }
+
+  // A row whose article page would 503 is not linked from the homepage, matching
+  // the sitemap's exclusion — the two listings must not disagree.
+  assert.doesNotMatch(homeHtml, /unrenderable-story|alert\(1\)/);
+
+  // Grouped under category headings that link to the category pages.
+  assert.match(homeHtml, /<h2><a href="\/category\/tech">Tech<\/a><\/h2>/);
+  assert.match(homeHtml, /<h2><a href="\/category\/ai-tools">AI Tools<\/a><\/h2>/);
+  // A category without a route handler gets its titles, but no link to a 404.
+  assert.match(homeHtml, /<h2>Gaming<\/h2>/);
+  assert.doesNotMatch(homeHtml, /href="\/category\/not-a-route"/);
+
+  // Navigation links to every valid category page, including the virtual mixed
+  // pages that have no row in the categories table.
+  const nav = /<nav aria-label="Browse categories">[\s\S]*?<\/nav>/.exec(homeHtml)?.[0] ?? "";
+  assert.deepEqual(
+    [...nav.matchAll(/href="\/category\/([^"]+)"/g)].map(([, slug]) => slug),
+    ["tech", "culture", "lifestyle", "ai-tools", "phone-tips", "productivity",
+      "trending", "ai-productivity", "culture-lifestyle"],
+  );
+  assert.match(nav, />AI &amp; Productivity</);
+  assert.match(nav, />Culture &amp; Lifestyle</);
+  assert.doesNotMatch(homeHtml, /<a href="\/category\/not-a-route">/);
+  // A valid category with no published articles is still linked, but gets no
+  // empty section.
+  assert.match(nav, /<a href="\/category\/phone-tips">Phone Tips<\/a>/);
+  assert.doesNotMatch(homeHtml, /<section aria-label="Phone Tips">/);
+
+  // Content is in the response body, so no client JavaScript is required, and
+  // the stale hardcoded <noscript> list is gone.
+  assert.match(homeHtml, /<div id="root"><main id="ssr">/);
+  assert.match(homeHtml, /src="\/assets\/app\.js"/);
+  assert.doesNotMatch(homeHtml, /homepage-fallback/);
+});
+
+test("homepage still serves the static shell when the database is unavailable", async () => {
+  const noEnvHome = await render(htmlContext("https://scrolltek.name.ng/", { env: {} }));
+  assert.equal(noEnvHome.status, 200);
+  assert.match(await noEnvHome.text(), /<main id="ssr"><h1>Scrolltek<\/h1>/);
+
+  const oldConsoleError = console.error;
+  console.error = () => {};
+  let brokenHome;
+  try {
+    brokenHome = await render(
+      htmlContext("https://scrolltek.name.ng/"),
+      database(() => {
+        throw new Error("private connection string");
+      }),
+    );
+  } finally {
+    console.error = oldConsoleError;
+  }
+  const brokenHomeHtml = await brokenHome.text();
+  assert.equal(brokenHome.status, 200, "homepage degrades instead of failing");
+  assert.match(brokenHomeHtml, /<main id="ssr"><h1>Scrolltek<\/h1>/);
+  assert.doesNotMatch(brokenHomeHtml, /private connection string/);
+});
+
+test("static and search routes return route-aware HTML while preserving hydration assets", async () => {
   for (const [path, title, heading] of [
     ["/about", "About Us — Scrolltek", "About Scrolltek"],
     ["/contact", "Contact Us — Scrolltek", "Contact Us"],
@@ -120,36 +206,42 @@ test("homepage and static/search routes return route-aware HTML while preserving
   assert.match(html, /src="\/assets\/app\.js"/);
 });
 
-test("retired AI-phone article URL permanently redirects to the canonical revision without redirecting it again", async () => {
-  const alias = "why-ai-phones-are-becoming-the-future";
-  const canonical = "why-ai-phones-are-the-future-2026";
-  const context = htmlContext(`https://scrolltek.name.ng/article/${alias}?utm_source=old-link`);
-  const redirect = await render(context);
+test("both retired article aliases permanently redirect to their canonical revision without redirecting it again", async () => {
+  const aliases = [
+    ["why-ai-phones-are-becoming-the-future", "why-ai-phones-are-the-future-2026"],
+    ["ai-smart-glasses-future", "ai-smart-glasses-2026"],
+  ];
 
-  assert.equal(redirect.status, 301);
-  assert.equal(redirect.headers.get("location"), `https://scrolltek.name.ng/article/${canonical}?utm_source=old-link`);
-  assert.equal(context.nextCalls, 0);
+  for (const [alias, canonical] of aliases) {
+    const context = htmlContext(`https://scrolltek.name.ng/article/${alias}?utm_source=old-link`);
+    const redirect = await render(context);
 
-  const canonicalDb = database(({ query }) => {
-    assert.match(query, /a\.slug =/);
-    return [{
-      slug: canonical,
-      title: "Canonical AI Phone Guide",
-      subtitle: "A fuller 2026 guide",
-      excerpt: "The expanded guide to AI phones.",
-      body: "<p>Canonical article content.</p>",
-      category: "Tech",
-      image_url: "",
-      published_at: "2026-05-28T09:00:00.000Z",
-      author_name: "Maya Chen",
-    }];
-  });
-  const canonicalContext = htmlContext(`https://scrolltek.name.ng/article/${canonical}`);
-  const canonicalResponse = await render(canonicalContext, canonicalDb);
-  assert.equal(canonicalResponse.status, 200);
-  assert.equal(canonicalResponse.headers.get("location"), null);
-  assert.equal(canonicalContext.nextCalls, 1);
-  assert.equal(canonicalDb.calls.length, 1);
+    assert.equal(redirect.status, 301, `${alias} is a permanent redirect`);
+    assert.equal(redirect.headers.get("location"), `https://scrolltek.name.ng/article/${canonical}?utm_source=old-link`);
+    assert.equal(context.nextCalls, 0, `${alias} never reaches the origin`);
+
+    const canonicalDb = database(({ query }) => {
+      // Call 1 loads the article, call 2 loads related reading.
+      assert.ok(/a\.slug =|FROM articles/.test(query), `unexpected query: ${query}`);
+      return [{
+        slug: canonical,
+        title: `Canonical Guide ${canonical}`,
+        subtitle: "A fuller 2026 guide",
+        excerpt: "The expanded guide.",
+        body: "<p>Canonical article content.</p>",
+        category: "Tech",
+        image_url: "",
+        published_at: "2026-05-28T09:00:00.000Z",
+        author_name: "Maya Chen",
+      }];
+    });
+    const canonicalContext = htmlContext(`https://scrolltek.name.ng/article/${canonical}`);
+    const canonicalResponse = await render(canonicalContext, canonicalDb);
+    assert.equal(canonicalResponse.status, 200);
+    assert.equal(canonicalResponse.headers.get("location"), null, `${canonical} is not redirected again`);
+    assert.equal(canonicalContext.nextCalls, 1);
+    assert.equal(canonicalDb.calls.length, 2);
+  }
 });
 
 test("published articles and authors render from mocked records; invalid paths are real noindex 404s", async () => {
@@ -177,8 +269,12 @@ test("published articles and authors render from mocked records; invalid paths a
   assert.match(articleHtml, /id="seo-prerender" data-pending="true"/);
   assert.match(articleHtml, /<div id="root"><\/div>/);
   assert.match(articleHtml, /rel="canonical" href="https:\/\/scrolltek\.name\.ng\/article\/published-story"/);
+  assert.match(articleHtml, /property="og:url" content="https:\/\/scrolltek\.name\.ng\/article\/published-story"/);
+  assert.match(articleHtml, /name="twitter:url" content="https:\/\/scrolltek\.name\.ng\/article\/published-story"/);
   assert.match(articleHtml, /"@type":"NewsArticle"/);
   assert.doesNotMatch(articleHtml, /homepage-fallback/);
+  // The fixture only offers the article itself as related, which must not self-link.
+  assert.doesNotMatch(articleHtml, /Related reading/);
 
   const authorDb = database(({ query }) => {
     if (query.includes("SELECT id, name, avatar_url")) return [{ id: 1, name: "Maya Chen", avatar_url: "" }];
@@ -229,6 +325,163 @@ test("published articles and authors render from mocked records; invalid paths a
   assert.equal(invalidAuthorContext.nextCalls, 1);
 });
 
+test("article pages server-render three or four related-article links without self-links", async () => {
+  const article = {
+    slug: "current-story",
+    title: "Current Story",
+    subtitle: null,
+    excerpt: "The current story.",
+    body: "<p>Current article body.</p>",
+    category: "Tech",
+    image_url: "",
+    published_at: "2026-09-15T10:00:00.000Z",
+    author_name: "Maya Chen",
+  };
+  const relatedPool = [
+    { slug: "same-cat-1", title: "Same Category One", excerpt: "First related.", body: "<p>Body one.</p>" },
+    { slug: "same-cat-2", title: "Same Category Two", excerpt: "Second related.", body: "<p>Body two.</p>" },
+    { slug: "why-ai-phones-are-the-future-2026", title: "AI Phones 2026", excerpt: "Third related.", body: "<p>Body three.</p>" },
+    { slug: "ai-smart-glasses-2026", title: "AI Smart Glasses 2026", excerpt: "Fourth related.", body: "<p>Body four.</p>" },
+    { slug: "fifth-story", title: "Fifth Story", excerpt: "Should be trimmed.", body: "<p>Body five.</p>" },
+  ];
+
+  function articleDbWith(related) {
+    return database(({ query, values }) => {
+      if (query.includes("a.subtitle")) {
+        assert.equal(values[0], "current-story");
+        return [article];
+      }
+      assert.match(query, /a\.slug <>\s+\?/, "related query excludes the current article");
+      assert.match(query, /BTRIM\(COALESCE\(a\.body, ''\)\) <> ''/, "related query guards against non-renderable rows");
+      assert.ok(
+        values.some((value) => Array.isArray(value)
+          && value.includes("why-ai-phones-are-becoming-the-future")
+          && value.includes("ai-smart-glasses-future")),
+        "related query excludes both retired aliases",
+      );
+      return related;
+    });
+  }
+
+  const response = await render(
+    htmlContext("https://scrolltek.name.ng/article/current-story"),
+    articleDbWith(relatedPool),
+  );
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, /<aside aria-label="Related articles"><h2>Related reading<\/h2>/);
+
+  const aside = /<aside aria-label="Related articles">[\s\S]*?<\/aside>/.exec(html)?.[0] ?? "";
+  const linkCount = (aside.match(/<li>/g) ?? []).length;
+  assert.ok(linkCount >= 3 && linkCount <= 4, `renders three or four related links, got ${linkCount}`);
+  assert.ok(!aside.includes("/article/current-story"), "never links back to itself");
+  assert.ok(!aside.includes("fifth-story"), "caps the block at four links");
+
+  // A thin pool still renders, as long as there is something to link.
+  const thinHtml = await (await render(
+    htmlContext("https://scrolltek.name.ng/article/current-story"),
+    articleDbWith(relatedPool.slice(0, 3)),
+  )).text();
+  const thinAside = /<aside aria-label="Related articles">[\s\S]*?<\/aside>/.exec(thinHtml)?.[0] ?? "";
+  assert.equal((thinAside.match(/<li>/g) ?? []).length, 3);
+
+  // No related rows: omit the block rather than render an empty heading.
+  const emptyHtml = await (await render(
+    htmlContext("https://scrolltek.name.ng/article/current-story"),
+    articleDbWith([]),
+  )).text();
+  assert.doesNotMatch(emptyHtml, /Related reading/);
+  assert.match(emptyHtml, /<h1>Current Story<\/h1>/);
+
+  // A row whose body is not renderable would 503 as an article page, so it must
+  // not be offered as a related link.
+  const brokenHtml = await (await render(
+    htmlContext("https://scrolltek.name.ng/article/current-story"),
+    articleDbWith([
+      { slug: "renderable-one", title: "Renderable One", excerpt: "Fine.", body: "<p>Real body.</p>" },
+      { slug: "script-only", title: "Script Only", excerpt: "Not renderable.", body: "<script>alert(1)</script>" },
+      { slug: "blank-body", title: "Blank Body", excerpt: "Not renderable.", body: "   " },
+    ]),
+  )).text();
+  const brokenAside = /<aside aria-label="Related articles">[\s\S]*?<\/aside>/.exec(brokenHtml)?.[0] ?? "";
+  assert.equal((brokenAside.match(/<li>/g) ?? []).length, 1);
+  assert.match(brokenAside, /renderable-one/);
+  assert.doesNotMatch(brokenAside, /script-only|blank-body|alert\(1\)/);
+});
+
+test("a related-article query failure never takes the article page down", async () => {
+  const article = {
+    slug: "resilient-story",
+    title: "Resilient Story",
+    subtitle: null,
+    excerpt: "Still renders.",
+    body: "<p>Resilient body.</p>",
+    category: "Tech",
+    image_url: "",
+    published_at: "2026-09-15T10:00:00.000Z",
+    author_name: "Maya Chen",
+  };
+  const flakyDb = database(({ query }) => {
+    if (query.includes("a.subtitle")) return [article];
+    throw new Error("private related-query failure");
+  });
+  const oldConsoleError = console.error;
+  console.error = () => {};
+  let response;
+  try {
+    response = await render(htmlContext("https://scrolltek.name.ng/article/resilient-story"), flakyDb);
+  } finally {
+    console.error = oldConsoleError;
+  }
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /<h1>Resilient Story<\/h1>/);
+  assert.match(html, /<h1>Resilient Story<\/h1>[\s\S]*Resilient body\./);
+  assert.doesNotMatch(html, /Related reading|private related-query failure/);
+});
+
+test("internal links to retired aliases are rewritten to canonical URLs at render time", async () => {
+  const body = [
+    '<p>Relative <a href="/article/why-ai-phones-are-becoming-the-future">old AI phones</a>.</p>',
+    '<p>Absolute <a href="https://scrolltek.name.ng/article/ai-smart-glasses-future?ref=body">old glasses</a>.</p>',
+    '<p>WWW <a href="https://www.scrolltek.name.ng/article/why-ai-phones-are-becoming-the-future#deep">www alias</a>.</p>',
+    '<p>Canonical <a href="/article/google-io-2026-ai-announcements">stays put</a>.</p>',
+    '<p>Third party <a href="https://example.com/article/ai-smart-glasses-future">untouched</a>.</p>',
+  ].join("");
+
+  const article = {
+    slug: "linking-story",
+    title: "Linking Story",
+    subtitle: null,
+    excerpt: "Links to retired aliases.",
+    body,
+    category: "Tech",
+    image_url: "",
+    published_at: "2026-09-15T10:00:00.000Z",
+    author_name: "Maya Chen",
+  };
+  const db = database(({ query }) => (query.includes("a.subtitle") ? [article] : []));
+  const response = await render(htmlContext("https://scrolltek.name.ng/article/linking-story"), db);
+  const html = await response.text();
+  assert.equal(response.status, 200);
+
+  const renderedBody = /<div class="ssr-article-body">([\s\S]*?)<\/div>/.exec(html)?.[1] ?? "";
+  const hrefs = [...renderedBody.matchAll(/href="([^"]+)"/g)].map(([, href]) => href);
+
+  assert.deepEqual(hrefs, [
+    "https://scrolltek.name.ng/article/why-ai-phones-are-the-future-2026",
+    "https://scrolltek.name.ng/article/ai-smart-glasses-2026?ref=body",
+    "https://scrolltek.name.ng/article/why-ai-phones-are-the-future-2026#deep",
+    "https://scrolltek.name.ng/article/google-io-2026-ai-announcements",
+    "https://example.com/article/ai-smart-glasses-future",
+  ]);
+
+  // No internal link still points at a slug that only 301s.
+  assert.ok(!hrefs.some((href) => new URL(href).hostname === "scrolltek.name.ng"
+    && /\/article\/(why-ai-phones-are-becoming-the-future|ai-smart-glasses-future)$/.test(new URL(href).pathname)));
+});
+
 test("published rows without meaningful body content are temporary 503s, not indexed placeholders", async () => {
   const incompleteDb = database(() => [{
     slug: "incomplete-story",
@@ -266,7 +519,12 @@ test("category listings are crawlable and deduplicate mixed-category results", a
   assert.equal((html.match(/href="\/article\/shared-story"/g) ?? []).length, 1);
   assert.equal(listingDb.calls.length, 2);
   assert.ok(listingDb.calls.every(({ query }) => /published = true/.test(query)));
-  assert.ok(listingDb.calls.every(({ values }) => values.includes("why-ai-phones-are-becoming-the-future")));
+  // Both retired aliases are excluded from listings via a single array parameter.
+  assert.ok(listingDb.calls.every(({ values }) => values.some(
+    (value) => Array.isArray(value)
+      && value.includes("why-ai-phones-are-becoming-the-future")
+      && value.includes("ai-smart-glasses-future"),
+  )));
 });
 
 test("unknown routes return 404 HTML, API JSON errors stay JSON, and missing assets are not rewritten", async () => {

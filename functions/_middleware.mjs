@@ -1,50 +1,27 @@
 import { neon } from "@neondatabase/serverless";
-import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUG } from "./lib/article-routing.mjs";
+import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUGS } from "./lib/article-routing.mjs";
+import {
+  categoryDescription,
+  categoryDisplayName,
+  categoryGroupNames,
+  categorySlugFromName,
+  isRenderableCategorySlug,
+  validCategoryPages,
+} from "./lib/site-categories.mjs";
 import {
   renderArticleDocument,
   renderAuthorDocument,
   renderCanonicalDocument,
+  renderHomepageDocument,
   renderListingDocument,
   renderNotFoundDocument,
   renderUnavailableDocument,
   hasMeaningfulArticleBody,
+  MAX_RELATED_LINKS,
   SITE_ORIGIN,
 } from "./lib/seo-html.mjs";
 
 const CANONICAL_HOST = new URL(SITE_ORIGIN).hostname;
-const CATEGORY_NAMES = {
-  tech: ["Tech"],
-  culture: ["Culture"],
-  lifestyle: ["Lifestyle"],
-  "ai-tools": ["AI Tools"],
-  "phone-tips": ["Phone Tips"],
-  productivity: ["Productivity"],
-  trending: ["Trending"],
-  "ai-productivity": ["AI Tools", "Productivity"],
-  "culture-lifestyle": ["Culture", "Lifestyle"],
-};
-const CATEGORY_LABELS = {
-  tech: "Tech",
-  culture: "Culture",
-  lifestyle: "Lifestyle",
-  "ai-tools": "AI Tools",
-  "phone-tips": "Phone Tips",
-  productivity: "Productivity",
-  trending: "Trending",
-  "ai-productivity": "AI & Productivity",
-  "culture-lifestyle": "Culture & Lifestyle",
-};
-const CATEGORY_DESCRIPTIONS = {
-  tech: "The latest news, reviews, and insights about technology.",
-  culture: "Internet culture, social trends, and what the world is talking about.",
-  lifestyle: "Modern living — wellness, work, and the way we spend our time.",
-  "ai-tools": "Practical guides, reviews, and news about AI tools you can use today.",
-  "phone-tips": "Get more from your smartphone with tips, tricks, and hidden features.",
-  productivity: "Work smarter, not harder — tools, habits, and systems that actually work.",
-  trending: "The most-read stories on Scrolltek right now.",
-  "ai-productivity": "The best of AI Tools and Productivity — tools, tips, and systems that save you hours.",
-  "culture-lifestyle": "Culture and Lifestyle stories — how we live, connect, and unwind.",
-};
 const AUTHOR_PROFILES = {
   "maya-chen": {
     name: "Maya Chen",
@@ -156,7 +133,7 @@ function classifyPage(pathname) {
   const categoryMatch = path.match(/^\/category\/([^/]+)$/);
   if (categoryMatch) {
     const slug = decodePathSegment(categoryMatch[1]);
-    return slug && Object.hasOwn(CATEGORY_NAMES, slug)
+    return slug && isRenderableCategorySlug(slug)
       ? { type: "category", path, slug }
       : { type: "not-found", path };
   }
@@ -206,7 +183,7 @@ async function fetchAuthor(sql, slug) {
     SELECT slug, title, excerpt
     FROM articles
     WHERE author_id = ${author.id} AND published = true
-      AND slug != ${REDIRECTED_ARTICLE_SLUG}
+      AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
     ORDER BY published_at DESC
     LIMIT 100
   `;
@@ -218,18 +195,18 @@ async function fetchCategoryArticles(sql, slug) {
     return sql`
       SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
       FROM articles a
-      WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+      WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
       ORDER BY a.views DESC, a.published_at DESC
       LIMIT 100
     `;
   }
 
-  const names = CATEGORY_NAMES[slug];
+  const names = categoryGroupNames(slug);
   const groups = await Promise.all(names.map((category) => sql`
     SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
     FROM articles a
     WHERE a.published = true AND a.category = ${category}
-      AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+      AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
     ORDER BY a.published_at DESC
     LIMIT 100
   `));
@@ -242,6 +219,90 @@ async function fetchCategoryArticles(sql, slug) {
       return true;
     })
     .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+}
+
+/**
+ * Related reading for an article: same-category stories first, then the newest
+ * of the rest, so the block still fills when a category is thin.
+ *
+ * Candidates carry their body so non-renderable rows can be dropped here — an
+ * article whose page would 503 must not be linked from a page that returns 200.
+ */
+const RELATED_CANDIDATE_LIMIT = 12;
+
+async function fetchRelatedArticles(sql, article) {
+  const candidates = await sql`
+    SELECT a.slug, a.title, a.excerpt, a.body
+    FROM articles a
+    WHERE a.published = true
+      AND a.slug <> ${article.slug}
+      AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
+      AND BTRIM(COALESCE(a.title, '')) <> ''
+      AND BTRIM(COALESCE(a.body, '')) <> ''
+    ORDER BY (a.category = ${article.category}) DESC, a.published_at DESC
+    LIMIT ${RELATED_CANDIDATE_LIMIT}
+  `;
+  return candidates
+    .filter((candidate) => hasMeaningfulArticleBody(candidate.body))
+    .slice(0, MAX_RELATED_LINKS);
+}
+
+/**
+ * Everything the homepage needs to be crawlable without JavaScript: the valid
+ * category pages plus every qualifying published row grouped by category.
+ *
+ * The article query is deliberately unfiltered by slug — a hardcoded allowlist
+ * would silently drop new stories from the server-rendered homepage.
+ */
+async function fetchHomepageData(sql) {
+  const articles = await sql`
+    SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
+    FROM articles a
+    WHERE a.published = true
+      AND BTRIM(COALESCE(a.title, '')) <> ''
+      AND BTRIM(COALESCE(a.body, '')) <> ''
+      AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
+    ORDER BY a.published_at DESC
+    LIMIT 500
+  `;
+
+  // Every valid category page the router can render, including the virtual
+  // mixed pages (ai-productivity, culture-lifestyle) that have no row in the
+  // categories table. Those pages are indexable and self-canonical, so the
+  // homepage must link them like any other category.
+  const categories = validCategoryPages();
+
+  const groups = new Map();
+  for (const article of articles) {
+    const slug = String(article?.slug ?? "").trim();
+    const title = String(article?.title ?? "").trim();
+    if (!slug || !title) continue;
+    // Same renderability predicate the sitemap uses. A row whose body sanitizes
+    // to nothing renders as a 503 article page, so the homepage must not link
+    // to it — the two listings have to agree on what "published" means.
+    if (!hasMeaningfulArticleBody(article.body)) continue;
+    const categoryName = String(article.category ?? "").trim();
+    const categorySlug = categorySlugFromName(categoryName);
+    const key = categorySlug || "uncategorized";
+    if (!groups.has(key)) {
+      groups.set(key, {
+        slug: isRenderableCategorySlug(categorySlug) ? categorySlug : "",
+        name: categoryName || "More stories",
+        articles: [],
+      });
+    }
+    groups.get(key).articles.push(article);
+  }
+
+  const order = new Map(categories.map((category, index) => [category.slug, index]));
+  const sections = [...groups.values()].sort((a, b) => {
+    const rankA = order.has(a.slug) ? order.get(a.slug) : Number.MAX_SAFE_INTEGER;
+    const rankB = order.has(b.slug) ? order.get(b.slug) : Number.MAX_SAFE_INTEGER;
+    if (rankA !== rankB) return rankA - rankB;
+    return a.name.localeCompare(b.name);
+  });
+
+  return { categories, sections };
 }
 
 function isHtmlResponse(response) {
@@ -351,6 +412,30 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
     );
   }
 
+  // Homepage: server-render the full listing so crawlers and visitors without
+  // JavaScript see every published story. A database failure degrades to the
+  // static shell below rather than taking the homepage down with it.
+  if (route.type === "generic" && route.path === "/" && env?.DATABASE_URL) {
+    try {
+      const { categories, sections } = await fetchHomepageData(databaseFactory(env));
+      return htmlResponse(
+        baseResponse,
+        renderHomepageDocument(template, {
+          pathname: route.path,
+          title: route.title,
+          heading: route.heading,
+          description: route.description,
+          categories,
+          sections,
+        }),
+        request,
+        baseResponse.status,
+      );
+    } catch {
+      console.error("[seo-render] homepage listing failed; serving static shell");
+    }
+  }
+
   if (route.type === "generic") {
     const html = renderCanonicalDocument(template, route.path, {
       robots: route.robots,
@@ -393,7 +478,14 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
           { cacheControl: "no-store", retryAfter: 60 },
         );
       }
-      return htmlResponse(baseResponse, renderArticleDocument(template, article), request, 200);
+      // Related links are an enhancement: never fail the article over them.
+      let related = [];
+      try {
+        related = await fetchRelatedArticles(sql, article);
+      } catch {
+        console.error("[seo-render] related articles failed");
+      }
+      return htmlResponse(baseResponse, renderArticleDocument(template, article, { related }), request, 200);
     }
 
     if (route.type === "author") {
@@ -418,12 +510,12 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
       return htmlResponse(baseResponse, html, request, 200);
     }
 
-    const displayName = CATEGORY_LABELS[route.slug];
+    const displayName = categoryDisplayName(route.slug);
     const articles = await fetchCategoryArticles(sql, route.slug);
     const html = renderListingDocument(template, {
       pathname: route.path,
       title: displayName,
-      description: CATEGORY_DESCRIPTIONS[route.slug],
+      description: categoryDescription(route.slug),
       articles,
     });
     return htmlResponse(baseResponse, html, request, 200);

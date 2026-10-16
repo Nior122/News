@@ -1,6 +1,9 @@
+import { getArticleRedirectTarget } from "./article-routing.mjs";
+
 export const SITE_ORIGIN = "https://scrolltek.name.ng";
 const SITE_NAME = "Scrolltek";
 const SITE_LOGO = `${SITE_ORIGIN}/favicon.svg`;
+const CANONICAL_HOSTNAME = new URL(SITE_ORIGIN).hostname;
 
 const ALLOWED_TAGS = new Set([
   "a", "b", "blockquote", "br", "code", "del", "div", "em", "figcaption",
@@ -71,9 +74,44 @@ function safeUrl(value, { allowMailto = false } = {}) {
   }
 }
 
+/**
+ * Points internal links at retired article aliases to their canonical revision.
+ *
+ * Stored bodies are left untouched; only the rendered copy is rewritten, so a
+ * stored row that still links to an old slug does not publish an internal link
+ * that bounces through a 301. Non-internal and third-party URLs are untouched.
+ */
+function canonicalizeArticleHref(absoluteHref) {
+  let parsed;
+  try {
+    parsed = new URL(absoluteHref);
+  } catch {
+    return absoluteHref;
+  }
+
+  const host = parsed.hostname.toLowerCase();
+  if (host !== CANONICAL_HOSTNAME && host !== `www.${CANONICAL_HOSTNAME}`) return absoluteHref;
+
+  const match = parsed.pathname.match(/^\/article\/([^/]+)$/);
+  if (!match) return absoluteHref;
+
+  let slug;
+  try {
+    slug = decodeURIComponent(match[1]);
+  } catch {
+    return absoluteHref;
+  }
+
+  const target = getArticleRedirectTarget(slug);
+  if (!target) return absoluteHref;
+  // Query and fragment survive so deep links into the canonical revision work.
+  return `${SITE_ORIGIN}/article/${encodeURIComponent(target)}${parsed.search}${parsed.hash}`;
+}
+
 function safeAttributes(tagName, attributes) {
   if (tagName === "a") {
-    const href = safeUrl(readAttribute(attributes, "href"), { allowMailto: true });
+    const safeHref = safeUrl(readAttribute(attributes, "href"), { allowMailto: true });
+    const href = safeHref ? canonicalizeArticleHref(safeHref) : null;
     const title = readAttribute(attributes, "title");
     const target = readAttribute(attributes, "target");
     const output = [];
@@ -396,8 +434,15 @@ export function renderPageDocument(template, page) {
   if (page.ogType !== undefined) html = setMeta(html, "property", "og:type", page.ogType);
   if (page.canonical !== undefined) {
     html = setCanonical(html, page.canonical);
-    if (page.canonical) html = setMeta(html, "property", "og:url", page.canonical);
-    else html = removeMeta(html, "property", "og:url");
+    // canonical, og:url and twitter:url must agree or social crawlers and
+    // search engines attribute the page to different URLs.
+    if (page.canonical) {
+      html = setMeta(html, "property", "og:url", page.canonical);
+      html = setMeta(html, "name", "twitter:url", page.canonical);
+    } else {
+      html = removeMeta(html, "property", "og:url");
+      html = removeMeta(html, "name", "twitter:url");
+    }
   }
   if (page.robots !== undefined) html = setMeta(html, "name", "robots", page.robots);
   if (Object.hasOwn(page, "ogImage")) {
@@ -438,7 +483,82 @@ export function renderCanonicalDocument(template, pathname, { robots, title, des
   });
 }
 
-export function renderArticleDocument(template, article) {
+/** Upper bound for server-rendered related-article links. */
+export const MAX_RELATED_LINKS = 4;
+
+function articleLinkMarkup(article, { heading = "h3" } = {}) {
+  const slug = encodeURIComponent(article.slug);
+  const excerpt = String(article.excerpt ?? "").trim();
+  return `<li><article><${heading}><a href="/article/${escapeHtml(slug)}">${escapeHtml(article.title)}</a></${heading}>${excerpt ? `<p>${escapeHtml(excerpt)}</p>` : ""}</article></li>`;
+}
+
+function usableArticle(article) {
+  return Boolean(article) && String(article.slug ?? "").trim() !== "" && String(article.title ?? "").trim() !== "";
+}
+
+/** Related-reading block: three or four crawlable links, or nothing at all. */
+function relatedArticleMarkup(related, excludeSlug) {
+  const links = (Array.isArray(related) ? related : [])
+    .filter(usableArticle)
+    .filter((article) => String(article.slug).trim() !== String(excludeSlug ?? "").trim())
+    .slice(0, MAX_RELATED_LINKS)
+    .map((article) => articleLinkMarkup(article))
+    .join("");
+  if (!links) return "";
+  return `<aside aria-label="Related articles"><h2>Related reading</h2><ul>${links}</ul></aside>`;
+}
+
+/**
+ * Server-renders the homepage: a link to every category page plus every
+ * published article title grouped under its category with an excerpt. The
+ * markup is written into the shell's body rather than the article prerender
+ * slot, because only the article route clears that slot — a pending prerender
+ * on "/" would hide #root for JavaScript visitors permanently.
+ */
+export function renderHomepageDocument(template, {
+  pathname = "/",
+  title,
+  heading,
+  description,
+  categories = [],
+  sections = [],
+}) {
+  const categoryLinks = (Array.isArray(categories) ? categories : [])
+    .filter((category) => usableArticle({ slug: category?.slug, title: category?.name }))
+    .map((category) => `<li><a href="/category/${escapeHtml(encodeURIComponent(String(category.slug).trim()))}">${escapeHtml(category.name)}</a></li>`)
+    .join("");
+
+  const sectionMarkup = (Array.isArray(sections) ? sections : [])
+    .map((section) => {
+      const articles = (section.articles ?? []).filter(usableArticle);
+      if (articles.length === 0) return "";
+      const name = String(section.name ?? section.slug ?? "").trim();
+      const slug = String(section.slug ?? "").trim();
+      // A category with no route handler still gets its titles listed, just
+      // without a link that would 404.
+      const title = slug
+        ? `<h2><a href="/category/${escapeHtml(encodeURIComponent(slug))}">${escapeHtml(name)}</a></h2>`
+        : `<h2>${escapeHtml(name)}</h2>`;
+      return `<section aria-label="${escapeHtml(name)}">${title}<ul>${articles.map((article) => articleLinkMarkup(article)).join("")}</ul></section>`;
+    })
+    .join("");
+
+  const bodyHtml = `<main id="ssr"><h1>${escapeHtml(heading)}</h1>${description ? `<p>${escapeHtml(description)}</p>` : ""}${categoryLinks ? `<nav aria-label="Browse categories"><ul>${categoryLinks}</ul></nav>` : ""}${sectionMarkup}</main>`;
+
+  return renderPageDocument(template, {
+    // The document title and the on-page <h1> are different strings: the title
+    // carries the keyword-rich variant, the heading is the short brand name.
+    title: title ?? heading,
+    ...(description ? { description } : {}),
+    canonical: canonicalUrlForPath(pathname),
+    bodyHtml,
+    // The shell's hardcoded <noscript> homepage list is stale by definition;
+    // drop it so no-JS visitors get the freshly rendered listing instead.
+    removeHomepageFallback: true,
+  });
+}
+
+export function renderArticleDocument(template, article, { related = [] } = {}) {
   const articlePath = `/article/${encodeURIComponent(article.slug)}`;
   const canonical = canonicalUrlForPath(articlePath);
   const title = `${article.title} — ${SITE_NAME}`;
@@ -461,7 +581,8 @@ export function renderArticleDocument(template, article) {
     ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(article.title)}" loading="lazy" decoding="async"></figure>`
     : "";
   const bodyMarkup = body ? `<div class="ssr-article-body">${body}</div>` : "";
-  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(article.title)}</h1>${article.subtitle ? `<h2>${escapeHtml(article.subtitle)}</h2>` : ""}${article.excerpt ? `<p>${escapeHtml(article.excerpt)}</p>` : ""}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article></main>`;
+  const relatedMarkup = relatedArticleMarkup(related, article.slug);
+  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(article.title)}</h1>${article.subtitle ? `<h2>${escapeHtml(article.subtitle)}</h2>` : ""}${article.excerpt ? `<p>${escapeHtml(article.excerpt)}</p>` : ""}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article>${relatedMarkup}</main>`;
 
   const jsonLd = {
     "@context": "https://schema.org",
