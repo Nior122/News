@@ -8,7 +8,7 @@
  */
 
 import { neon } from '@neondatabase/serverless';
-import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUG } from '../lib/article-routing.mjs';
+import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUGS } from '../lib/article-routing.mjs';
 import { hasMeaningfulArticleBody, sanitizeArticleHtml } from '../lib/seo-html.mjs';
 
 // ── DB client ─────────────────────────────────────────────────────────────────
@@ -431,12 +431,12 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT COUNT(*) AS article_count, COALESCE(SUM(views), 0) AS total_views
         FROM articles
         WHERE author_id = ${author.id} AND published = true
-          AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
+          AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])`;
       const articleRows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.author_id = ${author.id} AND a.published = true
-          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC
         LIMIT 100`;
       const stats = statsRows[0] ?? {};
@@ -458,7 +458,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.featured = true AND a.published = true
-          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 1`;
       if (!rows.length) return json({ error: 'Not found' }, 404);
       return json(publicFmt(rows[0]));
@@ -469,7 +469,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+        WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.views DESC, a.published_at DESC LIMIT 5`;
       return json(rows.map(publicFmt));
     }
@@ -480,7 +480,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.editors_pick = true AND a.published = true
-          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 6`;
       return json(rows.map(publicFmt));
     }
@@ -490,7 +490,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+        WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.views DESC, a.published_at DESC LIMIT 10`;
       return json(rows.map(publicFmt));
     }
@@ -499,7 +499,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
     if (path === '/articles/ticker' && method === 'GET') {
       const rows = await db`
         SELECT id, slug, title, category FROM articles
-        WHERE published = true AND slug != ${REDIRECTED_ARTICLE_SLUG}
+        WHERE published = true AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY published_at DESC LIMIT 10`;
       return json(rows);
     }
@@ -519,7 +519,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+        WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
           AND (
             a.title ILIKE ${pattern}
             OR a.excerpt ILIKE ${pattern}
@@ -531,7 +531,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       const countRows = await db`
         SELECT COUNT(*) AS total
         FROM articles a JOIN authors au ON a.author_id = au.id
-        WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+        WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
           AND (
             a.title ILIKE ${pattern}
             OR a.excerpt ILIKE ${pattern}
@@ -556,21 +556,21 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
           SELECT a.*, au.name AS author_name, au.avatar_url
           FROM articles a JOIN authors au ON a.author_id = au.id
           WHERE a.published = true AND a.category = ${category}
-            AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+            AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
           ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
         countRows = await db`
           SELECT COUNT(*) AS total FROM articles
           WHERE published = true AND category = ${category}
-            AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
+            AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])`;
       } else {
         rows = await db`
           SELECT a.*, au.name AS author_name, au.avatar_url
           FROM articles a JOIN authors au ON a.author_id = au.id
-          WHERE a.published = true AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
           ORDER BY a.published_at DESC LIMIT ${limit} OFFSET ${offset}`;
         countRows = await db`
           SELECT COUNT(*) AS total FROM articles
-          WHERE published = true AND slug != ${REDIRECTED_ARTICLE_SLUG}`;
+          WHERE published = true AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])`;
       }
       const total = parseInt(countRows[0].total, 10);
       return json({ articles: rows.map(publicFmt), total, page, limit, hasMore: offset + rows.length < total });
@@ -594,7 +594,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.category = ${base[0].category} AND a.slug != ${slug} AND a.published = true
-          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}
+          AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 4`;
       return json(rows.map(publicFmt));
     }
@@ -615,7 +615,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.slug = ${slug} AND a.published = true
-          AND a.slug != ${REDIRECTED_ARTICLE_SLUG}`;
+          AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])`;
       if (!rows.length) return json({ error: 'Not found' }, 404);
       if (!String(rows[0].title ?? '').trim() || !hasMeaningfulArticleBody(rows[0].body)) {
         return json({ error: 'Article temporarily unavailable' }, 503);

@@ -4,6 +4,9 @@ import { handleApiRequest } from "../api/[[path]].mjs";
 
 const ENV = { DATABASE_URL: "local-test-placeholder", ADMIN_PASSWORD: "local-test-admin-secret" };
 
+/** Both retired article aliases, passed to SQL as a single array parameter. */
+const ALIAS_SLUGS = ["why-ai-phones-are-becoming-the-future", "ai-smart-glasses-future"];
+
 function request(path, { method = "GET", body, headers } = {}) {
   return new Request(`https://scrolltek.name.ng/api${path}`, {
     method,
@@ -192,22 +195,25 @@ test("published article API rows without renderable body content return 503, not
   assert.doesNotMatch(fixture.calls.map(({ query }) => query).join(" "), /UPDATE|INSERT|DELETE/i);
 });
 
-test("AI-phone alias redirects permanently and is omitted from public article listings", async () => {
-  const alias = "why-ai-phones-are-becoming-the-future";
+test("both retired aliases redirect permanently and are omitted from public article listings", async () => {
   const canonical = "why-ai-phones-are-the-future-2026";
   const redirectDb = database(() => {
     throw new Error("Alias redirects must not query the database");
   });
 
-  const articleRedirect = await invoke(`/articles/${alias}?source=old-link`, redirectDb.sql);
-  assert.equal(articleRedirect.status, 301);
-  assert.equal(articleRedirect.headers.get("location"), `https://scrolltek.name.ng/api/articles/${canonical}?source=old-link`);
-  assert.equal(redirectDb.calls.length, 0);
+  for (const [alias, target] of [
+    ["why-ai-phones-are-becoming-the-future", canonical],
+    ["ai-smart-glasses-future", "ai-smart-glasses-2026"],
+  ]) {
+    const articleRedirect = await invoke(`/articles/${alias}?source=old-link`, redirectDb.sql);
+    assert.equal(articleRedirect.status, 301, `${alias} is a permanent redirect`);
+    assert.equal(articleRedirect.headers.get("location"), `https://scrolltek.name.ng/api/articles/${target}?source=old-link`);
 
-  const relatedRedirect = await invoke(`/articles/${alias}/related?source=old-link`, redirectDb.sql);
-  assert.equal(relatedRedirect.status, 301);
-  assert.equal(relatedRedirect.headers.get("location"), `https://scrolltek.name.ng/api/articles/${canonical}/related?source=old-link`);
-  assert.equal(redirectDb.calls.length, 0);
+    const relatedRedirect = await invoke(`/articles/${alias}/related?source=old-link`, redirectDb.sql);
+    assert.equal(relatedRedirect.status, 301, `${alias}/related is a permanent redirect`);
+    assert.equal(relatedRedirect.headers.get("location"), `https://scrolltek.name.ng/api/articles/${target}/related?source=old-link`);
+  }
+  assert.equal(redirectDb.calls.length, 0, "alias redirects never touch the database");
 
   const articleRow = (slug, id) => ({
     id,
@@ -238,7 +244,12 @@ test("AI-phone alias redirects permanently and is omitted from public article li
   const listingPayload = await listingResponse.json();
   assert.equal(listingResponse.status, 200);
   assert.deepEqual(listingPayload.articles.map((item) => item.slug), [canonical, "another-story"]);
-  assert.ok(listingDb.calls.every(({ values }) => values.includes(alias)));
+  // Every listing query excludes both aliases through one array parameter.
+  assert.ok(listingDb.calls.every(({ values }) => values.some(
+    (value) => Array.isArray(value)
+      && value.includes("why-ai-phones-are-becoming-the-future")
+      && value.includes("ai-smart-glasses-future"),
+  )));
   assert.ok(listingDb.calls.every(({ query }) => /^\s*SELECT\b/i.test(query.trim())));
   assert.doesNotMatch(listingDb.calls.map(({ query }) => query).join(" "), /CREATE|INSERT|UPDATE|DELETE|ALTER|DROP/i);
 });
@@ -387,9 +398,9 @@ test("search, category pagination, and related article responses remain publishe
   assert.equal(categoryPayload.hasMore, true);
   assert.equal(categoryPayload.articles.length, 2);
   assert.match(categoryDb.calls[0].query, /a\.published = true AND a\.category =/);
-  assert.deepEqual(categoryDb.calls[0].values, ["Tech", "why-ai-phones-are-becoming-the-future", 5, 5]);
+  assert.deepEqual(categoryDb.calls[0].values, ["Tech", ALIAS_SLUGS, 5, 5]);
   assert.match(categoryDb.calls[1].query, /published = true AND category =/);
-  assert.deepEqual(categoryDb.calls[1].values, ["Tech", "why-ai-phones-are-becoming-the-future"]);
+  assert.deepEqual(categoryDb.calls[1].values, ["Tech", ALIAS_SLUGS]);
 
   const searchDb = database(({ query }) => (
     query.includes("COUNT(*)") ? [{ total: "9" }] : [article]
@@ -406,7 +417,7 @@ test("search, category pagination, and related article responses remain publishe
   assert.match(searchDb.calls[0].query, /array_to_string\(a\.tags, ' '\) ILIKE/);
   assert.match(searchDb.calls[0].query, /au\.name ILIKE/);
   assert.ok(searchDb.calls[1].query.includes("array_to_string(a.tags, ' ') ILIKE"));
-  assert.equal(searchDb.calls[0].values[0], "why-ai-phones-are-becoming-the-future");
+  assert.deepEqual(searchDb.calls[0].values[0], ALIAS_SLUGS);
   assert.deepEqual(searchDb.calls[0].values.slice(1, 6), ["%ai%", "%ai%", "%ai%", "%ai%", "%ai%"]);
   assert.deepEqual(searchDb.calls[0].values.slice(-2), [4, 4]);
 
@@ -415,7 +426,7 @@ test("search, category pagination, and related article responses remain publishe
   ));
   const specialSearchResponse = await invoke("/articles/search?q=ai%25_", specialSearchDb.sql);
   assert.equal(specialSearchResponse.status, 200);
-  assert.equal(specialSearchDb.calls[0].values[0], "why-ai-phones-are-becoming-the-future");
+  assert.deepEqual(specialSearchDb.calls[0].values[0], ALIAS_SLUGS);
   assert.equal(specialSearchDb.calls[0].values[1], "%ai\\%\\_%");
 
   const relatedDb = database(({ query }) => (

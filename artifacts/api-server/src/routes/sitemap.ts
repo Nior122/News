@@ -1,33 +1,43 @@
 import { Router } from "express";
-import { db, articlesTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { and, asc, desc, eq, notInArray, sql } from "drizzle-orm";
+import { articlesTable, categoriesTable, db } from "@workspace/db";
 
 const router = Router();
 const SITE_URL = "https://scrolltek.name.ng";
 
-// Only emit lastmod where a meaningful last-edit date is known. Dynamic pages
-// and pages without tracked update dates omit the field rather than using today.
+// Canonical, indexable static pages only — mirrors functions/sitemap.xml.mjs,
+// which serves the canonical origin. noindex routes must never appear here.
 const STATIC_PAGES = [
-  { path: "/", priority: "1.0", changefreq: "daily", lastmod: null },
-  { path: "/about", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
-  { path: "/contact", priority: "0.5", changefreq: "monthly", lastmod: "2026-05-25" },
-  { path: "/privacy", priority: "0.3", changefreq: "yearly", lastmod: "2026-05-25" },
-  { path: "/category/tech", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/culture", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/lifestyle", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/ai-tools", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/phone-tips", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/productivity", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/category/trending", priority: "0.8", changefreq: "daily", lastmod: null },
-  { path: "/author/maya-chen", priority: "0.6", changefreq: "weekly", lastmod: null },
-  { path: "/author/james-okafor", priority: "0.6", changefreq: "weekly", lastmod: null },
-  { path: "/author/sofia-reyes", priority: "0.6", changefreq: "weekly", lastmod: null },
-  { path: "/author/liam-park", priority: "0.6", changefreq: "weekly", lastmod: null },
-  { path: "/author/anya-patel", priority: "0.6", changefreq: "weekly", lastmod: null },
+  { path: "/", priority: "1.0", changefreq: "daily" },
+  { path: "/about", priority: "0.5", changefreq: "monthly" },
+  { path: "/contact", priority: "0.5", changefreq: "monthly" },
+  { path: "/privacy", priority: "0.3", changefreq: "yearly" },
+];
+
+// Slugs the SSR router can actually render. A categories row without an entry
+// here would be a 404, so it must stay out of the sitemap. Keep in sync with
+// functions/lib/site-categories.mjs.
+const RENDERABLE_CATEGORY_SLUGS = new Set([
+  "tech",
+  "culture",
+  "lifestyle",
+  "ai-tools",
+  "phone-tips",
+  "productivity",
+  "trending",
+  "ai-productivity",
+  "culture-lifestyle",
+]);
+
+// Retired URLs that 301 to a canonical revision. Mirrors
+// functions/lib/article-routing.mjs — only the destination is published.
+const REDIRECTED_ARTICLE_SLUGS = [
+  "why-ai-phones-are-becoming-the-future",
+  "ai-smart-glasses-future",
 ];
 
 function escapeXml(str: string): string {
-  return str
+  return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -35,31 +45,103 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
+/** A slug that would produce a broken or unsafe path segment. */
+function isSafePathSegment(value: string): boolean {
+  if (!value || value === "." || value === "..") return false;
+  return !/[\\/?#]|[\u0000-\u001f\u007f]/.test(value);
+}
+
+/**
+ * Real publication date as a W3C lastmod, or null. Never fall back to "today":
+ * a fabricated lastmod is worse for crawl trust than omitting the element.
+ */
+function lastmodFor(value: Date | string | null | undefined): string | null {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString();
+}
+
+/** Body counts as renderable when it has readable text or at least an image. */
+function hasMeaningfulArticleBody(input: string | null | undefined): boolean {
+  const stripped = String(input ?? "")
+    .replace(/<\s*(script|style)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;|&#xA0;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return stripped.length > 0 || /<img\b/i.test(String(input ?? ""));
+}
+
 router.get("/sitemap.xml", async (req, res) => {
   try {
-    const articles = await db
-      .select({
-        slug: articlesTable.slug,
-        title: articlesTable.title,
-        imageUrl: articlesTable.imageUrl,
-      })
-      .from(articlesTable)
-      .where(eq(articlesTable.published, true))
-      .orderBy(desc(articlesTable.publishedAt));
+    const [categoryRows, articleRows] = await Promise.all([
+      db
+        .select({ slug: categoriesTable.slug })
+        .from(categoriesTable)
+        .orderBy(asc(categoriesTable.slug)),
+      db
+        .select({
+          slug: articlesTable.slug,
+          title: articlesTable.title,
+          body: articlesTable.body,
+          imageUrl: articlesTable.imageUrl,
+          publishedAt: articlesTable.publishedAt,
+        })
+        .from(articlesTable)
+        .where(
+          and(
+            eq(articlesTable.published, true),
+            notInArray(articlesTable.slug, REDIRECTED_ARTICLE_SLUGS),
+            sql`BTRIM(COALESCE(${articlesTable.title}, '')) <> ''`,
+            sql`BTRIM(COALESCE(${articlesTable.body}, '')) <> ''`,
+          ),
+        )
+        .orderBy(desc(articlesTable.publishedAt)),
+    ]);
 
     const urlEntries: string[] = [];
+    const seen = new Set<string>();
 
     for (const page of STATIC_PAGES) {
-      const lastmod = page.lastmod ? `\n    <lastmod>${page.lastmod}</lastmod>` : "";
+      const loc = SITE_URL + page.path;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
       urlEntries.push(`  <url>
-    <loc>${escapeXml(SITE_URL + page.path)}</loc>${lastmod}
+    <loc>${escapeXml(loc)}</loc>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`);
     }
 
-    for (const article of articles) {
-      const loc = escapeXml(SITE_URL + "/article/" + encodeURIComponent(article.slug));
+    // Every valid category page, derived from the database rather than a
+    // hardcoded list, limited to slugs that have a route handler.
+    const categorySlugs = categoryRows
+      .map((row) => String(row.slug ?? "").trim())
+      .filter((slug) => isSafePathSegment(slug) && RENDERABLE_CATEGORY_SLUGS.has(slug))
+      .filter((slug, index, list) => list.indexOf(slug) === index)
+      .sort();
+
+    for (const slug of categorySlugs) {
+      const loc = `${SITE_URL}/category/${encodeURIComponent(slug)}`;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
+      urlEntries.push(`  <url>
+    <loc>${escapeXml(loc)}</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>`);
+    }
+
+    for (const article of articleRows) {
+      const slug = String(article.slug ?? "").trim();
+      if (!isSafePathSegment(slug)) continue;
+      if (!hasMeaningfulArticleBody(article.body)) continue;
+      const loc = `${SITE_URL}/article/${encodeURIComponent(slug)}`;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
+
+      const lastmod = lastmodFor(article.publishedAt);
       const imageBlock = article.imageUrl
         ? `
     <image:image>
@@ -68,7 +150,7 @@ router.get("/sitemap.xml", async (req, res) => {
     </image:image>`
         : "";
       urlEntries.push(`  <url>
-    <loc>${loc}</loc>
+    <loc>${escapeXml(loc)}</loc>${lastmod ? `\n    <lastmod>${escapeXml(lastmod)}</lastmod>` : ""}
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>${imageBlock}
   </url>`);
@@ -91,30 +173,10 @@ ${urlEntries.join("\n")}
 });
 
 router.get("/robots.txt", (_req, res) => {
+  // Exactly the three directives, matching functions/robots.txt.mjs on the
+  // canonical origin. Admin URLs stay out of the index via the noindex meta
+  // and X-Robots-Tag the SSR layer sets, not via a robots rule.
   const content = `User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /admin/
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Googlebot
 Allow: /
 
 Sitemap: ${SITE_URL}/sitemap.xml`;
