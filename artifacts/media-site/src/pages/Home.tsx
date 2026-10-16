@@ -11,6 +11,8 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { MAX_ARTICLE_PAGE_SIZE } from "@/lib/api-limits";
+import { clearSeoPrerender } from "@/lib/article-ssr-handoff";
 import { Flame, TrendingUp } from "lucide-react";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -391,7 +393,13 @@ const CATEGORY_SECTIONS = [
 export default function Home() {
   usePageMeta({});
 
-  const { data, isLoading } = useListArticles({ limit: 100 });
+  // The server-rendered listing in #seo-prerender is hidden by CSS as soon as
+  // JS runs; drop it once React owns the real homepage.
+  useEffect(() => {
+    clearSeoPrerender();
+  }, []);
+
+  const { data, isLoading } = useListArticles({ limit: MAX_ARTICLE_PAGE_SIZE });
   const allArticles = data?.articles ?? [];
 
   return (

@@ -10,7 +10,7 @@ const SHELL = `<!doctype html><html><head>
 <meta property="og:title" content="Scrolltek">
 <meta property="og:description" content="Default description">
 <meta property="og:url" content="https://scrolltek.name.ng/">
-</head><body><noscript id="homepage-fallback">Home-only links</noscript><div id="root"></div><script type="module" src="/assets/app.js"></script></body></html>`;
+</head><body><noscript id="homepage-fallback">Home-only links</noscript><div id="seo-prerender"></div><div id="root"></div><script type="module" src="/assets/app.js"></script></body></html>`;
 const ENV = { DATABASE_URL: "local-test-placeholder" };
 
 function htmlContext(url, { env = ENV, method = "GET", body = SHELL, status = 200 } = {}) {
@@ -147,8 +147,13 @@ test("homepage server-renders every published article grouped by category plus e
   assert.doesNotMatch(homeHtml, /<section aria-label="Phone Tips">/);
 
   // Content is in the response body, so no client JavaScript is required, and
-  // the stale hardcoded <noscript> list is gone.
-  assert.match(homeHtml, /<div id="root"><main id="ssr">/);
+  // the stale hardcoded <noscript> list is gone. The listing lands in the
+  // prerender slot — not inside #root — and the shell's CSS hides it once JS
+  // runs, so it never shows up as a flash of raw markup.
+  assert.match(homeHtml, /<div id="seo-prerender" data-ssr="home"><main id="ssr">/);
+  assert.match(homeHtml, /<div id="seo-prerender" data-ssr="home">[\s\S]*<\/div><div id="root"><\/div>/);
+  assert.match(homeHtml, /<div id="root"><\/div>/);
+  assert.doesNotMatch(homeHtml, /data-pending="true"/);
   assert.match(homeHtml, /src="\/assets\/app\.js"/);
   assert.doesNotMatch(homeHtml, /homepage-fallback/);
 });
