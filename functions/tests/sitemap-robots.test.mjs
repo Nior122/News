@@ -25,18 +25,8 @@ function publishedArticle(slug, { published = true, body = "<p>Published body</p
 }
 
 test("sitemap is canonical, duplicate-free, published-only, and covers static pages plus valid categories", () => {
-  const categories = [
-    { slug: "tech" },
-    { slug: "culture" },
-    { slug: "tech" },
-    { slug: "phone-tips" },
-    { slug: "not-a-route" },
-    { slug: "bad/slug" },
-    { slug: "" },
-    { slug: null },
-  ];
-  const xml = buildSitemapXml(
-    [
+  const xml = buildSitemapXml([
+
       publishedArticle("visible-story"),
       publishedArticle("visible-story"),
       publishedArticle("why-ai-phones-are-becoming-the-future"),
@@ -52,9 +42,7 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
       publishedArticle("quote's story"),
       publishedArticle("empty-body", { body: "  " }),
       publishedArticle("executable-only", { body: "<script>alert(1)</script>" }),
-    ],
-    categories,
-  );
+    ]);
   const locations = sitemapLocations(xml);
 
   assert.equal(locations.length, new Set(locations).size, "no duplicate URLs");
@@ -66,13 +54,15 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
   }
   assert.ok(!locations.some((location) => /\/search|\/admin/.test(location)));
 
-  // Categories come from the categories table, limited to slugs that render.
-  assert.ok(locations.includes(`${ORIGIN}/category/tech`));
-  assert.ok(locations.includes(`${ORIGIN}/category/culture`));
-  // A valid category with no published articles is still a real page.
-  assert.ok(locations.includes(`${ORIGIN}/category/phone-tips`));
-  assert.ok(!locations.includes(`${ORIGIN}/category/not-a-route`));
-  assert.ok(!locations.some((location) => location.includes("bad/slug")));
+  // Every category page the router can render, including the virtual mixed
+  // pages that have no row in the categories table.
+  for (const slug of [
+    "tech", "culture", "lifestyle", "ai-tools", "phone-tips", "productivity",
+    "trending", "ai-productivity", "culture-lifestyle",
+  ]) {
+    assert.ok(locations.includes(`${ORIGIN}/category/${slug}`), `includes /category/${slug}`);
+  }
+  assert.equal(locations.filter((location) => location.includes("/category/")).length, 9);
 
   // Both retired aliases stay out; their canonical revisions stay in.
   assert.ok(locations.includes(`${ORIGIN}/article/why-ai-phones-are-the-future-2026`));
@@ -92,8 +82,8 @@ test("sitemap is canonical, duplicate-free, published-only, and covers static pa
   assert.ok(!locations.includes(`${ORIGIN}/article/executable-only`));
   assert.doesNotMatch(xml, /www\.scrolltek|pages\.dev|scrolltek\.com/i);
 
-  // 4 static + 3 categories (tech, culture, phone-tips) + 5 published articles.
-  assert.equal(locations.length, 12);
+  // 4 static + 9 category pages + 5 published articles.
+  assert.equal(locations.length, 18);
 });
 
 test("sitemap lastmod uses real publication dates and is omitted rather than fabricated", () => {
@@ -104,7 +94,6 @@ test("sitemap lastmod uses real publication dates and is omitted rather than fab
       publishedArticle("broken-date-story", { published_at: "not-a-date" }),
       publishedArticle("date-object-story", { published_at: new Date("2026-01-02T03:04:05.000Z") }),
     ],
-    [{ slug: "tech" }],
   );
   const entries = Object.fromEntries(sitemapEntries(xml).map((entry) => [entry.loc, entry.lastmod]));
 
@@ -122,9 +111,6 @@ test("sitemap handler is read-only and emits only URLs returned by the published
   const fixtureSql = async (strings) => {
     const query = strings.join(" ");
     queries.push(query);
-    if (query.includes("FROM categories")) {
-      return [{ slug: "tech" }, { slug: "phone-tips" }];
-    }
     return [
       { slug: "public-story", published: true, title: "Public Story", body: "<p>Published body</p>", published_at: "2026-03-04T05:06:07.000Z" },
       { slug: "private-draft", published: false, title: "Private Draft", body: "<p>Draft body</p>", published_at: null },
@@ -140,12 +126,11 @@ test("sitemap handler is read-only and emits only URLs returned by the published
   assert.match(response.headers.get("content-type"), /application\/xml/i);
   assert.match(body, /https:\/\/scrolltek\.name\.ng\/article\/public-story/);
   assert.match(body, /<lastmod>2026-03-04T05:06:07\.000Z<\/lastmod>/);
-  assert.match(body, /https:\/\/scrolltek\.name\.ng\/category\/tech/);
-  assert.match(body, /https:\/\/scrolltek\.name\.ng\/category\/phone-tips/);
+  assert.match(body, /https:\/\/scrolltek\.name\.ng\/category\/ai-productivity/);
+  assert.match(body, /https:\/\/scrolltek\.name\.ng\/category\/culture-lifestyle/);
   assert.doesNotMatch(body, /private-draft|executable-story|ai-smart-glasses-future/);
 
-  assert.equal(queries.length, 2);
-  assert.ok(queries.some((query) => /SELECT slug FROM categories/.test(query)));
+  assert.equal(queries.length, 1, "the category list comes from the router, not a query");
   const articleQuery = queries.find((query) => /FROM articles/.test(query));
   assert.match(articleQuery, /SELECT slug, published, body, published_at/);
   assert.match(articleQuery, /WHERE published = true/);

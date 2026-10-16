@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { and, asc, desc, eq, notInArray, sql } from "drizzle-orm";
-import { articlesTable, categoriesTable, db } from "@workspace/db";
+import { and, desc, eq, notInArray, sql } from "drizzle-orm";
+import { articlesTable, db } from "@workspace/db";
 
 const router = Router();
 const SITE_URL = "https://scrolltek.name.ng";
@@ -14,10 +14,11 @@ const STATIC_PAGES = [
   { path: "/privacy", priority: "0.3", changefreq: "yearly" },
 ];
 
-// Slugs the SSR router can actually render. A categories row without an entry
-// here would be a 404, so it must stay out of the sitemap. Keep in sync with
-// functions/lib/site-categories.mjs.
-const RENDERABLE_CATEGORY_SLUGS = new Set([
+// Every valid, indexable category page. Mirrors functions/lib/site-categories.mjs.
+// The router decides whether a category page exists, not the categories table:
+// ai-productivity and culture-lifestyle are virtual mixed pages with no row of
+// their own, but they render real content with a self-referential canonical.
+const CATEGORY_SLUGS = [
   "tech",
   "culture",
   "lifestyle",
@@ -27,7 +28,7 @@ const RENDERABLE_CATEGORY_SLUGS = new Set([
   "trending",
   "ai-productivity",
   "culture-lifestyle",
-]);
+];
 
 // Retired URLs that 301 to a canonical revision. Mirrors
 // functions/lib/article-routing.mjs — only the destination is published.
@@ -75,30 +76,24 @@ function hasMeaningfulArticleBody(input: string | null | undefined): boolean {
 
 router.get("/sitemap.xml", async (req, res) => {
   try {
-    const [categoryRows, articleRows] = await Promise.all([
-      db
-        .select({ slug: categoriesTable.slug })
-        .from(categoriesTable)
-        .orderBy(asc(categoriesTable.slug)),
-      db
-        .select({
-          slug: articlesTable.slug,
-          title: articlesTable.title,
-          body: articlesTable.body,
-          imageUrl: articlesTable.imageUrl,
-          publishedAt: articlesTable.publishedAt,
-        })
-        .from(articlesTable)
-        .where(
-          and(
-            eq(articlesTable.published, true),
-            notInArray(articlesTable.slug, REDIRECTED_ARTICLE_SLUGS),
-            sql`BTRIM(COALESCE(${articlesTable.title}, '')) <> ''`,
-            sql`BTRIM(COALESCE(${articlesTable.body}, '')) <> ''`,
-          ),
-        )
-        .orderBy(desc(articlesTable.publishedAt)),
-    ]);
+    const articleRows = await db
+      .select({
+        slug: articlesTable.slug,
+        title: articlesTable.title,
+        body: articlesTable.body,
+        imageUrl: articlesTable.imageUrl,
+        publishedAt: articlesTable.publishedAt,
+      })
+      .from(articlesTable)
+      .where(
+        and(
+          eq(articlesTable.published, true),
+          notInArray(articlesTable.slug, REDIRECTED_ARTICLE_SLUGS),
+          sql`BTRIM(COALESCE(${articlesTable.title}, '')) <> ''`,
+          sql`BTRIM(COALESCE(${articlesTable.body}, '')) <> ''`,
+        ),
+      )
+      .orderBy(desc(articlesTable.publishedAt));
 
     const urlEntries: string[] = [];
     const seen = new Set<string>();
@@ -114,15 +109,9 @@ router.get("/sitemap.xml", async (req, res) => {
   </url>`);
     }
 
-    // Every valid category page, derived from the database rather than a
-    // hardcoded list, limited to slugs that have a route handler.
-    const categorySlugs = categoryRows
-      .map((row) => String(row.slug ?? "").trim())
-      .filter((slug) => isSafePathSegment(slug) && RENDERABLE_CATEGORY_SLUGS.has(slug))
-      .filter((slug, index, list) => list.indexOf(slug) === index)
-      .sort();
-
-    for (const slug of categorySlugs) {
+    // Every valid category page. The list comes from the router, not from the
+    // categories table, so the virtual mixed pages are included too.
+    for (const slug of CATEGORY_SLUGS) {
       const loc = `${SITE_URL}/category/${encodeURIComponent(slug)}`;
       if (seen.has(loc)) continue;
       seen.add(loc);

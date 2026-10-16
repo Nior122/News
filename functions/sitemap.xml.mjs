@@ -5,7 +5,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { isRedirectedArticleSlug } from './lib/article-routing.mjs';
-import { isRenderableCategorySlug, sortCategorySlugs } from './lib/site-categories.mjs';
+import { RENDERABLE_CATEGORY_SLUGS } from './lib/site-categories.mjs';
 import { hasMeaningfulArticleBody } from './lib/seo-html.mjs';
 
 const SITE_ORIGIN = 'https://scrolltek.name.ng';
@@ -54,9 +54,8 @@ function lastmodFor(value) {
  * Builds the sitemap body.
  *
  * @param {Array} articles rows from the published-articles query
- * @param {Array} categories rows from the categories query
  */
-export function buildSitemapXml(articles, categories = []) {
+export function buildSitemapXml(articles) {
   // Map keeps insertion order and collapses duplicate locations, while letting a
   // later row contribute a lastmod if the first one for that URL lacked a date.
   const entries = new Map();
@@ -66,12 +65,10 @@ export function buildSitemapXml(articles, categories = []) {
 
   for (const path of STATIC_PAGES) add(`${SITE_ORIGIN}${path}`);
 
-  // Only advertise category pages that actually have a route handler. A slug in
-  // the categories table without a renderable page would be a 404 in the sitemap.
-  const categorySlugs = (Array.isArray(categories) ? categories : [])
-    .map((category) => String(category?.slug ?? '').trim())
-    .filter((slug) => isSafePathSegment(slug) && isRenderableCategorySlug(slug));
-  for (const slug of sortCategorySlugs(new Set(categorySlugs))) {
+  // Every category page the router can render, including the virtual mixed
+  // pages that have no row in the categories table. All are indexable and
+  // carry a self-referential canonical, so none may be left out.
+  for (const slug of RENDERABLE_CATEGORY_SLUGS) {
     add(`${SITE_ORIGIN}/category/${encodeURIComponent(slug)}`);
   }
 
@@ -107,18 +104,15 @@ export function createSitemapHandler({ databaseFactory = getDb } = {}) {
 
     try {
       const db = databaseFactory(env);
-      const [categories, articles] = await Promise.all([
-        db`SELECT slug FROM categories ORDER BY slug`,
-        db`
-          SELECT slug, published, body, published_at
-          FROM articles
-          WHERE published = true
-            AND BTRIM(COALESCE(title, '')) <> ''
-            AND BTRIM(COALESCE(body, '')) <> ''
-          ORDER BY published_at DESC
-        `,
-      ]);
-      const xml = buildSitemapXml(articles, categories);
+      const articles = await db`
+        SELECT slug, published, body, published_at
+        FROM articles
+        WHERE published = true
+          AND BTRIM(COALESCE(title, '')) <> ''
+          AND BTRIM(COALESCE(body, '')) <> ''
+        ORDER BY published_at DESC
+      `;
+      const xml = buildSitemapXml(articles);
 
       return new Response(xml, {
         status: 200,

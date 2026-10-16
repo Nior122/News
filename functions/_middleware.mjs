@@ -6,7 +6,7 @@ import {
   categoryGroupNames,
   categorySlugFromName,
   isRenderableCategorySlug,
-  sortCategorySlugs,
+  validCategoryPages,
 } from "./lib/site-categories.mjs";
 import {
   renderArticleDocument,
@@ -255,29 +255,22 @@ async function fetchRelatedArticles(sql, article) {
  * would silently drop new stories from the server-rendered homepage.
  */
 async function fetchHomepageData(sql) {
-  const [categoryRows, articles] = await Promise.all([
-    sql`SELECT slug, name FROM categories ORDER BY slug`,
-    sql`
-      SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
-      FROM articles a
-      WHERE a.published = true
-        AND BTRIM(COALESCE(a.title, '')) <> ''
-        AND BTRIM(COALESCE(a.body, '')) <> ''
-        AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
-      ORDER BY a.published_at DESC
-      LIMIT 500
-    `,
-  ]);
+  const articles = await sql`
+    SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
+    FROM articles a
+    WHERE a.published = true
+      AND BTRIM(COALESCE(a.title, '')) <> ''
+      AND BTRIM(COALESCE(a.body, '')) <> ''
+      AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
+    ORDER BY a.published_at DESC
+    LIMIT 500
+  `;
 
-  const bySlug = new Map();
-  for (const row of categoryRows) {
-    const slug = String(row?.slug ?? "").trim();
-    // Skip categories with no route handler: linking them would advertise a 404.
-    if (slug && isRenderableCategorySlug(slug) && !bySlug.has(slug)) {
-      bySlug.set(slug, String(row?.name ?? "").trim() || categoryDisplayName(slug));
-    }
-  }
-  const categories = sortCategorySlugs(bySlug.keys()).map((slug) => ({ slug, name: bySlug.get(slug) }));
+  // Every valid category page the router can render, including the virtual
+  // mixed pages (ai-productivity, culture-lifestyle) that have no row in the
+  // categories table. Those pages are indexable and self-canonical, so the
+  // homepage must link them like any other category.
+  const categories = validCategoryPages();
 
   const groups = new Map();
   for (const article of articles) {

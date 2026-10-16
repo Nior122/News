@@ -46,6 +46,22 @@ export const CATEGORY_DESCRIPTIONS = Object.freeze({
 /** Render order for category sections and navigation. */
 export const CATEGORY_ORDER = Object.freeze(Object.keys(CATEGORY_LABELS));
 
+/**
+ * Every valid, indexable category page, in render order.
+ *
+ * The router — not the `categories` table — decides whether a category page
+ * exists. `ai-productivity` and `culture-lifestyle` are virtual mixed pages
+ * with no row of their own, but both the SSR router and the client's
+ * CategoryPage (SLUG_TO_NAME / MIXED_SLUG_MAP) render them with real content
+ * and a self-referential canonical, so they are real indexable pages and must
+ * be advertised. Conversely a `categories` row with no handler here would 404.
+ */
+export const RENDERABLE_CATEGORY_SLUGS = Object.freeze(CATEGORY_ORDER.slice());
+
+export function validCategoryPages() {
+  return CATEGORY_ORDER.map((slug) => ({ slug, name: CATEGORY_LABELS[slug] }));
+}
+
 export function isRenderableCategorySlug(slug) {
   return Object.hasOwn(CATEGORY_NAMES, slug);
 }
@@ -71,8 +87,8 @@ export function categorySlugFromName(name) {
 }
 
 /**
- * Orders database category slugs by the canonical render order, keeping unknown
- * slugs (which have no route) at the end so callers can drop or label them.
+ * Orders category slugs by the canonical render order, keeping unknown slugs
+ * (which have no route) at the end so callers can drop or label them.
  */
 export function sortCategorySlugs(slugs) {
   const known = new Map(CATEGORY_ORDER.map((slug, index) => [slug, index]));

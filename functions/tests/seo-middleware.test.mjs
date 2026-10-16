@@ -84,12 +84,6 @@ test("Pages host redirects only on the explicitly configured production branch",
 });
 
 test("homepage server-renders every published article grouped by category plus every category link", async () => {
-  const categories = [
-    { slug: "tech", name: "Tech" },
-    { slug: "ai-tools", name: "AI Tools" },
-    { slug: "phone-tips", name: "Phone Tips" },
-    { slug: "not-a-route", name: "Gaming" },
-  ];
   const articles = [
     { slug: "newest-story", title: "Newest Story", excerpt: "Newest excerpt.", category: "Tech", published_at: "2026-09-20T10:00:00.000Z" },
     { slug: "ai-smart-glasses-2026", title: "AI Smart Glasses 2026", excerpt: "Glasses excerpt.", category: "Tech", published_at: "2026-09-10T10:00:00.000Z" },
@@ -100,7 +94,6 @@ test("homepage server-renders every published article grouped by category plus e
   ];
   const homeDb = database(({ query }) => {
     assert.doesNotMatch(query, /INSERT|UPDATE|DELETE|CREATE|ALTER|DROP/i);
-    if (query.includes("FROM categories")) return categories;
     // The homepage query must select every qualifying published row rather than
     // filtering to a hardcoded slug allowlist.
     assert.match(query, /FROM articles/);
@@ -137,14 +130,20 @@ test("homepage server-renders every published article grouped by category plus e
   assert.match(homeHtml, /<h2>Gaming<\/h2>/);
   assert.doesNotMatch(homeHtml, /href="\/category\/not-a-route"/);
 
-  // Navigation links to every valid category page.
-  assert.match(homeHtml, /<nav aria-label="Browse categories">/);
-  assert.match(homeHtml, /<a href="\/category\/tech">Tech<\/a>/);
-  assert.match(homeHtml, /<a href="\/category\/ai-tools">AI Tools<\/a>/);
+  // Navigation links to every valid category page, including the virtual mixed
+  // pages that have no row in the categories table.
+  const nav = /<nav aria-label="Browse categories">[\s\S]*?<\/nav>/.exec(homeHtml)?.[0] ?? "";
+  assert.deepEqual(
+    [...nav.matchAll(/href="\/category\/([^"]+)"/g)].map(([, slug]) => slug),
+    ["tech", "culture", "lifestyle", "ai-tools", "phone-tips", "productivity",
+      "trending", "ai-productivity", "culture-lifestyle"],
+  );
+  assert.match(nav, />AI &amp; Productivity</);
+  assert.match(nav, />Culture &amp; Lifestyle</);
   assert.doesNotMatch(homeHtml, /<a href="\/category\/not-a-route">/);
   // A valid category with no published articles is still linked, but gets no
   // empty section.
-  assert.match(homeHtml, /<a href="\/category\/phone-tips">Phone Tips<\/a>/);
+  assert.match(nav, /<a href="\/category\/phone-tips">Phone Tips<\/a>/);
   assert.doesNotMatch(homeHtml, /<section aria-label="Phone Tips">/);
 
   // Content is in the response body, so no client JavaScript is required, and
