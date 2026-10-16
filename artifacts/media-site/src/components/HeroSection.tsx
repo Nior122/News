@@ -37,13 +37,17 @@ export function HeroSection({ articles, isLoading }: HeroSectionProps) {
     return () => clearInterval(id);
   }, [articles]);
 
-  if (isLoading || !current) {
+  if (isLoading) {
     return (
       <div className="container max-w-screen-2xl px-4 md:px-8 mt-6">
         <Skeleton className="w-full rounded-2xl" style={{ aspectRatio: "16/7", minHeight: 320 }} />
       </div>
     );
   }
+
+  // Nothing to show once loading finished empty — a skeleton here would pulse
+  // forever with no request left to resolve it.
+  if (!current) return null;
 
   return (
     <div className="container max-w-screen-2xl px-4 md:px-8 mt-4 md:mt-6">

@@ -10,3 +10,16 @@ export function completeArticleSsrHandoff() {
     prerender.remove();
   }
 }
+
+/**
+ * Drop the homepage's server-rendered listing once React has mounted its own.
+ *
+ * The shell hides `#seo-prerender[data-ssr="home"]` as soon as JS runs, so the
+ * markup is already invisible by the time this runs; removing it keeps only one
+ * copy of the homepage in the document.
+ */
+export function clearSeoPrerender() {
+  if (typeof document === "undefined") return;
+
+  document.getElementById("seo-prerender")?.remove();
+}

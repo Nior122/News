@@ -379,16 +379,28 @@ function insertBody(html, bodyHtml) {
   return appended === updated ? `${updated}${bodyHtml}` : appended;
 }
 
-function insertArticlePrerender(html, bodyHtml) {
-  const prerender = `<div id="seo-prerender" data-pending="true">${bodyHtml}</div>`;
+/**
+ * The slot the shell reserves for server-rendered markup that the app replaces
+ * on mount. `article` keeps the block visible until the article query resolves
+ * (data-pending), `home` is hidden by CSS as soon as JS runs (data-ssr).
+ */
+const PRERENDER_SLOT = /<div\s+id=["']seo-prerender["']\s*>\s*<\/div>/i;
+
+function prerenderMarkup(bodyHtml, mode) {
+  return mode === "home"
+    ? `<div id="seo-prerender" data-ssr="home">${bodyHtml}</div>`
+    : `<div id="seo-prerender" data-pending="true">${bodyHtml}</div>`;
+}
+
+function insertPrerender(html, bodyHtml, mode) {
+  const prerender = prerenderMarkup(bodyHtml, mode);
   let inserted = false;
   const updated = transformElementContent(html, "body", (content) => {
     if (inserted) return content;
 
-    const prerenderMarker = /<div\s+id=["']seo-prerender["']\s*>\s*<\/div>/i;
-    if (prerenderMarker.test(content)) {
+    if (PRERENDER_SLOT.test(content)) {
       inserted = true;
-      return content.replace(prerenderMarker, prerender);
+      return content.replace(PRERENDER_SLOT, prerender);
     }
 
     return content.replace(/<div\s+id=["']root["']\s*>\s*<\/div>/i, (root) => {
@@ -458,8 +470,8 @@ export function renderPageDocument(template, page) {
   }
   if (Object.hasOwn(page, "jsonLd")) html = setJsonLd(html, page.jsonLd);
   if (page.bodyHtml !== undefined) {
-    html = page.retainPrerenderUntilClientReady
-      ? insertArticlePrerender(html, page.bodyHtml)
+    html = page.prerenderMode
+      ? insertPrerender(html, page.bodyHtml, page.prerenderMode)
       : insertBody(html, page.bodyHtml);
   }
 
@@ -552,6 +564,9 @@ export function renderHomepageDocument(template, {
     ...(description ? { description } : {}),
     canonical: canonicalUrlForPath(pathname),
     bodyHtml,
+    // Server-rendered listing goes into the prerender slot, never into #root:
+    // the shell hides it once JS runs and React renders the live homepage.
+    prerenderMode: "home",
     // The shell's hardcoded <noscript> homepage list is stale by definition;
     // drop it so no-JS visitors get the freshly rendered listing instead.
     removeHomepageFallback: true,
@@ -614,7 +629,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ogImage: image,
     jsonLd,
     bodyHtml,
-    retainPrerenderUntilClientReady: true,
+    prerenderMode: "article",
   });
 }
 

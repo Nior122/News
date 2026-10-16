@@ -2,6 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <script>document.documentElement.className += " js";</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0a0a0f" />
 
@@ -79,6 +80,10 @@
       #root { min-height: 100dvh; }
       #seo-prerender:empty { display: none; }
       #seo-prerender[data-pending="true"] ~ #root { display: none; }
+      /* Homepage SSR listing is invisible the moment JS runs, so it never
+         flashes as raw markup before React mounts. No JS means no .js class,
+         so the listing stays as the no-script fallback. */
+      html.js #seo-prerender[data-ssr="home"] { display: none; }
       /* Reserve header height to prevent layout shift */
       #root-header-placeholder { height: 64px; }
     </style>

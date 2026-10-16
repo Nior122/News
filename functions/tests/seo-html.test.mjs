@@ -70,6 +70,10 @@ test("client shell keeps article prerender outside the React root until handoff"
   const indexHtml = readFileSync(new URL("../../artifacts/media-site/index.html", import.meta.url), "utf8");
   assert.match(indexHtml, /<div id="seo-prerender"><\/div>\s*<div id="root"><\/div>/);
   assert.match(indexHtml, /#seo-prerender\[data-pending="true"\] ~ #root\s*\{\s*display:\s*none/);
+  // The homepage listing in that slot is hidden from the first paint whenever
+  // JS runs, so visitors never see it as a flash of raw markup.
+  assert.match(indexHtml, /<meta charset="UTF-8" \/>\s*<script>document\.documentElement\.className \+= " js";<\/script>/);
+  assert.match(indexHtml, /html\.js #seo-prerender\[data-ssr="home"\]\s*\{\s*display:\s*none/);
   assert.doesNotMatch(indexHtml, /MutationObserver/);
 });
 
