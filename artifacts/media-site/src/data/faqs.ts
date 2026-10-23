@@ -205,6 +205,33 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
     },
   ],
 
+  "ai-tools-for-students-2026": [
+    {
+      question: "Is using AI to study cheating?",
+      answer: "Not automatically. Using AI to clarify a concept, generate practice questions or organise revision may be permitted, but the rules depend on your school, instructor and assignment. Submitting AI-generated work as your own can violate academic integrity requirements. Check your course policy and disclose assistance when required.",
+    },
+    {
+      question: "What is the best free AI tool for students?",
+      answer: "There is no single best option for every student. ChatGPT or Claude can help explain concepts, Perplexity can support source discovery, NotebookLM can work with supplied readings and Grammarly can check basic writing. Start with the tool that addresses your main study problem and confirm its current free-plan limits.",
+    },
+    {
+      question: "Which AI tool is best for note-taking?",
+      answer: "NotebookLM is useful for asking questions about a collection of supplied readings, while Notion can organise notes alongside tasks and deadlines. Neither replaces checking your original sources. Choose based on whether your priority is understanding documents or managing a long-term study workspace.",
+    },
+    {
+      question: "Can AI make flashcards?",
+      answer: "Yes. General-purpose assistants can draft question-and-answer cards from notes, and Quizlet provides dedicated flashcard and learning features. Check every card for accuracy, especially formulas, dates and definitions. Good cards test one clear idea and require you to retrieve the answer rather than simply recognise it.",
+    },
+    {
+      question: "Do I need to pay for AI study tools?",
+      answer: "Usually not when you are starting. Free plans can cover basic explanations, research discovery, writing feedback and some revision tasks. Pay only when you repeatedly hit a meaningful limit or need a specific paid feature. Check the current price and cancellation terms before subscribing.",
+    },
+    {
+      question: "Can AI help if English is my second language?",
+      answer: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
+    },
+  ],
+
   "subscription-fatigue-tech-2026": [
     {
       question: "How much does the average person spend on subscriptions?",

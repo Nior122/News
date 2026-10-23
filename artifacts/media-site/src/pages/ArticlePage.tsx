@@ -341,7 +341,11 @@ export default function ArticlePage() {
       ? (seoOverride?.metaTitle ?? article.title)
       : (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
     description: articleDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
+    ogTitle: seoOverride?.ogTitle,
+    ogDescription: seoOverride?.ogDescription,
     ogImage: resolvedOgImage,
+    ogImageWidth: seoOverride?.heroWidth,
+    ogImageHeight: seoOverride?.heroHeight,
     ogType: article ? "article" : "website",
     canonical: article
       ? canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`)
@@ -527,10 +531,16 @@ export default function ArticlePage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} id="article-jsonld" />
-      <JsonLd data={breadcrumbJsonLdData} id="breadcrumb-jsonld" />
-      {faqJsonLdData && <JsonLd data={faqJsonLdData} id="faq-jsonld" />}
-      {seoOverride?.itemList && <JsonLd data={seoOverride.itemList} id="itemlist-jsonld" />}
+      {seoOverride?.graphJsonLd ? (
+        <JsonLd data={seoOverride.graphJsonLd} id="article-jsonld" />
+      ) : (
+        <>
+          <JsonLd data={jsonLdData} id="article-jsonld" />
+          <JsonLd data={breadcrumbJsonLdData} id="breadcrumb-jsonld" />
+          {faqJsonLdData && <JsonLd data={faqJsonLdData} id="faq-jsonld" />}
+          {seoOverride?.itemList && <JsonLd data={seoOverride.itemList} id="itemlist-jsonld" />}
+        </>
+      )}
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]" aria-hidden="true">
@@ -553,6 +563,7 @@ export default function ArticlePage() {
             alt={seoOverride?.heroAlt ?? article.title}
             width={seoOverride?.heroWidth ?? 1200}
             height={seoOverride?.heroHeight ?? 630}
+            loading={seoOverride?.heroLoadingEager ? "eager" : undefined}
             fetchPriority="high"
             decoding="async"
             className="w-full h-full object-cover"
