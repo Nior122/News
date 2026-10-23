@@ -58,6 +58,66 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     heroHeight: 630,
     bodyIncludesFaq: true,
   },
+  "best-budget-wireless-earbuds-2026": {
+    metaTitle: "Best Budget Wireless Earbuds in 2026 (Top 6)",
+    metaDescription:
+      "The best budget wireless earbuds in 2026, ranked for sound, battery life, ANC, calls, and fit—with honest pros, cons, and buying tips under $100.",
+    dateModified: "2026-10-23T00:00:00.000Z",
+    updatedLabel: "Last updated: October 2026",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt: "Pair of wireless earbuds beside their charging case",
+    heroCaption:
+      "You no longer need to spend $250 to get good wireless earbuds. Photo: Atelier by Vineeth / Unsplash.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    bodyIncludesFaq: true,
+    itemList: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Best Budget Wireless Earbuds in 2026",
+      itemListOrder: "https://schema.org/ItemListOrderAscending",
+      numberOfItems: 6,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Soundcore Liberty 4 NC — Best Overall Budget Wireless Earbuds",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#1-soundcore-liberty-4-nc-best-overall-budget-wireless-earbuds",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "EarFun Air Pro 4+ — Best Feature-Packed Pick Under $100",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#2-earfun-air-pro-4-plus-best-feature-packed-pick-under-100",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "CMF Buds 2 Plus — Best Value Around $50 to $60",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#3-cmf-buds-2-plus-best-value-around-50-to-60",
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: "JLab Go Pods ANC — Best for Tight Budgets Under $40",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#4-jlab-go-pods-anc-best-for-tight-budgets-under-40",
+        },
+        {
+          "@type": "ListItem",
+          position: 5,
+          name: "CMF Buds 2a — Best Entry-Level CMF Pick Under $40",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#5-cmf-buds-2a-best-entry-level-cmf-pick-under-40",
+        },
+        {
+          "@type": "ListItem",
+          position: 6,
+          name: "CMF Clip Pro — Best Open-Ear Budget Earbuds",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#6-cmf-clip-pro-best-open-ear-budget-earbuds",
+        },
+      ],
+    },
+  },
 };
 
 export function getArticleSeoOverride(slug?: string | null): ArticleSeoOverride | null {
