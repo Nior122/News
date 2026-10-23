@@ -1,57 +1,52 @@
-import React, { Suspense, lazy, Component, type ReactNode } from "react";
-import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Switch, Route, useLocation, Router as WouterRouter } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/components/theme-provider";
-
-class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
-  state = { error: null };
-  static getDerivedStateFromError(error: Error) { return { error }; }
-  render() {
-    if (this.state.error) {
-      return (
-        <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#0a0a0f", color: "#f5f5f5", fontFamily: "system-ui, sans-serif", padding: "2rem", textAlign: "center" }}>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Something went wrong</h1>
-          <pre style={{ color: "#f87171", background: "#1a1a1a", padding: "1rem", borderRadius: "0.5rem", fontSize: "0.75rem", textAlign: "left", maxWidth: "90vw", overflowX: "auto", marginBottom: "1.5rem", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{String(this.state.error)}</pre>
-          <button onClick={() => window.location.reload()} style={{ background: "#3b82f6", color: "#fff", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.5rem", cursor: "pointer", fontSize: "1rem" }}>Refresh</button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
+import { ActiveCategoryProvider } from "@/contexts/ActiveCategoryContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MobileNav } from "@/components/layout/MobileNav";
-import { ScrollToTop } from "@/components/ScrollToTop";
-import { ActiveCategoryProvider } from "@/contexts/ActiveCategoryContext";
+import { queryClient } from "@/lib/query-client";
 
-const Home = lazy(() => import("@/pages/Home"));
-const ArticlePage = lazy(() => import("@/pages/ArticlePage"));
+import Home from "@/pages/Home";
+
+const loadArticlePage = () => import("@/pages/ArticlePage");
+if (typeof window !== "undefined" && window.location.pathname.startsWith("/article/")) {
+  loadArticlePage();
+}
+
+const ArticlePage = lazy(loadArticlePage);
 const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
-const SearchPage = lazy(() => import("@/pages/SearchPage"));
+const AuthorPage = lazy(() => import("@/pages/AuthorPage"));
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
+const SearchPage = lazy(() => import("@/pages/SearchPage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const AdminLogin = lazy(() => import("@/pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
-const AuthorPage = lazy(() => import("@/pages/AuthorPage"));
+const LazyToaster = lazy(() =>
+  import("@/components/ui/toaster").then((m) => ({ default: m.Toaster })),
+);
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 10 * 60_000,
-      gcTime: 60 * 60_000,
-    },
-  },
-});
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
 
-function PageSkeleton() {
+function PublicLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      <Header />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
+  );
+}
+
+function PageLoader() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
@@ -59,62 +54,93 @@ function PageSkeleton() {
   );
 }
 
-function Router() {
-  const [location] = useLocation();
-  const isAdmin = location.startsWith("/admin");
+function DeferredToaster() {
+  const [ready, setReady] = useState(false);
 
-  if (isAdmin) {
-    return (
-      <Suspense fallback={<PageSkeleton />}>
-        <Switch>
-          <Route path="/admin/login" component={AdminLogin} />
-          <Route path="/admin" component={AdminDashboard} />
-        </Switch>
-      </Suspense>
-    );
-  }
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (typeof win.requestIdleCallback === "function") {
+      const id = win.requestIdleCallback(
+        () => {
+          setReady(true);
+          loadArticlePage();
+        },
+        { timeout: 2500 },
+      );
+      return () => {
+        if (typeof win.cancelIdleCallback === "function") {
+          win.cancelIdleCallback(id);
+        }
+      };
+    }
+    const timer = window.setTimeout(() => {
+      setReady(true);
+      loadArticlePage();
+    }, 1500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
+  if (!ready) return null;
   return (
-    <ActiveCategoryProvider>
-      <div className="flex min-h-screen flex-col bg-background text-foreground">
-        <ScrollToTop />
-        <Header />
-        <main className="flex-1 pb-16 md:pb-0">
-          <Suspense fallback={<PageSkeleton />}>
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route path="/article/:slug" component={ArticlePage} />
-              <Route path="/category/:slug" component={CategoryPage} />
-              <Route path="/search" component={SearchPage} />
-              <Route path="/author/:slug" component={AuthorPage} />
-              <Route path="/about" component={AboutPage} />
-              <Route path="/contact" component={ContactPage} />
-              <Route path="/privacy" component={PrivacyPage} />
-              <Route component={NotFound} />
-            </Switch>
+    <Suspense fallback={null}>
+      <LazyToaster />
+    </Suspense>
+  );
+}
+
+function Router() {
+  return (
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/admin/login">
+          <Suspense fallback={<PageLoader />}>
+            <AdminLogin />
           </Suspense>
-        </main>
-        <Footer />
-        <MobileNav />
-      </div>
-    </ActiveCategoryProvider>
+        </Route>
+        <Route path="/admin">
+          <Suspense fallback={<PageLoader />}>
+            <AdminDashboard />
+          </Suspense>
+        </Route>
+
+        <Route>
+          <PublicLayout>
+            <Suspense fallback={<PageLoader />}>
+              <Switch>
+                <Route path="/" component={Home} />
+                <Route path="/article/:slug" component={ArticlePage} />
+                <Route path="/category/:slug" component={CategoryPage} />
+                <Route path="/author/:slug" component={AuthorPage} />
+                <Route path="/about" component={AboutPage} />
+                <Route path="/contact" component={ContactPage} />
+                <Route path="/privacy" component={PrivacyPage} />
+                <Route path="/search" component={SearchPage} />
+                <Route component={NotFound} />
+              </Switch>
+            </Suspense>
+          </PublicLayout>
+        </Route>
+      </Switch>
+    </>
   );
 }
 
 function App() {
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="dark" storageKey="scrolltek-theme">
-          <TooltipProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <Router />
-            </WouterRouter>
-            <Toaster />
-          </TooltipProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <ThemeProvider defaultTheme="light" storageKey="scrolltek-theme-v2">
+      <ActiveCategoryProvider>
+        <QueryClientProvider client={queryClient}>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <DeferredToaster />
+        </QueryClientProvider>
+      </ActiveCategoryProvider>
+    </ThemeProvider>
   );
 }
 

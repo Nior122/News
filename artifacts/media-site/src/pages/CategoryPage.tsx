@@ -156,19 +156,22 @@ function MixedCategoryPage({
     return all;
   }, [q0.data, q1.data]);
 
-  const [displayed, setDisplayed] = useState<Article[]>([]);
+  const [displayed, setDisplayed] = useState<Article[]>(() =>
+    pool.length > 0 ? shuffle(pool) : [],
+  );
   const [fading, setFading] = useState(false);
   const isLoading = q0.isLoading || q1.isLoading;
 
   // Initial shuffle on load
   useEffect(() => {
     if (pool.length > 0) setDisplayed(shuffle(pool));
-  }, [pool.length]);
+  }, [pool]);
 
   // Reshuffle every 2 minutes
   useEffect(() => {
     if (pool.length < 2) return;
     const id = setInterval(() => {
+      if (document.hidden) return;
       setFading(true);
       setTimeout(() => {
         setDisplayed(shuffle(pool));
@@ -177,6 +180,8 @@ function MixedCategoryPage({
     }, 60000);
     return () => clearInterval(id);
   }, [pool]);
+
+  const items = displayed.length > 0 ? displayed : pool;
 
   return (
     <div className="min-h-screen pb-16">
@@ -187,14 +192,14 @@ function MixedCategoryPage({
         </div>
       </div>
       <div className="container max-w-screen-2xl px-4 md:px-8">
-        {isLoading && displayed.length === 0 ? (
+        {isLoading && items.length === 0 ? (
           <SkeletonGrid />
-        ) : displayed.length > 0 ? (
+        ) : items.length > 0 ? (
           <div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10"
             style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
           >
-            {displayed.map((article) => (
+            {items.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>

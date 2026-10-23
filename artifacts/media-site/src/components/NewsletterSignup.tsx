@@ -1,37 +1,35 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useSubscribeNewsletter } from "@workspace/api-client-react";
 import { Mail, Zap } from "lucide-react";
 
-const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-});
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function NewsletterSignup() {
   const { toast } = useToast();
   const { mutate, isPending } = useSubscribeNewsletter();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { email: "" },
-  });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!EMAIL_RE.test(trimmed)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+    setError(null);
     mutate(
-      { data: { email: values.email } },
+      { data: { email: trimmed } },
       {
         onSuccess: () => {
           toast({
             title: "You're in! 🎉",
             description: "Welcome to Scrolltek. Check your inbox for a confirmation.",
           });
-          form.reset();
+          setEmail("");
         },
         onError: () => {
           toast({
@@ -40,12 +38,12 @@ export function NewsletterSignup() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 
   return (
-    <section className="relative py-20 overflow-hidden border-t border-border">
+    <section className="cv-auto relative py-20 overflow-hidden border-t border-border">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary/10 blur-3xl rounded-full pointer-events-none" />
 
@@ -64,40 +62,43 @@ export function NewsletterSignup() {
           Join 50,000+ readers. The best of tech, culture & AI — curated and delivered every Sunday. No spam, ever.
         </p>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        >
+          <div className="flex-1 space-y-2">
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <Input
+                type="email"
+                name="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError(null);
+                }}
+                aria-invalid={error ? "true" : "false"}
+                placeholder="your@email.com"
+                className="h-12 pl-10 bg-background border-border text-base"
+              />
+            </div>
+            {error && (
+              <p className="text-[0.8rem] font-medium text-destructive text-left">
+                {error}
+              </p>
+            )}
+          </div>
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isPending}
+            className="h-12 font-bold px-8 w-full sm:w-auto shrink-0"
           >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                      <Input
-                        placeholder="your@email.com"
-                        className="h-12 pl-10 bg-background border-border text-base"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-left" />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              size="lg"
-              disabled={isPending}
-              className="h-12 font-bold px-8 w-full sm:w-auto shrink-0"
-            >
-              {isPending ? "Subscribing…" : "Subscribe Free"}
-            </Button>
-          </form>
-        </Form>
+            {isPending ? "Subscribing…" : "Subscribe Free"}
+          </Button>
+        </form>
 
         <p className="text-xs text-muted-foreground mt-4">
           No spam. Unsubscribe anytime. Free forever.

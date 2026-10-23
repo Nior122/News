@@ -73,6 +73,7 @@ router.get("/articles", async (req, res) => {
     const result = {
       articles: articles.map((a) => ({
         ...a,
+        body: "",
         author: authorMap.get(a.authorId) ?? { name: "Staff Writer", avatarUrl: "" },
         publishedAt: a.publishedAt.toISOString(),
       })),
@@ -83,6 +84,7 @@ router.get("/articles", async (req, res) => {
     };
 
     setCached(cacheKey, result);
+    res.setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=600");
     res.json(result);
   } catch (err) {
     req.log.error(err);

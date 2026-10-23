@@ -1,18 +1,51 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useLocation } from "wouter";
 import { Search, X, Loader2, ArrowRight } from "lucide-react";
-import { useSearchArticles, getSearchArticlesQueryKey } from "@workspace/api-client-react";
+import {
+  useSearchArticles,
+  getSearchArticlesQueryKey,
+  getListArticlesQueryKey,
+  type ArticleListResponse,
+} from "@workspace/api-client-react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { CategoryBadge } from "@/components/ArticleCard";
-import { cn } from "@/lib/utils";
+import { getHydratedArticlesPool, queryClient } from "@/lib/query-client";
+import { MAX_ARTICLE_PAGE_SIZE } from "@/lib/api-limits";
+import { prefetchArticle, prefetchStaticRoute } from "@/lib/prefetch";
 
 export function LiveSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 200);
   const inputRef = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [, navigate] = useLocation();
+
+  const trimmedInstant = query.trim();
+
+  const localResults = useMemo(() => {
+    if (!trimmedInstant) return null;
+    const pool = getHydratedArticlesPool();
+    const cachedHome = queryClient.getQueryData<ArticleListResponse>(
+      getListArticlesQueryKey({ limit: MAX_ARTICLE_PAGE_SIZE }),
+    );
+    const source = pool.length > 0 ? pool : (cachedHome?.articles ?? []);
+    if (source.length === 0) return null;
+
+    const needle = trimmedInstant.toLowerCase();
+    const matched = source.filter(
+      (a) =>
+        a.title.toLowerCase().includes(needle) ||
+        a.excerpt.toLowerCase().includes(needle) ||
+        a.category.toLowerCase().includes(needle) ||
+        a.author.name.toLowerCase().includes(needle) ||
+        (a.tags ?? []).some((t) => t.toLowerCase().includes(needle)),
+    );
+    return {
+      articles: matched.slice(0, 6),
+      total: matched.length,
+    };
+  }, [trimmedInstant]);
 
   const { data, isFetching } = useSearchArticles(
     { q: debouncedQuery, limit: 6 },
@@ -21,10 +54,11 @@ export function LiveSearch() {
         enabled: debouncedQuery.trim().length >= 1,
         queryKey: getSearchArticlesQueryKey({ q: debouncedQuery, limit: 6 }),
       },
-    }
+    },
   );
 
   const openSearch = useCallback(() => {
+    prefetchStaticRoute("/search");
     setOpen(true);
     setQuery("");
   }, []);
@@ -57,8 +91,10 @@ export function LiveSearch() {
     closeSearch();
   };
 
+  const activeQueryLabel = debouncedQuery.trim() || trimmedInstant;
+
   const handleSeeAll = () => {
-    navigate(`/search?q=${encodeURIComponent(debouncedQuery)}`);
+    navigate(`/search?q=${encodeURIComponent(activeQueryLabel)}`);
     closeSearch();
   };
 
@@ -70,9 +106,15 @@ export function LiveSearch() {
     }
   };
 
-  const articles = data?.articles ?? [];
-  const total = data?.total ?? 0;
-  const showResults = debouncedQuery.trim().length >= 1;
+  const hasRemoteForCurrentQuery =
+    Boolean(data) && debouncedQuery.trim().toLowerCase() === trimmedInstant.toLowerCase();
+  const articles = hasRemoteForCurrentQuery
+    ? (data?.articles ?? [])
+    : (localResults?.articles ?? data?.articles ?? []);
+  const total = hasRemoteForCurrentQuery
+    ? (data?.total ?? 0)
+    : (localResults?.total ?? data?.total ?? 0);
+  const showResults = trimmedInstant.length >= 1;
 
   return (
     <>
@@ -112,7 +154,7 @@ export function LiveSearch() {
                 placeholder="Search articles, topics, tags, authors…"
                 className="w-full h-14 pl-12 pr-12 text-base bg-background border-2 border-border rounded-2xl shadow-2xl outline-none focus:border-primary transition-colors"
               />
-              {isFetching && debouncedQuery ? (
+              {isFetching && debouncedQuery && articles.length === 0 ? (
                 <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5 animate-spin" />
               ) : query ? (
                 <button
@@ -135,6 +177,8 @@ export function LiveSearch() {
                         <li key={article.id}>
                           <button
                             type="button"
+                            onMouseEnter={() => prefetchArticle(article.slug)}
+                            onTouchStart={() => prefetchArticle(article.slug)}
                             onClick={() => handleResultClick(article.slug)}
                             className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors text-left"
                           >
@@ -142,6 +186,9 @@ export function LiveSearch() {
                               <img
                                 src={article.imageUrl}
                                 alt=""
+                                width={64}
+                                height={48}
+                                decoding="async"
                                 className="w-full h-full object-cover"
                                 loading="lazy"
                               />
@@ -170,13 +217,13 @@ export function LiveSearch() {
                       onClick={handleSeeAll}
                       className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors border-t border-border"
                     >
-                      See all {total} result{total !== 1 ? "s" : ""} for &ldquo;{debouncedQuery}&rdquo;
+                      See all {total} result{total !== 1 ? "s" : ""} for &ldquo;{activeQueryLabel}&rdquo;
                       <ArrowRight className="h-4 w-4" />
                     </button>
                   </>
                 ) : !isFetching ? (
                   <div className="px-4 py-8 text-center text-muted-foreground">
-                    <p className="text-sm font-medium">No results for &ldquo;{debouncedQuery}&rdquo;</p>
+                    <p className="text-sm font-medium">No results for &ldquo;{activeQueryLabel}&rdquo;</p>
                     <p className="text-xs mt-1">Try different keywords or check your spelling</p>
                   </div>
                 ) : null}
@@ -184,8 +231,8 @@ export function LiveSearch() {
             )}
 
             {!showResults && (
-              <p className="mt-3 text-center text-xs text-white/50">
-                Press <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/70 font-mono">Esc</kbd> to close
+              <p className="mt-3 text-center text-xs text-white/75">
+                Press <kbd className="px-1.5 py-0.5 bg-white/15 rounded text-white font-mono">Esc</kbd> to close
               </p>
             )}
           </div>

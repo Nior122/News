@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import {
   useListArticles,
+  getListArticlesQueryKey,
   Article,
 } from "@workspace/api-client-react";
 import { BreakingTicker } from "@/components/BreakingTicker";
@@ -13,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { MAX_ARTICLE_PAGE_SIZE } from "@/lib/api-limits";
 import { clearSeoPrerender } from "@/lib/article-ssr-handoff";
+import { prefetchCategory } from "@/lib/prefetch";
 import { Flame, TrendingUp } from "lucide-react";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -24,11 +26,6 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function shuffleWithPinnedTop<T>(arr: T[], pinnedCount = 4): T[] {
-  if (arr.length <= pinnedCount) return shuffle(arr);
-  return [...shuffle(arr.slice(0, pinnedCount)), ...shuffle(arr.slice(pinnedCount))];
-}
-
 function SectionHeader({
   title,
   icon,
@@ -38,6 +35,9 @@ function SectionHeader({
   icon?: React.ReactNode;
   viewAllLink?: string;
 }) {
+  const catSlug = viewAllLink?.startsWith("/category/")
+    ? viewAllLink.slice("/category/".length)
+    : "";
   return (
     <div className="flex items-center gap-4 mb-6 md:mb-8">
       <h2 className="font-display text-xl md:text-3xl font-bold shrink-0 flex items-center gap-2 border-l-[3px] border-primary pl-3">
@@ -48,6 +48,8 @@ function SectionHeader({
       {viewAllLink && (
         <Link
           href={viewAllLink}
+          onMouseEnter={catSlug ? () => prefetchCategory(catSlug) : undefined}
+          onTouchStart={catSlug ? () => prefetchCategory(catSlug) : undefined}
           className="text-sm font-semibold text-primary hover:underline whitespace-nowrap shrink-0"
         >
           See All →
@@ -59,17 +61,22 @@ function SectionHeader({
 
 /* ── Trending Now ── image card grid, no numbers */
 function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
-  const [visible, setVisible] = useState<Article[]>([]);
-  const [fading, setFading] = useState(false);
   const SHOW = 6;
+  const [visible, setVisible] = useState<Article[]>(() =>
+    allArticles.length > 0 ? shuffle(allArticles).slice(0, SHOW) : [],
+  );
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (allArticles.length > 0) setVisible(shuffle(allArticles).slice(0, SHOW));
-  }, [allArticles.length]);
+    if (allArticles.length > 0 && visible.length === 0) {
+      setVisible(shuffle(allArticles).slice(0, SHOW));
+    }
+  }, [allArticles, visible.length]);
 
   useEffect(() => {
-    if (allArticles.length === 0) return;
+    if (allArticles.length < 2) return;
     const id = setInterval(() => {
+      if (document.hidden) return;
       setFading(true);
       setTimeout(() => {
         setVisible(shuffle(allArticles).slice(0, SHOW));
@@ -79,7 +86,8 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
     return () => clearInterval(id);
   }, [allArticles]);
 
-  if (visible.length === 0) return null;
+  const items = visible.length > 0 ? visible : allArticles.slice(0, SHOW);
+  if (items.length === 0) return null;
 
   return (
     <section className="py-10">
@@ -89,7 +97,7 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
         >
-          {visible.map((article) => (
+          {items.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
@@ -99,31 +107,52 @@ function TrendingCarousel({ allArticles }: { allArticles: Article[] }) {
 }
 
 /* ── Just Now ── magazine layout: featured + 2 stacked, then 3-col grid */
-function LatestArticles() {
+function LatestArticles({
+  initialArticles,
+  totalAvailable,
+}: {
+  initialArticles: Article[];
+  totalAvailable: number;
+}) {
+  const PAGE_SIZE = 9;
   const [page, setPage] = useState(1);
-  const [pool, setPool] = useState<Article[]>([]);
-  const [hasMore, setHasMore] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [extraPool, setExtraPool] = useState<Article[]>([]);
 
-  const { data, isLoading } = useListArticles({ page, limit: 9 });
+  const targetCount = page * PAGE_SIZE;
+  const needsRemotePage = targetCount > initialArticles.length && totalAvailable > initialArticles.length;
+
+  const { data, isLoading } = useListArticles(
+    { page, limit: PAGE_SIZE },
+    {
+      query: {
+        enabled: needsRemotePage,
+        queryKey: getListArticlesQueryKey({ page, limit: PAGE_SIZE }),
+      },
+    },
+  );
 
   useEffect(() => {
-    if (!data?.articles) return;
-    if (page === 1) {
-      setPool(data.articles);
-    } else {
-      setPool((prev) => {
-        const ids = new Set(prev.map((a) => a.id));
-        return [...prev, ...data.articles.filter((a) => !ids.has(a.id))];
-      });
-      setLoadingMore(false);
-    }
-    setHasMore(data.hasMore ?? false);
-  }, [data, page]);
+    if (!needsRemotePage || !data?.articles) return;
+    setExtraPool((prev) => {
+      const ids = new Set([
+        ...initialArticles.map((a) => a.id),
+        ...prev.map((a) => a.id),
+      ]);
+      return [...prev, ...data.articles.filter((a) => !ids.has(a.id))];
+    });
+  }, [data, needsRemotePage, initialArticles]);
 
-  const displayed = [...pool].sort(
-    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-  );
+  const displayed = useMemo(() => {
+    const combined = [...initialArticles, ...extraPool];
+    combined.sort(
+      (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    );
+    return combined.slice(0, targetCount);
+  }, [initialArticles, extraPool, targetCount]);
+
+  const effectiveTotal = Math.max(totalAvailable, initialArticles.length + extraPool.length);
+  const hasMore = displayed.length < effectiveTotal;
+  const loadingMore = needsRemotePage && isLoading;
 
   const featured = displayed[0];
   const stacked = displayed.slice(1, 3);
@@ -132,9 +161,8 @@ function LatestArticles() {
   return (
     <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
       <SectionHeader title="Just Now" />
-      {isLoading && page === 1 ? (
+      {displayed.length === 0 && isLoading ? (
         <div className="space-y-6">
-          {/* Featured skeleton */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Skeleton className="lg:col-span-2 w-full rounded-2xl" style={{ aspectRatio: "16/9" }} />
             <div className="flex flex-col gap-6">
@@ -196,7 +224,7 @@ function LatestArticles() {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => { setLoadingMore(true); setPage((p) => p + 1); }}
+                onClick={() => setPage((p) => p + 1)}
                 className="font-bold min-h-[48px] px-8 touch-manipulation hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors"
               >
                 Load More Articles
@@ -211,23 +239,29 @@ function LatestArticles() {
 
 /* ── Popular This Week ── 3-col image card grid (no numbered list) */
 function PopularArticles({ allArticles }: { allArticles: Article[] }) {
-  const [visible, setVisible] = useState<Article[]>([]);
+  const [visible, setVisible] = useState<Article[]>(() =>
+    allArticles.length > 0 ? shuffle(allArticles).slice(0, 6) : [],
+  );
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (allArticles.length > 0) setVisible(shuffle(allArticles).slice(0, 6));
-  }, [allArticles.length]);
+    if (allArticles.length > 0 && visible.length === 0) {
+      setVisible(shuffle(allArticles).slice(0, 6));
+    }
+  }, [allArticles, visible.length]);
 
   useEffect(() => {
-    if (allArticles.length === 0) return;
+    if (allArticles.length < 2) return;
     const id = setInterval(() => {
+      if (document.hidden) return;
       setFading(true);
       setTimeout(() => { setVisible(shuffle(allArticles).slice(0, 6)); setFading(false); }, 400);
     }, 60000);
     return () => clearInterval(id);
   }, [allArticles]);
 
-  if (visible.length === 0) return null;
+  const items = visible.length > 0 ? visible : allArticles.slice(0, 6);
+  if (items.length === 0) return null;
 
   return (
     <section className="cv-auto bg-muted py-14 border-y border-border">
@@ -237,7 +271,7 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           style={{ opacity: fading ? 0 : 1, transition: "opacity 0.4s ease" }}
         >
-          {visible.map((article) => (
+          {items.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
@@ -248,25 +282,31 @@ function PopularArticles({ allArticles }: { allArticles: Article[] }) {
 
 /* ── Editor's Picks ── 1 featured wide + 2 stacked horizontals */
 function EditorsPicks({ allArticles }: { allArticles: Article[] }) {
-  const [visible, setVisible] = useState<Article[]>([]);
+  const [visible, setVisible] = useState<Article[]>(() =>
+    allArticles.length > 0 ? shuffle(allArticles).slice(0, 3) : [],
+  );
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (allArticles.length > 0) setVisible(shuffle(allArticles).slice(0, 3));
-  }, [allArticles.length]);
+    if (allArticles.length > 0 && visible.length === 0) {
+      setVisible(shuffle(allArticles).slice(0, 3));
+    }
+  }, [allArticles, visible.length]);
 
   useEffect(() => {
-    if (allArticles.length === 0) return;
+    if (allArticles.length < 2) return;
     const id = setInterval(() => {
+      if (document.hidden) return;
       setFading(true);
       setTimeout(() => { setVisible(shuffle(allArticles).slice(0, 3)); setFading(false); }, 400);
     }, 60000);
     return () => clearInterval(id);
   }, [allArticles]);
 
-  if (visible.length === 0) return null;
+  const items = visible.length > 0 ? visible : allArticles.slice(0, 3);
+  if (items.length === 0) return null;
 
-  const [featured, ...rest] = visible;
+  const [featured, ...rest] = items;
 
   return (
     <section className="cv-auto container max-w-screen-2xl px-4 md:px-8 py-14">
@@ -304,27 +344,31 @@ function CategorySpotlight({
   const slug = category.toLowerCase().replace(/\s+/g, "-");
   const pool = useMemo(
     () => allArticles.filter((a) => a.category.toLowerCase() === category.toLowerCase()),
-    [allArticles, category]
+    [allArticles, category],
   );
-  const [displayed, setDisplayed] = useState<Article[]>([]);
+  const [displayed, setDisplayed] = useState<Article[]>(() =>
+    pool.length > 0 ? shuffle(pool).slice(0, 4) : [],
+  );
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (pool.length > 0) setDisplayed(shuffle(pool).slice(0, 4));
+    if (pool.length > 0) setDisplayed((prev) => (prev.length > 0 ? prev : shuffle(pool).slice(0, 4)));
   }, [pool]);
 
   useEffect(() => {
     if (pool.length < 2) return;
     const id = setInterval(() => {
+      if (document.hidden) return;
       setFading(true);
       setTimeout(() => { setDisplayed(shuffle(pool).slice(0, 4)); setFading(false); }, 400);
     }, 60000);
     return () => clearInterval(id);
   }, [pool]);
 
-  if (displayed.length === 0) return null;
+  const items = displayed.length > 0 ? displayed : pool.slice(0, 4);
+  if (items.length === 0) return null;
 
-  const [featured, ...rest] = displayed;
+  const [featured, ...rest] = items;
 
   return (
     <section className="cv-auto container max-w-screen-2xl px-4 md:px-8 py-10">
@@ -363,16 +407,24 @@ function CategoryButtons() {
   const [order, setOrder] = useState(() => shuffle(CATEGORY_META));
 
   useEffect(() => {
-    const id = setInterval(() => setOrder(shuffle(CATEGORY_META)), 60000);
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      setOrder(shuffle(CATEGORY_META));
+    }, 60000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <section className="container max-w-screen-2xl px-4 md:px-8 py-10">
+    <section className="cv-auto container max-w-screen-2xl px-4 md:px-8 py-10">
       <SectionHeader title="Browse by Category" />
       <div className="flex flex-wrap gap-3">
         {order.map((cat) => (
-          <Link key={cat.slug} href={`/category/${cat.slug}`}>
+          <Link
+            key={cat.slug}
+            href={`/category/${cat.slug}`}
+            onMouseEnter={() => prefetchCategory(cat.slug)}
+            onTouchStart={() => prefetchCategory(cat.slug)}
+          >
             <span
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border font-semibold text-sm transition-all duration-300 cursor-pointer ${cat.color}`}
             >
@@ -393,21 +445,20 @@ const CATEGORY_SECTIONS = [
 export default function Home() {
   usePageMeta({});
 
-  // The server-rendered listing in #seo-prerender is hidden by CSS as soon as
-  // JS runs; drop it once React owns the real homepage.
   useEffect(() => {
     clearSeoPrerender();
   }, []);
 
   const { data, isLoading } = useListArticles({ limit: MAX_ARTICLE_PAGE_SIZE });
   const allArticles = data?.articles ?? [];
+  const totalAvailable = data?.total ?? allArticles.length;
 
   return (
     <div className="min-h-screen">
-      <BreakingTicker />
+      <BreakingTicker articles={allArticles} />
       <HeroSection articles={allArticles} isLoading={isLoading} />
 
-      {isLoading ? (
+      {isLoading && allArticles.length === 0 ? (
         <div className="container max-w-screen-2xl px-4 md:px-8 py-10">
           <Skeleton className="w-40 h-7 mb-6 rounded-lg" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -425,7 +476,10 @@ export default function Home() {
       )}
 
       <div className="border-t border-border/50" />
-      <LatestArticles />
+      <LatestArticles
+        initialArticles={allArticles}
+        totalAvailable={totalAvailable}
+      />
 
       <PopularArticles allArticles={allArticles} />
       <EditorsPicks allArticles={allArticles} />

@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Home, TrendingUp, Cpu, Smartphone, Sparkles, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
+import { prefetchCategory } from "@/lib/prefetch";
 
 // Maps every real category slug → the nav item slug it belongs to
 const CATEGORY_TO_NAV: Record<string, string> = {
@@ -93,6 +94,8 @@ export function MobileNav() {
             <Link
               key={href}
               href={href}
+              onMouseEnter={navSlug !== "home" ? () => prefetchCategory(navSlug) : undefined}
+              onTouchStart={navSlug !== "home" ? () => prefetchCategory(navSlug) : undefined}
               aria-label={label}
               aria-current={isActive ? "page" : undefined}
               className={cn(

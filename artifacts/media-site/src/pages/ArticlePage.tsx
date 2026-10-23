@@ -13,6 +13,7 @@ import { nameToSlug } from "@/data/authors";
 import { getArticleFaqs } from "@/data/faqs";
 import { getArticleSeoOverride } from "@/data/seo-overrides";
 import { completeArticleSsrHandoff } from "@/lib/article-ssr-handoff";
+import { prefetchAuthor } from "@/lib/prefetch";
 
 type ArticleLoadFailure = "not-found" | "server" | "network" | "request";
 
@@ -628,6 +629,8 @@ export default function ArticlePage() {
               <div className="flex items-center justify-center border-t border-border/50 pt-4 flex-wrap gap-4">
                 <Link
                   href={`/author/${nameToSlug(article.author.name)}`}
+                  onMouseEnter={() => prefetchAuthor(nameToSlug(article.author.name))}
+                  onTouchStart={() => prefetchAuthor(nameToSlug(article.author.name))}
                   className="flex items-center gap-3 group"
                   itemProp="author"
                   itemScope

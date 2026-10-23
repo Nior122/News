@@ -18,6 +18,7 @@ import {
   renderNotFoundDocument,
   renderUnavailableDocument,
   hasMeaningfulArticleBody,
+  sanitizeArticleHtml,
   MAX_RELATED_LINKS,
   SITE_ORIGIN,
 } from "./lib/seo-html.mjs";
@@ -153,10 +154,71 @@ function classifyPage(pathname) {
   return { type: "not-found", path };
 }
 
+function toClientArticle(row, { includeBody = false, fallbackId = 1, fallbackAuthor = null } = {}) {
+  const id = Number(row.id) || fallbackId;
+  const authorId = Number(row.author_id ?? fallbackAuthor?.id) || 0;
+  const authorName = String(row.author_name || fallbackAuthor?.name || "Staff Writer");
+  const avatarUrl = String(row.avatar_url ?? fallbackAuthor?.avatar_url ?? "");
+  const rawDate = row.published_at ? new Date(row.published_at) : null;
+  const publishedAt = rawDate && !Number.isNaN(rawDate.getTime())
+    ? rawDate.toISOString()
+    : String(row.published_at ?? "");
+
+  return {
+    id,
+    slug: String(row.slug ?? ""),
+    title: String(row.title ?? ""),
+    subtitle: row.subtitle ?? null,
+    excerpt: String(row.excerpt ?? ""),
+    body: includeBody ? sanitizeArticleHtml(row.body ?? "") : "",
+    category: String(row.category ?? ""),
+    authorId,
+    imageUrl: String(row.image_url ?? ""),
+    readTime: Number(row.read_time) || 5,
+    views: Number(row.views) || 0,
+    featured: Boolean(row.featured),
+    editorsPick: Boolean(row.editors_pick),
+    published: true,
+    publishedAt,
+    tags: Array.isArray(row.tags) ? row.tags : [],
+    author: {
+      id: authorId,
+      name: authorName,
+      avatarUrl,
+    },
+  };
+}
+
+function injectHydrationPayload(html, payload, heroImageUrl = "") {
+  let out = html;
+  const cleanHero = String(heroImageUrl ?? "").trim();
+  if (cleanHero && /^(https?:\/\/|\/images\/|\/assets\/)/i.test(cleanHero)) {
+    const escapedHero = cleanHero
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    const preloadTag = `<link rel="preload" as="image" href="${escapedHero}" fetchpriority="high" />`;
+    out = out.replace(/<\/head>/i, `${preloadTag}</head>`);
+  }
+  if (payload && /<\/body>/i.test(out)) {
+    const safeJson = JSON.stringify(payload)
+      .replace(/</g, "\\u003c")
+      .replace(/>/g, "\\u003e")
+      .replace(/&/g, "\\u0026")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029");
+    out = out.replace(/<\/body>/i, `<script type="application/json" id="ssr-data">${safeJson}</script></body>`);
+  }
+  return out;
+}
+
 async function fetchArticle(sql, slug) {
   const rows = await sql`
-    SELECT a.slug, a.title, a.subtitle, a.excerpt, a.body, a.category,
-           a.image_url, a.published_at, au.name AS author_name
+    SELECT a.id, a.slug, a.title, a.subtitle, a.excerpt, a.body, a.category,
+           a.author_id, a.image_url, a.read_time, a.views, a.featured,
+           a.editors_pick, a.tags, a.published_at,
+           au.name AS author_name, au.avatar_url
     FROM articles a
     LEFT JOIN authors au ON au.id = a.author_id
     WHERE a.slug = ${slug} AND a.published = true
@@ -176,12 +238,13 @@ async function fetchAuthor(sql, slug) {
   const author = authors[0];
   if (!author) {
     return slug === "scrolltek-editorial"
-      ? { author: { name: profile.name, avatar_url: "" }, articles: [] }
+      ? { author: { id: null, name: profile.name, avatar_url: "" }, articles: [] }
       : null;
   }
 
   const articles = await sql`
-    SELECT slug, title, excerpt
+    SELECT slug, title, excerpt, id, subtitle, category, image_url,
+           read_time, views, featured, editors_pick, tags, published_at
     FROM articles
     WHERE author_id = ${author.id} AND published = true
       AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
@@ -194,8 +257,12 @@ async function fetchAuthor(sql, slug) {
 async function fetchCategoryArticles(sql, slug) {
   if (slug === "trending") {
     const trendingRows = await sql`
-      SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
+      SELECT a.id, a.slug, a.title, a.subtitle, a.excerpt, a.category,
+             a.author_id, a.image_url, a.read_time, a.views, a.featured,
+             a.editors_pick, a.tags, a.published_at,
+             au.name AS author_name, au.avatar_url
       FROM articles a
+      LEFT JOIN authors au ON au.id = a.author_id
       WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
       ORDER BY a.views DESC, a.published_at DESC
       LIMIT 100
@@ -205,8 +272,12 @@ async function fetchCategoryArticles(sql, slug) {
 
   const names = categoryGroupNames(slug);
   const groups = await Promise.all(names.map((category) => sql`
-    SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
+    SELECT a.id, a.slug, a.title, a.subtitle, a.excerpt, a.category,
+           a.author_id, a.image_url, a.read_time, a.views, a.featured,
+           a.editors_pick, a.tags, a.published_at,
+           au.name AS author_name, au.avatar_url
     FROM articles a
+    LEFT JOIN authors au ON au.id = a.author_id
     WHERE a.published = true AND a.category = ${category}
       AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
     ORDER BY a.published_at DESC
@@ -234,8 +305,12 @@ const RELATED_CANDIDATE_LIMIT = 12;
 
 async function fetchRelatedArticles(sql, article) {
   const candidates = await sql`
-    SELECT a.slug, a.title, a.excerpt, a.body
+    SELECT a.id, a.slug, a.title, a.excerpt, a.body, a.category,
+           a.author_id, a.image_url, a.read_time, a.views, a.featured,
+           a.editors_pick, a.tags, a.published_at,
+           au.name AS author_name, au.avatar_url
     FROM articles a
+    LEFT JOIN authors au ON au.id = a.author_id
     WHERE a.published = true
       AND a.slug <> ${article.slug}
       AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
@@ -259,8 +334,12 @@ async function fetchRelatedArticles(sql, article) {
  */
 async function fetchHomepageData(sql) {
   const rawArticles = await sql`
-    SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
+    SELECT a.id, a.slug, a.title, a.subtitle, a.excerpt, a.category, a.body,
+           a.author_id, a.image_url, a.read_time, a.views, a.featured,
+           a.editors_pick, a.tags, a.published_at,
+           au.name AS author_name, au.avatar_url
     FROM articles a
+    LEFT JOIN authors au ON au.id = a.author_id
     WHERE a.published = true
       AND BTRIM(COALESCE(a.title, '')) <> ''
       AND BTRIM(COALESCE(a.body, '')) <> ''
@@ -277,7 +356,9 @@ async function fetchHomepageData(sql) {
   const categories = validCategoryPages();
 
   const groups = new Map();
-  for (const article of articles) {
+  const clientArticles = [];
+  for (let i = 0; i < articles.length; i += 1) {
+    const article = articles[i];
     const slug = String(article?.slug ?? "").trim();
     const title = String(article?.title ?? "").trim();
     if (!slug || !title) continue;
@@ -285,6 +366,7 @@ async function fetchHomepageData(sql) {
     // to nothing renders as a 503 article page, so the homepage must not link
     // to it — the two listings have to agree on what "published" means.
     if (!hasMeaningfulArticleBody(article.body)) continue;
+    clientArticles.push(toClientArticle(article, { includeBody: false, fallbackId: i + 1 }));
     const categoryName = String(article.category ?? "").trim();
     const categorySlug = categorySlugFromName(categoryName);
     const key = categorySlug || "uncategorized";
@@ -306,7 +388,7 @@ async function fetchHomepageData(sql) {
     return a.name.localeCompare(b.name);
   });
 
-  return { categories, sections };
+  return { categories, sections, clientArticles };
 }
 
 function isHtmlResponse(response) {
@@ -421,17 +503,22 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
   // static shell below rather than taking the homepage down with it.
   if (route.type === "generic" && route.path === "/" && env?.DATABASE_URL) {
     try {
-      const { categories, sections } = await fetchHomepageData(databaseFactory(env));
+      const { categories, sections, clientArticles } = await fetchHomepageData(databaseFactory(env));
+      const renderedHome = renderHomepageDocument(template, {
+        pathname: route.path,
+        title: route.title,
+        heading: route.heading,
+        description: route.description,
+        categories,
+        sections,
+      });
       return htmlResponse(
         baseResponse,
-        renderHomepageDocument(template, {
-          pathname: route.path,
-          title: route.title,
-          heading: route.heading,
-          description: route.description,
-          categories,
-          sections,
-        }),
+        injectHydrationPayload(
+          renderedHome,
+          { kind: "home", articles: clientArticles },
+          clientArticles[0]?.imageUrl,
+        ),
         request,
         baseResponse.status,
       );
@@ -489,7 +576,19 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
       } catch {
         console.error("[seo-render] related articles failed");
       }
-      return htmlResponse(baseResponse, renderArticleDocument(template, article, { related }), request, 200);
+      const renderedArticle = renderArticleDocument(template, article, { related });
+      const clientArticle = toClientArticle(article, { includeBody: true, fallbackId: 1 });
+      const clientRelated = related.map((item, idx) => toClientArticle(item, { includeBody: false, fallbackId: idx + 1 }));
+      return htmlResponse(
+        baseResponse,
+        injectHydrationPayload(
+          renderedArticle,
+          { kind: "article", article: clientArticle, related: clientRelated },
+          clientArticle.imageUrl,
+        ),
+        request,
+        200,
+      );
     }
 
     if (route.type === "author") {
@@ -511,7 +610,28 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
         avatarUrl: result.author.avatar_url,
         articles: result.articles,
       });
-      return htmlResponse(baseResponse, html, request, 200);
+      const clientAuthorArticles = result.articles.map((item, idx) =>
+        toClientArticle(item, { includeBody: false, fallbackId: idx + 1, fallbackAuthor: result.author }),
+      );
+      const totalViews = clientAuthorArticles.reduce((acc, item) => acc + (item.views || 0), 0);
+      return htmlResponse(
+        baseResponse,
+        injectHydrationPayload(html, {
+          kind: "author",
+          slug: route.slug,
+          authorData: {
+            id: result.author.id ?? null,
+            name: route.name,
+            avatarUrl: result.author.avatar_url ?? "",
+            slug: route.slug,
+            articleCount: clientAuthorArticles.length,
+            totalViews,
+            articles: clientAuthorArticles,
+          },
+        }),
+        request,
+        200,
+      );
     }
 
     const displayName = categoryDisplayName(route.slug);
@@ -522,7 +642,19 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
       description: categoryDescription(route.slug),
       articles,
     });
-    return htmlResponse(baseResponse, html, request, 200);
+    const clientCategoryArticles = articles.map((item, idx) =>
+      toClientArticle(item, { includeBody: false, fallbackId: idx + 1 }),
+    );
+    return htmlResponse(
+      baseResponse,
+      injectHydrationPayload(
+        html,
+        { kind: "category", slug: route.slug, articles: clientCategoryArticles },
+        clientCategoryArticles[0]?.imageUrl,
+      ),
+      request,
+      200,
+    );
   } catch {
     console.error("[seo-render] page rendering failed");
     return htmlResponse(

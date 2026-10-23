@@ -1,8 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "wouter";
 import { Article } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { prefetchArticle, prefetchCategory } from "@/lib/prefetch";
 
 interface ArticleCardProps {
   article: Article;
@@ -23,13 +24,13 @@ const CATEGORY_SLUGS: Record<string, string> = {
 
 function getCategoryColor(cat: string) {
   switch (cat.toLowerCase()) {
-    case "tech":         return "bg-blue-500/10 text-blue-500 border-blue-500/20 hover:bg-blue-500/25";
-    case "culture":      return "bg-purple-500/10 text-purple-500 border-purple-500/20 hover:bg-purple-500/25";
-    case "lifestyle":    return "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/25";
-    case "ai tools":     return "bg-cyan-500/10 text-cyan-500 border-cyan-500/20 hover:bg-cyan-500/25";
-    case "phone tips":   return "bg-green-500/10 text-green-500 border-green-500/20 hover:bg-green-500/25";
-    case "productivity": return "bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500/25";
-    case "trending":     return "bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/25";
+    case "tech":         return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 hover:bg-blue-500/25";
+    case "culture":      return "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 hover:bg-purple-500/25";
+    case "lifestyle":    return "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20 hover:bg-pink-500/25";
+    case "ai tools":     return "bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-500/20 hover:bg-cyan-500/25";
+    case "phone tips":   return "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 hover:bg-green-500/25";
+    case "productivity": return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 hover:bg-amber-500/25";
+    case "trending":     return "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 hover:bg-red-500/25";
     default:             return "bg-primary/10 text-primary border-primary/20 hover:bg-primary/25";
   }
 }
@@ -38,7 +39,7 @@ function categorySlug(category: string) {
   return CATEGORY_SLUGS[category.toLowerCase()] ?? category.toLowerCase().replace(/\s+/g, "-");
 }
 
-export function CategoryBadge({
+export const CategoryBadge = memo(function CategoryBadge({
   category,
   className,
 }: {
@@ -46,26 +47,43 @@ export function CategoryBadge({
   className?: string;
 }) {
   const slug = categorySlug(category);
+  const handlePrefetch = () => prefetchCategory(slug);
   return (
-    <Link href={`/category/${slug}`} className="inline-flex">
+    <Link
+      href={`/category/${slug}`}
+      onMouseEnter={handlePrefetch}
+      onTouchStart={handlePrefetch}
+      className="inline-flex"
+    >
       <Badge
         variant="outline"
         className={cn(
           getCategoryColor(category),
           "font-semibold cursor-pointer transition-colors",
-          className
+          className,
         )}
       >
         {category}
       </Badge>
     </Link>
   );
-}
+});
 
-export function ArticleCard({ article, layout = "grid", featured = false, className }: ArticleCardProps) {
+export const ArticleCard = memo(function ArticleCard({
+  article,
+  layout = "grid",
+  featured = false,
+  className,
+}: ArticleCardProps) {
+  const handlePrefetch = () => prefetchArticle(article.slug);
+
   if (layout === "horizontal") {
     return (
-      <div className={cn("group relative flex gap-4 items-start touch-manipulation", className)}>
+      <div
+        onMouseEnter={handlePrefetch}
+        onTouchStart={handlePrefetch}
+        className={cn("group relative flex gap-4 items-start touch-manipulation", className)}
+      >
         {/* Invisible overlay makes the whole card clickable for mouse/touch — aria-hidden so screen readers only use the title link */}
         <Link
           href={`/article/${article.slug}`}
@@ -94,6 +112,7 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
           <h3 className="font-display font-bold text-sm md:text-base leading-snug mb-1.5 transition-colors line-clamp-2">
             <Link
               href={`/article/${article.slug}`}
+              onFocus={handlePrefetch}
               className="relative z-10 group-hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
             >
               {article.title}
@@ -111,6 +130,8 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
 
   return (
     <div
+      onMouseEnter={handlePrefetch}
+      onTouchStart={handlePrefetch}
       className={cn(
         "group relative flex flex-col touch-manipulation rounded-2xl overflow-hidden bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300",
         className,
@@ -152,11 +173,12 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
         <h3
           className={cn(
             "font-display font-bold leading-snug transition-colors line-clamp-2",
-            featured ? "text-xl md:text-2xl mb-3" : "text-base md:text-lg mb-2"
+            featured ? "text-xl md:text-2xl mb-3" : "text-base md:text-lg mb-2",
           )}
         >
           <Link
             href={`/article/${article.slug}`}
+            onFocus={handlePrefetch}
             className="relative z-10 group-hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
           >
             {article.title}
@@ -179,4 +201,4 @@ export function ArticleCard({ article, layout = "grid", featured = false, classN
       </div>
     </div>
   );
-}
+});
