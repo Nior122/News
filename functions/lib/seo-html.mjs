@@ -467,8 +467,12 @@ export function renderPageDocument(template, page) {
   }
   if (page.description !== undefined) {
     html = setMeta(html, "name", "description", page.description);
-    html = setMeta(html, "property", "og:description", page.description);
-    html = setMeta(html, "name", "twitter:description", page.description);
+    const socialDescription = page.ogDescription ?? page.description;
+    html = setMeta(html, "property", "og:description", socialDescription);
+    html = setMeta(html, "name", "twitter:description", socialDescription);
+  } else if (page.ogDescription !== undefined) {
+    html = setMeta(html, "property", "og:description", page.ogDescription);
+    html = setMeta(html, "name", "twitter:description", page.ogDescription);
   }
   if (page.ogTitle !== undefined || page.title !== undefined) {
     const value = page.ogTitle ?? page.title;
@@ -512,6 +516,20 @@ export function renderPageDocument(template, page) {
   }
   if (page.articleAuthor) {
     html = setMeta(html, "property", "article:author", page.articleAuthor);
+  }
+  if (page.articleSection) {
+    html = setMeta(html, "property", "article:section", page.articleSection);
+  }
+  if (Array.isArray(page.articleTags)) {
+    html = transformHeadContent(
+      html,
+      (content) => `${content}${page.articleTags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag)}" />`).join("")}`,
+      (block, tagName) => {
+        if (tagName !== "meta") return block;
+        const prop = readAttribute(block, "property");
+        return prop && prop.toLowerCase() === "article:tag" ? "" : block;
+      },
+    );
   }
   if (Object.hasOwn(page, "jsonLd")) html = setJsonLd(html, page.jsonLd);
   if (Object.hasOwn(page, "breadcrumbJsonLd")) {
@@ -701,7 +719,9 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ? ` width="${seoOverride.heroWidth}" height="${seoOverride.heroHeight}"`
     : "";
   const heroLoadingAttrs = seoOverride
-    ? ' fetchpriority="high" decoding="async"'
+    ? seoOverride.heroLoadingEager
+      ? ' loading="eager" fetchpriority="high" decoding="async"'
+      : ' fetchpriority="high" decoding="async"'
     : ' loading="lazy" decoding="async"';
   const heroCaptionMarkup = seoOverride?.heroCaption
     ? `<figcaption>${escapeHtml(seoOverride.heroCaption)}</figcaption>`
@@ -766,24 +786,43 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     : null;
   const faqJsonLd = buildFaqJsonLd(seoOverride?.faqs);
   const itemListJsonLd = seoOverride?.itemList || null;
+  const graphJsonLd = typeof seoOverride?.buildGraphJsonLd === "function"
+    ? seoOverride.buildGraphJsonLd({
+        canonical,
+        datePublished,
+        authorName,
+        authorUrl,
+        categoryName,
+        categorySlug,
+      })
+    : null;
 
   return renderPageDocument(template, {
     title,
     description,
     canonical,
     ...(seoOverride?.robots ? { robots: seoOverride.robots } : {}),
-    ogTitle: title,
+    ogTitle: seoOverride?.ogTitle || title,
+    ...(seoOverride?.ogDescription ? { ogDescription: seoOverride.ogDescription } : {}),
     ogType: "article",
     ogImage: image,
     ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.heroWidth } : {}),
     ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.heroHeight } : {}),
     ...(seoOverride && datePublished ? { articlePublishedTime: datePublished } : {}),
     ...(seoOverride && dateModified ? { articleModifiedTime: dateModified } : {}),
-    ...(seoOverride && authorUrl ? { articleAuthor: authorUrl } : {}),
-    jsonLd,
-    ...(seoOverride ? { breadcrumbJsonLd } : {}),
-    faqJsonLd,
-    ...(itemListJsonLd ? { itemListJsonLd } : {}),
+    ...(seoOverride && (seoOverride.articleAuthorMeta || authorUrl)
+      ? { articleAuthor: seoOverride.articleAuthorMeta || authorUrl }
+      : {}),
+    ...(seoOverride?.emitArticleSectionAndTags && categoryName ? { articleSection: categoryName } : {}),
+    ...(seoOverride?.emitArticleSectionAndTags && Array.isArray(article.tags) && article.tags.length > 0
+      ? { articleTags: article.tags }
+      : {}),
+    jsonLd: graphJsonLd || jsonLd,
+    ...(graphJsonLd ? { breadcrumbJsonLd: null, faqJsonLd: null, itemListJsonLd: null } : {
+      ...(seoOverride ? { breadcrumbJsonLd } : {}),
+      faqJsonLd,
+      ...(itemListJsonLd ? { itemListJsonLd } : {}),
+    }),
     bodyHtml,
     prerenderMode: "article",
   });

@@ -1,5 +1,6 @@
 import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 import { BUDGET_EARBUDS_ARTICLE_BODY } from "./budget-earbuds-article-content.mjs";
+import { STUDENTS_AI_ARTICLE_BODY } from "./students-ai-article-content.mjs";
 /**
  * Article-level SEO metadata, structured data helpers, and canonical content
  * overrides shared across Cloudflare Pages middleware, API routes, sitemap
@@ -313,6 +314,24 @@ export const ARTICLE_CONTENT_OVERRIDES = {
       "phone accessories",
     ],
   },
+  "ai-tools-for-students-2026": {
+    title: "Best AI Tools for Students in 2026: What to Use and How",
+    subtitle: "A practical guide to AI tools for notes, research, writing and revision, including free options, paid plans and responsible study methods.",
+    excerpt: "Compare the best AI tools for students in 2026, from research and note-taking to flashcards and writing feedback. Find free options and learn how to use AI to understand and remember more without compromising academic integrity.",
+    body: STUDENTS_AI_ARTICLE_BODY,
+    category: "AI Tools",
+    image_url: "/images/ai-tools-for-students-study-guide.webp",
+    read_time: 10,
+    tags: [
+      "ai tools for students",
+      "AI study tools",
+      "student productivity",
+      "AI note taking",
+      "study apps",
+      "ChatGPT for students",
+      "academic integrity",
+    ],
+  },
 };
 
 export const ARTICLE_SEO_OVERRIDES = {
@@ -479,6 +498,187 @@ export const ARTICLE_SEO_OVERRIDES = {
       },
     ],
   },
+  "ai-tools-for-students-2026": {
+    metaTitle: "Best AI Tools for Students in 2026 (Free & Paid)",
+    metaDescription:
+      "The best AI tools for students in 2026 for notes, research, writing and revision. See what's free, what's worth paying for and how to use them well.",
+    ogTitle: "Best AI Tools for Students in 2026: What to Use and How",
+    ogDescription:
+      "Compare AI study tools for notes, research, writing and revision. Find free options, compare paid plans and learn responsible study methods.",
+    dateModified: "2026-10-23T00:00:00Z",
+    updatedLabel: "Last updated: October 2026",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt:
+      "Student study desk with a laptop, notes and revision materials representing AI tools for students",
+    heroCaption:
+      "AI study tools can support research, note-taking and revision while students remain responsible for their learning.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+    articleAuthorMeta: "Anya Patel",
+    emitArticleSectionAndTags: true,
+    enableSsrToc: true,
+    buildGraphJsonLd: ({ canonical, datePublished, authorName, authorUrl, categoryName, categorySlug }) => ({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          headline: "Best AI Tools for Students in 2026: What to Use and How",
+          description:
+            "The best AI tools for students in 2026 for notes, research, writing and revision. See what's free, what's worth paying for and how to use them well.",
+          image: [
+            "https://scrolltek.name.ng/images/ai-tools-for-students-study-guide.webp",
+            "https://scrolltek.name.ng/images/ai-study-active-recall-workflow.svg",
+          ],
+          author: {
+            "@type": "Person",
+            name: authorName || "Anya Patel",
+            url: authorUrl || "https://scrolltek.name.ng/author/anya-patel",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Scrolltek",
+            url: "https://scrolltek.name.ng/",
+          },
+          datePublished: datePublished || "2026-05-27T17:15:38.636Z",
+          dateModified: "2026-10-23T00:00:00Z",
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": canonical || "https://scrolltek.name.ng/article/ai-tools-for-students-2026",
+          },
+          articleSection: categoryName || "AI Tools",
+          keywords: [
+            "ai tools for students",
+            "best ai study tools",
+            "ai tools for studying",
+            "free ai tools for students",
+            "ai note taking for students",
+            "ai study apps",
+            "how to use chatgpt to study",
+          ],
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://scrolltek.name.ng/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: categoryName || "AI Tools",
+              item: `https://scrolltek.name.ng/category/${encodeURIComponent(categorySlug || "ai-tools")}`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Best AI Tools for Students in 2026: What to Use and How",
+              item: canonical || "https://scrolltek.name.ng/article/ai-tools-for-students-2026",
+            },
+          ],
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Is using AI to study cheating?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Not automatically. Using AI to clarify a concept, generate practice questions or organise revision may be permitted, but the rules depend on your school, instructor and assignment. Submitting AI-generated work as your own can violate academic integrity requirements. Check your course policy and disclose assistance when required.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What is the best free AI tool for students?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "There is no single best option for every student. ChatGPT or Claude can help explain concepts, Perplexity can support source discovery, NotebookLM can work with supplied readings and Grammarly can check basic writing. Start with the tool that addresses your main study problem and confirm its current free-plan limits.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Which AI tool is best for note-taking?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "NotebookLM is useful for asking questions about a collection of supplied readings, while Notion can organise notes alongside tasks and deadlines. Neither replaces checking your original sources. Choose based on whether your priority is understanding documents or managing a long-term study workspace.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can AI make flashcards?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. General-purpose assistants can draft question-and-answer cards from notes, and Quizlet provides dedicated flashcard and learning features. Check every card for accuracy, especially formulas, dates and definitions. Good cards test one clear idea and require you to retrieve the answer rather than simply recognise it.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do I need to pay for AI study tools?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Usually not when you are starting. Free plans can cover basic explanations, research discovery, writing feedback and some revision tasks. Pay only when you repeatedly hit a meaningful limit or need a specific paid feature. Check the current price and cancellation terms before subscribing.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can AI help if English is my second language?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
+              },
+            },
+          ],
+        },
+        {
+          "@type": "ItemList",
+          name: "Quick List: Best AI Tools for Students",
+          itemListOrder: "https://schema.org/ItemListUnordered",
+          numberOfItems: 8,
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "ChatGPT — Explanations, practice questions and study planning", item: { "@type": "Thing", name: "ChatGPT" } },
+            { "@type": "ListItem", position: 2, name: "Notion — Organised notes, tasks and study dashboards", item: { "@type": "Thing", name: "Notion" } },
+            { "@type": "ListItem", position: 3, name: "Perplexity — Research and finding cited web sources", item: { "@type": "Thing", name: "Perplexity" } },
+            { "@type": "ListItem", position: 4, name: "Quizlet — Flashcards and structured revision", item: { "@type": "Thing", name: "Quizlet" } },
+            { "@type": "ListItem", position: 5, name: "Grammarly — Grammar, clarity and writing feedback", item: { "@type": "Thing", name: "Grammarly" } },
+            { "@type": "ListItem", position: 6, name: "Claude — Detailed explanations and working with long documents", item: { "@type": "Thing", name: "Claude" } },
+            { "@type": "ListItem", position: 7, name: "Gemini — Explanations and work across Google's tools", item: { "@type": "Thing", name: "Gemini" } },
+            { "@type": "ListItem", position: 8, name: "NotebookLM — Questions and study guides grounded in your sources", item: { "@type": "Thing", name: "NotebookLM" } },
+          ],
+        },
+      ],
+    }),
+    faqs: [
+      {
+        q: "Is using AI to study cheating?",
+        a: "Not automatically. Using AI to clarify a concept, generate practice questions or organise revision may be permitted, but the rules depend on your school, instructor and assignment. Submitting AI-generated work as your own can violate academic integrity requirements. Check your course policy and disclose assistance when required.",
+      },
+      {
+        q: "What is the best free AI tool for students?",
+        a: "There is no single best option for every student. ChatGPT or Claude can help explain concepts, Perplexity can support source discovery, NotebookLM can work with supplied readings and Grammarly can check basic writing. Start with the tool that addresses your main study problem and confirm its current free-plan limits.",
+      },
+      {
+        q: "Which AI tool is best for note-taking?",
+        a: "NotebookLM is useful for asking questions about a collection of supplied readings, while Notion can organise notes alongside tasks and deadlines. Neither replaces checking your original sources. Choose based on whether your priority is understanding documents or managing a long-term study workspace.",
+      },
+      {
+        q: "Can AI make flashcards?",
+        a: "Yes. General-purpose assistants can draft question-and-answer cards from notes, and Quizlet provides dedicated flashcard and learning features. Check every card for accuracy, especially formulas, dates and definitions. Good cards test one clear idea and require you to retrieve the answer rather than simply recognise it.",
+      },
+      {
+        q: "Do I need to pay for AI study tools?",
+        a: "Usually not when you are starting. Free plans can cover basic explanations, research discovery, writing feedback and some revision tasks. Pay only when you repeatedly hit a meaningful limit or need a specific paid feature. Check the current price and cancellation terms before subscribing.",
+      },
+      {
+        q: "Can AI help if English is my second language?",
+        a: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
+      },
+    ],
+  },
 };
 
 export function getArticleSeoOverride(slug) {
@@ -486,10 +686,38 @@ export function getArticleSeoOverride(slug) {
   return Object.hasOwn(ARTICLE_SEO_OVERRIDES, slug) ? ARTICLE_SEO_OVERRIDES[slug] : null;
 }
 
+const INBOUND_LINK_AUGMENTATIONS = {
+  "chatgpt-claude-gemini-comparison-2026": (body) => {
+    if (body.includes("/article/ai-tools-for-students-2026")) return body;
+    return body.replace(
+      "<p>The best move? Use all three.",
+      '<p>If you are choosing an assistant specifically for coursework, lecture notes, and exam revision, see our full guide to the <a href="/article/ai-tools-for-students-2026" class="article-backlink">best AI tools for students</a>.</p>\n\n<p>The best move? Use all three.',
+    );
+  },
+  "ai-prompt-formula-better-answers-2026": (body) => {
+    if (body.includes("/article/ai-tools-for-students-2026")) return body;
+    return body.replace(
+      "<p>The tools are powerful. How you talk to them",
+      '<p>Students applying this structure to coursework and revision quizzes can also pair these prompts with our guide to <a href="/article/ai-tools-for-students-2026" class="article-backlink">AI study tools for notes, research, and active recall</a>.</p>\n\n<p>The tools are powerful. How you talk to them',
+    );
+  },
+  "ai-tools-saving-hours-every-week-2026": (body) => {
+    if (body.includes("/article/ai-tools-for-students-2026")) return body;
+    return body.replace(
+      "collapse a 90-minute read into a focused 15-minute session.</p>",
+      'collapse a 90-minute read into a focused 15-minute session. Students working through heavy reading lists use a similar stack — see our practical breakdown of <a href="/article/ai-tools-for-students-2026" class="article-backlink">how students use AI tools for research, notes, and revision</a>.</p>',
+    );
+  },
+};
+
 export function applyArticleContentOverride(row) {
   if (!row || typeof row !== "object") return row;
   const slug = String(row.slug ?? "").trim();
-  if (!slug || !Object.hasOwn(ARTICLE_CONTENT_OVERRIDES, slug)) return row;
+  if (!slug) return row;
+  if (Object.hasOwn(INBOUND_LINK_AUGMENTATIONS, slug) && typeof row.body === "string") {
+    return { ...row, body: INBOUND_LINK_AUGMENTATIONS[slug](row.body) };
+  }
+  if (!Object.hasOwn(ARTICLE_CONTENT_OVERRIDES, slug)) return row;
   const override = ARTICLE_CONTENT_OVERRIDES[slug];
   const merged = { ...row };
   for (const [key, value] of Object.entries(override)) {

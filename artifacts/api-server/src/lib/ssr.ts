@@ -18,6 +18,8 @@ const SITE_DESC =
 type MetaTags = {
   title: string;
   description: string;
+  ogTitle?: string;
+  ogDescription?: string;
   canonical: string;
   ogType?: string;
   ogImage?: string;
@@ -26,6 +28,8 @@ type MetaTags = {
   articlePublishedTime?: string;
   articleModifiedTime?: string;
   articleAuthor?: string;
+  articleSection?: string;
+  articleTags?: string[];
   robots?: string;
 };
 
@@ -41,6 +45,8 @@ interface RenderResult {
 const ARTICLE_SSR_OVERRIDES: Record<string, {
   metaTitle?: string;
   metaDescription?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   updatedLabel?: string;
   dateModified?: string;
   robots?: string;
@@ -49,8 +55,12 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
   heroCaption?: string;
   heroWidth?: number;
   heroHeight?: number;
+  heroLoadingEager?: boolean;
+  articleAuthorMeta?: string;
+  emitArticleSectionAndTags?: boolean;
   enableSsrToc?: boolean;
   itemList?: Record<string, unknown>;
+  graphJsonLd?: Record<string, unknown>;
   faqs?: { question: string; answer: string }[];
 }> = {
   "what-is-vibe-coding-2026": {
@@ -181,6 +191,161 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
       },
     ],
   },
+  "ai-tools-for-students-2026": {
+    metaTitle: "Best AI Tools for Students in 2026 (Free & Paid)",
+    metaDescription:
+      "The best AI tools for students in 2026 for notes, research, writing and revision. See what's free, what's worth paying for and how to use them well.",
+    ogTitle: "Best AI Tools for Students in 2026: What to Use and How",
+    ogDescription:
+      "Compare AI study tools for notes, research, writing and revision. Find free options, compare paid plans and learn responsible study methods.",
+    updatedLabel: "Last updated: October 2026",
+    dateModified: "2026-10-23T00:00:00Z",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt:
+      "Student study desk with a laptop, notes and revision materials representing AI tools for students",
+    heroCaption:
+      "AI study tools can support research, note-taking and revision while students remain responsible for their learning.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+    articleAuthorMeta: "Anya Patel",
+    emitArticleSectionAndTags: true,
+    enableSsrToc: true,
+    graphJsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          headline: "Best AI Tools for Students in 2026: What to Use and How",
+          description:
+            "The best AI tools for students in 2026 for notes, research, writing and revision. See what's free, what's worth paying for and how to use them well.",
+          image: [
+            "https://scrolltek.name.ng/images/ai-tools-for-students-study-guide.webp",
+            "https://scrolltek.name.ng/images/ai-study-active-recall-workflow.svg",
+          ],
+          author: {
+            "@type": "Person",
+            name: "Anya Patel",
+            url: "https://scrolltek.name.ng/author/anya-patel",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Scrolltek",
+            url: "https://scrolltek.name.ng/",
+          },
+          datePublished: "2026-05-27T17:15:38.636Z",
+          dateModified: "2026-10-23T00:00:00Z",
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": "https://scrolltek.name.ng/article/ai-tools-for-students-2026",
+          },
+          articleSection: "AI Tools",
+          keywords: [
+            "ai tools for students",
+            "best ai study tools",
+            "ai tools for studying",
+            "free ai tools for students",
+            "ai note taking for students",
+            "ai study apps",
+            "how to use chatgpt to study",
+          ],
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://scrolltek.name.ng/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "AI Tools",
+              item: "https://scrolltek.name.ng/category/ai-tools",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Best AI Tools for Students in 2026: What to Use and How",
+              item: "https://scrolltek.name.ng/article/ai-tools-for-students-2026",
+            },
+          ],
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Is using AI to study cheating?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Not automatically. Using AI to clarify a concept, generate practice questions or organise revision may be permitted, but the rules depend on your school, instructor and assignment. Submitting AI-generated work as your own can violate academic integrity requirements. Check your course policy and disclose assistance when required.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What is the best free AI tool for students?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "There is no single best option for every student. ChatGPT or Claude can help explain concepts, Perplexity can support source discovery, NotebookLM can work with supplied readings and Grammarly can check basic writing. Start with the tool that addresses your main study problem and confirm its current free-plan limits.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Which AI tool is best for note-taking?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "NotebookLM is useful for asking questions about a collection of supplied readings, while Notion can organise notes alongside tasks and deadlines. Neither replaces checking your original sources. Choose based on whether your priority is understanding documents or managing a long-term study workspace.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can AI make flashcards?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. General-purpose assistants can draft question-and-answer cards from notes, and Quizlet provides dedicated flashcard and learning features. Check every card for accuracy, especially formulas, dates and definitions. Good cards test one clear idea and require you to retrieve the answer rather than simply recognise it.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do I need to pay for AI study tools?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Usually not when you are starting. Free plans can cover basic explanations, research discovery, writing feedback and some revision tasks. Pay only when you repeatedly hit a meaningful limit or need a specific paid feature. Check the current price and cancellation terms before subscribing.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can AI help if English is my second language?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
+              },
+            },
+          ],
+        },
+        {
+          "@type": "ItemList",
+          name: "Quick List: Best AI Tools for Students",
+          itemListOrder: "https://schema.org/ItemListUnordered",
+          numberOfItems: 8,
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "ChatGPT — Explanations, practice questions and study planning", item: { "@type": "Thing", name: "ChatGPT" } },
+            { "@type": "ListItem", position: 2, name: "Notion — Organised notes, tasks and study dashboards", item: { "@type": "Thing", name: "Notion" } },
+            { "@type": "ListItem", position: 3, name: "Perplexity — Research and finding cited web sources", item: { "@type": "Thing", name: "Perplexity" } },
+            { "@type": "ListItem", position: 4, name: "Quizlet — Flashcards and structured revision", item: { "@type": "Thing", name: "Quizlet" } },
+            { "@type": "ListItem", position: 5, name: "Grammarly — Grammar, clarity and writing feedback", item: { "@type": "Thing", name: "Grammarly" } },
+            { "@type": "ListItem", position: 6, name: "Claude — Detailed explanations and working with long documents", item: { "@type": "Thing", name: "Claude" } },
+            { "@type": "ListItem", position: 7, name: "Gemini — Explanations and work across Google's tools", item: { "@type": "Thing", name: "Gemini" } },
+            { "@type": "ListItem", position: 8, name: "NotebookLM — Questions and study guides grounded in your sources", item: { "@type": "Thing", name: "NotebookLM" } },
+          ],
+        },
+      ],
+    },
+  },
 };
 
 async function getArticles(limit = 20) {
@@ -279,7 +444,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
 
   const heroFigureMarkup = resolvedHeroImage
     ? seoOverride
-      ? `<figure><img src="${esc(resolvedHeroImage)}" alt="${esc(seoOverride.heroAlt ?? a.title)}" width="${seoOverride.heroWidth ?? 1200}" height="${seoOverride.heroHeight ?? 630}" fetchpriority="high" decoding="async" />${seoOverride.heroCaption ? `<figcaption>${esc(seoOverride.heroCaption)}</figcaption>` : ""}</figure>`
+      ? `<figure><img src="${esc(resolvedHeroImage)}" alt="${esc(seoOverride.heroAlt ?? a.title)}" width="${seoOverride.heroWidth ?? 1200}" height="${seoOverride.heroHeight ?? 630}"${seoOverride.heroLoadingEager ? ' loading="eager"' : ""} fetchpriority="high" decoding="async" />${seoOverride.heroCaption ? `<figcaption>${esc(seoOverride.heroCaption)}</figcaption>` : ""}</figure>`
       : ""
     : "";
 
@@ -294,32 +459,34 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   </main>`;
 
   const schemaType = seoOverride?.schemaType ?? "NewsArticle";
-  const jsonLd = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": schemaType,
-    headline: a.title,
-    description: metaDescription,
-    image: resolvedHeroImage
-      ? seoOverride?.heroWidth && seoOverride?.heroHeight
-        ? [{ "@type": "ImageObject", url: resolvedHeroImage, width: seoOverride.heroWidth, height: seoOverride.heroHeight }]
-        : resolvedHeroImage
-      : undefined,
-    datePublished: a.publishedAt.toISOString(),
-    ...(seoOverride?.dateModified ? { dateModified: seoOverride.dateModified } : {}),
-    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
-    author: author
-      ? { "@type": "Person", name: author.name, ...(seoOverride && authorUrl ? { url: authorUrl } : {}) }
-      : undefined,
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.svg` },
-    },
-    url: canonicalUrl,
-  });
+  const jsonLd = seoOverride?.graphJsonLd
+    ? JSON.stringify(seoOverride.graphJsonLd)
+    : JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": schemaType,
+        headline: a.title,
+        description: metaDescription,
+        image: resolvedHeroImage
+          ? seoOverride?.heroWidth && seoOverride?.heroHeight
+            ? [{ "@type": "ImageObject", url: resolvedHeroImage, width: seoOverride.heroWidth, height: seoOverride.heroHeight }]
+            : resolvedHeroImage
+          : undefined,
+        datePublished: a.publishedAt.toISOString(),
+        ...(seoOverride?.dateModified ? { dateModified: seoOverride.dateModified } : {}),
+        mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+        author: author
+          ? { "@type": "Person", name: author.name, ...(seoOverride && authorUrl ? { url: authorUrl } : {}) }
+          : undefined,
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+          logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.svg` },
+        },
+        url: canonicalUrl,
+      });
 
-  const breadcrumbJsonLd = seoOverride
+  const breadcrumbJsonLd = seoOverride && !seoOverride.graphJsonLd
     ? JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -333,11 +500,11 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
       })
     : undefined;
 
-  const itemListJsonLd = seoOverride?.itemList
+  const itemListJsonLd = seoOverride?.itemList && !seoOverride.graphJsonLd
     ? JSON.stringify(seoOverride.itemList)
     : undefined;
 
-  const faqJsonLd = seoOverride?.faqs?.length
+  const faqJsonLd = seoOverride?.faqs?.length && !seoOverride.graphJsonLd
     ? JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -354,6 +521,8 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
     meta: {
       title: `${metaTitleBase} — ${SITE_NAME}`,
       description: metaDescription,
+      ogTitle: seoOverride?.ogTitle,
+      ogDescription: seoOverride?.ogDescription,
       canonical: canonicalUrl,
       ogType: "article",
       ogImage: resolvedHeroImage,
@@ -361,7 +530,9 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
       ogImageHeight: seoOverride?.heroHeight,
       articlePublishedTime: seoOverride ? a.publishedAt.toISOString() : undefined,
       articleModifiedTime: seoOverride?.dateModified,
-      articleAuthor: seoOverride ? authorUrl : undefined,
+      articleAuthor: seoOverride ? (seoOverride.articleAuthorMeta ?? authorUrl) : undefined,
+      articleSection: seoOverride?.emitArticleSectionAndTags && categoryName ? categoryName : undefined,
+      articleTags: seoOverride?.emitArticleSectionAndTags && Array.isArray(a.tags) ? a.tags : undefined,
       robots: seoOverride?.robots,
     },
     jsonLd,
@@ -522,25 +693,27 @@ export function injectIntoHtml(
     /<meta\s+name=["']description["'][^>]*>/i,
     `<meta name="description" content="${esc(result.meta.description)}" />`,
   );
+  const socialTitle = result.meta.ogTitle ?? result.meta.title;
+  const socialDesc = result.meta.ogDescription ?? result.meta.description;
   html = replaceOrInsertHeadTag(
     html,
     /<meta\s+property=["']og:title["'][^>]*>/i,
-    `<meta property="og:title" content="${esc(result.meta.title)}" />`,
+    `<meta property="og:title" content="${esc(socialTitle)}" />`,
   );
   html = replaceOrInsertHeadTag(
     html,
     /<meta\s+property=["']og:description["'][^>]*>/i,
-    `<meta property="og:description" content="${esc(result.meta.description)}" />`,
+    `<meta property="og:description" content="${esc(socialDesc)}" />`,
   );
   html = replaceOrInsertHeadTag(
     html,
     /<meta\s+name=["']twitter:title["'][^>]*>/i,
-    `<meta name="twitter:title" content="${esc(result.meta.title)}" />`,
+    `<meta name="twitter:title" content="${esc(socialTitle)}" />`,
   );
   html = replaceOrInsertHeadTag(
     html,
     /<meta\s+name=["']twitter:description["'][^>]*>/i,
-    `<meta name="twitter:description" content="${esc(result.meta.description)}" />`,
+    `<meta name="twitter:description" content="${esc(socialDesc)}" />`,
   );
 
   if (result.meta.canonical) {
@@ -628,6 +801,19 @@ export function injectIntoHtml(
       `<meta property="article:author" content="${esc(result.meta.articleAuthor)}" />`,
     );
   }
+  if (result.meta.articleSection) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']article:section["'][^>]*>/i,
+      `<meta property="article:section" content="${esc(result.meta.articleSection)}" />`,
+    );
+  }
+  if (Array.isArray(result.meta.articleTags) && result.meta.articleTags.length > 0) {
+    const tagsMarkup = result.meta.articleTags
+      .map((tag) => `<meta property="article:tag" content="${esc(tag)}" />`)
+      .join("\n");
+    html = html.replace(/<\/head\s*>/i, `${tagsMarkup}\n</head>`);
+  }
 
   if (result.meta.robots) {
     html = replaceOrInsertHeadTag(
@@ -645,20 +831,23 @@ export function injectIntoHtml(
       .replace(/\u2028/g, "\\u2028")
       .replace(/\u2029/g, "\\u2029");
     let schemaType = "";
+    let hasGraph = false;
     try {
-      schemaType = JSON.parse(result.jsonLd)["@type"] ?? "";
+      const parsed = JSON.parse(result.jsonLd);
+      schemaType = parsed["@type"] ?? "";
+      hasGraph = Array.isArray(parsed["@graph"]);
     } catch {
       // Keep malformed structured data out of the response.
       schemaType = "";
     }
-    const scriptId = schemaType === "NewsArticle" || schemaType === "Article"
+    const scriptId = hasGraph || schemaType === "NewsArticle" || schemaType === "Article"
       ? "article-jsonld"
       : schemaType === "Person"
         ? "author-jsonld"
         : schemaType === "WebSite"
           ? "website-jsonld"
           : "page-jsonld";
-    if (schemaType) {
+    if (schemaType || hasGraph) {
       const script = `<script type="application/ld+json" id="${scriptId}">${safeJsonLd}</script>`;
       const matcher = new RegExp(`<script\\b(?=[^>]*\\bid=["']${scriptId}["'])[^>]*>[\\s\\S]*?<\\/script>`, "i");
       html = replaceOrInsertHeadTag(html, matcher, script);

@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="svg-title svg-desc" preserveAspectRatio="xMidYMid meet">
+  <title id="svg-title">A Better Study Loop: Active Recall With AI</title>
+  <desc id="svg-desc">Five-stage AI study workflow illustrating active recall in order: 1. Learn by reading your notes or assigned material, 2. Recall answers from memory before looking, 3. Test by asking AI for questions based on your material, 4. Verify by checking your answers against the original source, and 5. Repeat by reviewing weak areas and testing yourself independently.</desc>
+  <defs>
+    <linearGradient id="bg-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1222" />
+      <stop offset="50%" stop-color="#0a0a0f" />
+      <stop offset="100%" stop-color="#110e1f" />
+    </linearGradient>
+    <linearGradient id="accent-bar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="52%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="card-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#151827" />
+      <stop offset="100%" stop-color="#0e101a" />
+    </linearGradient>
+    <linearGradient id="card-fill-ai" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#181c34" />
+      <stop offset="100%" stop-color="#111326" />
+    </linearGradient>
+    <style>
+      .font-ui { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .layout-mobile { display: none; }
+      @media (max-width: 720px) {
+        .layout-desktop { display: none; }
+        .layout-mobile { display: inline; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg-glow)" />
+  <circle cx="220" cy="120" r="260" fill="#2563eb" fill-opacity="0.07" />
+  <circle cx="980" cy="540" r="280" fill="#7c3aed" fill-opacity="0.08" />
+
+  <!-- Top accent line & Title -->
+  <rect x="490" y="58" width="220" height="4" rx="2" fill="url(#accent-bar)" />
+  <text x="600" y="116" text-anchor="middle" fill="#f8fafc" font-size="34" font-weight="700" letter-spacing="-0.4" class="font-ui">A Better Study Loop: Active Recall With AI</text>
+
+  <!-- DESKTOP HORIZONTAL SEQUENCE -->
+  <g class="layout-desktop font-ui">
+    <!-- Card 1: 1. LEARN -->
+    <g transform="translate(48, 195)">
+      <rect width="196" height="270" rx="18" fill="url(#card-fill)" stroke="#26314d" stroke-width="1.5" />
+      <rect x="0" y="0" width="196" height="5" rx="3" fill="#38bdf8" />
+      <circle cx="42" cy="48" r="18" fill="#38bdf8" fill-opacity="0.14" stroke="#38bdf8" stroke-width="1.2" />
+      <text x="42" y="54" text-anchor="middle" fill="#7dd3fc" font-size="15" font-weight="700">1</text>
+      <text x="24" y="106" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.6">1. LEARN</text>
+      <line x1="24" y1="126" x2="172" y2="126" stroke="#1e293b" stroke-width="1" />
+      <text x="24" y="164" fill="#cbd5e1" font-size="16" font-weight="400">
+        <tspan x="24" dy="0">Read your notes</tspan>
+        <tspan x="24" dy="25">or assigned</tspan>
+        <tspan x="24" dy="25">material.</tspan>
+      </text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <g transform="translate(248, 330)">
+      <line x1="2" y1="0" x2="22" y2="0" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" />
+      <polyline points="16,-6 24,0 16,6" fill="none" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Card 2: 2. RECALL -->
+    <g transform="translate(275, 195)">
+      <rect width="196" height="270" rx="18" fill="url(#card-fill)" stroke="#2b3655" stroke-width="1.5" />
+      <rect x="0" y="0" width="196" height="5" rx="3" fill="#60a5fa" />
+      <circle cx="42" cy="48" r="18" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.2" />
+      <text x="42" y="54" text-anchor="middle" fill="#93c5fd" font-size="15" font-weight="700">2</text>
+      <text x="24" y="106" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.6">2. RECALL</text>
+      <line x1="24" y1="126" x2="172" y2="126" stroke="#1e293b" stroke-width="1" />
+      <text x="24" y="164" fill="#cbd5e1" font-size="16" font-weight="400">
+        <tspan x="24" dy="0">Answer from</tspan>
+        <tspan x="24" dy="25">memory before</tspan>
+        <tspan x="24" dy="25">looking.</tspan>
+      </text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <g transform="translate(475, 330)">
+      <line x1="2" y1="0" x2="22" y2="0" stroke="#60a5fa" stroke-width="2.4" stroke-linecap="round" />
+      <polyline points="16,-6 24,0 16,6" fill="none" stroke="#60a5fa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Card 3: 3. TEST -->
+    <g transform="translate(502, 195)">
+      <rect width="196" height="270" rx="18" fill="url(#card-fill-ai)" stroke="#6366f1" stroke-width="1.8" />
+      <rect x="0" y="0" width="196" height="5" rx="3" fill="#818cf8" />
+      <circle cx="42" cy="48" r="18" fill="#818cf8" fill-opacity="0.18" stroke="#818cf8" stroke-width="1.2" />
+      <text x="42" y="54" text-anchor="middle" fill="#c7d2fe" font-size="15" font-weight="700">3</text>
+      <text x="24" y="106" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.6">3. TEST</text>
+      <line x1="24" y1="126" x2="172" y2="126" stroke="#272c4a" stroke-width="1" />
+      <text x="24" y="164" fill="#cbd5e1" font-size="16" font-weight="400">
+        <tspan x="24" dy="0">Ask AI for</tspan>
+        <tspan x="24" dy="25">questions based</tspan>
+        <tspan x="24" dy="25">on your material.</tspan>
+      </text>
+    </g>
+
+    <!-- Arrow 3 -> 4 -->
+    <g transform="translate(702, 330)">
+      <line x1="2" y1="0" x2="22" y2="0" stroke="#818cf8" stroke-width="2.4" stroke-linecap="round" />
+      <polyline points="16,-6 24,0 16,6" fill="none" stroke="#818cf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Card 4: 4. VERIFY -->
+    <g transform="translate(729, 195)">
+      <rect width="196" height="270" rx="18" fill="url(#card-fill)" stroke="#3b3363" stroke-width="1.5" />
+      <rect x="0" y="0" width="196" height="5" rx="3" fill="#8b5cf6" />
+      <circle cx="42" cy="48" r="18" fill="#8b5cf6" fill-opacity="0.16" stroke="#a78bfa" stroke-width="1.2" />
+      <text x="42" y="54" text-anchor="middle" fill="#ddd6fe" font-size="15" font-weight="700">4</text>
+      <text x="24" y="106" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.6">4. VERIFY</text>
+      <line x1="24" y1="126" x2="172" y2="126" stroke="#1e293b" stroke-width="1" />
+      <text x="24" y="164" fill="#cbd5e1" font-size="16" font-weight="400">
+        <tspan x="24" dy="0">Check your</tspan>
+        <tspan x="24" dy="25">answers against</tspan>
+        <tspan x="24" dy="25">the original</tspan>
+        <tspan x="24" dy="25">source.</tspan>
+      </text>
+    </g>
+
+    <!-- Arrow 4 -> 5 -->
+    <g transform="translate(929, 330)">
+      <line x1="2" y1="0" x2="22" y2="0" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" />
+      <polyline points="16,-6 24,0 16,6" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Card 5: 5. REPEAT -->
+    <g transform="translate(956, 195)">
+      <rect width="196" height="270" rx="18" fill="url(#card-fill)" stroke="#4c3875" stroke-width="1.5" />
+      <rect x="0" y="0" width="196" height="5" rx="3" fill="#a78bfa" />
+      <circle cx="42" cy="48" r="18" fill="#a78bfa" fill-opacity="0.16" stroke="#c4b5fd" stroke-width="1.2" />
+      <text x="42" y="54" text-anchor="middle" fill="#ede9fe" font-size="15" font-weight="700">5</text>
+      <text x="24" y="106" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.6">5. REPEAT</text>
+      <line x1="24" y1="126" x2="172" y2="126" stroke="#1e293b" stroke-width="1" />
+      <text x="24" y="164" fill="#cbd5e1" font-size="16" font-weight="400">
+        <tspan x="24" dy="0">Review weak</tspan>
+        <tspan x="24" dy="25">areas and test</tspan>
+        <tspan x="24" dy="25">yourself</tspan>
+        <tspan x="24" dy="25">independently.</tspan>
+      </text>
+    </g>
+
+    <!-- Subtle return loop connector from Stage 5 back to Stage 2 -->
+    <path d="M 1054 475 L 1054 516 Q 1054 528 1042 528 L 385 528 Q 373 528 373 516 L 373 479" fill="none" stroke="url(#accent-bar)" stroke-width="1.8" stroke-dasharray="6 5" opacity="0.7" />
+    <polyline points="367,486 373,477 379,486" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+  </g>
+
+  <!-- NARROW VIEWPORT VERTICAL SEQUENCE -->
+  <g class="layout-mobile font-ui">
+    <g transform="translate(170, 150)">
+      <rect width="860" height="72" rx="14" fill="url(#card-fill)" stroke="#38bdf8" stroke-width="1.5" />
+      <text x="32" y="34" fill="#ffffff" font-size="20" font-weight="700">1. LEARN</text>
+      <text x="32" y="58" fill="#cbd5e1" font-size="17">Read your notes or assigned material.</text>
+    </g>
+    <polyline points="593,228 600,237 607,228" fill="none" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g transform="translate(170, 242)">
+      <rect width="860" height="72" rx="14" fill="url(#card-fill)" stroke="#60a5fa" stroke-width="1.5" />
+      <text x="32" y="34" fill="#ffffff" font-size="20" font-weight="700">2. RECALL</text>
+      <text x="32" y="58" fill="#cbd5e1" font-size="17">Answer from memory before looking.</text>
+    </g>
+    <polyline points="593,320 600,329 607,320" fill="none" stroke="#60a5fa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g transform="translate(170, 334)">
+      <rect width="860" height="72" rx="14" fill="url(#card-fill-ai)" stroke="#818cf8" stroke-width="1.8" />
+      <text x="32" y="34" fill="#ffffff" font-size="20" font-weight="700">3. TEST</text>
+      <text x="32" y="58" fill="#cbd5e1" font-size="17">Ask AI for questions based on your material.</text>
+    </g>
+    <polyline points="593,412 600,421 607,412" fill="none" stroke="#818cf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g transform="translate(170, 426)">
+      <rect width="860" height="72" rx="14" fill="url(#card-fill)" stroke="#8b5cf6" stroke-width="1.5" />
+      <text x="32" y="34" fill="#ffffff" font-size="20" font-weight="700">4. VERIFY</text>
+      <text x="32" y="58" fill="#cbd5e1" font-size="17">Check your answers against the original source.</text>
+    </g>
+    <polyline points="593,504 600,513 607,504" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g transform="translate(170, 518)">
+      <rect width="860" height="72" rx="14" fill="url(#card-fill)" stroke="#a78bfa" stroke-width="1.5" />
+      <text x="32" y="34" fill="#ffffff" font-size="20" font-weight="700">5. REPEAT</text>
+      <text x="32" y="58" fill="#cbd5e1" font-size="17">Review weak areas and test yourself independently.</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="618" text-anchor="middle" fill="#94a3b8" font-size="20" font-weight="500" letter-spacing="0.3" class="font-ui">AI supports the process. You do the learning.</text>
+</svg>
