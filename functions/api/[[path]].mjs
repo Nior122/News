@@ -19,16 +19,27 @@ function getDb(env) {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function json(data, status = 200) {
+function json(data, status = 200, cacheControl = 'no-store') {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
+      'Cache-Control': cacheControl,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   });
+}
+
+function publicJson(data, status = 200) {
+  return json(
+    data,
+    status,
+    status === 200
+      ? 'public, max-age=60, s-maxage=300, stale-while-revalidate=600'
+      : 'no-store',
+  );
 }
 
 function permanentRedirect(location) {
@@ -133,6 +144,15 @@ function publicFmt(row) {
   return {
     ...article,
     body: effectiveRow.body == null ? null : sanitizeArticleHtml(effectiveRow.body),
+  };
+}
+
+function publicSummaryFmt(row) {
+  const effectiveRow = applyArticleContentOverride(row);
+  const article = fmt(effectiveRow);
+  return {
+    ...article,
+    body: '',
   };
 }
 
@@ -324,7 +344,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
     // Categories
     if (path === '/categories' && method === 'GET') {
       const rows = await db`SELECT slug, name, color, article_count FROM categories ORDER BY name`;
-      return json(rows.map(r => ({
+      return publicJson(rows.map(r => ({
         id: 0,
         slug: r.slug,
         name: r.name,
@@ -443,14 +463,14 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         LIMIT 100`;
       const stats = statsRows[0] ?? {};
 
-      return json({
+      return publicJson({
         id: author.id,
         name: author.name,
         avatarUrl: author.avatar_url ?? '',
         slug,
         articleCount: Number(stats.article_count ?? 0),
         totalViews: Number(stats.total_views ?? 0),
-        articles: articleRows.map(publicFmt),
+        articles: articleRows.map(publicSummaryFmt),
       });
     }
 
@@ -463,7 +483,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
           AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 1`;
       if (!rows.length) return json({ error: 'Not found' }, 404);
-      return json(publicFmt(rows[0]));
+      return publicJson(publicFmt(rows[0]));
     }
 
     // Articles: trending
@@ -473,7 +493,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.views DESC, a.published_at DESC LIMIT 5`;
-      return json(rows.map(publicFmt));
+      return publicJson(rows.map(publicSummaryFmt));
     }
 
     // Articles: editors-picks
@@ -484,7 +504,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         WHERE a.editors_pick = true AND a.published = true
           AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 6`;
-      return json(rows.map(publicFmt));
+      return publicJson(rows.map(publicSummaryFmt));
     }
 
     // Articles: popular
@@ -494,7 +514,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         FROM articles a JOIN authors au ON a.author_id = au.id
         WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.views DESC, a.published_at DESC LIMIT 10`;
-      return json(rows.map(publicFmt));
+      return publicJson(rows.map(publicSummaryFmt));
     }
 
     // Articles: ticker
@@ -503,7 +523,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         SELECT id, slug, title, category FROM articles
         WHERE published = true AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY published_at DESC LIMIT 10`;
-      return json(rows);
+      return publicJson(rows);
     }
 
     // Articles: search
@@ -515,7 +535,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       if (q.length > MAX_SEARCH_LENGTH) {
         return json({ error: `Search query must be ${MAX_SEARCH_LENGTH} characters or fewer` }, 400);
       }
-      if (!q) return json({ articles: [], total: 0, page, limit, hasMore: false });
+      if (!q) return publicJson({ articles: [], total: 0, page, limit, hasMore: false });
 
       const pattern = `%${escapeLikePattern(q)}%`;
       const rows = await db`
@@ -542,7 +562,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
             OR au.name ILIKE ${pattern}
           )`;
       const total = parseInt(countRows[0].total, 10);
-      return json({ articles: rows.map(publicFmt), total, page, limit, hasMore: offset + rows.length < total });
+      return publicJson({ articles: rows.map(publicSummaryFmt), total, page, limit, hasMore: offset + rows.length < total });
     }
 
     // Articles: list (with optional category filter)
@@ -575,7 +595,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
           WHERE published = true AND slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])`;
       }
       const total = parseInt(countRows[0].total, 10);
-      return json({ articles: rows.map(publicFmt), total, page, limit, hasMore: offset + rows.length < total });
+      return publicJson({ articles: rows.map(publicSummaryFmt), total, page, limit, hasMore: offset + rows.length < total });
     }
 
     // Articles: related
@@ -598,7 +618,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
         WHERE a.category = ${base[0].category} AND a.slug != ${slug} AND a.published = true
           AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
         ORDER BY a.published_at DESC LIMIT 4`;
-      return json(rows.map(publicFmt));
+      return publicJson(rows.map(publicSummaryFmt));
     }
 
     // Articles: single by slug
@@ -622,7 +642,7 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       if (!String(rows[0].title ?? '').trim() || !hasMeaningfulArticleBody(rows[0].body)) {
         return json({ error: 'Article temporarily unavailable' }, 503);
       }
-      return json(publicFmt(rows[0]));
+      return publicJson(publicFmt(rows[0]));
     }
 
     return json({ error: 'Not found' }, 404);

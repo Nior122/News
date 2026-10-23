@@ -14,7 +14,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "dark",
+  theme: "light",
   setTheme: () => null,
 };
 
@@ -22,13 +22,17 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
-  storageKey = "vite-ui-theme",
+  defaultTheme = "light",
+  storageKey = "scrolltek-theme-v2",
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+      const saved = localStorage.getItem(storageKey) as Theme | null;
+      if (saved === "light" || saved === "dark" || saved === "system") {
+        return saved;
+      }
+      return defaultTheme;
     } catch {
       return defaultTheme;
     }
@@ -36,27 +40,32 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    const resolved =
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : theme;
 
-      root.classList.add(systemTheme);
-      return;
+    root.classList.add(resolved);
+
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute("content", resolved === "dark" ? "#0d0d0d" : "#fafafa");
     }
-
-    root.classList.add(theme);
   }, [theme]);
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      try { localStorage.setItem(storageKey, theme); } catch { /* ignore */ }
-      setTheme(theme);
+    setTheme: (nextTheme: Theme) => {
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch {
+        /* ignore */
+      }
+      setTheme(nextTheme);
     },
   };
 

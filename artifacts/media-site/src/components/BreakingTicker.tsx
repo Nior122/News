@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useListTickerHeadlines } from "@workspace/api-client-react";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  useListTickerHeadlines,
+  getListTickerHeadlinesQueryKey,
+  type Article,
+  type TickerItem,
+} from "@workspace/api-client-react";
 import { Link } from "wouter";
+import { prefetchArticle } from "@/lib/prefetch";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -11,25 +17,50 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export function BreakingTicker() {
-  const { data: headlines, isLoading } = useListTickerHeadlines();
-  const [shuffled, setShuffled] = useState<NonNullable<typeof headlines>>([]);
+export function BreakingTicker({ articles }: { articles?: Article[] } = {}) {
+  const hasProvidedArticles = Array.isArray(articles) && articles.length > 0;
+  const { data: fetchedHeadlines, isLoading } = useListTickerHeadlines({
+    query: {
+      enabled: !hasProvidedArticles,
+      queryKey: getListTickerHeadlinesQueryKey(),
+    },
+  });
 
-  useEffect(() => {
-    if (headlines && headlines.length > 0) {
-      setShuffled(shuffle(headlines));
+  const baseHeadlines: TickerItem[] = useMemo(() => {
+    if (hasProvidedArticles) {
+      return articles.slice(0, 10).map((item) => ({
+        id: item.id,
+        slug: item.slug,
+        title: item.title,
+        category: item.category,
+      }));
     }
-  }, [headlines]);
+    return fetchedHeadlines ?? [];
+  }, [hasProvidedArticles, articles, fetchedHeadlines]);
+
+  const [shuffled, setShuffled] = useState<TickerItem[]>(() =>
+    baseHeadlines.length > 0 ? shuffle(baseHeadlines) : [],
+  );
 
   useEffect(() => {
-    if (!headlines || headlines.length === 0) return;
+    if (baseHeadlines.length > 0) {
+      setShuffled((prev) => (prev.length > 0 ? prev : shuffle(baseHeadlines)));
+    }
+  }, [baseHeadlines]);
+
+  useEffect(() => {
+    if (baseHeadlines.length < 2) return;
     const id = setInterval(() => {
-      setShuffled(shuffle(headlines));
+      if (document.hidden) return;
+      setShuffled(shuffle(baseHeadlines));
     }, 60000);
     return () => clearInterval(id);
-  }, [headlines]);
+  }, [baseHeadlines]);
 
-  if (isLoading || !shuffled || shuffled.length === 0) return null;
+  const items = shuffled.length > 0 ? shuffled : baseHeadlines;
+  if ((!hasProvidedArticles && isLoading && items.length === 0) || items.length === 0) {
+    return null;
+  }
 
   return (
     <div className="bg-primary/10 border-b border-primary/20 flex items-center h-10 overflow-hidden">
@@ -38,19 +69,23 @@ export function BreakingTicker() {
       </div>
       <div className="ticker-wrap w-full">
         <div className="ticker-content flex gap-8 px-4 items-center">
-          {shuffled.map((item) => (
+          {items.map((item) => (
             <Link
               key={item.id}
               href={`/article/${item.slug}`}
+              onMouseEnter={() => prefetchArticle(item.slug)}
+              onTouchStart={() => prefetchArticle(item.slug)}
               className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
             >
               {item.title}
             </Link>
           ))}
-          {shuffled.map((item) => (
+          {items.map((item) => (
             <Link
               key={`dup-${item.id}`}
               href={`/article/${item.slug}`}
+              onMouseEnter={() => prefetchArticle(item.slug)}
+              onTouchStart={() => prefetchArticle(item.slug)}
               className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
             >
               {item.title}

@@ -1,5 +1,7 @@
 /* Fonts loaded in index.html to avoid render-blocking duplicate request */
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "./";
+@source "../index.html";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 

@@ -5,6 +5,7 @@ import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LiveSearch } from "@/components/LiveSearch";
+import { prefetchCategory, prefetchStaticRoute } from "@/lib/prefetch";
 
 const CATEGORIES = [
   { label: "Tech", slug: "tech" },
@@ -45,6 +46,8 @@ export function Header() {
                   <Link
                     key={slug}
                     href={`/category/${slug}`}
+                    onMouseEnter={() => prefetchCategory(slug)}
+                    onTouchStart={() => prefetchCategory(slug)}
                     className={cn(
                       "px-3 py-2 rounded-md transition-colors hover:bg-muted hover:text-foreground",
                       isActive
@@ -139,6 +142,8 @@ export function Header() {
                   <Link
                     key={slug}
                     href={`/category/${slug}`}
+                    onMouseEnter={() => prefetchCategory(slug)}
+                    onTouchStart={() => prefetchCategory(slug)}
                     className={cn(
                       "flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-colors",
                       isActive
@@ -157,6 +162,8 @@ export function Header() {
               {/* Extra links */}
               <Link
                 href="/about"
+                onMouseEnter={() => prefetchStaticRoute("/about")}
+                onTouchStart={() => prefetchStaticRoute("/about")}
                 className={cn(
                   "flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors",
                   location === "/about"
@@ -168,6 +175,8 @@ export function Header() {
               </Link>
               <Link
                 href="/contact"
+                onMouseEnter={() => prefetchStaticRoute("/contact")}
+                onTouchStart={() => prefetchStaticRoute("/contact")}
                 className={cn(
                   "flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors",
                   location === "/contact"

@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <script>document.documentElement.className += " js";</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0a0f" />
+    <meta name="theme-color" content="#fafafa" />
+    <script>
+      try {
+        if (localStorage.getItem("scrolltek-theme-v2") === "dark") {
+          document.documentElement.classList.add("dark");
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute("content", "#0d0d0d");
+        }
+      } catch (e) {}
+    </script>
 
     <title>Scrolltek — Tech, Culture, Lifestyle &amp; AI Tools</title>
     <meta name="description" content="Scrolltek is your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online." />
@@ -27,13 +36,14 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Resource hints — preconnect opens TCP+TLS early for critical origins -->
+    <!-- Resource hints — preconnect opens TCP+TLS early for critical image/font origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="preconnect" href="https://images.pexels.com" crossorigin />
     <link rel="preconnect" href="https://i.pravatar.cc" crossorigin />
     <link rel="dns-prefetch" href="https://picsum.photos" />
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3931662977705623" crossorigin="anonymous"></script>
@@ -73,10 +83,11 @@
     }
     </script>
 
-    <!-- Inline critical CSS: prevents flash of unstyled/light content before JS loads -->
+    <!-- Inline critical CSS: prevents flash before main stylesheet loads (light default, dark preserved) -->
     <style>
-      html { background: #0a0a0f; color-scheme: dark; }
-      body { margin: 0; background: #0a0a0f; }
+      html { background: #fafafa; color: #0d0d0d; color-scheme: light; }
+      html.dark { background: #0d0d0d; color: #f2f2f2; color-scheme: dark; }
+      body { margin: 0; background: inherit; color: inherit; }
       #root { min-height: 100dvh; }
       #seo-prerender:empty { display: none; }
       #seo-prerender[data-pending="true"] ~ #root { display: none; }
@@ -92,19 +103,19 @@
   <body>
     <noscript id="homepage-fallback">
       <style>
-        .ns-wrap{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:2rem 1.5rem;color:#e2e8f0;background:#0a0a0f}
-        .ns-wrap h1{font-size:2rem;font-weight:800;margin:0 0 .5rem}
-        .ns-wrap p{color:#94a3b8;margin:.5rem 0 1.5rem}
+        .ns-wrap{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:2rem 1.5rem;color:#0f172a;background:#fafafa}
+        .ns-wrap h1{font-size:2rem;font-weight:800;margin:0 0 .5rem;color:#0f172a}
+        .ns-wrap p{color:#475569;margin:.5rem 0 1.5rem}
         .ns-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem}
-        .ns-nav a{background:#1e293b;color:#93c5fd;padding:.35rem .85rem;border-radius:9999px;text-decoration:none;font-size:.85rem}
+        .ns-nav a{background:#eff6ff;color:#1d4ed8;padding:.35rem .85rem;border-radius:9999px;text-decoration:none;font-size:.85rem;border:1px solid #dbeafe}
         .ns-section{margin-bottom:2rem}
-        .ns-section h2{font-size:1.1rem;font-weight:700;color:#f1f5f9;border-left:3px solid #3b82f6;padding-left:.65rem;margin:0 0 1rem}
+        .ns-section h2{font-size:1.1rem;font-weight:700;color:#0f172a;border-left:3px solid #2563eb;padding-left:.65rem;margin:0 0 1rem}
         .ns-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem}
-        .ns-card{background:#1e293b;border-radius:.75rem;padding:1rem;text-decoration:none;display:block}
-        .ns-card span{display:block;color:#f1f5f9;font-weight:600;font-size:.9rem;line-height:1.4}
+        .ns-card{background:#ffffff;border:1px solid #e5e7eb;border-radius:.75rem;padding:1rem;text-decoration:none;display:block}
+        .ns-card span{display:block;color:#0f172a;font-weight:600;font-size:.9rem;line-height:1.4}
         .ns-card small{color:#64748b;font-size:.75rem}
         .ns-authors{display:flex;flex-wrap:wrap;gap:.5rem}
-        .ns-authors a{background:#1e293b;color:#c084fc;padding:.35rem .85rem;border-radius:.5rem;text-decoration:none;font-size:.85rem}
+        .ns-authors a{background:#f5f3ff;color:#6d28d9;padding:.35rem .85rem;border-radius:.5rem;text-decoration:none;font-size:.85rem;border:1px solid #ede9fe}
       </style>
       <div class="ns-wrap">
         <h1>Scrolltek</h1>
