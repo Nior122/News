@@ -37,6 +37,13 @@ const REDIRECTED_ARTICLE_SLUGS = [
   "ai-smart-glasses-future",
 ];
 
+// Editorial lastmod overrides for articles that were updated without changing
+// their original publication date. Mirrors functions/sitemap.xml.mjs.
+const ARTICLE_LASTMOD_OVERRIDES: Record<string, string> = {
+  "handheld-gaming-gadgets-2026": "2026-10-23",
+  "chatgpt-claude-gemini-comparison-2026": "2026-10-23",
+};
+
 function escapeXml(str: string): string {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -130,11 +137,14 @@ router.get("/sitemap.xml", async (req, res) => {
       if (seen.has(loc)) continue;
       seen.add(loc);
 
-      const lastmod = lastmodFor(article.publishedAt);
-      const imageBlock = article.imageUrl
+      const lastmod = ARTICLE_LASTMOD_OVERRIDES[slug] ?? lastmodFor(article.publishedAt);
+      const imageLoc = article.imageUrl
+        ? new URL(article.imageUrl, SITE_URL).href
+        : null;
+      const imageBlock = imageLoc
         ? `
     <image:image>
-      <image:loc>${escapeXml(article.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(imageLoc)}</image:loc>
       <image:title>${escapeXml(article.title)}</image:title>
     </image:image>`
         : "";

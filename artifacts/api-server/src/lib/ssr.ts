@@ -1,6 +1,7 @@
 import { db, articlesTable, authorsTable } from "@workspace/db";
 import { eq, desc, and, inArray } from "drizzle-orm";
 import { getCached, setCached } from "./cache";
+import { getArticleSeoOverride } from "./article-seo";
 
 function esc(s: string): string {
   return s
@@ -15,7 +16,17 @@ const SITE_URL = "https://scrolltek.name.ng";
 const SITE_DESC =
   "Your go-to source for tech, digital culture, AI tools, phone tips, lifestyle, and the trends shaping how we live online.";
 
-type MetaTags = { title: string; description: string; canonical: string; ogImage?: string; robots?: string };
+type MetaTags = {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  ogType?: string;
+  robots?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
+  articleAuthor?: string;
+};
 
 interface RenderResult {
   bodyHtml: string;
@@ -90,21 +101,28 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   const a = rows[0];
   const authors = await getAuthors();
   const author = authors.find((au) => au.id === a.authorId);
+  const override = getArticleSeoOverride(a.slug);
+
+  const metaTitle = override?.metaTitle ?? a.title;
+  const h1 = override?.h1 ?? a.title;
+  const description = override?.metaDescription ?? (a.excerpt ?? SITE_DESC);
+  const ogImage = a.imageUrl ? new URL(a.imageUrl, SITE_URL).href : undefined;
+  const publishedDate = a.publishedAt.toISOString().slice(0, 10);
 
   const bodyHtml = `<main id="ssr">
-    <h1>${esc(a.title)}</h1>
+    <h1>${esc(h1)}</h1>
     ${a.subtitle ? `<h2>${esc(a.subtitle)}</h2>` : ""}
     ${a.excerpt ? `<p class="excerpt">${esc(a.excerpt)}</p>` : ""}
     ${author ? `<address>By <span>${esc(author.name)}</span></address>` : ""}
     ${a.body ?? ""}
   </main>`;
 
-  const jsonLd = JSON.stringify({
+  const jsonLd = JSON.stringify(override?.jsonLd ?? {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: a.title,
     description: a.excerpt ?? "",
-    image: a.imageUrl ?? undefined,
+    image: ogImage ?? undefined,
     datePublished: a.publishedAt.toISOString(),
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/article/${encodeURIComponent(slug)}` },
     author: author ? { "@type": "Person", name: author.name } : undefined,
@@ -120,10 +138,14 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   const result: RenderResult = {
     bodyHtml,
     meta: {
-      title: `${a.title} — ${SITE_NAME}`,
-      description: a.excerpt ?? SITE_DESC,
+      title: `${metaTitle} — ${SITE_NAME}`,
+      description,
       canonical: `${SITE_URL}/article/${encodeURIComponent(slug)}`,
-      ogImage: a.imageUrl ?? undefined,
+      ogImage,
+      ogType: "article",
+      articlePublishedTime: override?.publishedTime ?? publishedDate,
+      articleModifiedTime: override?.modifiedTime,
+      articleAuthor: author?.name,
     },
     jsonLd,
   };
@@ -265,6 +287,17 @@ function replaceOrInsertHeadTag(html: string, matcher: RegExp, tag: string): str
   return html.replace(/<\/head\s*>/i, `${tag}\n</head>`);
 }
 
+// The shell's <noscript id="homepage-fallback"> block is homepage-only
+// content (it even carries its own h1). Serving it on every route would put a
+// second, wrong H1 into the server-rendered HTML of non-home pages, so the
+// production SSR drops it everywhere except the homepage — mirroring
+// removeHomepageFallback in functions/lib/seo-html.mjs.
+const HOMEPAGE_FALLBACK_PATTERN = /<noscript\s+id=["']homepage-fallback["'][^>]*>[\s\S]*?<\/noscript>/i;
+
+export function removeHomepageFallback(template: string): string {
+  return template.replace(HOMEPAGE_FALLBACK_PATTERN, "");
+}
+
 export function injectIntoHtml(
   template: string,
   result: RenderResult
@@ -346,6 +379,32 @@ export function injectIntoHtml(
     );
   }
 
+  if (result.meta.ogType) {
+    html = replaceOrInsertHeadTag(
+      html,
+      /<meta\s+property=["']og:type["'][^>]*>/i,
+      `<meta property="og:type" content="${esc(result.meta.ogType)}" />`,
+    );
+  }
+
+  const articleMetaEntries: Array<[string, string | undefined]> = [
+    ["article:published_time", result.meta.articlePublishedTime],
+    ["article:modified_time", result.meta.articleModifiedTime],
+    ["article:author", result.meta.articleAuthor],
+  ];
+  for (const [name, value] of articleMetaEntries) {
+    const matcher = new RegExp(`<meta\\s+property=["']${name}["'][^>]*>`, "i");
+    if (value) {
+      html = replaceOrInsertHeadTag(
+        html,
+        matcher,
+        `<meta property="${name}" content="${esc(value)}" />`,
+      );
+    } else {
+      html = html.replace(matcher, "");
+    }
+  }
+
   if (result.jsonLd) {
     const safeJsonLd = result.jsonLd
       .replace(/</g, "\\u003c")
@@ -353,21 +412,23 @@ export function injectIntoHtml(
       .replace(/&/g, "\\u0026")
       .replace(/\u2028/g, "\\u2028")
       .replace(/\u2029/g, "\\u2029");
-    let schemaType = "";
+    let parsedJsonLd: { "@type"?: string; "@graph"?: unknown } | null = null;
     try {
-      schemaType = JSON.parse(result.jsonLd)["@type"] ?? "";
+      parsedJsonLd = JSON.parse(result.jsonLd);
     } catch {
       // Keep malformed structured data out of the response.
-      schemaType = "";
+      parsedJsonLd = null;
     }
-    const scriptId = schemaType === "NewsArticle"
+    const schemaType = parsedJsonLd?.["@type"] ?? "";
+    const hasGraph = Array.isArray(parsedJsonLd?.["@graph"]);
+    const scriptId = schemaType === "NewsArticle" || hasGraph
       ? "article-jsonld"
       : schemaType === "Person"
         ? "author-jsonld"
         : schemaType === "WebSite"
           ? "website-jsonld"
           : "page-jsonld";
-    if (schemaType) {
+    if (schemaType || hasGraph) {
       const script = `<script type="application/ld+json" id="${scriptId}">${safeJsonLd}</script>`;
       const matcher = new RegExp(`<script\\b(?=[^>]*\\bid=["']${scriptId}["'])[^>]*>[\\s\\S]*?<\\/script>`, "i");
       html = replaceOrInsertHeadTag(html, matcher, script);

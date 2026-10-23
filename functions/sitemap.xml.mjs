@@ -50,6 +50,13 @@ function lastmodFor(value) {
   return date.toISOString();
 }
 
+// Editorial lastmod overrides for articles that were updated without changing
+// their original publication date. Mirrors artifacts/api-server sitemap route.
+const ARTICLE_LASTMOD_OVERRIDES = {
+  'handheld-gaming-gadgets-2026': '2026-10-23',
+  'chatgpt-claude-gemini-comparison-2026': '2026-10-23',
+};
+
 /**
  * Builds the sitemap body.
  *
@@ -81,7 +88,7 @@ export function buildSitemapXml(articles) {
     if (isRedirectedArticleSlug(slug)) continue;
 
     try {
-      add(`${SITE_ORIGIN}/article/${encodeURIComponent(slug)}`, lastmodFor(article.published_at));
+      add(`${SITE_ORIGIN}/article/${encodeURIComponent(slug)}`, ARTICLE_LASTMOD_OVERRIDES[slug] ?? lastmodFor(article.published_at));
     } catch {
       // Skip malformed database values rather than publishing broken URLs.
     }

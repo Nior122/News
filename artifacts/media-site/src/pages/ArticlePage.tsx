@@ -11,6 +11,7 @@ import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 import { useToast } from "@/hooks/use-toast";
 import { nameToSlug } from "@/data/authors";
 import { getArticleFaqs } from "@/data/faqs";
+import { getArticleSeoOverride } from "@/data/article-seo";
 import { completeArticleSsrHandoff } from "@/lib/article-ssr-handoff";
 
 type ArticleLoadFailure = "not-found" | "server" | "network" | "request";
@@ -288,11 +289,21 @@ export default function ArticlePage() {
     },
   });
   const articleDescription = getArticleDescription(article);
+  const seoOverride = article?.slug ? getArticleSeoOverride(article.slug) : undefined;
+  const pageH1 = seoOverride?.h1 ?? article?.title;
+  const pageMetaTitle = seoOverride?.metaTitle ?? article?.title;
+  const pageMetaDescription = seoOverride?.metaDescription ?? articleDescription;
+  const heroImageUrl = article?.imageUrl
+    ? new URL(article.imageUrl, SITE_ORIGIN).href
+    : undefined;
+  const articlePublishedDate = article?.publishedAt
+    ? new Date(article.publishedAt).toISOString().slice(0, 10)
+    : undefined;
 
   usePageMeta({
-    title: article?.title ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
-    description: articleDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
-    ogImage: article?.imageUrl ?? undefined,
+    title: pageMetaTitle ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
+    description: pageMetaDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
+    ogImage: heroImageUrl,
     ogType: article ? "article" : "website",
     canonical: article
       ? canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`)
@@ -300,6 +311,11 @@ export default function ArticlePage() {
         ? null
         : undefined,
     robots: articleFailure === "not-found" ? "noindex, follow" : undefined,
+    articlePublishedTime: article
+      ? (seoOverride?.publishedTime ?? articlePublishedDate)
+      : undefined,
+    articleModifiedTime: seoOverride?.modifiedTime,
+    articleAuthor: article?.author?.name,
     enabled: !isLoading && (
       articleFailure === null
       || (articleFailure === "not-found" && !hasPendingArticleSsr)
@@ -401,7 +417,7 @@ export default function ArticlePage() {
     year: "numeric",
   });
 
-  const jsonLdData = {
+  const jsonLdData = seoOverride?.jsonLd ?? {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: article.title,
@@ -480,7 +496,7 @@ export default function ArticlePage() {
                 className="font-display text-xl sm:text-3xl md:text-5xl font-extrabold leading-tight mb-3"
                 itemProp="headline"
               >
-                {article.title}
+                {pageH1}
               </h1>
 
               {article.subtitle && (

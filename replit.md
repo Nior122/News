@@ -60,13 +60,13 @@ This project has TWO separate databases and TWO seed files. They must both be up
 ### Development (Replit)
 - **Database**: Replit's built-in PostgreSQL (`heliumdb`) — available via `DATABASE_URL`
 - **Seed file**: `lib/db/src/ensure-seeded.ts`
-- **How it works**: `ensureSeeded()` runs on every API server start. It inserts missing articles and updates article bodies. Changes appear immediately on next server restart.
+- **How it works**: `ensureSeeded()` runs on every API server start. It inserts missing articles and syncs the seeded content fields (title, subtitle, excerpt, imageUrl, readTime, tags, body) of existing articles. Changes appear immediately on next server restart.
 - **To apply changes**: Restart the `artifacts/api-server: API Server` workflow (or `API Server`).
 
 ### Production (legacy Vercel + Neon)
 - **Database**: Neon PostgreSQL — separate from Replit, configured in Vercel env vars
 - **Seed file**: `api/setup.mjs`
-- **How it works**: `runSetup()` is not part of request startup. Public reads, health checks, and unknown routes do not create schema or seed content. The legacy Vercel `POST /api/admin/force-seed` operation invokes setup only after admin JWT authentication. Setup can insert missing articles and sync configured content fields (title, subtitle, excerpt, imageUrl, readTime, body), so it is a content-changing maintenance operation—not a routine health check.
+- **How it works**: `runSetup()` is not part of request startup. Public reads, health checks, and unknown routes do not create schema or seed content. The legacy Vercel `POST /api/admin/force-seed` operation invokes setup only after admin JWT authentication. Setup can insert missing articles and sync configured content fields (title, subtitle, excerpt, imageUrl, readTime, tags, body), so it is a content-changing maintenance operation—not a routine health check.
 - **To apply changes after separately approved deployment**: Obtain an admin JWT from `POST /api/admin/login`, then call `POST /api/admin/force-seed` with `Authorization: Bearer <JWT>`. Do not place the password or token in a URL; do not run this operation without explicit approval.
 
 ## How to Add a New Article
@@ -158,7 +158,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 - Run `pnpm --filter @workspace/db run push` after any schema changes before starting the API server
 - **NEVER** add articles only to one seed file — both `api/setup.mjs` (Vercel) and `lib/db/src/ensure-seeded.ts` (Replit) must be updated together
 - `api/setup.mjs` has a `PUBLISHED_AT` module-level object — add an entry for every new article slug so dates are correct on fresh DB installs
-- `api/setup.mjs` `runSetup()` is idempotent — it always inserts missing articles and always syncs content fields (title, subtitle, excerpt, imageUrl, readTime, body) to the DB
+- `api/setup.mjs` `runSetup()` is idempotent — it always inserts missing articles and always syncs content fields (title, subtitle, excerpt, imageUrl, readTime, tags, body) to the DB
 
 ## Pointers
 
