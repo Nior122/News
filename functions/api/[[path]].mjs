@@ -9,6 +9,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUGS } from '../lib/article-routing.mjs';
+import { applyArticleContentOverride } from '../lib/article-seo.mjs';
 import { hasMeaningfulArticleBody, sanitizeArticleHtml } from '../lib/seo-html.mjs';
 
 // ── DB client ─────────────────────────────────────────────────────────────────
@@ -127,10 +128,11 @@ function fmt(row) {
 }
 
 function publicFmt(row) {
-  const article = fmt(row);
+  const effectiveRow = applyArticleContentOverride(row);
+  const article = fmt(effectiveRow);
   return {
     ...article,
-    body: row.body == null ? null : sanitizeArticleHtml(row.body),
+    body: effectiveRow.body == null ? null : sanitizeArticleHtml(effectiveRow.body),
   };
 }
 

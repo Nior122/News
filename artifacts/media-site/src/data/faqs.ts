@@ -153,16 +153,82 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
 
   "what-is-vibe-coding-2026": [
     {
-      question: "Do I need to know how to code to vibe code?",
-      answer: "No — that's the whole point. Vibe coding tools like Cursor, Replit Agent, and GitHub Copilot Chat let you describe what you want in plain English and get working code back. Basic logical thinking helps, but syntax knowledge is optional.",
+      question: "Do you need coding experience to vibe code?",
+      answer: "No — beginners build working personal tools and prototypes all the time without knowing syntax. Basic familiarity with how web pages, databases and environment variables work becomes helpful as soon as you want to publish an app for other people.",
     },
     {
-      question: "Is vibe coding reliable enough for production apps?",
-      answer: "For prototypes, internal tools, and MVPs — absolutely. For large-scale production systems with complex security requirements, AI-generated code still needs careful review by experienced engineers.",
+      question: "Is vibe coding free?",
+      answer: "You can start for free on most platforms, including Google AI Studio, GitHub Copilot's free tier, Replit, Bolt and Lovable's daily credit plans. Heavy building or deploying custom domains usually pushes you onto a $10 to $25 monthly plan.",
     },
     {
-      question: "What's the best vibe coding tool for beginners in 2026?",
-      answer: "Replit Agent is consistently recommended for beginners because it handles hosting, databases, and deployment automatically — you don't need to set anything up. Cursor is better for experienced developers who want AI assistance within their own environment.",
+      question: "What programming languages work best for vibe coding?",
+      answer: "JavaScript, TypeScript, HTML/CSS and Python work best because AI models have seen enormous amounts of public training code and mature frameworks in those languages. Most browser app builders default to React, TypeScript and Tailwind CSS automatically.",
+    },
+    {
+      question: "Can you build a real business with vibe coding?",
+      answer: "You can validate demand and build an early minimum viable product quickly, and many solo founders do. Before charging customers or storing sensitive data, plan on proper security review, automated tests and clean version control rather than pure prompt-and-pray edits.",
+    },
+    {
+      question: "Is vibe coding safe?",
+      answer: "For local scripts, mockups and personal utilities, yes. For public apps handling logins, payments or user data, raw AI-generated code often misses permissions and input validation, so human security checks remain essential.",
+    },
+    {
+      question: "Will vibe coding replace software developers?",
+      answer: "It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.",
+    },
+  ],
+
+  "best-budget-wireless-earbuds-2026": [
+    {
+      question: "Are budget wireless earbuds under $100 worth buying in 2026?",
+      answer: "Yes. Well-reviewed pairs between $50 and $100 now deliver effective commuter ANC, multipoint pairing, solid app EQ, and reliable battery life. Flagship $250+ buds still lead on wind-noise call handling, spatial audio ecosystems, and top-end acoustic refinement, though most everyday listeners no longer need to spend that much.",
+    },
+    {
+      question: "What is the difference between ANC and ENC on budget earbuds?",
+      answer: "Active noise cancellation (ANC) reduces outside rumble in your own ears while listening to music or podcasts. Environmental noise cancellation (ENC) uses microphone filtering so the person on the other end of a phone call hears less background clatter—it does not quiet your surroundings.",
+    },
+    {
+      question: "Which budget earbuds work best with iPhone vs. Android?",
+      answer: "iPhones use the AAC Bluetooth codec across third-party earbuds, so prioritize comfort, app quality, multipoint stability, and ANC—where Soundcore Liberty 4 NC and CMF Buds 2 Plus perform well. Android phones with LDAC or aptX Lossless support can also take fuller advantage of models like EarFun Air Pro 4+.",
+    },
+    {
+      question: "Should you buy in-ear ANC earbuds or open-ear clip earbuds?",
+      answer: "Choose sealed in-ear ANC earbuds for noisy commutes, flights, gyms, and stronger sub-bass. Choose open-ear clips like the CMF Clip Pro when ear-canal comfort and hearing traffic, coworkers, or home activity clearly matter more than blocking noise.",
+    },
+    {
+      question: "Why is real-world earbud battery life shorter than advertised?",
+      answer: "Manufacturers usually publish headline figures at roughly 50% volume using standard SBC or AAC audio with active noise cancellation turned off. Enabling ANC, raising volume in loud environments, taking phone calls, or switching on high-bitrate codecs like LDAC draws noticeably more power.",
+    },
+    {
+      question: "Do sub-$40 earbuds have real active noise cancellation?",
+      answer: "Reputable entry-level models such as the JLab Go Pods ANC and CMF Buds 2a include genuine hybrid ANC that takes the edge off fan hum and light transit rumble, though deeper low-end isolation still steps up noticeably around the $55 to $100 tier.",
+    },
+  ],
+
+  "ai-tools-for-students-2026": [
+    {
+      question: "Is using AI to study cheating?",
+      answer: "Not automatically. Using AI to clarify a concept, generate practice questions or organise revision may be permitted, but the rules depend on your school, instructor and assignment. Submitting AI-generated work as your own can violate academic integrity requirements. Check your course policy and disclose assistance when required.",
+    },
+    {
+      question: "What is the best free AI tool for students?",
+      answer: "There is no single best option for every student. ChatGPT or Claude can help explain concepts, Perplexity can support source discovery, NotebookLM can work with supplied readings and Grammarly can check basic writing. Start with the tool that addresses your main study problem and confirm its current free-plan limits.",
+    },
+    {
+      question: "Which AI tool is best for note-taking?",
+      answer: "NotebookLM is useful for asking questions about a collection of supplied readings, while Notion can organise notes alongside tasks and deadlines. Neither replaces checking your original sources. Choose based on whether your priority is understanding documents or managing a long-term study workspace.",
+    },
+    {
+      question: "Can AI make flashcards?",
+      answer: "Yes. General-purpose assistants can draft question-and-answer cards from notes, and Quizlet provides dedicated flashcard and learning features. Check every card for accuracy, especially formulas, dates and definitions. Good cards test one clear idea and require you to retrieve the answer rather than simply recognise it.",
+    },
+    {
+      question: "Do I need to pay for AI study tools?",
+      answer: "Usually not when you are starting. Free plans can cover basic explanations, research discovery, writing feedback and some revision tasks. Pay only when you repeatedly hit a meaningful limit or need a specific paid feature. Check the current price and cancellation terms before subscribing.",
+    },
+    {
+      question: "Can AI help if English is my second language?",
+      answer: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
     },
   ],
 
@@ -183,20 +249,28 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
 
   "e-ink-gadgets-comeback-2026": [
     {
-      question: "What is the best e-ink device to buy in 2026?",
-      answer: "For reading: the Kindle Paperwhite or Kobo Libra 2 are the gold standard. For note-taking and handwriting: the reMarkable 2 or Supernote A5X are most popular with professionals. For a minimal phone: the Light Phone III uses an e-ink display and is the leading choice for people replacing a smartphone.",
+      question: "Is an e ink tablet better for your eyes?",
+      answer: "It may be easier than an LCD tablet for long reading. A small 2013 study found more visual fatigue on an LCD tablet than on e ink or paper. The American Academy of Ophthalmology says screen eye strain is temporary and linked to blinking less. Take breaks on any screen, and see an eye doctor if symptoms persist.",
     },
     {
-      question: "Is e-ink better for your eyes than a regular screen?",
-      answer: "For most people, yes — especially during long reading sessions. E-ink reflects ambient light rather than emitting it directly, which reduces eye strain. It also eliminates flicker. Many people who struggle to read on tablets or laptops find e-ink significantly more comfortable for extended use.",
+      question: "What is the best e ink tablet in 2026?",
+      answer: "It depends on the job. For handwriting, reviewers favor the reMarkable Paper Pure ($399). For PDFs and Android apps, the Boox Go 10.3 (Gen II) Lumi ($449.99) is a strong pick. For color, consider the Boox Note Air5 C ($529.99) or reMarkable Paper Pro ($629). For books alone, a Kindle Paperwhite costs less.",
     },
     {
-      question: "Can you use an e-ink tablet for work?",
-      answer: "For reading-intensive work — reviewing documents, annotating PDFs, long-form research — e-ink tablets are genuinely better than laptops. For note-taking and drafting, stylus-equipped e-ink tablets work well. For tasks requiring software, multiple windows, or frequent switching, a traditional laptop is still necessary.",
+      question: "Are e ink tablets worth it?",
+      answer: "They are worth it if you handwrite notes or read long documents most days and value focus and battery life. They are poor value if you expect an iPad replacement, because refresh is slow and many models have no app store. Many readers who only read books are better served by a cheaper Kindle or Kobo.",
     },
     {
-      question: "Why does e-ink have such good battery life?",
-      answer: "E-ink only uses power when the display changes — not when it's holding a static image. A page of text drawn on an e-ink screen remains visible indefinitely with zero power consumption. Power is only consumed during the brief page-turn refresh, which is why Kindle batteries last weeks rather than hours.",
+      question: "Can you use an e ink tablet for work?",
+      answer: "Yes, for reading and marking up documents, handwriting meeting notes and planning. Some models connect to calendars, Google Drive or OneDrive. They are not laptop replacements: refresh is slow, multitasking is limited and typing is awkward. A focused second device alongside a laptop is the realistic setup.",
+    },
+    {
+      question: "Is color e ink good yet?",
+      answer: "It is useful, not vivid. Color e ink suits highlights, charts, comics and annotated PDFs, but colors look muted and refresh is slow. Kaleido 3 panels show 4,096 colors at 150 ppi. E Ink announced Kaleido 4 in October 2026, but Amazon and Kobo have not announced devices yet.",
+    },
+    {
+      question: "E ink tablet vs Kindle: which should you buy?",
+      answer: "A standard Kindle is for books and costs $149.99 or more. An e ink tablet adds a larger screen and a stylus for handwriting and PDF markup. Amazon's Kindle Scribe sits between them, with an 11-inch display, pen and Kindle store from $429.99. Choose by whether you write as much as you read.",
     },
   ],
 

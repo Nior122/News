@@ -170,3 +170,11 @@ test("sitemap errors stay generic and robots.txt advertises the canonical sitema
   assert.match(staticRobots, /Sitemap: https:\/\/scrolltek\.name\.ng\/sitemap\.xml/);
   assert.doesNotMatch(staticRobots, /www\.scrolltek|pages\.dev|scrolltek\.com/i);
 });
+
+test("sitemap emits 2026-10-23 modified timestamp for rewritten what-is-vibe-coding-2026 article", () => {
+  const xml = buildSitemapXml([
+    publishedArticle("what-is-vibe-coding-2026", { published_at: "2026-06-01T09:00:00.000Z" }),
+  ]);
+  const entries = Object.fromEntries(sitemapEntries(xml).map((entry) => [entry.loc, entry.lastmod]));
+  assert.equal(entries[`${ORIGIN}/article/what-is-vibe-coding-2026`], "2026-10-23T00:00:00.000Z");
+});

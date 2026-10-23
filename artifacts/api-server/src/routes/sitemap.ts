@@ -42,6 +42,10 @@ const REDIRECTED_ARTICLE_SLUGS = [
 const ARTICLE_LASTMOD_OVERRIDES: Record<string, string> = {
   "handheld-gaming-gadgets-2026": "2026-10-23",
   "chatgpt-claude-gemini-comparison-2026": "2026-10-23",
+  "what-is-vibe-coding-2026": "2026-10-23T00:00:00.000Z",
+  "e-ink-gadgets-comeback-2026": "2026-10-23T00:00:00.000Z",
+  "best-budget-wireless-earbuds-2026": "2026-10-23T00:00:00.000Z",
+  "ai-tools-for-students-2026": "2026-10-23T00:00:00.000Z",
 };
 
 function escapeXml(str: string): string {

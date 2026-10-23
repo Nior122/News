@@ -1,13 +1,26 @@
 import { Router } from "express";
-import { db, categoriesTable, articlesTable, authorsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { db, articlesTable, authorsTable } from "@workspace/db";
+import { eq, desc, sql } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/categories", async (req, res) => {
   try {
-    const categories = await db.select().from(categoriesTable).orderBy(categoriesTable.name);
-    res.json(categories);
+    const result = await db.execute<{
+      slug: string;
+      name: string;
+      color: string;
+      article_count: number | null;
+    }>(sql`SELECT slug, name, color, article_count FROM categories ORDER BY name`);
+    res.json(
+      result.rows.map((r, index) => ({
+        id: index + 1,
+        slug: r.slug,
+        name: r.name,
+        color: r.color,
+        articleCount: r.article_count ?? 0,
+      })),
+    );
   } catch (err) {
     req.log.error(err);
     res.status(500).json({ error: "Internal server error" });
