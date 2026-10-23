@@ -1,3 +1,4 @@
+import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 /**
  * Article-level SEO metadata, structured data helpers, and canonical content
  * overrides shared across Cloudflare Pages middleware, API routes, sitemap
@@ -266,6 +267,16 @@ export const VIBE_CODING_ARTICLE_BODY = `<p>Vibe coding is a way of building sof
 <p>It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.</p>`;
 
 export const ARTICLE_CONTENT_OVERRIDES = {
+  "e-ink-gadgets-comeback-2026": {
+    title: "Best E Ink Tablets in 2026: Are They Worth Buying?",
+    subtitle: "Which e ink tablet fits reading, handwriting or work, what each costs in October 2026, and who should skip one.",
+    excerpt: "Which e ink tablet should you buy in 2026? Compare the reMarkable Paper Pure, Boox, Kindle Scribe and more by price, battery life and use, plus who should skip one.",
+    body: EINK_ARTICLE_BODY,
+    category: "Tech",
+    image_url: "/images/best-e-ink-tablets-2026-hero.webp",
+    read_time: 11,
+    tags: ["e ink tablet", "best e ink tablet", "reMarkable", "Boox", "Supernote", "Kindle Scribe", "e-readers", "note-taking"],
+  },
   "what-is-vibe-coding-2026": {
     title: "What Is Vibe Coding? A Beginner's Guide for 2026",
     subtitle: "Vibe coding lets you build apps by describing them in plain English. Here is how it works, which tools to try, and what can go wrong.",
@@ -287,6 +298,41 @@ export const ARTICLE_CONTENT_OVERRIDES = {
 };
 
 export const ARTICLE_SEO_OVERRIDES = {
+  "e-ink-gadgets-comeback-2026": {
+    metaTitle: "Best E Ink Tablets in 2026: Are They Worth It?",
+    metaDescription: "Looking for an e ink tablet? Compare the best options for reading, note-taking and work, with battery life, prices and who should buy one.",
+    dateModified: "2026-10-23T00:00:00.000Z",
+    updatedLabel: "Last updated: October 2026",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt: "A hand uses a stylus over a tablet screen beside a keyboard and smartphone.",
+    heroCaption: "A stylus-equipped tablet can serve as a digital note-taking surface. Photo: Jakub Zerdzicki / Pexels.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    enableSsrToc: true,
+    faqs: [
+      { q: "Is an e ink tablet better for your eyes?", a: "It may be easier than an LCD tablet for long reading. A small 2013 study found more visual fatigue on an LCD tablet than on e ink or paper. The American Academy of Ophthalmology says screen eye strain is temporary and linked to blinking less. Take breaks on any screen, and see an eye doctor if symptoms persist." },
+      { q: "What is the best e ink tablet in 2026?", a: "It depends on the job. For handwriting, reviewers favor the reMarkable Paper Pure ($399). For PDFs and Android apps, the Boox Go 10.3 (Gen II) Lumi ($449.99) is a strong pick. For color, consider the Boox Note Air5 C ($529.99) or reMarkable Paper Pro ($629). For books alone, a Kindle Paperwhite costs less." },
+      { q: "Are e ink tablets worth it?", a: "They are worth it if you handwrite notes or read long documents most days and value focus and battery life. They are poor value if you expect an iPad replacement, because refresh is slow and many models have no app store. Many readers who only read books are better served by a cheaper Kindle or Kobo." },
+      { q: "Can you use an e ink tablet for work?", a: "Yes, for reading and marking up documents, handwriting meeting notes and planning. Some models connect to calendars, Google Drive or OneDrive. They are not laptop replacements: refresh is slow, multitasking is limited and typing is awkward. A focused second device alongside a laptop is the realistic setup." },
+      { q: "Is color e ink good yet?", a: "It is useful, not vivid. Color e ink suits highlights, charts, comics and annotated PDFs, but colors look muted and refresh is slow. Kaleido 3 panels show 4,096 colors at 150 ppi. E Ink announced Kaleido 4 in October 2026, but Amazon and Kobo have not announced devices yet." },
+      { q: "E ink tablet vs Kindle: which should you buy?", a: "A standard Kindle is for books and costs $149.99 or more. An e ink tablet adds a larger screen and a stylus for handwriting and PDF markup. Amazon's Kindle Scribe sits between them, with an 11-inch display, pen and Kindle store from $429.99. Choose by whether you write as much as you read." },
+    ],
+    itemList: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Best E Ink Tablets by Use",
+      itemListOrder: "https://schema.org/ItemListUnordered",
+      numberOfItems: 5,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Reading books — Kindle Paperwhite (2026)", item: { "@type": "Thing", name: "Kindle Paperwhite (2026)" }, description: "$199.99; waterproof, warm light, up to 12 weeks of battery. Main catch: Amazon ecosystem only; ships Oct. 28." },
+        { "@type": "ListItem", position: 2, name: "Handwriting notes — reMarkable Paper Pure", item: { "@type": "Thing", name: "reMarkable Paper Pure" }, description: "$399; widely praised writing feel, up to 3 weeks of battery. Main catch: no front light, no color, paid Connect features." },
+        { "@type": "ListItem", position: 3, name: "PDFs and work — Boox Go 10.3 (Gen II) Lumi", item: { "@type": "Thing", name: "Boox Go 10.3 (Gen II) Lumi" }, description: "$449.99; Android 15, Google Play, 300 ppi, front light. Main catch: Android invites distractions; some lag." },
+        { "@type": "ListItem", position: 4, name: "Budget — Boox Go 6 (Gen II)", item: { "@type": "Thing", name: "Boox Go 6 (Gen II)" }, description: "$199, pen extra; pocket-size, Android, microSD slot. Main catch: 6-inch screen, old Android 11." },
+        { "@type": "ListItem", position: 5, name: "Color — Boox Note Air5 C", item: { "@type": "Thing", name: "Boox Note Air5 C" }, description: "$529.99; 10.3-inch color, Android 15, pen and case included. Main catch: muted color at 150 ppi." },
+      ],
+    },
+  },
   "what-is-vibe-coding-2026": {
     metaTitle: "What Is Vibe Coding? A Beginner's Guide (2026)",
     metaDescription:

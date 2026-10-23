@@ -532,6 +532,15 @@ export function renderPageDocument(template, page) {
       });
     }
   }
+  if (Object.hasOwn(page, "itemListJsonLd")) {
+    if (page.itemListJsonLd) {
+      html = upsertJsonLdById(html, "itemlist-jsonld", page.itemListJsonLd);
+    } else {
+      html = transformHeadContent(html, (content) => content, (block, tagName) => {
+        return tagName === "script" && scriptIdFromBlock(block) === "itemlist-jsonld" ? "" : block;
+      });
+    }
+  }
   if (page.bodyHtml !== undefined) {
     html = page.prerenderMode
       ? insertPrerender(html, page.bodyHtml, page.prerenderMode)
@@ -712,6 +721,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
         url: image,
         ...(seoOverride?.heroWidth ? { width: seoOverride.heroWidth } : {}),
         ...(seoOverride?.heroHeight ? { height: seoOverride.heroHeight } : {}),
+        ...(seoOverride?.heroCaption ? { caption: seoOverride.heroCaption } : {}),
       }
     : null;
   const jsonLd = {
@@ -755,6 +765,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
       }
     : null;
   const faqJsonLd = buildFaqJsonLd(seoOverride?.faqs);
+  const itemListJsonLd = seoOverride?.itemList || null;
 
   return renderPageDocument(template, {
     title,
@@ -772,6 +783,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     jsonLd,
     ...(seoOverride ? { breadcrumbJsonLd } : {}),
     faqJsonLd,
+    ...(itemListJsonLd ? { itemListJsonLd } : {}),
     bodyHtml,
     prerenderMode: "article",
   });

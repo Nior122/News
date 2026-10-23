@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { applyArticleContentOverride } from "../lib/article-seo.mjs";
 import {
   renderArticleDocument,
   renderAuthorDocument,
@@ -64,6 +65,56 @@ test("article HTML has canonical metadata, visible content, and NewsArticle JSON
   assert.match(html, /src="\/assets\/main\.js"/);
   assert.equal((html.match(/rel="canonical"/g) ?? []).length, 1);
   assert.equal((html.match(/property="og:url"/g) ?? []).length, 1);
+});
+
+test("e-ink article override renders its page metadata, images, TOC and required structured data", () => {
+  const article = applyArticleContentOverride({
+    slug: "e-ink-gadgets-comeback-2026",
+    title: "Old title",
+    subtitle: "Old subtitle",
+    excerpt: "Old excerpt",
+    body: "<p>Old body</p>",
+    category: "Tech",
+    image_url: "/old-image.jpg",
+    read_time: 6,
+    tags: [],
+    published_at: "2026-06-04T08:00:00.000Z",
+    author_name: "Liam Park",
+  });
+  const html = renderArticleDocument(template, article);
+  const articleScript = html.match(/<script type="application\/ld\+json" id="article-jsonld">([^<]+)<\/script>/);
+  const faqScript = html.match(/<script type="application\/ld\+json" id="faq-jsonld">([^<]+)<\/script>/);
+  const listScript = html.match(/<script type="application\/ld\+json" id="itemlist-jsonld">([^<]+)<\/script>/);
+  assert.ok(articleScript && faqScript && listScript);
+  const articleSchema = JSON.parse(articleScript[1]);
+  const faqSchema = JSON.parse(faqScript[1]);
+  const listSchema = JSON.parse(listScript[1]);
+
+  assert.match(html, /<title>Best E Ink Tablets in 2026: Are They Worth It\? — Scrolltek<\/title>/);
+  assert.match(html, /<h1>Best E Ink Tablets in 2026: Are They Worth Buying\?<\/h1>/);
+  assert.match(html, /name="robots" content="index, follow, max-image-preview:large"/);
+  assert.match(html, /property="article:published_time" content="2026-06-04T08:00:00.000Z"/);
+  assert.match(html, /property="article:modified_time" content="2026-10-23T00:00:00.000Z"/);
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
+  assert.match(html, /aria-label="Table of contents"/);
+  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/best-e-ink-tablets-2026-hero\.webp" alt="A hand uses a stylus over a tablet screen beside a keyboard and smartphone\." width="1200" height="630" fetchpriority="high" decoding="async"/);
+  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/e-ink-screen-readable-in-sunlight\.webp" alt="Person reading on an e ink screen outdoors in bright sunlight" width="1200" height="800" loading="lazy" decoding="async"/);
+  assert.match(html, /Photo: Jakub Zerdzicki \/ Pexels/);
+  assert.match(html, /Photo: Perfecto Capucine \/ Pexels/);
+  assert.equal(article.title, "Best E Ink Tablets in 2026: Are They Worth Buying?");
+  assert.equal(article.image_url, "/images/best-e-ink-tablets-2026-hero.webp");
+  assert.equal(article.read_time, 11);
+  assert.equal(articleSchema["@type"], "Article");
+  assert.equal(articleSchema.dateModified, "2026-10-23T00:00:00.000Z");
+  assert.equal(articleSchema.image[0].width, 1200);
+  assert.equal(articleSchema.image[0].height, 630);
+  assert.equal(articleSchema.author.name, "Liam Park");
+  assert.equal(faqSchema["@type"], "FAQPage");
+  assert.equal(faqSchema.mainEntity.length, 6);
+  assert.equal(listSchema["@type"], "ItemList");
+  assert.equal(listSchema.numberOfItems, 5);
+  assert.equal(listSchema.itemListElement[2].item.name, "Boox Go 10.3 (Gen II) Lumi");
+  assert.doesNotMatch(articleScript[1] + faqScript[1] + listScript[1], /"@type":"(?:Product|Review|AggregateRating)"/);
 });
 
 test("client shell keeps article prerender outside the React root until handoff", () => {

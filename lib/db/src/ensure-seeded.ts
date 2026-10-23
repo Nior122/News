@@ -1108,158 +1108,118 @@ const ARTICLE_BODY_ONE_DEVICE = `<p>Think about what you had on you ten years ag
 
 <p>Configure it intentionally. Protect it properly. Use the tools that genuinely help. And occasionally put it down — because knowing when not to use the most powerful device ever made is its own essential skill.</p>`;
 
-const ARTICLE_BODY_EINK = `<p>You're sitting at your desk. Your laptop has 47 browser tabs open. Your phone is buzzing every three minutes. Your smartwatch just notified you about a notification on your phone.</p>
-
-<p>Now imagine a different scene. A light, thin device. One purpose: to let you read, write, or think. No notifications. No colour display demanding your attention. Just calm, paper-like text on a screen that looks more like a book than a computer.</p>
-
-<p>That's the e-ink promise. And in 2026, people are rediscovering it in large numbers.</p>
-
-<figure>
-  <img
-    src="https://images.pexels.com/photos/1765033/pexels-photo-1765033.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="E-ink e-reader tablet on wooden desk representing minimalist calm reading technology distraction free gadgets 2026"
-    data-search="e-ink e-reader tablet desk calm reading minimalist technology"
-    data-source="pexels.com"
-    width="1200"
-    height="675"
-  />
-  <figcaption>E-ink devices offer something increasingly rare in 2026 — a screen designed for calm, focused use rather than maximum engagement.</figcaption>
-</figure>
-
-<h2>What Is E-Ink and How Does It Work?</h2>
-
-<p>E-ink (short for electronic ink) is a display technology that mimics the appearance of ink on paper. Unlike LCD or OLED screens, which actively emit light to create images, e-ink displays reflect ambient light — just like real paper.</p>
-
-<p>The result is a screen that:</p>
+const ARTICLE_BODY_EINK = `<p>Screens that glow, buzz and beg for attention are exactly what an e ink tablet leaves out. That is the same impulse behind the return of <a href="/article/modern-retro-gadgets-2026" class="article-backlink">simpler, more intentional gadgets</a>. The real question is whether one is worth the money.</p>
+<h2 id="toc-quick-answer-0">Quick Answer</h2>
+<p>An e ink tablet is a paper-like device for reading, handwriting and marking up documents, with a battery that lasts weeks, not hours. It suits people who read long files or take handwritten notes and want fewer distractions. For note-taking, the reMarkable Paper Pure ($399) is the easiest place to start, according to reviewers. If you mostly read novels, a Kindle costs far less. If you want one device for everything, skip e ink.</p>
+<h2 id="toc-best-e-ink-tablets-by-use-1">Best E Ink Tablets by Use</h2>
+<p>These picks come from published expert reviews and manufacturer specs, not hands-on testing by Scrolltek. Prices are US list prices checked in October 2026 and change often. Where a model supports a stylus, the pen is included unless noted.</p>
+<div class="table-scroll-wrap"><table>
+<thead><tr>
+<th scope="col">Best for</th>
+<th scope="col">Pick</th>
+<th scope="col">US price</th>
+<th scope="col">Why it stands out</th>
+<th scope="col">Main catch</th>
+</tr></thead>
+<tbody>
+<tr><td>Reading books</td><td>Kindle Paperwhite (2026)</td><td>$199.99</td><td>Waterproof, warm light, up to 12 weeks of battery</td><td>Amazon ecosystem only; ships Oct. 28</td></tr>
+<tr><td>Handwriting notes</td><td>reMarkable Paper Pure</td><td>$399</td><td>Widely praised writing feel, up to 3 weeks of battery</td><td>No front light, no color, paid Connect features</td></tr>
+<tr><td>PDFs and work</td><td>Boox Go 10.3 (Gen II) Lumi</td><td>$449.99</td><td>Android 15, Google Play, 300 ppi, front light</td><td>Android invites distractions; some lag</td></tr>
+<tr><td>Budget</td><td>Boox Go 6 (Gen II)</td><td>$199, pen extra</td><td>Pocket-size, Android, microSD slot</td><td>6-inch screen, old Android 11</td></tr>
+<tr><td>Color</td><td>Boox Note Air5 C</td><td>$529.99</td><td>10.3-inch color, Android 15, pen and case included</td><td>Muted color at 150 ppi</td></tr>
+</tbody></table></div>
+<p>In a reMarkable vs Boox vs Supernote decision, the real difference is philosophy. reMarkable is a closed, writing-first notebook. Boox is an Android tablet with an e ink screen. Supernote pairs a writing-focused system with a replaceable battery and an upgradable motherboard.</p>
+<p>As an e ink tablet for note taking, the reMarkable Paper Pure, launched in May 2026, replaced the reMarkable 2 at the same $399 price. It adds a faster processor, a larger battery and 32GB of storage, according to <a href="https://liliputing.com/remarkables-paper-pure-is-a-399-e-ink-writing-tablet-that-replaces-the-remarkable-2/" target="_blank" rel="noopener noreferrer">Liliputing's launch coverage</a>. It has no front light and no keyboard accessory support, so it suits well-lit rooms and handwriting, not typing. Reviewers at TechRadar, PopSci and Engadget praise its writing feel, while Digital Trends and Android Authority fault the missing front light and subscription-gated features.</p>
+<p>The Boox Go 10.3 (Gen II) series arrived in March 2026 with Android 15 and, on the Lumi model, a front light, <a href="https://www.androidauthority.com/boox-go-10-3-gen-ii-launch-3649560" target="_blank" rel="noopener noreferrer">starting at $419.99</a>. Full Google Play access lets you install cloud and library apps. Creative Bloq's review notes a little flicker and lag, and a stylus that needs charging.</p>
+<p>If you want an e ink tablet for reading, a plain e-reader may be all you need. <a href="https://www.aboutamazon.com/news/devices/new-kindle-lineup-2026" target="_blank" rel="noopener noreferrer">Amazon's October 2026 redesign</a> made the Kindle Paperwhite thinner and lighter, with up to 12 weeks of battery, and the new 6-inch Kindle starts at $149.99. If you prefer an open-format ecosystem with library lending, the Kobo Libra Colour launched at $219.99 and works with Kobo's stylus, sold separately. Kobo's larger Elipsa 2E, a 2023 model, listed at $399.99 with a stylus.</p>
+<p><strong>Also worth a look.</strong> The Supernote Manta costs $505 without a pen and has a 10.7-inch screen, a replaceable battery and no front light, per Supernote's store. Amazon's 11-inch Kindle Scribe starts at $429.99 without a front light, $499.99 with one, and $629.99 as the Colorsoft. The reMarkable Paper Pro adds an 11.8-inch color screen and a reading light for $629 with a Marker, according to <a href="https://remarkable.com/products/remarkable-paper/pro" target="_blank" rel="noopener noreferrer">reMarkable's store</a>, and the pocket-size Paper Pro Move costs $449.</p>
+<h3 id="toc-what-to-check-before-you-buy-2">What to check before you buy</h3>
 <ul>
-  <li>Looks almost identical to printed text</li>
-  <li>Causes dramatically less eye strain during long reading sessions</li>
-  <li>Uses almost no power when displaying a static image — battery life is measured in weeks, not hours</li>
-  <li>Remains perfectly readable in direct sunlight where most traditional screens wash out</li>
+  <li><strong>Screen size:</strong> 6 to 8 inches fits a pocket; 10 to 11 inches suits full-size documents.</li>
+  <li><strong>Front light:</strong> The Paper Pure and the Supernote devices have none, so plan on good room light.</li>
+  <li><strong>Software:</strong> Closed systems stay focused; Android adds apps and distractions.</li>
+  <li><strong>Pen:</strong> Check whether it is included and whether it needs charging.</li>
 </ul>
-
-<p>The tradeoffs: e-ink screens refresh slowly, can't display smooth video, and were historically limited to greyscale. These limitations kept e-ink confined mostly to Kindle and Kobo e-readers. But something has changed — not the technology, but the people.</p>
-
-<h2>Why E-Ink Is Having a Moment in 2026</h2>
-
-<p>The comeback isn't about a technological breakthrough. It's about a cultural one.</p>
-
-<p>We are collectively exhausted by screens. The average person stares at bright displays for over eleven hours a day. That's eleven hours of blue light, colour saturation, notifications, infinite scroll, and algorithmic content engineered to hold your attention.</p>
-
-<p>E-ink offers something entirely different: a display that doesn't want anything from you. It won't flash notifications. It won't recommend "just one more." It won't glow at you in the dark. It just shows you what you asked to see, and waits.</p>
-
-<p>This aligns directly with the broader focus culture movement — the growing desire for tools that help you do one thing deeply, without distraction. As we explored in <a href="/article/todo-list-broken-better-system-2026" class="article-backlink">why your to-do list is probably broken</a>, the problem most people have isn't a lack of tools — it's too many competing for attention simultaneously.</p>
-
+<h2 id="toc-e-ink-tablet-vs-ipad-vs-regular-e-reader-3">E Ink Tablet vs iPad vs Regular E-Reader</h2>
+<p>The three device types solve different problems, so the comparison is about trade-offs, not winners.</p>
+<div class="table-scroll-wrap"><table>
+<thead><tr>
+<th scope="col"></th>
+<th scope="col">E ink tablet</th>
+<th scope="col">iPad</th>
+<th scope="col">Regular e-reader</th>
+</tr></thead>
+<tbody>
+<tr><td>Best at</td><td>Handwriting, PDFs, focus</td><td>Apps, video, speed, color</td><td>Reading books</td></tr>
+<tr><td>Screen</td><td>Reflective, slow refresh, black and white or muted color</td><td>Backlit LCD</td><td>Reflective, 6 to 7 inches</td></tr>
+<tr><td>Battery</td><td>Days to weeks</td><td>Up to 10 hours, per Apple</td><td>Up to 6 to 12 weeks, per Amazon</td></tr>
+<tr><td>US price</td><td>About $400 to $680</td><td>iPad Air (M4) launched at $599</td><td>From $149.99</td></tr>
+</tbody></table></div>
+<p>An iPad wins on range. The iPad Air launched at $599 in March 2026, close to a Paper Pro's price, and it does far more, though the Apple Pencil costs extra. An e ink tablet wins on focus, battery life and writing feel, while a regular e-reader wins on cost for reading. If you are weighing an e ink tablet vs iPad, ask which one you will pick up when you need to concentrate.</p>
+<h2 id="toc-how-e-ink-works-4">How E Ink Works</h2>
+<p>E ink screens hold millions of tiny capsules filled with charged black and white particles. A small electric field moves the particles up or down, so each spot looks black or white. Two things follow. The screen reflects room light instead of producing its own, and it uses power only when the image changes.</p>
 <figure>
-  <img
-    src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=80"
-    alt="Person reading e-reader e-ink device outdoors in sunlight distraction free focused reading minimal gadget"
-    data-search="person reading e-reader e-ink kindle outdoors sunlight focused"
-    data-source="unsplash.com"
-    width="1200"
-    height="675"
-  />
-  <figcaption>E-ink screens remain perfectly readable in direct sunlight — a fundamental advantage over LCD and OLED displays that wash out in bright conditions.</figcaption>
+  <img src="/images/e-ink-screen-readable-in-sunlight.webp" alt="Person reading on an e ink screen outdoors in bright sunlight" width="1200" height="800" loading="lazy" decoding="async" />
+  <figcaption>E ink reflects light, so it stays readable in direct sun. Photo: Perfecto Capucine / Pexels.</figcaption>
 </figure>
-
-<h2>The Devices Leading the Comeback</h2>
-
-<h3>E-Ink Tablets: Focused Reading and Writing</h3>
-
-<p>The Remarkable 2, Supernote A5, and Boox devices occupy a growing niche: people who want to read documents, annotate PDFs, and take handwritten notes without the distraction of a full tablet. These aren't Kindles — they're focused work tools.</p>
-
-<p>Writers, academics, lawyers, and consultants have discovered that reading long documents on e-ink is dramatically more sustainable than reading on a laptop screen. Annotation on devices like the Remarkable 2 closely mirrors writing on paper — the experience is genuinely different from tapping a glass screen.</p>
-
-<h3>E-Ink Phones: The Most Niche Comeback</h3>
-
-<p>Hisense and Light Phone III represent opposite ends of the spectrum. Hisense's devices run full Android with an e-ink display. The Light Phone takes a more radical position: a minimal device intentionally designed to do less, helping its users reclaim time from their smartphone.</p>
-
-<p>The Light Phone has developed a cult following among people who want to reduce their phone dependency without going entirely offline. It connects to the same impulse driving <a href="/article/modern-retro-gadgets-2026" class="article-backlink">the return of intentionally limited retro gadgets</a> — the desire for technology that respects your attention rather than harvesting it.</p>
-
-<h3>E-Ink Smart Displays and Dashboards</h3>
-
-<p>A new category of always-on e-ink displays is emerging for home and office use. These devices show calendars, to-do lists, weather, and schedules on a wall-mounted or desk screen that draws near-zero power and doesn't glow in the background. They hold information until you choose to look — they don't demand it.</p>
-
-<figure>
-  <img
-    src="https://images.pexels.com/photos/6804604/pexels-photo-6804604.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="E-ink digital notepad tablet with stylus handwritten notes on e-paper screen distraction free writing tool 2026"
-    data-search="e-ink tablet stylus handwriting digital notepad e-paper writing notes"
-    data-source="pexels.com"
-    width="1200"
-    height="675"
-  />
-  <figcaption>E-ink tablets with stylus support offer a handwriting experience that closely mirrors paper — with the organisational benefits of digital storage.</figcaption>
-</figure>
-
-<h2>Eye Strain — The Science of Reflective Displays</h2>
-
-<p>Reading from an emissive display (LCD, OLED) means your eyes process light projected directly at them. Reading from a reflective display (e-ink, paper) works the same way you read printed text — light reflects off the surface to your eye rather than shining from the source.</p>
-
-<p>Studies consistently show that reading on e-ink causes significantly less eye strain than reading on backlit screens over extended periods. For people who read for hours daily — students, writers, researchers, lawyers — this is a meaningful quality-of-life difference.</p>
-
-<h2>Battery Life That Changes the Relationship with Charging</h2>
-
-<p>E-ink's power consumption is almost absurdly low compared to traditional screens. A Kindle holds a charge for weeks. The Remarkable 2 lasts around two weeks of daily use. E-ink home displays run for months on a single charge.</p>
-
-<p>This fundamentally changes how you relate to the device. You stop thinking about charging. The device is simply always there, always on, always available — without the anxiety that comes from watching a battery percentage drop.</p>
-
-<p>For people who practise digital minimalism, this is philosophically significant. Your relationship with a device that doesn't need constant attention — for its battery, notifications, or updates — is qualitatively different from your relationship with a smartphone. It's a tool, not a dependency.</p>
-
-<p>It also connects to why people are increasingly drawn to gadgets built on restraint — the same appeal driving interest in <a href="/article/privacy-first-gadgets-2026" class="article-backlink">privacy-first gadgets that don't demand your data</a>.</p>
-
-<figure>
-  <img
-    src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=1200&q=80"
-    alt="E-reader showing weeks of battery life minimal power consumption compared to traditional smartphone screens"
-    data-search="e-reader battery life minimal power consumption weeks e-ink"
-    data-source="unsplash.com"
-    width="1200"
-    height="675"
-  />
-  <figcaption>Battery life measured in weeks eliminates one of the most persistent anxieties of modern device ownership — the constant need to charge.</figcaption>
-</figure>
-
-<h2>Why Creators and Students Love E-Ink</h2>
-
-<p>For students, the use case is obvious: reading academic papers, textbooks, and research material without the distraction of a full tablet. An e-ink device in a library doesn't ping with notifications. It holds your reading material and nothing else.</p>
-
-<p>The growing AI study landscape — as covered in <a href="/article/ai-tools-for-students-2026" class="article-backlink">how AI tools are changing the way students study in 2026</a> — is largely phone and laptop-based. E-ink fills a different gap: focused input and focused reading, without the overhead of a general-purpose computing device.</p>
-
-<p>For writers, the appeal is slightly different. Many authors and journalists find that writing on e-ink — without the visual noise of a traditional interface — helps them think more clearly. The physical feel of a stylus on an e-ink surface genuinely differs from tapping glass, and for some people that difference in cognitive experience is worth paying for.</p>
-
-<h2>Can E-Ink Go Mainstream Again?</h2>
-
-<p>Probably not in the sense of replacing smartphones. The slow refresh rate and limited colour reproduction make it unsuitable for video, gaming, and most social media interfaces.</p>
-
-<p>But mainstream isn't the right measure. E-ink is becoming a specialist tool for people who've identified a specific need it solves better than alternatives: long reading sessions, handwritten note-taking, always-on information displays, and focused work without distraction.</p>
-
-<p>That's a growing market. As screen fatigue intensifies and focused attention becomes a consciously valued resource, devices that help you use screens more intentionally have a clear value proposition.</p>
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>Is e-ink actually better for your eyes than regular screens?</h3>
-<p>Yes, for extended reading sessions. E-ink reflects ambient light rather than projecting light at your eyes, significantly reducing eye strain over hours of reading. If you read for more than an hour daily on a screen, the difference is noticeable within the first week of switching.</p>
-
-<h3>What is the best e-ink device to buy in 2026?</h3>
-<p>It depends on your use case. For reading books: the Kindle Paperwhite or Kobo Libra. For professional PDF annotation: the Remarkable 2 or Boox Tab Ultra. For handwriting and notes: the Supernote A5X. For minimal phone use: the Light Phone III.</p>
-
-<h3>Why does e-ink have such good battery life?</h3>
-<p>E-ink only uses power when the display changes — not when it's holding a static image. A page of text drawn on e-ink can remain visible indefinitely with zero power consumption. Power is only consumed during the brief page-turn refresh.</p>
-
-<h3>Can you use e-ink tablets for work?</h3>
-<p>For reading-intensive work, yes — they're genuinely better than laptops for long document review. For handwriting and drafting, e-ink tablets with stylus support work well. For tasks requiring software or multiple windows, a traditional laptop is still necessary.</p>
-
-<h3>Is colour e-ink available in 2026?</h3>
-<p>Yes. Colour e-ink has improved significantly and appears in devices like the Boox Go Color. It's not as vibrant as LCD or OLED and still refreshes slowly, but it's sufficient for illustrated documents and annotated PDFs without the eyestrain of backlit screens.</p>
-
-<h2>The Case for a Calmer Screen</h2>
-
-<p>You don't have to become a digital minimalist. You don't have to throw away your phone or give up your laptop. But there is real value in having at least one device in your life that doesn't want anything from you.</p>
-
-<p>E-ink devices found their audience not because the technology became dramatically better — though it has improved — but because the need for what they offer became more urgent. Focus is scarce. Attention is under constant attack. A screen that simply shows you what you asked to see, and nothing more, is an increasingly radical proposition.</p>
-
-<p>That's why e-ink is back. And it's not going anywhere.</p>`;
+<p>That is why e ink stays readable in sunlight and why a static page costs almost nothing to display. Front-lit models add a light that shines onto the screen for dark rooms. Many color panels, such as Kaleido 3, place a color filter over black-and-white ink, which is why color looks muted and sits at 150 ppi while black text reaches 300 ppi.</p>
+<h2 id="toc-eye-strain-what-the-evidence-actually-says-5">Eye Strain: What the Evidence Actually Says</h2>
+<p>The popular claim is that e ink is easier on the eyes than a tablet. The research supports a smaller version of that claim.</p>
+<p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0083676" target="_blank" rel="noopener noreferrer">A 2013 PLOS ONE study</a> had 12 adults read for more than an hour on a Kindle Paperwhite (e ink), a Kindle Fire HD (LCD) and a paper book. The LCD tablet caused more visual fatigue, measured by blink rate and a self-reported scale, while e ink and paper did not differ. The paper also cites earlier work that found no difference between an e ink reader and a first-generation iPad.</p>
+<p>Both studies used small groups, older devices and short sessions, and neither tested long-term effects. The <a href="https://aao.org/eye-health/tips-prevention/should-you-be-worried-about-blue-light" target="_blank" rel="noopener noreferrer">American Academy of Ophthalmology</a> says screen eye strain mostly comes from blinking less, does not cause lasting damage, and that blue light from screens has not been shown to harm the eye.</p>
+<p>So an e ink tablet is a reasonable way to cut glare and screen brightness during long reading sessions, not a guaranteed fix. Front-lit models add their own light, so brightness still matters. Taking breaks helps on any screen (every 20 minutes, look 20 feet away for 20 seconds), and symptoms that persist deserve an eye exam.</p>
+<h2 id="toc-battery-life-6">Battery Life</h2>
+<p>Battery life is where e ink wins clearly, though ratings depend heavily on how you use the device.</p>
+<ul>
+  <li>reMarkable Paper Pure: up to three weeks at one hour of use a day.</li>
+  <li>reMarkable Paper Pro: about two weeks for two hours of writing, five days a week.</li>
+  <li>Kindle Paperwhite (2026): up to 12 weeks; new base Kindle, up to six weeks.</li>
+  <li>Kindle Scribe: weeks, but writing drains it much faster than reading.</li>
+  <li>Boox Go 10.3 (Gen II): several weeks on light use, less with apps and the front light.</li>
+  <li>iPad Air (M4): up to 10 hours of browsing or video on Wi-Fi.</li>
+</ul>
+<p>These are manufacturer ratings or reviewer estimates under set conditions. Wi-Fi, front-light brightness and heavy annotation all shorten them.</p>
+<h2 id="toc-the-downsides-7">The Downsides</h2>
+<h3 id="toc-slow-refresh-and-ghosting-8">Slow refresh and ghosting</h3>
+<p>E ink redraws more slowly than a glass screen, so scrolling and animation look choppy and video is not practical. Faint ghost images can linger after you erase writing. Newer panels are better: Mashable found almost no ghosting on the 2025 Kindle Scribe, though light ghosting appears when erasing. Creative Bloq still noted a little flicker and lag on the Boox Go 10.3 Lumi.</p>
+<h3 id="toc-limited-color-9">Limited color</h3>
+<p>Color e ink is muted. Kaleido 3 panels, used by Boox and Kobo, show 4,096 colors at 150 ppi, against 300 ppi in black and white. That works for highlights, charts and comics, but not photos or video. E Ink announced Kaleido 4 on October 15, 2026, claiming double the color gamut and 50% more contrast. The first device is a Hanvon notebook sold in China, and Amazon and Kobo have not announced devices, so color buyers may want to wait.</p>
+<h3 id="toc-software-limits-10">Software limits</h3>
+<p>reMarkable tablets have no app store or browser and cannot open DRM-protected Kindle or Kobo books, according to Creative Bloq. The Kindle Scribe keeps you inside Amazon's ecosystem. Boox runs full Android, which adds flexibility but makes it a poor fit for a <a href="/article/digital-detox-jomo-2026" class="article-backlink">digital detox</a>, as Creative Bloq also points out.</p>
+<h3 id="toc-price-subscriptions-and-accessories-11">Price, subscriptions and accessories</h3>
+<p>These are premium prices for single-purpose devices. reMarkable's Connect subscription costs $4 a month or $39 a year, according to Liliputing, and gates handwriting search, cloud sync and note-taking in its apps. Without it, only files used in the last 50 days stay in the cloud. A Book Folio adds $89 and a Type Folio keyboard $229 for the Paper Pro, and Supernote ships without a pen. If you care where your notes live, read our guide to <a href="/article/privacy-first-gadgets-2026" class="article-backlink">privacy-first gadgets</a> before turning on cloud sync.</p>
+<h3 id="toc-availability-outside-the-us-12">Availability outside the US</h3>
+<p>Check shipping, import duties and warranty before you order. When checked in October 2026, reMarkable's Paper Pro store page listed no African countries among its shipping destinations, while Supernote's store lists Nigeria. Prices in this guide are US prices, and local prices, taxes and duties vary.</p>
+<h2 id="toc-who-should-buy-one-and-who-should-skip-13">Who Should Buy One, and Who Should Skip</h2>
+<p><strong>Buy one if you:</strong></p>
+<ul>
+  <li>Read long PDFs, papers or contracts most days. Students juggling readings and lecture notes are a natural fit, particularly if they already lean on <a href="/article/ai-tools-for-students-2026" class="article-backlink">AI tools for studying</a>.</li>
+  <li>Think better by hand and want digital, organized notes. If your task list keeps failing, see <a href="/article/todo-list-broken-better-system-2026" class="article-backlink">why most to-do lists break</a>; a single notebook can be a simpler system.</li>
+  <li>Want a screen you can read outdoors and charge every few weeks.</li>
+</ul>
+<p><strong>Skip it if you:</strong></p>
+<ul>
+  <li>Mostly read novels. A Kindle or Kobo costs less and is the better reading device, according to reviewers.</li>
+  <li>Want video, games or fast apps. An iPad is the better single device.</li>
+  <li>Type more than you write. The Paper Pure has no keyboard accessory, and the Paper Pro's Type Folio adds $229.</li>
+  <li>Only want less phone time. A simpler <a href="/article/dumb-tech-trend-2026" class="article-backlink">dumb-tech approach</a> may cost far less.</li>
+</ul>
+<h2 id="toc-frequently-asked-questions-14">Frequently Asked Questions</h2>
+<h3 id="toc-is-an-e-ink-tablet-better-for-your-eyes-15">Is an e ink tablet better for your eyes?</h3>
+<p>It may be easier than an LCD tablet for long reading. A small 2013 study found more visual fatigue on an LCD tablet than on e ink or paper. The American Academy of Ophthalmology says screen eye strain is temporary and linked to blinking less. Take breaks on any screen, and see an eye doctor if symptoms persist.</p>
+<h3 id="toc-what-is-the-best-e-ink-tablet-in-2026-16">What is the best e ink tablet in 2026?</h3>
+<p>It depends on the job. For handwriting, reviewers favor the reMarkable Paper Pure ($399). For PDFs and Android apps, the Boox Go 10.3 (Gen II) Lumi ($449.99) is a strong pick. For color, consider the Boox Note Air5 C ($529.99) or reMarkable Paper Pro ($629). For books alone, a Kindle Paperwhite costs less.</p>
+<h3 id="toc-are-e-ink-tablets-worth-it-17">Are e ink tablets worth it?</h3>
+<p>They are worth it if you handwrite notes or read long documents most days and value focus and battery life. They are poor value if you expect an iPad replacement, because refresh is slow and many models have no app store. Many readers who only read books are better served by a cheaper Kindle or Kobo.</p>
+<h3 id="toc-can-you-use-an-e-ink-tablet-for-work-18">Can you use an e ink tablet for work?</h3>
+<p>Yes, for reading and marking up documents, handwriting meeting notes and planning. Some models connect to calendars, Google Drive or OneDrive. They are not laptop replacements: refresh is slow, multitasking is limited and typing is awkward. A focused second device alongside a laptop is the realistic setup.</p>
+<h3 id="toc-is-color-e-ink-good-yet-19">Is color e ink good yet?</h3>
+<p>It is useful, not vivid. Color e ink suits highlights, charts, comics and annotated PDFs, but colors look muted and refresh is slow. Kaleido 3 panels show 4,096 colors at 150 ppi. E Ink announced Kaleido 4 in October 2026, but Amazon and Kobo have not announced devices yet.</p>
+<h3 id="toc-e-ink-tablet-vs-kindle-which-should-you-buy-20">E ink tablet vs Kindle: which should you buy?</h3>
+<p>A standard Kindle is for books and costs $149.99 or more. An e ink tablet adds a larger screen and a stylus for handwriting and PDF markup. Amazon's Kindle Scribe sits between them, with an 11-inch display, pen and Kindle store from $429.99. Choose by whether you write as much as you read.</p>
+<h2 id="toc-conclusion-pick-the-job-first-21">Conclusion: Pick the Job First</h2>
+<p>Pick the job before the device. For handwriting, start with the reMarkable Paper Pure at $399. For PDFs and apps, look at the Boox Go 10.3 (Gen II) Lumi at $449.99. For books alone, a Kindle Paperwhite at $199.99 does the job for less. An e ink tablet is a tool for one kind of focus, not a replacement for a laptop or iPad. That narrow purpose is the part of the calmer-tech trend that holds up in daily use.</p>
+<p>Own one already? Tell us what you use it for and what you wish it did better, or browse more gadget guides in <a href="/category/tech" class="article-backlink">Tech</a>.</p>`;
 
 const ARTICLE_BODY_SUBSCRIPTION_FATIGUE = `<p>Open your bank statement and count them. Spotify. Netflix. YouTube Premium. iCloud storage. Google One. Adobe Creative Cloud. Dropbox. Microsoft 365. Your VPN. Your password manager. The app you signed up for in January and forgot about.</p>
 
@@ -4861,17 +4821,17 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
   },
   {
     slug: "e-ink-gadgets-comeback-2026",
-    title: "Why E-Ink Gadgets Are Quietly Making a Comeback",
-    subtitle: "In a world of constant notifications and bright screens, e-ink tablets and devices are finding a new audience who simply want to focus",
-    excerpt: "E-ink gadgets are becoming popular again as people look for calmer, distraction-free technology in 2026.",
+    title: "Best E Ink Tablets in 2026: Are They Worth Buying?",
+    subtitle: "Which e ink tablet fits reading, handwriting or work, what each costs in October 2026, and who should skip one.",
+    excerpt: "Which e ink tablet should you buy in 2026? Compare the reMarkable Paper Pure, Boox, Kindle Scribe and more by price, battery life and use, plus who should skip one.",
     body: ARTICLE_BODY_EINK,
     category: "Tech",
     authorId: 4,
     publishedAt: new Date("2026-06-04T08:00:00Z"),
-    readTime: 8,
-    imageUrl: "https://images.pexels.com/photos/1765033/pexels-photo-1765033.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    readTime: 11,
+    imageUrl: "/images/best-e-ink-tablets-2026-hero.webp",
     views: 0, featured: false, editorsPick: false,
-    tags: ["E-Ink", "E-Reader", "Digital Minimalism", "Focus Tech", "Remarkable", "Distraction Free", "Gadgets"],
+    tags: ["e ink tablet", "best e ink tablet", "reMarkable", "Boox", "Supernote", "Kindle Scribe", "e-readers", "note-taking"],
   },
   {
     slug: "subscription-fatigue-tech-2026",
@@ -5777,7 +5737,7 @@ export async function ensureSeeded(): Promise<void> {
       if (existing.length === 0) {
         await db.insert(articlesTable).values(article);
         inserted++;
-      } else if (article.slug === "what-is-vibe-coding-2026") {
+      } else if (article.slug === "what-is-vibe-coding-2026" || article.slug === "e-ink-gadgets-comeback-2026") {
         await db
           .update(articlesTable)
           .set({

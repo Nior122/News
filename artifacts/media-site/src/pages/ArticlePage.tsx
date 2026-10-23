@@ -476,6 +476,7 @@ export default function ArticlePage() {
           url: resolvedOgImage,
           ...(seoOverride?.heroWidth ? { width: seoOverride.heroWidth } : {}),
           ...(seoOverride?.heroHeight ? { height: seoOverride.heroHeight } : {}),
+          ...(seoOverride?.heroCaption ? { caption: seoOverride.heroCaption } : {}),
         }]
       : undefined,
     datePublished: new Date(article.publishedAt).toISOString(),
@@ -529,6 +530,7 @@ export default function ArticlePage() {
       <JsonLd data={jsonLdData} id="article-jsonld" />
       <JsonLd data={breadcrumbJsonLdData} id="breadcrumb-jsonld" />
       {faqJsonLdData && <JsonLd data={faqJsonLdData} id="faq-jsonld" />}
+      {seoOverride?.itemList && <JsonLd data={seoOverride.itemList} id="itemlist-jsonld" />}
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]" aria-hidden="true">

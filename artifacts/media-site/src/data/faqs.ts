@@ -195,20 +195,28 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
 
   "e-ink-gadgets-comeback-2026": [
     {
-      question: "What is the best e-ink device to buy in 2026?",
-      answer: "For reading: the Kindle Paperwhite or Kobo Libra 2 are the gold standard. For note-taking and handwriting: the reMarkable 2 or Supernote A5X are most popular with professionals. For a minimal phone: the Light Phone III uses an e-ink display and is the leading choice for people replacing a smartphone.",
+      question: "Is an e ink tablet better for your eyes?",
+      answer: "It may be easier than an LCD tablet for long reading. A small 2013 study found more visual fatigue on an LCD tablet than on e ink or paper. The American Academy of Ophthalmology says screen eye strain is temporary and linked to blinking less. Take breaks on any screen, and see an eye doctor if symptoms persist.",
     },
     {
-      question: "Is e-ink better for your eyes than a regular screen?",
-      answer: "For most people, yes — especially during long reading sessions. E-ink reflects ambient light rather than emitting it directly, which reduces eye strain. It also eliminates flicker. Many people who struggle to read on tablets or laptops find e-ink significantly more comfortable for extended use.",
+      question: "What is the best e ink tablet in 2026?",
+      answer: "It depends on the job. For handwriting, reviewers favor the reMarkable Paper Pure ($399). For PDFs and Android apps, the Boox Go 10.3 (Gen II) Lumi ($449.99) is a strong pick. For color, consider the Boox Note Air5 C ($529.99) or reMarkable Paper Pro ($629). For books alone, a Kindle Paperwhite costs less.",
     },
     {
-      question: "Can you use an e-ink tablet for work?",
-      answer: "For reading-intensive work — reviewing documents, annotating PDFs, long-form research — e-ink tablets are genuinely better than laptops. For note-taking and drafting, stylus-equipped e-ink tablets work well. For tasks requiring software, multiple windows, or frequent switching, a traditional laptop is still necessary.",
+      question: "Are e ink tablets worth it?",
+      answer: "They are worth it if you handwrite notes or read long documents most days and value focus and battery life. They are poor value if you expect an iPad replacement, because refresh is slow and many models have no app store. Many readers who only read books are better served by a cheaper Kindle or Kobo.",
     },
     {
-      question: "Why does e-ink have such good battery life?",
-      answer: "E-ink only uses power when the display changes — not when it's holding a static image. A page of text drawn on an e-ink screen remains visible indefinitely with zero power consumption. Power is only consumed during the brief page-turn refresh, which is why Kindle batteries last weeks rather than hours.",
+      question: "Can you use an e ink tablet for work?",
+      answer: "Yes, for reading and marking up documents, handwriting meeting notes and planning. Some models connect to calendars, Google Drive or OneDrive. They are not laptop replacements: refresh is slow, multitasking is limited and typing is awkward. A focused second device alongside a laptop is the realistic setup.",
+    },
+    {
+      question: "Is color e ink good yet?",
+      answer: "It is useful, not vivid. Color e ink suits highlights, charts, comics and annotated PDFs, but colors look muted and refresh is slow. Kaleido 3 panels show 4,096 colors at 150 ppi. E Ink announced Kaleido 4 in October 2026, but Amazon and Kobo have not announced devices yet.",
+    },
+    {
+      question: "E ink tablet vs Kindle: which should you buy?",
+      answer: "A standard Kindle is for books and costs $149.99 or more. An e ink tablet adds a larger screen and a stylus for handwriting and PDF markup. Amazon's Kindle Scribe sits between them, with an 11-inch display, pen and Kindle store from $429.99. Choose by whether you write as much as you read.",
     },
   ],
 
