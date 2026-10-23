@@ -5,6 +5,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { isRedirectedArticleSlug } from './lib/article-routing.mjs';
+import { getArticleSeoOverride } from './lib/article-seo.mjs';
 import { RENDERABLE_CATEGORY_SLUGS } from './lib/site-categories.mjs';
 import { hasMeaningfulArticleBody } from './lib/seo-html.mjs';
 
@@ -81,7 +82,11 @@ export function buildSitemapXml(articles) {
     if (isRedirectedArticleSlug(slug)) continue;
 
     try {
-      add(`${SITE_ORIGIN}/article/${encodeURIComponent(slug)}`, lastmodFor(article.published_at));
+      const seoOverride = getArticleSeoOverride(slug);
+      add(
+        `${SITE_ORIGIN}/article/${encodeURIComponent(slug)}`,
+        lastmodFor(seoOverride?.dateModified ?? article.published_at),
+      );
     } catch {
       // Skip malformed database values rather than publishing broken URLs.
     }

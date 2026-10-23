@@ -37,6 +37,10 @@ const REDIRECTED_ARTICLE_SLUGS = [
   "ai-smart-glasses-future",
 ];
 
+const ARTICLE_LASTMOD_OVERRIDES: Record<string, string> = {
+  "what-is-vibe-coding-2026": "2026-10-23T00:00:00.000Z",
+};
+
 function escapeXml(str: string): string {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -130,11 +134,14 @@ router.get("/sitemap.xml", async (req, res) => {
       if (seen.has(loc)) continue;
       seen.add(loc);
 
-      const lastmod = lastmodFor(article.publishedAt);
-      const imageBlock = article.imageUrl
+      const lastmod = lastmodFor(ARTICLE_LASTMOD_OVERRIDES[slug] ?? article.publishedAt);
+      const resolvedImageUrl = article.imageUrl
+        ? new URL(article.imageUrl, `${SITE_URL}/`).href
+        : null;
+      const imageBlock = resolvedImageUrl
         ? `
     <image:image>
-      <image:loc>${escapeXml(article.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(resolvedImageUrl)}</image:loc>
       <image:title>${escapeXml(article.title)}</image:title>
     </image:image>`
         : "";

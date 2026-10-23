@@ -4426,122 +4426,275 @@ const articles: (typeof articlesTable.$inferInsert)[] = [
   },
   {
     slug: "what-is-vibe-coding-2026",
-    title: "What Is Vibe Coding — And Why 63% of the People Doing It Are Not Developers",
-    subtitle: "Vibe coding lets anyone build real apps just by describing what they want in plain English — and the majority of people doing it have never written a line of code",
-    excerpt: "Vibe coding is the biggest shift in software creation since the smartphone. Here is what it is, why it went viral, and what non-developers can actually build with it right now.",
-    body: `<p>What if you could build a real app — a working, usable piece of software — just by describing what you want in plain English? No code. No technical training. Just you, a laptop, and a clear idea of what you want to create.</p>
+    title: "What Is Vibe Coding? A Beginner's Guide for 2026",
+    subtitle: "Vibe coding lets you build apps by describing them in plain English. Here is how it works, which tools to try, and what can go wrong.",
+    excerpt: "Vibe coding means building software by describing it in plain English and letting AI write the code. See how it works, which tools to try and where it can go wrong.",
+    body: `<p>Vibe coding is a way of building software where you describe what you want in plain language and an AI writes the code for you. Instead of typing every line yourself, you steer the project with prompts, test what comes back, and ask the AI to fix or change things until it works.</p>
 
-<p>That's what vibe coding is. And the part that surprises most people: 63% of the people already doing it are not developers. They're founders, students, designers, and ordinary people who finally have a way to bring their ideas to life without learning to code first.</p>
+<p>The approach went from a single social media post in early 2025 to a mainstream workflow across startups, classrooms and big tech companies. Whether you have never written a line of code or you ship software for a living, it helps to understand what vibe coding actually does well and where it breaks down.</p>
 
-<p>Here's everything you need to know — including the parts other articles skip.</p>
+<h2 id="what-is-vibe-coding">What is vibe coding?</h2>
 
-<h2>Where the Term Came From — And Why It Exploded</h2>
+<p>At its simplest, vibe coding flips the usual relationship between a person and a code editor. Traditional programming asks you to translate an idea into exact syntax a computer understands. Vibe coding lets you keep working at the level of the idea while a large language model handles the syntax, file structure and boilerplate.</p>
 
-<p>The term "vibe coding" was coined by Andrej Karpathy in early 2025. Karpathy is not a casual observer — he's a former AI Director at Tesla and one of the co-founders of OpenAI. When he described his personal coding process as "vibing with the AI rather than writing code," the tech world took notice immediately.</p>
+<p>Computer scientist <a href="https://simonwillison.net/2025/Mar/19/vibe-coding/" target="_blank" rel="noopener noreferrer">Simon Willison draws a useful line</a> here. Using an AI assistant to help write code that you still read, test and understand is just AI-assisted programming. True vibe coding means accepting code you have not fully read and judging it mainly by whether the app behaves the way you wanted.</p>
 
-<p>Collins Dictionary named "vibe coding" its Word of the Year for 2025. Google Trends recorded a 6,700% search increase since the term was first used. What started as one researcher's description of his weekend habit became a cultural and commercial phenomenon worth $4.7 billion in 2026. Understanding why requires understanding what changed in AI — and the broader story of how AI tools are reshaping knowledge work is covered in our piece on <a href="/article/google-io-2026-ai-announcements" class="article-backlink">the biggest AI announcements shaping 2026</a>.</p>
+<p>That distinction matters because the two habits carry very different risks, which we get into below.</p>
 
-<figure>
-  <img
-    src="https://images.pexels.com/photos/574077/pexels-photo-574077.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="AI software development coding tools viral trend technology 2026"
-    data-search="AI software development coding viral trend technology 2026"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>What started as one researcher's description of his weekend hobby became Collins Dictionary's Word of the Year and a multi-billion-dollar industry in under twelve months.</figcaption>
-</figure>
+<h3 id="where-the-term-came-from">Where the term came from</h3>
 
-<h2>What Vibe Coding Actually Looks Like in Practice</h2>
+<p>Former Tesla AI director and OpenAI co-founder <a href="https://x.com/karpathy/status/1886192184808149383" target="_blank" rel="noopener noreferrer">Andrej Karpathy coined "vibe coding"</a> in a post on X on February 2, 2025. He described building weekend projects by talking to an AI through voice input, barely touching the keyboard, accepting suggested changes without reading diffs, and pasting error messages straight back into the chat when something failed.</p>
 
-<p>Here's a real example. You open a vibe coding tool like Lovable or Bolt.new. You type: "Build me a habit tracker that lets me add daily habits, mark them complete, and shows me a streak counter." The AI generates a fully working web application — with a database, a user interface, and all the logic — in under two minutes.</p>
+<p>The phrase caught on fast because developers recognised the behaviour immediately. Within nine months, <a href="https://kvia.com/news/business-technology/cnn-business-consumer/2025/11/06/vibe-coding-named-collins-dictionarys-word-of-the-year/" target="_blank" rel="noopener noreferrer">Collins Dictionary named "vibe coding" its 2025 Word of the Year</a> after tracking a steep jump in usage across tech media and everyday conversation.</p>
 
-<p>You review it. You don't like the colour scheme. You type: "Make the background dark and use green for completed habits." Done. You want to add a feature. You describe it. The AI updates the code. You're not writing code — you're directing. You're the product manager and the AI is the engineering team. This shift is directly reshaping how technology is built, connecting to the broader on-device AI wave our piece on <a href="/article/amd-on-device-ai-no-internet-2026" class="article-backlink">AMD's offline AI and what it means for software</a> covers in detail.</p>
+<p>A year later, Karpathy himself suggested the industry was already moving toward a more disciplined version he called <a href="https://thenewstack.io/vibe-coding-is-passe/" target="_blank" rel="noopener noreferrer">agentic engineering</a>, where AI agents still write the code, but humans supervise architecture, testing and quality much more closely.</p>
 
-<figure>
-  <img
-    src="https://images.pexels.com/photos/4709285/pexels-photo-4709285.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="AI coding interface screen natural language prompt code generation output"
-    data-search="AI coding interface screen natural language code generation output"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>In vibe coding you describe what you want in plain English — and the AI writes the code, builds the interface, and deploys it for you.</figcaption>
-</figure>
+<h2 id="how-vibe-coding-works-step-by-step">How vibe coding works, step by step</h2>
 
-<h2>The Tools Making Vibe Coding Possible in 2026</h2>
+<p>Most vibe coding sessions follow the same tight loop:</p>
 
-<h3>For Complete Non-Developers</h3>
-<p><strong>Lovable</strong> ($25–$29/month) is the most popular tool for non-developers building full-stack web applications. You describe your app in natural language and Lovable builds the entire thing — frontend, backend, database. <strong>Bolt.new</strong> ($25–$29/month) is similar, excellent for instant web apps and prototypes. <strong>Replit</strong> is browser-based, beginner-friendly, and has a generous free tier for smaller projects.</p>
+<ol>
+  <li><strong>Describe the goal.</strong> You tell the AI what you want to build, who it is for, and how it should look or behave.</li>
+  <li><strong>Let the AI generate a first version.</strong> The tool creates files, installs packages, writes frontend and backend code, and starts a preview.</li>
+  <li><strong>Run the app and inspect the result.</strong> Rather than reading every file first, you click around, test inputs and see what actually happens.</li>
+  <li><strong>Refine in plain English.</strong> You ask for changes one step at a time, or paste error messages back into the chat until the issue disappears.</li>
+</ol>
 
-<h3>For Developers Who Want to Go Faster</h3>
-<p><strong>Cursor</strong> ($20/month) is the tool of choice for professional developers — it sits inside your editor and suggests entire functions and code blocks in real time. <strong>GitHub Copilot</strong> is the enterprise standard, now used by 92% of US developers who use AI coding tools daily. For professionals, these tools are essential infrastructure.</p>
-
-<h2>The Numbers Behind the Trend</h2>
-
-<p>The vibe coding market hit $4.7 billion in 2026 and is projected to reach $12.3 billion by 2027. Enterprise adoption grew 340% between 2024 and 2026. 87% of Fortune 500 companies are now running at least one vibe coding platform. Gartner projects 60% of all new code globally will be AI-generated by the end of 2026.</p>
-
-<p>The 63% figure is the one that matters most for non-technical readers. It means the majority of vibe coding activity is not developers getting faster — it's non-developers building things for the first time. Product managers shipping tools they used to submit as feature requests. Founders building MVPs without a technical co-founder. Designers bringing their mockups to life without waiting for an engineering sprint.</p>
+<p>You repeat that loop until the app does what you want. In practice, most of the work is not writing code. It is deciding what to ask next, spotting what broke, and checking whether the app behaves properly on edge cases.</p>
 
 <figure>
-  <img
-    src="https://images.pexels.com/photos/669622/pexels-photo-669622.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Technology market growth chart AI coding tools statistics 2026"
-    data-search="technology market growth chart AI tools users statistics 2026"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>The vibe coding market hit $4.7 billion in 2026 — driven primarily by the 63% of users who had never written a single line of code before.</figcaption>
+  <img src="/images/vibe-coding-workflow-diagram.svg" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback" width="1000" height="400" loading="lazy" decoding="async" />
+  <figcaption>The basic vibe coding loop.</figcaption>
 </figure>
 
-<h2>The Honest Risks Nobody Wants to Talk About</h2>
+<h3 id="a-five-minute-example">A five-minute example</h3>
 
-<p>Here's where it gets less exciting — and more important. Research shows that up to 45% of AI-generated code contains security vulnerabilities. This doesn't mean vibe-coded apps are always dangerous, but code that hasn't been reviewed by someone who understands security is risky to deploy to real users with real data.</p>
+<p>Say you want a small page that splits a restaurant bill between friends, including tip and tax. In a browser builder like Lovable, Bolt or Replit, your first prompt might be:</p>
 
-<p>There's also the debugging problem. Studies show that 63% of developers now spend more time fixing AI-generated code than writing equivalent code from scratch would have taken. The AI is fast to generate — but the output isn't always correct. For personal projects and prototypes, this is manageable. For anything handling sensitive user data or payment information, it requires careful review.</p>
+<p><em>"Build a mobile-friendly bill splitter. Let me enter the subtotal, tax percentage, tip percentage, and number of people. Show what each person owes in large clear text, plus a reset button."</em></p>
 
-<p>The skill you still need is product thinking — knowing what good software feels like, what it should and shouldn't do, and when something is wrong even if you can't identify why. AI provides the execution. You provide the judgment. This connects to broader questions about what AI replaces in the workplace, which our coverage of <a href="/article/big-tech-725-billion-ai-spending-layoffs-2026" class="article-backlink">big tech's $725 billion AI bet and its workforce implications</a> addresses directly.</p>
+<p>Within a minute, you have a working screen. Next you notice two problems: someone did not drink alcohol, and the currency defaults to dollars. So your second prompt says:</p>
 
-<figure>
-  <img
-    src="https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Person reviewing AI generated code screen debugging security check laptop"
-    data-search="person reviewing code screen debugging laptop checking security"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>Vibe coding is powerful — but AI-generated code still needs a human to review it before anything goes live to real users.</figcaption>
-</figure>
+<p><em>"Add an optional itemized mode where I can assign specific items to specific people, and let me switch currency."</em></p>
 
-<h2>Frequently Asked Questions About Vibe Coding</h2>
+<p>Three or four rounds like that usually produce a clean personal tool that would have taken a beginner days to wire up by hand.</p>
 
-<h3>Do I need any coding knowledge at all to start?</h3>
-<p>No — and that's the entire point. Tools like Lovable and Bolt.new are specifically designed for people with zero coding background. You need to be able to describe clearly what you want and give feedback when something isn't right. Clear thinking and communication matter more than technical knowledge.</p>
+<h2 id="vibe-coding-vs-traditional-coding-vs-no-code">Vibe coding vs traditional coding vs no-code</h2>
 
-<h3>What can a non-developer actually build with it?</h3>
-<p>Habit trackers, landing pages, booking forms, simple CRMs, internal dashboards, directories, and basic e-commerce stores are all within reach for non-developers using today's tools. Complex apps with real-time features, payment processing, or sensitive data handling require more technical oversight.</p>
+<p>Vibe coding sits neatly between visual no-code builders and hand-written software, though it gets confused with both.</p>
 
-<h3>Is vibe coding going to replace real developers?</h3>
-<p>Not wholesale — but it's already changing the job. Developers who adapt and use these tools to go faster are becoming significantly more productive. The role is evolving from "write every line of code" to "direct AI and maintain quality." That's still a highly skilled job — just a different one.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Approach</th>
+      <th>How you build</th>
+      <th>Flexibility</th>
+      <th>Learning curve</th>
+      <th>Best suited for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Traditional coding</td>
+      <td>Write source code directly</td>
+      <td>Full control over everything</td>
+      <td>High: months to years</td>
+      <td>Production systems, custom architecture, high security</td>
+    </tr>
+    <tr>
+      <td>No-code tools (Bubble, Webflow, Zapier)</td>
+      <td>Drag blocks and configure menus</td>
+      <td>Limited to platform features</td>
+      <td>Low to medium</td>
+      <td>Standard websites, forms, internal workflows</td>
+    </tr>
+    <tr>
+      <td>Vibe coding</td>
+      <td>Prompt an AI that generates real code</td>
+      <td>High because output is real code</td>
+      <td>Low to start, medium to finish well</td>
+      <td>Prototypes, personal tools, MVPs, UI experiments</td>
+    </tr>
+  </tbody>
+</table>
 
-<h3>Which vibe coding tool should a total beginner start with?</h3>
-<p>Lovable is the most beginner-friendly for building full applications. Replit is excellent if you want to experiment for free before committing to a subscription. Both have active communities where you can find tutorials and get help when you're stuck.</p>
+<p>The big advantage over older no-code tools is that vibe coding produces actual source code — HTML, TypeScript, Python, SQL — that you can export, host anywhere, or hand to an engineer later. The trade-off is that real code can break in ways a locked-down drag-and-drop builder prevents.</p>
 
-<h2>The Gap Between Having an Idea and Building It Just Closed</h2>
+<h2 id="the-best-vibe-coding-tools-in-2026">The best vibe coding tools in 2026</h2>
 
-<p>The most significant shift vibe coding represents isn't technical — it's about who gets to build things. For most of the history of software, your ability to create a digital product was gated by your ability to code. That gate is now open.</p>
+<p>Vibe coding tools now fall into three practical buckets depending on how comfortable you are with technical setup.</p>
 
-<p>If you've ever said "I wish someone would build this" — you can now build it yourself. The tools are real, the barrier is low, and the only thing that hasn't changed is that you still need a genuinely good idea. Share this with a friend who always says they have a great app idea. There's nothing stopping them now.</p>`,
+<h3 id="browser-app-builders">Browser app builders</h3>
+
+<p>If you want zero local setup, start here. You open a webpage, type a prompt, and see a live app preview side by side with the chat.</p>
+
+<ul>
+  <li><strong>Lovable</strong> focuses on turning plain-English prompts into full-stack web apps with clean interfaces, authentication and database wiring through Supabase.</li>
+  <li><strong>Bolt.new</strong> spins up full web projects directly in the browser and is fast for testing UI ideas and throwaway prototypes.</li>
+  <li><strong>Replit Agent</strong> combines code generation with built-in hosting, databases and deployment in one workspace, making it one of the easiest ways to publish a working link.</li>
+  <li><strong>Vercel v0</strong> shines when your main goal is sharp frontend components, landing pages and React interfaces.</li>
+  <li><strong>Google AI Studio and Firebase Studio</strong> give strong free starting points inside Google's ecosystem, especially since the <a href="/article/google-io-2026-ai-announcements">Google I/O 2026 AI announcements</a> expanded agent features across developer tools.</li>
+</ul>
+
+<h3 id="ai-code-editors">AI code editors</h3>
+
+<p>Once projects grow past a few screens, dedicated editors give you far better control over files, version history and debugging.</p>
+
+<ul>
+  <li><strong>Cursor</strong> looks like Visual Studio Code, which most developers already know, and adds multi-file AI editing, codebase search and background agents.</li>
+  <li><strong>Windsurf</strong> offers a similar agent-driven editor experience aimed at keeping large projects coherent across many files.</li>
+  <li><strong>GitHub Copilot</strong> plugs straight into VS Code, JetBrains and GitHub repositories, making it an easy default for teams already on GitHub.</li>
+</ul>
+
+<h3 id="command-line-agents">Command-line agents</h3>
+
+<p>Power users increasingly run coding agents straight from a terminal rather than a visual builder.</p>
+
+<ul>
+  <li><strong>Claude Code</strong> reads an entire local repository, edits multiple files, runs tests in your terminal and commits changes with your approval.</li>
+  <li><strong>OpenAI Codex</strong> handles parallel coding tasks, repo questions and pull-request workflows both locally and in the cloud.</li>
+</ul>
+
+<p>If you are unsure which model ecosystem suits your day-to-day work outside coding as well, our <a href="/article/chatgpt-claude-gemini-comparison-2026">ChatGPT vs Claude vs Gemini comparison</a> breaks down how the major assistants differ.</p>
+
+<h3 id="vibe-coding-tools-compared">Vibe coding tools compared</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Best for</th>
+      <th>Free tier</th>
+      <th>Paid plans start around</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lovable</td>
+      <td>Beginners building full-stack web MVPs</td>
+      <td>Yes: limited daily credits</td>
+      <td>$25/month</td>
+    </tr>
+    <tr>
+      <td>Bolt.new</td>
+      <td>Fast browser prototypes and UI mockups</td>
+      <td>Yes: limited token allowance</td>
+      <td>$20–$25/month</td>
+    </tr>
+    <tr>
+      <td>Replit</td>
+      <td>All-in-one build, database and instant hosting</td>
+      <td>Yes: starter tier</td>
+      <td>Core $20/month ($18 if billed yearly)</td>
+    </tr>
+    <tr>
+      <td>Cursor</td>
+      <td>Working in an AI-first code editor</td>
+      <td>Yes: Hobby plan, limited use</td>
+      <td>Pro $20/month</td>
+    </tr>
+    <tr>
+      <td>Claude Code</td>
+      <td>Multi-file terminal workflows on real repos</td>
+      <td>Included with paid Claude tiers</td>
+      <td>Claude Pro $20/month ($17 if billed yearly)</td>
+    </tr>
+    <tr>
+      <td>GitHub Copilot</td>
+      <td>Autocomplete and agent mode inside existing IDEs</td>
+      <td>Yes: 2,000 completions per month</td>
+      <td>Pro $10/month</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>Pricing changes often across AI products; figures above were checked against vendor pricing pages in October 2026.</em></p>
+
+<h2 id="what-vibe-coding-is-good-for">What vibe coding is good for</h2>
+
+<p>Used on the right problem, vibe coding saves a remarkable amount of time. In the <a href="https://stackoverflow.co/company/press/archive/stack-overflow-2025-developer-survey/" target="_blank" rel="noopener noreferrer">2025 Stack Overflow Developer Survey</a>, 84% of respondents said they were already using or planning to use AI tools in their development workflow, largely for speed on repetitive tasks.</p>
+
+<p>The clearest wins show up in four places:</p>
+
+<ul>
+  <li><strong>Throwaway prototypes and demos.</strong> Showing teammates or clients a clickable product in an afternoon beats writing a ten-page spec nobody reads.</li>
+  <li><strong>Personal tools and internal utilities.</strong> Calculators, CSV cleaners, habit trackers, simple dashboards and one-off scripts rarely justify hiring a developer, yet AI builds them well. They fit nicely alongside the broader <a href="/article/ai-tools-saving-hours-every-week-2026">AI tools saving hours every week</a> across everyday admin work.</li>
+  <li><strong>Learning how software fits together.</strong> Asking an AI to explain the button, route or database query it just created is a gentler entry point than staring at a blank terminal.</li>
+  <li><strong>Frontend scaffolding for experienced engineers.</strong> Even senior developers often let AI draft forms, tables, test data and boilerplate so they can spend their energy on core logic.</li>
+</ul>
+
+<h2 id="where-vibe-coding-falls-short">Where vibe coding falls short</h2>
+
+<p>The honest catch is that getting to 80% of a working app feels effortless, while the final 20% can get messy fast.</p>
+
+<p>That sentiment shows up clearly in developer data too. In the same Stack Overflow survey, positive favourability toward AI tools dipped from above 70% in earlier years to 60%, and 46% of developers said they actively distrust the accuracy of AI output. Most developers still keep AI away from high-stakes deployment and security decisions.</p>
+
+<h3 id="security-risks-are-real">Security risks are real</h3>
+
+<p>AI models optimise for making your prompt work right now, not necessarily for making it safe on the public internet. In a <a href="https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/" target="_blank" rel="noopener noreferrer">2025 benchmark across more than 100 models</a>, security firm Veracode found that 45% of AI-generated code tasks introduced known security flaws, including weak cross-site scripting and log-injection handling.</p>
+
+<p>Typical beginner mistakes with vibe-coded apps look painfully ordinary:</p>
+
+<ul>
+  <li>API keys pasted into frontend code where anyone opening browser dev tools can steal them.</li>
+  <li>Database tables left readable or editable by any logged-in user because row-level permissions were skipped.</li>
+  <li>Login, billing or file-upload logic that works on the happy path and fails quietly on malicious input.</li>
+</ul>
+
+<h3 id="the-debugging-trap">The debugging trap</h3>
+
+<p>The second wall hits once a project reaches a few thousand lines of code you have never read. Asking an AI to fix Bug A often breaks Feature B because neither you nor the model holds a clean mental map of the whole app.</p>
+
+<p>Costs can creep up at the same point. Repeating "still broken, fix it" burns paid credits quickly without moving forward.</p>
+
+<h3 id="vibe-coding-vs-agentic-engineering">Vibe coding vs agentic engineering</h3>
+
+<p>This gap explains why experienced builders treat pure vibe coding as a prototyping mode rather than a whole engineering method. With a prototype, speed matters most. With software other people rely on or pay for, someone still needs to review diffs, write tests, lock down secrets and understand the data model — even while <a href="/article/big-tech-725-billion-ai-spending-layoffs-2026">Big Tech pours hundreds of billions into AI</a> to automate more of the job.</p>
+
+<h2 id="how-to-start-vibe-coding-safely">How to start vibe coding safely</h2>
+
+<p>If you want to build your first project this weekend without painting yourself into a corner, keep the workflow simple:</p>
+
+<ol>
+  <li><strong>Pick one tiny problem.</strong> A single-purpose tool — a study flashcard app, workout timer, invoice generator, reading tracker — works far better than "build me a marketplace."</li>
+  <li><strong>Write down the rules before prompting.</strong> List the screens, inputs and outputs in five bullet points first. Good structure beats clever wording; the habits behind a solid <a href="/article/ai-prompt-formula-better-answers-2026">AI prompt formula</a> apply directly here.</li>
+  <li><strong>Ask for one feature at a time.</strong> Build the core screen first, test it, then add saving data, then polish styling. Huge all-in-one prompts create tangled code.</li>
+  <li><strong>Save checkpoints constantly.</strong> Use built-in version history or Git commits after every working step so one bad edit cannot ruin an hour of progress.</li>
+  <li><strong>Keep secrets out of prompts and frontend files.</strong> Store API keys in environment variables, and never paste real customer data or private credentials into chat windows unless you know how the tool handles privacy — or run models locally using <a href="/article/amd-on-device-ai-no-internet-2026">on-device AI tools</a> when privacy comes first.</li>
+  <li><strong>Do a sanity pass before sharing publicly.</strong> If an app touches logins, payments or personal data, get a developer to review authentication, database permissions and rate limits before real users arrive.</li>
+</ol>
+
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+
+<h3 id="do-you-need-coding-experience-to-vibe-code">Do you need coding experience to vibe code?</h3>
+
+<p>No — beginners build working personal tools and prototypes all the time without knowing syntax. Basic familiarity with how web pages, databases and environment variables work becomes helpful as soon as you want to publish an app for other people.</p>
+
+<h3 id="is-vibe-coding-free">Is vibe coding free?</h3>
+
+<p>You can start for free on most platforms, including Google AI Studio, GitHub Copilot's free tier, Replit, Bolt and Lovable's daily credit plans. Heavy building or deploying custom domains usually pushes you onto a $10 to $25 monthly plan.</p>
+
+<h3 id="what-programming-languages-work-best-for-vibe-coding">What programming languages work best for vibe coding?</h3>
+
+<p>JavaScript, TypeScript, HTML/CSS and Python work best because AI models have seen enormous amounts of public training code and mature frameworks in those languages. Most browser app builders default to React, TypeScript and Tailwind CSS automatically.</p>
+
+<h3 id="can-you-build-a-real-business-with-vibe-coding">Can you build a real business with vibe coding?</h3>
+
+<p>You can validate demand and build an early minimum viable product quickly, and many solo founders do. Before charging customers or storing sensitive data, plan on proper security review, automated tests and clean version control rather than pure prompt-and-pray edits.</p>
+
+<h3 id="is-vibe-coding-safe">Is vibe coding safe?</h3>
+
+<p>For local scripts, mockups and personal utilities, yes. For public apps handling logins, payments or user data, raw AI-generated code often misses permissions and input validation, so human security checks remain essential.</p>
+
+<h3 id="will-vibe-coding-replace-software-developers">Will vibe coding replace software developers?</h3>
+
+<p>It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.</p>`,
     category: "Trending", authorId: 1,
     publishedAt: new Date("2026-06-01T09:00:00Z"),
-    readTime: 8,
-    imageUrl: "https://images.pexels.com/photos/4709285/pexels-photo-4709285.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    readTime: 9,
+    imageUrl: "/images/vibe-coding-beginners-guide-hero.webp",
     views: 0, featured: false, editorsPick: false,
-    tags: ["Vibe Coding", "AI Coding Tools", "No Code", "Lovable", "Bolt", "Non-Developer", "App Building"],
+    tags: ["vibe coding","vibe coding tools","AI coding","Andrej Karpathy","AI app builders","no-code","beginner guide"],
   },
   {
     slug: "best-budget-wireless-earbuds-2026",
@@ -5605,10 +5758,14 @@ export async function ensureSeeded(): Promise<void> {
       await db.insert(authorsTable).values(author).onConflictDoNothing();
     }
     for (const category of categories) {
-      await db.insert(categoriesTable).values(category).onConflictDoNothing();
+      await db.execute(
+        sql`INSERT INTO categories (slug, name, color, article_count)
+             VALUES (${category.slug}, ${category.name}, ${category.color}, ${category.articleCount})
+             ON CONFLICT (slug) DO NOTHING`,
+      );
     }
 
-    // Insert any articles that don't exist yet (by slug), or update body if it's missing
+    // Insert any articles that don't exist yet (by slug), or sync updated seed fields
     let inserted = 0;
     let updated = 0;
     for (const article of articles) {
@@ -5620,6 +5777,21 @@ export async function ensureSeeded(): Promise<void> {
       if (existing.length === 0) {
         await db.insert(articlesTable).values(article);
         inserted++;
+      } else if (article.slug === "what-is-vibe-coding-2026") {
+        await db
+          .update(articlesTable)
+          .set({
+            title: article.title,
+            subtitle: article.subtitle,
+            excerpt: article.excerpt,
+            body: article.body,
+            category: article.category,
+            readTime: article.readTime,
+            imageUrl: article.imageUrl,
+            tags: article.tags,
+          })
+          .where(sql`slug = ${article.slug}`);
+        updated++;
       } else if (article.body) {
         await db
           .update(articlesTable)

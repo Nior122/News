@@ -153,16 +153,28 @@ export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
 
   "what-is-vibe-coding-2026": [
     {
-      question: "Do I need to know how to code to vibe code?",
-      answer: "No — that's the whole point. Vibe coding tools like Cursor, Replit Agent, and GitHub Copilot Chat let you describe what you want in plain English and get working code back. Basic logical thinking helps, but syntax knowledge is optional.",
+      question: "Do you need coding experience to vibe code?",
+      answer: "No — beginners build working personal tools and prototypes all the time without knowing syntax. Basic familiarity with how web pages, databases and environment variables work becomes helpful as soon as you want to publish an app for other people.",
     },
     {
-      question: "Is vibe coding reliable enough for production apps?",
-      answer: "For prototypes, internal tools, and MVPs — absolutely. For large-scale production systems with complex security requirements, AI-generated code still needs careful review by experienced engineers.",
+      question: "Is vibe coding free?",
+      answer: "You can start for free on most platforms, including Google AI Studio, GitHub Copilot's free tier, Replit, Bolt and Lovable's daily credit plans. Heavy building or deploying custom domains usually pushes you onto a $10 to $25 monthly plan.",
     },
     {
-      question: "What's the best vibe coding tool for beginners in 2026?",
-      answer: "Replit Agent is consistently recommended for beginners because it handles hosting, databases, and deployment automatically — you don't need to set anything up. Cursor is better for experienced developers who want AI assistance within their own environment.",
+      question: "What programming languages work best for vibe coding?",
+      answer: "JavaScript, TypeScript, HTML/CSS and Python work best because AI models have seen enormous amounts of public training code and mature frameworks in those languages. Most browser app builders default to React, TypeScript and Tailwind CSS automatically.",
+    },
+    {
+      question: "Can you build a real business with vibe coding?",
+      answer: "You can validate demand and build an early minimum viable product quickly, and many solo founders do. Before charging customers or storing sensitive data, plan on proper security review, automated tests and clean version control rather than pure prompt-and-pray edits.",
+    },
+    {
+      question: "Is vibe coding safe?",
+      answer: "For local scripts, mockups and personal utilities, yes. For public apps handling logins, payments or user data, raw AI-generated code often misses permissions and input validation, so human security checks remain essential.",
+    },
+    {
+      question: "Will vibe coding replace software developers?",
+      answer: "It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.",
     },
   ],
 
