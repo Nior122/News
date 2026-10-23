@@ -11,6 +11,7 @@ import { useActiveCategory } from "@/contexts/ActiveCategoryContext";
 import { useToast } from "@/hooks/use-toast";
 import { nameToSlug } from "@/data/authors";
 import { getArticleFaqs } from "@/data/faqs";
+import { getArticleSeoOverride } from "@/data/seo-overrides";
 import { completeArticleSsrHandoff } from "@/lib/article-ssr-handoff";
 
 type ArticleLoadFailure = "not-found" | "server" | "network" | "request";
@@ -56,16 +57,16 @@ const ARTICLE_LOAD_FAILURE_COPY: Record<ArticleLoadFailure, { title: string; des
   },
 };
 
-function JsonLd({ data }: { data: Record<string, unknown> }) {
+function JsonLd({ data, id = "article-jsonld" }: { data: Record<string, unknown>; id?: string }) {
   useEffect(() => {
-    const script = (document.getElementById("article-jsonld") as HTMLScriptElement | null)
+    const script = (document.getElementById(id) as HTMLScriptElement | null)
       ?? document.createElement("script");
     script.type = "application/ld+json";
-    script.id = "article-jsonld";
+    script.id = id;
     script.textContent = JSON.stringify(data);
     if (!script.isConnected) document.head.appendChild(script);
     return () => script.remove();
-  }, [data]);
+  }, [data, id]);
   return null;
 }
 
@@ -132,13 +133,20 @@ function isFaqHeading(text: string) {
   return /faq|frequently asked/i.test(text);
 }
 
-function processBody(html: string): { processed: string; toc: TocEntry[]; faq: FaqEntry[] } {
-  if (typeof document === "undefined") return { processed: html, toc: [], faq: [] };
+function processBody(html: string): {
+  processed: string;
+  toc: TocEntry[];
+  faq: FaqEntry[];
+  hasInlineFaqSection: boolean;
+} {
+  if (typeof document === "undefined") {
+    return { processed: html, toc: [], faq: [], hasInlineFaqSection: false };
+  }
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
 
-  // Extract FAQ from <details>/<summary> blocks and remove them (+ any FAQ heading) from the body
+  // Extract FAQ from <details>/<summary> blocks when present
   const faq: FaqEntry[] = [];
   const details = doc.querySelectorAll("details");
   details.forEach((d) => {
@@ -150,24 +158,44 @@ function processBody(html: string): { processed: string; toc: TocEntry[]; faq: F
     d.remove();
   });
 
-  // Remove standalone FAQ headings from body so they don't appear in TOC or prose
-  doc.querySelectorAll("h2, h3").forEach((el) => {
-    if (isFaqHeading(el.textContent?.trim() || "")) {
-      el.remove();
-    }
+  let hasInlineFaqSection = false;
+  if (details.length > 0) {
+    // Remove standalone FAQ headings only when their <details> items were extracted above
+    doc.querySelectorAll("h2, h3").forEach((el) => {
+      if (isFaqHeading(el.textContent?.trim() || "")) {
+        el.remove();
+      }
+    });
+  } else {
+    doc.querySelectorAll("h2").forEach((el) => {
+      if (isFaqHeading(el.textContent?.trim() || "")) {
+        hasInlineFaqSection = true;
+      }
+    });
+  }
+
+  // Wrap wide tables so mobile viewports scroll horizontally cleanly
+  doc.querySelectorAll("table").forEach((table) => {
+    if (table.parentElement?.classList.contains("table-scroll-wrap")) return;
+    const wrapper = doc.createElement("div");
+    wrapper.className = "table-scroll-wrap";
+    table.parentNode?.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
   });
 
-  // Build TOC from remaining headings (FAQ headings already removed above)
+  // Build TOC from headings (preserving explicit heading IDs so server-rendered
+  // and client-hydrated #anchor links always resolve identically)
   const toc: TocEntry[] = [];
   let headingIndex = 0;
   doc.querySelectorAll("h2, h3").forEach((el) => {
     const text = el.textContent?.trim() || "";
+    const existingId = el.getAttribute("id")?.trim();
     const slug = text
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .slice(0, 60) || `heading-${headingIndex}`;
-    const id = `toc-${slug}-${headingIndex}`;
+    const id = existingId || `toc-${slug}-${headingIndex}`;
     el.setAttribute("id", id);
     toc.push({ id, text, level: parseInt(el.tagName[1]) });
     headingIndex++;
@@ -177,6 +205,7 @@ function processBody(html: string): { processed: string; toc: TocEntry[]; faq: F
     processed: doc.body.innerHTML,
     toc,
     faq,
+    hasInlineFaqSection,
   };
 }
 
@@ -185,8 +214,10 @@ function TableOfContents({ toc }: { toc: TocEntry[] }) {
 
   if (toc.length < 3) return null;
 
+  let h2Number = 0;
+
   return (
-    <div className="my-8 rounded-xl border border-border bg-muted/50 overflow-hidden">
+    <nav aria-label="Table of contents" className="my-8 rounded-xl border border-border bg-muted/50 overflow-hidden">
       <button
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-muted/80 transition-colors"
@@ -200,32 +231,37 @@ function TableOfContents({ toc }: { toc: TocEntry[] }) {
       </button>
       {open && (
         <ol className="px-5 pb-4 space-y-1.5 border-t border-border/60">
-          {toc.map((entry, i) => (
-            <li
-              key={entry.id}
-              className={cn(
-                "text-sm leading-snug",
-                entry.level === 3 && "pl-4"
-              )}
-            >
-              <a
-                href={`#${entry.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById(entry.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-                className="flex items-start gap-2 text-muted-foreground hover:text-primary transition-colors py-0.5 group"
+          {toc.map((entry) => {
+            if (entry.level === 2) h2Number += 1;
+            const label = entry.level === 2 ? String(h2Number).padStart(2, "0") : "↳";
+            return (
+              <li
+                key={entry.id}
+                className={cn(
+                  "text-sm leading-snug",
+                  entry.level === 3 && "pl-4"
+                )}
               >
-                <span className="shrink-0 text-primary/50 font-mono text-xs mt-0.5 group-hover:text-primary transition-colors">
-                  {entry.level === 2 ? String(i + 1).padStart(2, "0") : "↳"}
-                </span>
-                <span>{entry.text}</span>
-              </a>
-            </li>
-          ))}
+                <a
+                  href={`#${entry.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.replaceState(null, "", `#${entry.id}`);
+                    document.getElementById(entry.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="flex items-start gap-2 text-muted-foreground hover:text-primary transition-colors py-0.5 min-h-0 min-w-0 group"
+                >
+                  <span className="shrink-0 text-primary/50 font-mono text-xs mt-0.5 group-hover:text-primary transition-colors">
+                    {label}
+                  </span>
+                  <span>{entry.text}</span>
+                </a>
+              </li>
+            );
+          })}
         </ol>
       )}
-    </div>
+    </nav>
   );
 }
 
@@ -287,19 +323,32 @@ export default function ArticlePage() {
       queryKey: getListRelatedArticlesQueryKey(slug),
     },
   });
-  const articleDescription = getArticleDescription(article);
+  const seoOverride = getArticleSeoOverride(article?.slug ?? slug);
+  const articleDescription = seoOverride?.metaDescription ?? getArticleDescription(article);
+
+  const resolvedOgImage = article?.imageUrl
+    ? (() => {
+        try {
+          return new URL(article.imageUrl, `${SITE_ORIGIN}/`).href;
+        } catch {
+          return article.imageUrl;
+        }
+      })()
+    : undefined;
 
   usePageMeta({
-    title: article?.title ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
+    title: article
+      ? (seoOverride?.metaTitle ?? article.title)
+      : (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
     description: articleDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
-    ogImage: article?.imageUrl ?? undefined,
+    ogImage: resolvedOgImage,
     ogType: article ? "article" : "website",
     canonical: article
       ? canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`)
       : articleFailure === "not-found"
         ? null
         : undefined,
-    robots: articleFailure === "not-found" ? "noindex, follow" : undefined,
+    robots: articleFailure === "not-found" ? "noindex, follow" : seoOverride?.robots,
     enabled: !isLoading && (
       articleFailure === null
       || (articleFailure === "not-found" && !hasPendingArticleSsr)
@@ -323,11 +372,23 @@ export default function ArticlePage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   const handleBodyClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const target = (e.target as HTMLElement).closest('a.article-backlink');
-    if (!target) return;
-    e.preventDefault();
-    const href = target.getAttribute('href');
-    if (href) navigate(href);
+    const anchor = (e.target as HTMLElement).closest("a") as HTMLAnchorElement | null;
+    if (!anchor || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || anchor.target === "_blank") return;
+    const rawHref = anchor.getAttribute("href");
+    if (!rawHref) return;
+    try {
+      const parsed = new URL(rawHref, SITE_ORIGIN);
+      const isInternalHost = parsed.hostname === "scrolltek.name.ng" || parsed.hostname === "www.scrolltek.name.ng" || parsed.origin === window.location.origin;
+      if (isInternalHost && parsed.pathname.startsWith("/")) {
+        e.preventDefault();
+        navigate(`${parsed.pathname}${parsed.search}${parsed.hash}`);
+      }
+    } catch {
+      if (rawHref.startsWith("/")) {
+        e.preventDefault();
+        navigate(rawHref);
+      }
+    }
   }, [navigate]);
 
   useEffect(() => {
@@ -342,10 +403,10 @@ export default function ArticlePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const { processed: processedBody, toc, faq } = useMemo(() => {
+  const { processed: processedBody, toc, faq, hasInlineFaqSection } = useMemo(() => {
     const result = article?.body
       ? processBody(article.body)
-      : { processed: "", toc: [], faq: [] };
+      : { processed: "", toc: [], faq: [], hasInlineFaqSection: false };
     const staticFaqs = article?.slug ? getArticleFaqs(article.slug) : [];
     return { ...result, faq: [...result.faq, ...staticFaqs] };
   }, [article?.body, article?.slug]);
@@ -395,31 +456,42 @@ export default function ArticlePage() {
   const articleUrl = canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`);
   const origin = SITE_ORIGIN;
 
-  const formattedDate = new Date(article.publishedAt).toLocaleDateString(undefined, {
+  const formattedDate = new Date(article.publishedAt).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
 
-  const jsonLdData = {
+  const authorProfileUrl = `${origin}/author/${encodeURIComponent(nameToSlug(article.author.name))}`;
+  const categorySlug = article.category.toLowerCase().replace(/\s+/g, "-");
+
+  const jsonLdData: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": seoOverride?.schemaType ?? "NewsArticle",
     headline: article.title,
     description: articleDescription,
-    image: article.imageUrl
-      ? [{ "@type": "ImageObject", url: article.imageUrl }]
+    image: resolvedOgImage
+      ? [{
+          "@type": "ImageObject",
+          url: resolvedOgImage,
+          ...(seoOverride?.heroWidth ? { width: seoOverride.heroWidth } : {}),
+          ...(seoOverride?.heroHeight ? { height: seoOverride.heroHeight } : {}),
+        }]
       : undefined,
     datePublished: new Date(article.publishedAt).toISOString(),
+    ...(seoOverride?.dateModified ? { dateModified: seoOverride.dateModified } : {}),
     url: articleUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: {
       "@type": article.author.name === "Scrolltek Editorial" ? "Organization" : "Person",
       name: article.author.name,
+      url: authorProfileUrl,
       image: article.author.avatarUrl || undefined,
     },
     publisher: {
       "@type": "Organization",
       name: "Scrolltek",
+      url: origin,
       logo: { "@type": "ImageObject", url: `${origin}/favicon.svg` },
     },
     articleSection: article.category,
@@ -427,9 +499,36 @@ export default function ArticlePage() {
     timeRequired: `PT${article.readTime}M`,
   };
 
+  const breadcrumbJsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+      { "@type": "ListItem", position: 2, name: article.category, item: `${origin}/category/${encodeURIComponent(categorySlug)}` },
+      { "@type": "ListItem", position: 3, name: article.title, item: articleUrl },
+    ],
+  };
+
+  const faqJsonLdData = faq.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.map((item) => ({
+          "@type": "Question",
+          name: item.question.replace(/<[^>]*>/g, ""),
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer.replace(/<[^>]*>/g, ""),
+          },
+        })),
+      }
+    : null;
+
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLd data={jsonLdData} id="article-jsonld" />
+      <JsonLd data={breadcrumbJsonLdData} id="breadcrumb-jsonld" />
+      {faqJsonLdData && <JsonLd data={faqJsonLdData} id="faq-jsonld" />}
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-border/40 z-[60]" aria-hidden="true">
@@ -449,7 +548,9 @@ export default function ArticlePage() {
         <div className="w-full h-[45vh] md:h-[62vh] relative mb-8 md:mb-12">
           <img
             src={article.imageUrl}
-            alt={article.title}
+            alt={seoOverride?.heroAlt ?? article.title}
+            width={seoOverride?.heroWidth ?? 1200}
+            height={seoOverride?.heroHeight ?? 630}
             fetchPriority="high"
             decoding="async"
             className="w-full h-full object-cover"
@@ -485,7 +586,17 @@ export default function ArticlePage() {
 
               {article.subtitle && (
                 <p className="text-sm md:text-lg text-muted-foreground mb-5 font-medium leading-relaxed">
-                  {article.subtitle}
+                  <span className={seoOverride?.updatedLabel ? "italic" : undefined}>
+                    {article.subtitle}
+                  </span>
+                  {seoOverride?.updatedLabel && (
+                    <>
+                      <br />
+                      <span className="text-xs md:text-sm not-italic font-normal text-muted-foreground/90">
+                        {seoOverride.updatedLabel}
+                      </span>
+                    </>
+                  )}
                 </p>
               )}
 
@@ -513,6 +624,10 @@ export default function ArticlePage() {
                     <img
                       src={article.author.avatarUrl}
                       alt={article.author.name}
+                      width={40}
+                      height={40}
+                      loading="lazy"
+                      decoding="async"
                       className="w-10 h-10 rounded-full object-cover border-2 border-border shrink-0 group-hover:border-primary transition-colors"
                     />
                   ) : (
@@ -542,6 +657,11 @@ export default function ArticlePage() {
             </div>
           </div>
         </div>
+        {seoOverride?.heroCaption && (
+          <p className="text-center text-xs sm:text-sm italic text-muted-foreground -mt-5 mb-8 px-4">
+            {seoOverride.heroCaption}
+          </p>
+        )}
 
         {/* Article body */}
         <div className="container max-w-screen-xl px-4 flex flex-col md:flex-row gap-8 relative">
@@ -573,8 +693,8 @@ export default function ArticlePage() {
               )}
             </div>
 
-            {/* FAQ Section */}
-            <FaqSection faq={faq} />
+            {/* FAQ Section (rendered when FAQs are not already embedded inline in the body) */}
+            {!hasInlineFaqSection && <FaqSection faq={faq} />}
 
             {/* Tags */}
             {article.tags && article.tags.length > 0 && (

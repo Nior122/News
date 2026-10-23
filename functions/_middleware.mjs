@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUGS } from "./lib/article-routing.mjs";
+import { applyArticleContentOverride } from "./lib/article-seo.mjs";
 import {
   categoryDescription,
   categoryDisplayName,
@@ -161,7 +162,7 @@ async function fetchArticle(sql, slug) {
     WHERE a.slug = ${slug} AND a.published = true
     LIMIT 1
   `;
-  return rows[0] ?? null;
+  return rows[0] ? applyArticleContentOverride(rows[0]) : null;
 }
 
 async function fetchAuthor(sql, slug) {
@@ -187,18 +188,19 @@ async function fetchAuthor(sql, slug) {
     ORDER BY published_at DESC
     LIMIT 100
   `;
-  return { author, articles };
+  return { author, articles: articles.map(applyArticleContentOverride) };
 }
 
 async function fetchCategoryArticles(sql, slug) {
   if (slug === "trending") {
-    return sql`
+    const trendingRows = await sql`
       SELECT a.slug, a.title, a.excerpt, a.category, a.published_at
       FROM articles a
       WHERE a.published = true AND a.slug <> ALL(${REDIRECTED_ARTICLE_SLUGS}::text[])
       ORDER BY a.views DESC, a.published_at DESC
       LIMIT 100
     `;
+    return trendingRows.map(applyArticleContentOverride);
   }
 
   const names = categoryGroupNames(slug);
@@ -210,7 +212,7 @@ async function fetchCategoryArticles(sql, slug) {
     ORDER BY a.published_at DESC
     LIMIT 100
   `));
-  const articles = groups.flat();
+  const articles = groups.flat().map(applyArticleContentOverride);
   const seen = new Set();
   return articles
     .filter((article) => {
@@ -243,6 +245,7 @@ async function fetchRelatedArticles(sql, article) {
     LIMIT ${RELATED_CANDIDATE_LIMIT}
   `;
   return candidates
+    .map(applyArticleContentOverride)
     .filter((candidate) => hasMeaningfulArticleBody(candidate.body))
     .slice(0, MAX_RELATED_LINKS);
 }
@@ -255,7 +258,7 @@ async function fetchRelatedArticles(sql, article) {
  * would silently drop new stories from the server-rendered homepage.
  */
 async function fetchHomepageData(sql) {
-  const articles = await sql`
+  const rawArticles = await sql`
     SELECT a.slug, a.title, a.excerpt, a.category, a.body, a.published_at
     FROM articles a
     WHERE a.published = true
@@ -265,6 +268,7 @@ async function fetchHomepageData(sql) {
     ORDER BY a.published_at DESC
     LIMIT 500
   `;
+  const articles = rawArticles.map(applyArticleContentOverride);
 
   // Every valid category page the router can render, including the virtual
   // mixed pages (ai-productivity, culture-lifestyle) that have no row in the

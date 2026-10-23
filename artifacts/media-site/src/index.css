@@ -270,7 +270,7 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* ─── Article backlinks ─── */
+/* ─── Article backlinks & tables ─── */
 .article-backlink {
   color: var(--color-primary);
   text-decoration: underline;
@@ -281,6 +281,56 @@
 }
 .article-backlink:hover {
   text-decoration-style: solid;
+}
+
+.table-scroll-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose table {
+  width: 100%;
+  min-width: 520px;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.925rem;
+  line-height: 1.55;
+}
+
+.prose thead {
+  background: var(--color-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-foreground);
+  white-space: nowrap;
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose tbody td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  color: var(--color-foreground);
+}
+
+.prose tbody td:first-child {
+  font-weight: 600;
 }
 
 /* ─── content-visibility: paint below-fold sections lazily ─── */

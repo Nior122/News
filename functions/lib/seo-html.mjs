@@ -1,4 +1,5 @@
 import { getArticleRedirectTarget } from "./article-routing.mjs";
+import { buildFaqJsonLd, getArticleSeoOverride } from "./article-seo.mjs";
 
 export const SITE_ORIGIN = "https://scrolltek.name.ng";
 const SITE_NAME = "Scrolltek";
@@ -7,7 +8,7 @@ const CANONICAL_HOSTNAME = new URL(SITE_ORIGIN).hostname;
 
 const ALLOWED_TAGS = new Set([
   "a", "b", "blockquote", "br", "code", "del", "div", "em", "figcaption",
-  "figure", "h2", "h3", "h4", "hr", "i", "img", "li", "mark", "ol", "p",
+  "figure", "h2", "h3", "h4", "hr", "i", "img", "li", "mark", "nav", "ol", "p",
   "pre", "s", "span", "strong", "sub", "sup", "table", "tbody", "td", "th",
   "thead", "tr", "u", "ul",
 ]);
@@ -110,17 +111,41 @@ function canonicalizeArticleHref(absoluteHref) {
 
 function safeAttributes(tagName, attributes) {
   if (tagName === "a") {
-    const safeHref = safeUrl(readAttribute(attributes, "href"), { allowMailto: true });
-    const href = safeHref ? canonicalizeArticleHref(safeHref) : null;
+    const rawHref = readAttribute(attributes, "href");
+    const decodedHref = rawHref ? decodeAttributeEntities(rawHref).trim() : "";
+    const isFragmentAnchor = /^#[a-z0-9][a-z0-9-]{0,120}$/i.test(decodedHref);
+    const safeHref = isFragmentAnchor ? null : safeUrl(rawHref, { allowMailto: true });
+    const href = isFragmentAnchor
+      ? decodedHref
+      : safeHref
+        ? canonicalizeArticleHref(safeHref)
+        : null;
     const title = readAttribute(attributes, "title");
     const target = readAttribute(attributes, "target");
     const output = [];
     if (href) output.push(`href="${escapeHtml(href)}"`);
     if (title) output.push(`title="${escapeHtml(decodeAttributeEntities(title))}"`);
-    if (target === "_blank") {
+    if (target === "_blank" && !isFragmentAnchor) {
       output.push('target="_blank"', 'rel="noopener noreferrer"');
     }
     return output.length ? ` ${output.join(" ")}` : "";
+  }
+
+  if (tagName === "h2" || tagName === "h3" || tagName === "h4") {
+    const rawId = readAttribute(attributes, "id");
+    const decodedId = rawId ? decodeAttributeEntities(rawId).trim() : "";
+    if (/^[a-z0-9][a-z0-9-]{0,120}$/i.test(decodedId)) {
+      return ` id="${escapeHtml(decodedId)}"`;
+    }
+    return "";
+  }
+
+  if (tagName === "nav") {
+    const label = readAttribute(attributes, "aria-label");
+    if (label) {
+      return ` aria-label="${escapeHtml(decodeAttributeEntities(label))}"`;
+    }
+    return "";
   }
 
   if (tagName === "img") {
@@ -330,30 +355,17 @@ function scriptIdFromBlock(block) {
   return readAttribute(openingTag, "id");
 }
 
-function setJsonLd(html, data) {
-  if (!data) {
-    return transformHeadContent(html, (content) => content, (block, tagName) => {
-      const id = tagName === "script" ? scriptIdFromBlock(block) : null;
-      return id && /^(?:article|author|page)-jsonld$/.test(id) ? "" : block;
-    });
-  }
-
-  const schemaType = data["@type"];
-  const authorUrl = typeof data.url === "string" && data.url.startsWith(`${SITE_ORIGIN}/author/`);
-  const scriptId = schemaType === "NewsArticle"
-    ? "article-jsonld"
-    : schemaType === "Person" || (schemaType === "Organization" && authorUrl)
-      ? "author-jsonld"
-      : schemaType === "WebSite"
-        ? "website-jsonld"
-        : "page-jsonld";
-  const serialized = JSON.stringify(data)
+function serializeJsonLd(data) {
+  return JSON.stringify(data)
     .replace(/</g, "\\u003c")
     .replace(/>/g, "\\u003e")
     .replace(/&/g, "\\u0026")
     .replace(/\u2028/g, "\\u2028")
     .replace(/\u2029/g, "\\u2029");
-  const tag = `<script type="application/ld+json" id="${scriptId}">${serialized}</script>`;
+}
+
+function upsertJsonLdById(html, scriptId, data) {
+  const tag = `<script type="application/ld+json" id="${scriptId}">${serializeJsonLd(data)}</script>`;
   let found = false;
   const updated = transformHeadContent(html, (content) => content, (block, tagName) => {
     if (tagName !== "script" || scriptIdFromBlock(block) !== scriptId) return block;
@@ -362,6 +374,26 @@ function setJsonLd(html, data) {
     return tag;
   });
   return found ? updated : appendHeadContent(updated, tag);
+}
+
+function setJsonLd(html, data) {
+  if (!data) {
+    return transformHeadContent(html, (content) => content, (block, tagName) => {
+      const id = tagName === "script" ? scriptIdFromBlock(block) : null;
+      return id && /^(?:article|author|page|breadcrumb|faq)-jsonld$/.test(id) ? "" : block;
+    });
+  }
+
+  const schemaType = data["@type"];
+  const authorUrl = typeof data.url === "string" && data.url.startsWith(`${SITE_ORIGIN}/author/`);
+  const scriptId = schemaType === "NewsArticle" || schemaType === "Article"
+    ? "article-jsonld"
+    : schemaType === "Person" || (schemaType === "Organization" && authorUrl)
+      ? "author-jsonld"
+      : schemaType === "WebSite"
+        ? "website-jsonld"
+        : "page-jsonld";
+  return upsertJsonLdById(html, scriptId, data);
 }
 
 function insertBody(html, bodyHtml) {
@@ -462,13 +494,44 @@ export function renderPageDocument(template, page) {
       html = setMeta(html, "property", "og:image", page.ogImage);
       html = setMeta(html, "name", "twitter:image", page.ogImage);
       html = setMeta(html, "name", "twitter:card", "summary_large_image");
+      if (page.ogImageWidth) html = setMeta(html, "property", "og:image:width", String(page.ogImageWidth));
+      if (page.ogImageHeight) html = setMeta(html, "property", "og:image:height", String(page.ogImageHeight));
     } else {
       html = removeMeta(html, "property", "og:image");
+      html = removeMeta(html, "property", "og:image:width");
+      html = removeMeta(html, "property", "og:image:height");
       html = removeMeta(html, "name", "twitter:image");
       html = setMeta(html, "name", "twitter:card", "summary");
     }
   }
+  if (page.articlePublishedTime) {
+    html = setMeta(html, "property", "article:published_time", page.articlePublishedTime);
+  }
+  if (page.articleModifiedTime) {
+    html = setMeta(html, "property", "article:modified_time", page.articleModifiedTime);
+  }
+  if (page.articleAuthor) {
+    html = setMeta(html, "property", "article:author", page.articleAuthor);
+  }
   if (Object.hasOwn(page, "jsonLd")) html = setJsonLd(html, page.jsonLd);
+  if (Object.hasOwn(page, "breadcrumbJsonLd")) {
+    if (page.breadcrumbJsonLd) {
+      html = upsertJsonLdById(html, "breadcrumb-jsonld", page.breadcrumbJsonLd);
+    } else {
+      html = transformHeadContent(html, (content) => content, (block, tagName) => {
+        return tagName === "script" && scriptIdFromBlock(block) === "breadcrumb-jsonld" ? "" : block;
+      });
+    }
+  }
+  if (Object.hasOwn(page, "faqJsonLd")) {
+    if (page.faqJsonLd) {
+      html = upsertJsonLdById(html, "faq-jsonld", page.faqJsonLd);
+    } else {
+      html = transformHeadContent(html, (content) => content, (block, tagName) => {
+        return tagName === "script" && scriptIdFromBlock(block) === "faq-jsonld" ? "" : block;
+      });
+    }
+  }
   if (page.bodyHtml !== undefined) {
     html = page.prerenderMode
       ? insertPrerender(html, page.bodyHtml, page.prerenderMode)
@@ -573,43 +636,102 @@ export function renderHomepageDocument(template, {
   });
 }
 
+function buildArticleTocMarkup(sanitizedBody) {
+  const items = [];
+  const headingPattern = /<(h2|h3)\s+id="([a-z0-9][a-z0-9-]{0,120})">([\s\S]*?)<\/\1>/gi;
+  let match;
+  while ((match = headingPattern.exec(sanitizedBody)) !== null) {
+    const text = match[3].replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    if (text) {
+      items.push(`<li><a href="#${escapeHtml(match[2])}">${escapeHtml(decodeAttributeEntities(text))}</a></li>`);
+    }
+  }
+  if (items.length < 3) return "";
+  return `<nav aria-label="Table of contents"><h2>In this article</h2><ol>${items.join("")}</ol></nav>`;
+}
+
 export function renderArticleDocument(template, article, { related = [] } = {}) {
   const articlePath = `/article/${encodeURIComponent(article.slug)}`;
   const canonical = canonicalUrlForPath(articlePath);
-  const title = `${article.title} — ${SITE_NAME}`;
+  const seoOverride = getArticleSeoOverride(article.slug);
+  const titleBase = seoOverride?.metaTitle || article.title;
+  const title = `${titleBase} — ${SITE_NAME}`;
   const body = sanitizeArticleHtml(article.body || "");
   const bodyText = body.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-  const description = String(article.excerpt || "").trim() || bodyText.slice(0, 180) || article.title;
+  const description = seoOverride?.metaDescription
+    || String(article.excerpt || "").trim()
+    || bodyText.slice(0, 180)
+    || article.title;
   const image = article.image_url ? safeUrl(article.image_url) : null;
   const articleDate = article.published_at ? new Date(article.published_at) : null;
   const datePublished = articleDate && !Number.isNaN(articleDate.getTime())
     ? articleDate.toISOString()
     : undefined;
+  const dateModified = seoOverride?.dateModified || undefined;
   const authorName = String(article.author_name || "").trim();
+  const authorSlug = authorName ? authorName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : "";
+  const authorUrl = authorSlug ? `${SITE_ORIGIN}/author/${encodeURIComponent(authorSlug)}` : undefined;
   const categoryName = String(article.category || "").trim();
   const categorySlug = categoryName.toLowerCase().replace(/\s+/g, "-");
   const categoryMarkup = categoryName
     ? `<a href="/category/${escapeHtml(encodeURIComponent(categorySlug))}">${escapeHtml(categoryName)}</a>`
     : "";
-  const authorMarkup = authorName ? `<p>By ${escapeHtml(authorName)}</p>` : "";
-  const imageMarkup = image
-    ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(article.title)}" loading="lazy" decoding="async"></figure>`
+  const subtitleMarkup = article.subtitle
+    ? seoOverride?.updatedLabel
+      ? `<p><em>${escapeHtml(article.subtitle)}</em><br />${escapeHtml(seoOverride.updatedLabel)}</p>`
+      : `<h2>${escapeHtml(article.subtitle)}</h2>`
+    : seoOverride?.updatedLabel
+      ? `<p>${escapeHtml(seoOverride.updatedLabel)}</p>`
+      : "";
+  const excerptMarkup = article.excerpt && !seoOverride?.updatedLabel
+    ? `<p>${escapeHtml(article.excerpt)}</p>`
     : "";
-  const bodyMarkup = body ? `<div class="ssr-article-body">${body}</div>` : "";
+  const authorMarkup = authorName ? `<p>By ${escapeHtml(authorName)}</p>` : "";
+  const heroAlt = seoOverride?.heroAlt || article.title;
+  const heroSizeAttrs = seoOverride?.heroWidth && seoOverride?.heroHeight
+    ? ` width="${seoOverride.heroWidth}" height="${seoOverride.heroHeight}"`
+    : "";
+  const heroLoadingAttrs = seoOverride
+    ? ' fetchpriority="high" decoding="async"'
+    : ' loading="lazy" decoding="async"';
+  const heroCaptionMarkup = seoOverride?.heroCaption
+    ? `<figcaption>${escapeHtml(seoOverride.heroCaption)}</figcaption>`
+    : "";
+  const imageMarkup = image
+    ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(heroAlt)}"${heroSizeAttrs}${heroLoadingAttrs}>${heroCaptionMarkup}</figure>`
+    : "";
+  const tocMarkup = seoOverride?.enableSsrToc ? buildArticleTocMarkup(body) : "";
+  const bodyMarkup = body ? `<div class="ssr-article-body">${tocMarkup}${body}</div>` : "";
   const relatedMarkup = relatedArticleMarkup(related, article.slug);
-  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(article.title)}</h1>${article.subtitle ? `<h2>${escapeHtml(article.subtitle)}</h2>` : ""}${article.excerpt ? `<p>${escapeHtml(article.excerpt)}</p>` : ""}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article>${relatedMarkup}</main>`;
+  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(article.title)}</h1>${subtitleMarkup}${excerptMarkup}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article>${relatedMarkup}</main>`;
 
+  const schemaType = seoOverride?.schemaType || "NewsArticle";
+  const imageObject = image
+    ? {
+        "@type": "ImageObject",
+        url: image,
+        ...(seoOverride?.heroWidth ? { width: seoOverride.heroWidth } : {}),
+        ...(seoOverride?.heroHeight ? { height: seoOverride.heroHeight } : {}),
+      }
+    : null;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": schemaType,
     headline: article.title,
     description,
-    ...(image ? { image: [{ "@type": "ImageObject", url: image }] } : {}),
+    ...(imageObject ? { image: [imageObject] } : {}),
     ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     url: canonical,
     ...(authorName
-      ? { author: { "@type": authorName === "Scrolltek Editorial" ? "Organization" : "Person", name: authorName } }
+      ? {
+          author: {
+            "@type": authorName === "Scrolltek Editorial" ? "Organization" : "Person",
+            name: authorName,
+            ...(seoOverride && authorUrl ? { url: authorUrl } : {}),
+          },
+        }
       : {}),
     publisher: {
       "@type": "Organization",
@@ -619,15 +741,37 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     },
     articleSection: article.category || undefined,
   };
+  const breadcrumbJsonLd = seoOverride
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_ORIGIN}/` },
+          ...(categoryName
+            ? [{ "@type": "ListItem", position: 2, name: categoryName, item: `${SITE_ORIGIN}/category/${encodeURIComponent(categorySlug)}` }]
+            : []),
+          { "@type": "ListItem", position: categoryName ? 3 : 2, name: article.title, item: canonical },
+        ],
+      }
+    : null;
+  const faqJsonLd = buildFaqJsonLd(seoOverride?.faqs);
 
   return renderPageDocument(template, {
     title,
     description,
     canonical,
+    ...(seoOverride?.robots ? { robots: seoOverride.robots } : {}),
     ogTitle: title,
     ogType: "article",
     ogImage: image,
+    ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.heroWidth } : {}),
+    ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.heroHeight } : {}),
+    ...(seoOverride && datePublished ? { articlePublishedTime: datePublished } : {}),
+    ...(seoOverride && dateModified ? { articleModifiedTime: dateModified } : {}),
+    ...(seoOverride && authorUrl ? { articleAuthor: authorUrl } : {}),
     jsonLd,
+    ...(seoOverride ? { breadcrumbJsonLd } : {}),
+    faqJsonLd,
     bodyHtml,
     prerenderMode: "article",
   });

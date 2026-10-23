@@ -303,3 +303,95 @@ test("homepage fallback remains on the homepage but is removed from route docume
   assert.doesNotMatch(about, /homepage-fallback/);
   assert.match(about, /<h1>About Scrolltek<\/h1>/);
 });
+
+test("upgraded what-is-vibe-coding-2026 seed data is synced across setup files and renders complete SEO, TOC, images, and schemas", () => {
+  const setupSource = readFileSync(new URL("../../api/setup.mjs", import.meta.url), "utf8");
+  const ensureSeededSource = readFileSync(new URL("../../lib/db/src/ensure-seeded.ts", import.meta.url), "utf8");
+
+  const setupBodyMatch = setupSource.match(/'what-is-vibe-coding-2026':\s*`([\s\S]*?)`,\n\n\s*'best-budget-wireless-earbuds-2026'/);
+  const ensureBodyMatch = ensureSeededSource.match(/slug:\s*"what-is-vibe-coding-2026"[\s\S]*?body:\s*`([\s\S]*?)`,\n\s*category:\s*"Trending"/);
+
+  assert.ok(setupBodyMatch, "api/setup.mjs should contain what-is-vibe-coding-2026 body");
+  assert.ok(ensureBodyMatch, "lib/db/src/ensure-seeded.ts should contain what-is-vibe-coding-2026 body with Trending category");
+  assert.equal(setupBodyMatch[1], ensureBodyMatch[1], "both seed files must keep identical HTML body");
+
+  const body = setupBodyMatch[1];
+  for (const stale of ["63%", "$4.7", "$12.3", "87% of Fortune 500", "340%", "6,700%", "Gartner", "92% of US developers", "under two minutes"]) {
+    assert.ok(!body.includes(stale), `upgraded article must not contain removed claim: ${stale}`);
+  }
+
+  const html = renderArticleDocument(template, {
+    slug: "what-is-vibe-coding-2026",
+    title: "What Is Vibe Coding? A Beginner's Guide for 2026",
+    subtitle: "Vibe coding lets you build apps by describing them in plain English. Here is how it works, which tools to try, and what can go wrong.",
+    excerpt: "Vibe coding means building software by describing it in plain English and letting AI write the code. See how it works, which tools to try and where it can go wrong.",
+    body,
+    category: "Trending",
+    image_url: "/images/vibe-coding-beginners-guide-hero.webp",
+    published_at: "2026-06-01T09:00:00Z",
+    author_name: "Maya Chen",
+  });
+
+  // Head tags & single H1
+  assert.match(html, /<title>What Is Vibe Coding\? A Beginner&#39;s Guide \(2026\) — Scrolltek<\/title>/);
+  assert.match(
+    html,
+    /<meta name="description" content="Vibe coding means building software by describing it in plain English\. Learn how it works, the best tools, the real risks and how to start\." \/>/,
+  );
+  assert.match(html, /<link rel="canonical" href="https:\/\/scrolltek\.name\.ng\/article\/what-is-vibe-coding-2026" \/>/);
+  assert.match(html, /<meta name="robots" content="index, follow, max-image-preview:large" \/>/);
+  assert.match(html, /<meta property="og:type" content="article" \/>/);
+  assert.match(html, /<meta property="og:url" content="https:\/\/scrolltek\.name\.ng\/article\/what-is-vibe-coding-2026" \/>/);
+  assert.match(html, /<meta property="og:image" content="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-beginners-guide-hero\.webp" \/>/);
+  assert.match(html, /<meta property="og:image:width" content="1200" \/>/);
+  assert.match(html, /<meta property="og:image:height" content="630" \/>/);
+  assert.match(html, /<meta property="article:published_time" content="2026-06-01T09:00:00\.000Z" \/>/);
+  assert.match(html, /<meta property="article:modified_time" content="2026-10-23T00:00:00\.000Z" \/>/);
+  assert.match(html, /<meta property="article:author" content="https:\/\/scrolltek\.name\.ng\/author\/maya-chen" \/>/);
+  assert.match(html, /<meta name="twitter:card" content="summary_large_image" \/>/);
+  assert.match(html, /<meta name="twitter:image" content="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-beginners-guide-hero\.webp" \/>/);
+  assert.equal((html.match(/<h1\b/gi) ?? []).length, 1, "document must render exactly one <h1>");
+
+  // Hero & workflow diagram images + visible captions + TOC
+  assert.match(
+    html,
+    /<figure><img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-beginners-guide-hero\.webp" alt="Illustration of a person describing an app idea to an AI that builds the software on a laptop screen" width="1200" height="630" fetchpriority="high" decoding="async"><figcaption>Vibe coding lets you describe software in plain English and have AI build it\.<\/figcaption><\/figure>/,
+  );
+  assert.match(
+    html,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-workflow-diagram\.svg" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback" width="1000" height="400" loading="lazy" decoding="async">\s*<figcaption>The basic vibe coding loop\.<\/figcaption>/,
+  );
+  assert.match(html, /<nav aria-label="Table of contents"><h2>In this article<\/h2><ol><li><a href="#what-is-vibe-coding">What is vibe coding\?<\/a><\/li>/);
+  assert.equal((html.match(/<table>/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /www\.scrolltek|scrolltek\.com/i);
+
+  // Valid server-rendered JSON-LD: Article + BreadcrumbList + FAQPage
+  const articleSchemaMatch = html.match(/<script type="application\/ld\+json" id="article-jsonld">([^<]+)<\/script>/);
+  const breadcrumbSchemaMatch = html.match(/<script type="application\/ld\+json" id="breadcrumb-jsonld">([^<]+)<\/script>/);
+  const faqSchemaMatch = html.match(/<script type="application\/ld\+json" id="faq-jsonld">([^<]+)<\/script>/);
+  assert.ok(articleSchemaMatch, "article-jsonld must be emitted");
+  assert.ok(breadcrumbSchemaMatch, "breadcrumb-jsonld must be emitted");
+  assert.ok(faqSchemaMatch, "faq-jsonld must be emitted");
+
+  const articleSchema = JSON.parse(articleSchemaMatch[1]);
+  assert.equal(articleSchema["@type"], "Article");
+  assert.equal(articleSchema.headline, "What Is Vibe Coding? A Beginner's Guide for 2026");
+  assert.equal(articleSchema.datePublished, "2026-06-01T09:00:00.000Z");
+  assert.equal(articleSchema.dateModified, "2026-10-23T00:00:00.000Z");
+  assert.equal(articleSchema.articleSection, "Trending");
+
+  const breadcrumbSchema = JSON.parse(breadcrumbSchemaMatch[1]);
+  assert.equal(breadcrumbSchema["@type"], "BreadcrumbList");
+  assert.equal(breadcrumbSchema.itemListElement.length, 3);
+  assert.equal(breadcrumbSchema.itemListElement[1].name, "Trending");
+  assert.equal(breadcrumbSchema.itemListElement[2].item, "https://scrolltek.name.ng/article/what-is-vibe-coding-2026");
+
+  const faqSchema = JSON.parse(faqSchemaMatch[1]);
+  assert.equal(faqSchema["@type"], "FAQPage");
+  assert.equal(faqSchema.mainEntity.length, 6);
+  for (const entry of faqSchema.mainEntity) {
+    assert.ok(body.includes(entry.name), `FAQ question must match visible FAQ text: ${entry.name}`);
+    assert.ok(body.includes(entry.acceptedAnswer.text), `FAQ answer must match visible FAQ text: ${entry.name}`);
+  }
+});
+
