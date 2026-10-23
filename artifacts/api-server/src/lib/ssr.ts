@@ -34,6 +34,7 @@ interface RenderResult {
   meta: MetaTags;
   jsonLd: string;
   breadcrumbJsonLd?: string;
+  itemListJsonLd?: string;
   faqJsonLd?: string;
 }
 
@@ -49,6 +50,7 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
   heroWidth?: number;
   heroHeight?: number;
   enableSsrToc?: boolean;
+  itemList?: Record<string, unknown>;
   faqs?: { question: string; answer: string }[];
 }> = {
   "what-is-vibe-coding-2026": {
@@ -90,6 +92,92 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
       {
         question: "Will vibe coding replace software developers?",
         answer: "It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.",
+      },
+    ],
+  },
+  "best-budget-wireless-earbuds-2026": {
+    metaTitle: "Best Budget Wireless Earbuds in 2026 (Top 6)",
+    metaDescription:
+      "The best budget wireless earbuds in 2026, ranked for sound, battery life, ANC, calls, and fit—with honest pros, cons, and buying tips under $100.",
+    updatedLabel: "Last updated: October 2026",
+    dateModified: "2026-10-23T00:00:00.000Z",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt: "Pair of wireless earbuds beside their charging case",
+    heroCaption:
+      "You no longer need to spend $250 to get good wireless earbuds. Photo: Atelier by Vineeth / Unsplash.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    enableSsrToc: true,
+    itemList: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Best Budget Wireless Earbuds in 2026",
+      itemListOrder: "https://schema.org/ItemListOrderAscending",
+      numberOfItems: 6,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Soundcore Liberty 4 NC — Best Overall Budget Wireless Earbuds",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#1-soundcore-liberty-4-nc-best-overall-budget-wireless-earbuds",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "EarFun Air Pro 4+ — Best Feature-Packed Pick Under $100",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#2-earfun-air-pro-4-plus-best-feature-packed-pick-under-100",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "CMF Buds 2 Plus — Best Value Around $50 to $60",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#3-cmf-buds-2-plus-best-value-around-50-to-60",
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: "JLab Go Pods ANC — Best for Tight Budgets Under $40",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#4-jlab-go-pods-anc-best-for-tight-budgets-under-40",
+        },
+        {
+          "@type": "ListItem",
+          position: 5,
+          name: "CMF Buds 2a — Best Entry-Level CMF Pick Under $40",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#5-cmf-buds-2a-best-entry-level-cmf-pick-under-40",
+        },
+        {
+          "@type": "ListItem",
+          position: 6,
+          name: "CMF Clip Pro — Best Open-Ear Budget Earbuds",
+          url: "https://scrolltek.name.ng/article/best-budget-wireless-earbuds-2026#6-cmf-clip-pro-best-open-ear-budget-earbuds",
+        },
+      ],
+    },
+    faqs: [
+      {
+        question: "Are budget wireless earbuds under $100 worth buying in 2026?",
+        answer: "Yes. Well-reviewed pairs between $50 and $100 now deliver effective commuter ANC, multipoint pairing, solid app EQ, and reliable battery life. Flagship $250+ buds still lead on wind-noise call handling, spatial audio ecosystems, and top-end acoustic refinement, though most everyday listeners no longer need to spend that much.",
+      },
+      {
+        question: "What is the difference between ANC and ENC on budget earbuds?",
+        answer: "Active noise cancellation (ANC) reduces outside rumble in your own ears while listening to music or podcasts. Environmental noise cancellation (ENC) uses microphone filtering so the person on the other end of a phone call hears less background clatter—it does not quiet your surroundings.",
+      },
+      {
+        question: "Which budget earbuds work best with iPhone vs. Android?",
+        answer: "iPhones use the AAC Bluetooth codec across third-party earbuds, so prioritize comfort, app quality, multipoint stability, and ANC—where Soundcore Liberty 4 NC and CMF Buds 2 Plus perform well. Android phones with LDAC or aptX Lossless support can also take fuller advantage of models like EarFun Air Pro 4+.",
+      },
+      {
+        question: "Should you buy in-ear ANC earbuds or open-ear clip earbuds?",
+        answer: "Choose sealed in-ear ANC earbuds for noisy commutes, flights, gyms, and stronger sub-bass. Choose open-ear clips like the CMF Clip Pro when ear-canal comfort and hearing traffic, coworkers, or home activity clearly matter more than blocking noise.",
+      },
+      {
+        question: "Why is real-world earbud battery life shorter than advertised?",
+        answer: "Manufacturers usually publish headline figures at roughly 50% volume using standard SBC or AAC audio with active noise cancellation turned off. Enabling ANC, raising volume in loud environments, taking phone calls, or switching on high-bitrate codecs like LDAC draws noticeably more power.",
+      },
+      {
+        question: "Do sub-$40 earbuds have real active noise cancellation?",
+        answer: "Reputable entry-level models such as the JLab Go Pods ANC and CMF Buds 2a include genuine hybrid ANC that takes the edge off fan hum and light transit rumble, though deeper low-end isolation still steps up noticeably around the $55 to $100 tier.",
       },
     ],
   },
@@ -245,6 +333,10 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
       })
     : undefined;
 
+  const itemListJsonLd = seoOverride?.itemList
+    ? JSON.stringify(seoOverride.itemList)
+    : undefined;
+
   const faqJsonLd = seoOverride?.faqs?.length
     ? JSON.stringify({
         "@context": "https://schema.org",
@@ -274,6 +366,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
     },
     jsonLd,
     breadcrumbJsonLd,
+    itemListJsonLd,
     faqJsonLd,
   };
 
@@ -582,6 +675,18 @@ export function injectIntoHtml(
     const breadcrumbScript = `<script type="application/ld+json" id="breadcrumb-jsonld">${safeBreadcrumbJsonLd}</script>`;
     const breadcrumbMatcher = /<script\b(?=[^>]*\bid=["']breadcrumb-jsonld["'])[^>]*>[\s\S]*?<\/script>/i;
     html = replaceOrInsertHeadTag(html, breadcrumbMatcher, breadcrumbScript);
+  }
+
+  if (result.itemListJsonLd) {
+    const safeItemListJsonLd = result.itemListJsonLd
+      .replace(/</g, "\\u003c")
+      .replace(/>/g, "\\u003e")
+      .replace(/&/g, "\\u0026")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029");
+    const itemListScript = `<script type="application/ld+json" id="itemlist-jsonld">${safeItemListJsonLd}</script>`;
+    const itemListMatcher = /<script\b(?=[^>]*\bid=["']itemlist-jsonld["'])[^>]*>[\s\S]*?<\/script>/i;
+    html = replaceOrInsertHeadTag(html, itemListMatcher, itemListScript);
   }
 
   if (result.faqJsonLd) {
