@@ -340,3 +340,22 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 400px;
 }
+
+/* ─── Article tables: scroll horizontally instead of overflowing on mobile ─── */
+.article-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.article-table-wrap table {
+  margin-bottom: 0;
+  min-width: 640px;
+}
+
+/* ─── Inline SVG figures (e.g. price charts) scale down responsively ─── */
+figure svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

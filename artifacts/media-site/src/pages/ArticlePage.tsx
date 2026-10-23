@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { nameToSlug } from "@/data/authors";
 import { getArticleFaqs } from "@/data/faqs";
 import { getArticleSeoOverride } from "@/data/seo-overrides";
+import { getArticleSeoOverride as getArticleSeoOverrideForSlug } from "@/data/article-seo";
 import { completeArticleSsrHandoff } from "@/lib/article-ssr-handoff";
 import { prefetchAuthor } from "@/lib/prefetch";
 
@@ -325,7 +326,11 @@ export default function ArticlePage() {
     },
   });
   const seoOverride = getArticleSeoOverride(article?.slug ?? slug);
+  const articleSeoOverride = article?.slug ? getArticleSeoOverrideForSlug(article.slug) : undefined;
   const articleDescription = seoOverride?.metaDescription ?? getArticleDescription(article);
+  const pageH1 = articleSeoOverride?.h1 ?? article?.title;
+  const pageMetaTitle = articleSeoOverride?.metaTitle ?? seoOverride?.metaTitle ?? article?.title;
+  const pageMetaDescription = articleSeoOverride?.metaDescription ?? articleDescription;
 
   const resolvedOgImage = article?.imageUrl
     ? (() => {
@@ -339,9 +344,11 @@ export default function ArticlePage() {
 
   usePageMeta({
     title: article
-      ? (seoOverride?.metaTitle ?? article.title)
+      ? pageMetaTitle
       : (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].title : undefined),
-    description: articleDescription ?? (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
+    description: article
+      ? pageMetaDescription
+      : (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
     ogTitle: seoOverride?.ogTitle,
     ogDescription: seoOverride?.ogDescription,
     ogImage: resolvedOgImage,
@@ -354,6 +361,13 @@ export default function ArticlePage() {
         ? null
         : undefined,
     robots: articleFailure === "not-found" ? "noindex, follow" : seoOverride?.robots,
+    articlePublishedTime: article
+      ? (articleSeoOverride?.publishedTime ?? (seoOverride ? new Date(article.publishedAt).toISOString() : undefined))
+      : undefined,
+    articleModifiedTime: articleSeoOverride?.modifiedTime ?? seoOverride?.dateModified,
+    articleAuthor: article
+      ? (articleSeoOverride?.authorName ?? (seoOverride ? `${SITE_ORIGIN}/author/${encodeURIComponent(nameToSlug(article.author.name))}` : undefined))
+      : undefined,
     enabled: !isLoading && (
       articleFailure === null
       || (articleFailure === "not-found" && !hasPendingArticleSsr)
@@ -470,7 +484,7 @@ export default function ArticlePage() {
   const authorProfileUrl = `${origin}/author/${encodeURIComponent(nameToSlug(article.author.name))}`;
   const categorySlug = article.category.toLowerCase().replace(/\s+/g, "-");
 
-  const jsonLdData: Record<string, unknown> = {
+  const jsonLdData: Record<string, unknown> = articleSeoOverride?.jsonLd ?? {
     "@context": "https://schema.org",
     "@type": seoOverride?.schemaType ?? "NewsArticle",
     headline: article.title,
@@ -532,7 +546,9 @@ export default function ArticlePage() {
 
   return (
     <>
-      {seoOverride?.graphJsonLd ? (
+      {articleSeoOverride?.jsonLd ? (
+        <JsonLd data={articleSeoOverride.jsonLd} id="article-jsonld" />
+      ) : seoOverride?.graphJsonLd ? (
         <JsonLd data={seoOverride.graphJsonLd} id="article-jsonld" />
       ) : (
         <>
@@ -595,7 +611,7 @@ export default function ArticlePage() {
                 className="font-display text-xl sm:text-3xl md:text-5xl font-extrabold leading-tight mb-3"
                 itemProp="headline"
               >
-                {article.title}
+                {pageH1}
               </h1>
 
               {article.subtitle && (

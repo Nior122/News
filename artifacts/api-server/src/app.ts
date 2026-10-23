@@ -15,6 +15,7 @@ import {
   injectCanonicalIntoHtml,
   injectNotFoundIntoHtml,
   injectUnavailableIntoHtml,
+  removeHomepageFallback,
 } from "./lib/ssr";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -129,7 +130,13 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(frontendDist));
   app.use(async (req: Request, res: Response) => {
     try {
-      const template = await getTemplate();
+      const baseTemplate = await getTemplate();
+      const normalizedRequestPath = req.path.replace(/\/+$/, "") || "/";
+      // The homepage keeps its no-JS fallback listing; every other route drops
+      // it so the server-rendered HTML carries exactly one H1.
+      const template = normalizedRequestPath === "/"
+        ? baseTemplate
+        : removeHomepageFallback(baseTemplate);
       const result = await renderForPath(req.path);
       res.setHeader("Content-Type", "text/html; charset=utf-8");
 

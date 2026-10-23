@@ -11,6 +11,9 @@ interface PageMeta {
   ogType?: string;
   canonical?: string | null;
   robots?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
+  articleAuthor?: string;
   enabled?: boolean;
 }
 
@@ -51,7 +54,7 @@ function setMeta(name: string, content: string) {
   let element = findMeta(name);
   if (!element) {
     element = document.createElement("meta");
-    if (name.startsWith("og:")) {
+    if (name.startsWith("og:") || name.startsWith("article:")) {
       element.setAttribute("property", name);
     } else {
       element.setAttribute("name", name);
@@ -86,7 +89,8 @@ export function usePageMeta(meta: PageMeta) {
     const metaNames = [
       "description", "robots", "og:type", "og:title", "og:description", "og:url", "og:image",
       "og:image:width", "og:image:height", "og:image:type", "twitter:title", "twitter:description",
-      "twitter:card", "twitter:image",
+      "twitter:card", "twitter:image", "article:published_time", "article:modified_time",
+      "article:author",
     ];
     const previousMeta = new Map<string, string | null>(
       metaNames.map((name) => [name, captureMeta(name)] as const),
@@ -106,6 +110,12 @@ export function usePageMeta(meta: PageMeta) {
     else removeMeta("og:url");
     setMeta("twitter:title", meta.ogTitle || pageTitle);
     setMeta("twitter:description", meta.ogDescription || description);
+    if (meta.articlePublishedTime) setMeta("article:published_time", meta.articlePublishedTime);
+    else removeMeta("article:published_time");
+    if (meta.articleModifiedTime) setMeta("article:modified_time", meta.articleModifiedTime);
+    else removeMeta("article:modified_time");
+    if (meta.articleAuthor) setMeta("article:author", meta.articleAuthor);
+    else removeMeta("article:author");
 
     if (meta.ogImage) {
       setMeta("og:image", meta.ogImage);
@@ -159,6 +169,9 @@ export function usePageMeta(meta: PageMeta) {
     meta.ogType,
     meta.canonical,
     meta.robots,
+    meta.articlePublishedTime,
+    meta.articleModifiedTime,
+    meta.articleAuthor,
     meta.enabled,
   ]);
 }

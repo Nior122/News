@@ -738,59 +738,346 @@ async function runSetup(pool) {
 
 <p>The goal isn't an empty list. It's a trustworthy system. <strong>Share this with someone who's been talking about getting organised since January.</strong></p>`,
 
-    'chatgpt-claude-gemini-comparison-2026': `<p>By 2026, there are three AI assistants that dominate the conversation: ChatGPT from OpenAI, Claude from Anthropic, and Gemini from Google. All three are free to start. All three can write, reason, research, and code. So which one should you actually use?</p>
+    'chatgpt-claude-gemini-comparison-2026': `<p>Three AI assistants dominate many everyday workflows, but they are not interchangeable. <strong>ChatGPT vs Claude vs Gemini</strong> comes down to what you need: ChatGPT is a versatile all-rounder, Claude is a strong choice for writing and code-focused work, and Gemini is particularly attractive if you already use Google's apps. The best option depends on your tasks, budget, preferred tools and tolerance for usage limits.</p>
 
 <figure>
-  <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=80" alt="Multiple laptops side by side each showing a different AI chat assistant interface for comparison" width="1200" height="630" />
+  <img
+    src="/images/chatgpt-vs-claude-vs-gemini-hero.webp"
+    alt="Abstract illustration of three AI assistants shown as glowing chat bubbles"
+    data-search="abstract illustration three glowing chat bubbles blue orange purple dark gradient"
+    data-source="scrolltek"
+    width="1200"
+    height="630"
+    fetchpriority="high"
+  />
+  <figcaption>Three AI assistants with three different strengths.</figcaption>
 </figure>
 
-<p>The honest answer: it depends on what you're doing. Here's a clear breakdown of where each one genuinely excels — and where it falls short.</p>
+<p><em>Last updated: October 2026</em></p>
 
-<h2>ChatGPT — The Most Versatile All-Rounder</h2>
+<h2>The Short Answer</h2>
 
-<p><strong>Best for:</strong> Brainstorming, creative writing, coding help, building custom workflows with GPTs.</p>
+<p>Choose <strong>ChatGPT</strong> if you want one assistant for writing, research, image generation, voice conversations and a broad selection of interactive tools. Choose <strong>Claude</strong> if your priorities are drafting, editing, analysing long documents or working with code. Choose <strong>Gemini</strong> if you depend on Gmail, Google Docs, Drive and Google's wider AI ecosystem.</p>
 
-<p>ChatGPT (GPT-4o) is the most widely used AI assistant in the world for a reason — it handles an enormous range of tasks competently. It's the best for creative work: story writing, marketing copy, generating ideas, and iterating quickly on drafts. It's also the most "conversational" of the three — it feels natural to work with, matches your tone, and handles multi-turn conversations well.</p>
+<p>These are starting recommendations, not universal rankings. All three can handle everyday questions, summarisation, brainstorming and programming, and each can make mistakes. Before paying, try the free versions with the tasks you actually perform.</p>
 
-<p>The free tier is genuinely usable. ChatGPT Plus ($20/month) adds GPT-4o with image generation, voice mode, and the ability to create custom GPTs — mini AI apps you can build yourself.</p>
+<h2>Comparison Table</h2>
 
-<p><strong>Watch out for:</strong> Occasional confident hallucinations (wrong answers stated with certainty), and a tendency to be sycophantic — telling you what you want to hear rather than what's true.</p>
+<p>The following comparison reflects official product information available on 23 October 2026. Model availability and limits can vary by plan, region, account and rollout status.</p>
 
-<h2>Claude — The Best for Long, Serious Work</h2>
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Feature</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Current model family</td><td>GPT-6; GPT-5.6 options remain available</td><td>Claude Opus 5.5, Sonnet 5.5 and Haiku 5.5</td><td>Gemini 3.8 family; Gemini 4 Argon has a restricted rollout</td></tr>
+    <tr><td>Free plan</td><td>Yes; GPT-6 Luna rollout and available tools depend on account</td><td>Yes, with usage limits</td><td>Yes, with standard usage limits</td></tr>
+    <tr><td>Main individual paid plan</td><td>Plus: $20/month</td><td>Pro: $20/month monthly, or $200 annually</td><td>Google AI Pro: $19.99/month in the US</td></tr>
+    <tr><td>Context window</td><td>App-specific limits vary; verify the current plan and model</td><td>200K tokens on paid plans, according to Anthropic's published guidance</td><td>32K tokens without an AI plan; 128K on AI Plus; 1 million on AI Pro and Ultra</td></tr>
+    <tr><td>Web access</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Image generation</td><td>Yes</td><td>No native general-purpose image generator in the standard chat experience</td><td>Yes, with feature and usage limits</td></tr>
+    <tr><td>Voice conversations</td><td>Yes</td><td>Availability and features depend on the current app and account</td><td>Yes, including Gemini Live</td></tr>
+    <tr><td>Best starting point</td><td>General-purpose assistance</td><td>Writing, document work and coding</td><td>Google ecosystem and multimodal work</td></tr>
+  </tbody>
+</table>
+</div>
 
-<p><strong>Best for:</strong> Long documents, nuanced analysis, careful reasoning, writing that needs to sound like a human.</p>
+<p><strong>Pricing checked: 23 October 2026.</strong> Prices above are US list prices before applicable taxes, and regional prices can differ. Google AI Pro pricing and context limits are documented on <a href="https://one.google.com/about/plans?hl=en_US">Google One's plans page</a> and the <a href="https://support.google.com/gemini/answer/16275805?hl=en">Gemini Apps limits page</a>. Anthropic publishes its plan details on its <a href="https://www.anthropic.com/pricing">official pricing page</a>, while OpenAI documents current model availability in its <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models">ChatGPT model guide</a>.</p>
 
-<p>Claude (Sonnet 3.7) from Anthropic is widely considered the best AI for serious written work. If you need to process a long PDF, write something that sounds genuinely thoughtful, or get careful analysis of a complex topic, Claude consistently outperforms the others. It handles large context windows exceptionally well — you can paste an entire contract, research paper, or code repository and ask questions about it.</p>
+<p>One important distinction: a company's newest announced model is not necessarily available to every consumer. For example, Google has described Gemini 4 Argon as a frontier model being rolled out to a restricted group of trusted cyber defenders. It should not be treated as universally available in the Gemini app.</p>
 
-<p>Claude is also the most honest of the three. It will tell you when it doesn't know something, push back on incorrect assumptions, and flag uncertainty rather than fabricating a confident-sounding answer.</p>
+<h2>ChatGPT: Strengths, Weaknesses, Best For</h2>
 
-<p><strong>Watch out for:</strong> It can be more cautious than necessary, occasionally declining tasks that ChatGPT or Gemini would handle without issue. The free tier is more limited than ChatGPT's.</p>
+<h3>Best for: Everyday assistance and a wide range of tasks</h3>
 
-<h2>Gemini — The Best Connected to Google's World</h2>
+<p>ChatGPT is a sensible starting point if you want one AI assistant that can move between different kinds of work. You can ask it to explain a concept, draft an email, analyse a spreadsheet, research a topic, generate an image or discuss a problem using voice.</p>
 
-<p><strong>Best for:</strong> Research with web access, working with Google Workspace (Docs, Gmail, Drive), multimodal tasks.</p>
+<p>OpenAI's October 2026 model lineup includes GPT-6, which is rolling out to eligible paid users, alongside GPT-6 Luna for Free and Go users. Model access depends on your subscription and the availability of the rollout.</p>
 
-<p>Gemini 2.0 Flash is Google's answer — and its core advantage is integration. If you live in Google Docs, Gmail, and Drive, Gemini integrates directly into those tools. You can ask it to summarise your emails, draft documents in Docs, or search the web in real time.</p>
-
-<p>Gemini also handles multimodal input well — drop in an image and ask questions about it, or upload a screenshot and have it extract data. For research tasks where you need current information, Gemini with web access is consistently strong.</p>
-
-<p><strong>Watch out for:</strong> Creative writing and nuanced text quality still lags behind Claude and GPT-4o. It can feel more "corporate" in tone.</p>
-
-<figure>
-  <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80" alt="Person using AI assistant on laptop computer for research writing and productivity tasks in 2026" width="1200" height="630" />
-</figure>
-
-<h2>The Bottom Line</h2>
+<p><strong>Strengths</strong></p>
 
 <ul>
-  <li><strong>For writing, creativity, and coding:</strong> ChatGPT</li>
-  <li><strong>For serious analysis, long documents, and honest answers:</strong> Claude</li>
-  <li><strong>For research, current events, and Google integration:</strong> Gemini</li>
+  <li><strong>Versatility:</strong> ChatGPT combines text conversations with tools for files, data analysis, web search, image generation and voice.</li>
+  <li><strong>Flexible problem-solving:</strong> Its available reasoning options can help with planning, complex questions, programming and multi-step tasks.</li>
+  <li><strong>Creative work:</strong> Image generation, brainstorming and iterative editing make it useful for creators and small businesses.</li>
+  <li><strong>Interactive assistance:</strong> GPT-6's Intelligent UI can present certain answers through visuals and interactive elements instead of plain text alone.</li>
 </ul>
 
-<p>If you are choosing an assistant specifically for coursework, lecture notes, and exam revision, see our full guide to the <a href="/article/ai-tools-for-students-2026" class="article-backlink">best AI tools for students</a>.</p>
+<p>These features are documented in OpenAI's <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models">official model guide</a> and <a href="https://help.openai.com/en/articles/9275245-using-chatgpt-with-images">Free Tier FAQ</a>.</p>
 
-<p>The best move? Use all three. They're all free to start, and knowing which tool to reach for depending on the job is genuinely a competitive advantage in 2026. <strong>Share this with someone still just using whichever AI they heard of first.</strong></p>`,
+<p><strong>Weaknesses</strong></p>
+
+<p>ChatGPT can produce confident but incorrect answers, including fabricated details and faulty reasoning. You still need to check important claims, citations, calculations and generated code.</p>
+
+<p>Free access also has separate limits for tools such as image generation, file uploads, voice and data analysis. A paid subscription increases access but does not make every feature unlimited.</p>
+
+<p>The wide range of features can be a disadvantage if you want a simpler interface focused on writing or document analysis. More tools do not automatically mean better results for every task.</p>
+
+<p><strong>Who should choose ChatGPT?</strong></p>
+
+<p>Choose it if your work changes throughout the day. Students, freelancers, developers, business owners and content creators may appreciate having research, writing, coding assistance and image generation in one place.</p>
+
+<p>If you are uncertain which assistant suits you, ChatGPT is a reasonable first option because of its breadth. Test it against the other two before committing to a subscription.</p>
+
+<h2>Claude: Strengths, Weaknesses, Best For</h2>
+
+<h3>Best for: Writing, editing, code and document-heavy work</h3>
+
+<p>Claude is worth considering if your work involves producing polished text, reviewing documents, reasoning through code or making substantial changes to existing writing. Its different model tiers serve different workloads: Haiku 5.5 targets faster, high-volume tasks, Sonnet 5.5 is positioned for broad professional work, and Opus 5.5 targets demanding coding and knowledge-work tasks.</p>
+
+<p>Anthropic announced Claude Opus 5.5 on 22 September 2026, Sonnet 5.5 on 28 September and Haiku 5.5 on 7 October. The company's <a href="https://www.anthropic.com/news/models">official model announcements</a> describe their intended capabilities.</p>
+
+<p><strong>Strengths</strong></p>
+
+<ul>
+  <li><strong>Writing and editing:</strong> Claude is a strong candidate for drafting articles, refining tone, reorganising arguments and reviewing long passages.</li>
+  <li><strong>Code-focused workflows:</strong> Claude can explain unfamiliar code, suggest changes, identify potential bugs and help plan implementations. Claude Code is also available with eligible paid plans.</li>
+  <li><strong>Long-document analysis:</strong> Anthropic documents a 200K-token context window on paid Claude plans. This can help when analysing substantial documents, although the practical limit depends on the task and available features.</li>
+  <li><strong>Research assistance:</strong> Claude's web search can return source citations, helping you follow up on factual claims.</li>
+</ul>
+
+<p><strong>Weaknesses</strong></p>
+
+<p>Claude does not provide the same built-in general-purpose image-generation experience as ChatGPT or Gemini. If you regularly need generated illustrations, product concepts or marketing images, you may need another tool.</p>
+
+<p>Its free plan has usage limits, and long conversations or large document uploads can consume that allowance more quickly. The model's writing quality also does not guarantee factual accuracy; important claims still require verification.</p>
+
+<p>Claude's suitability for coding depends on the task, model, tools and codebase. A successful code suggestion is not proof that an entire application is correct, secure or ready to deploy.</p>
+
+<p><strong>Who should choose Claude?</strong></p>
+
+<p>Choose Claude if you spend much of your time writing, editing, reviewing documents or developing software. It is particularly worth testing for work that requires maintaining context across a large piece of text.</p>
+
+<p>For a direct comparison, try the same document or coding task in Claude and ChatGPT. Judge the results by accuracy, usefulness, editing effort and whether either assistant overlooks important requirements.</p>
+
+<h2>Gemini: Strengths, Weaknesses, Best For</h2>
+
+<h3>Best for: Google users and connected workflows</h3>
+
+<p>Gemini is especially worth considering if Gmail, Google Docs, Drive and other Google services already form the centre of your work. Depending on your plan, Gemini can connect AI assistance with Google's productivity tools and provide access to additional research and creative features.</p>
+
+<p>Google's Gemini 3.8 family includes Flash models designed for capable, efficient work, while Gemini 4 Argon is being introduced through a more restricted rollout. Check the actual model available in your account rather than assuming that every announcement applies to all users.</p>
+
+<p><strong>Strengths</strong></p>
+
+<ul>
+  <li><strong>Google integration:</strong> Eligible plans bring Gemini into supported Google productivity applications, reducing the need to move content manually between services.</li>
+  <li><strong>Large context options:</strong> Google's published app limits list 32K tokens without an AI plan, 128K on AI Plus and 1 million on AI Pro and Ultra.</li>
+  <li><strong>Multimodal capabilities:</strong> Gemini supports work involving text, images and voice, with features depending on the model and subscription.</li>
+  <li><strong>Research and productivity:</strong> Its tools can help organise information, summarise material and work across supported Google services.</li>
+</ul>
+
+<p>See Google's <a href="https://support.google.com/gemini/answer/16275805?hl=en">Gemini Apps limits and feature availability</a> and <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/">official model announcements</a> for current details.</p>
+
+<p><strong>Weaknesses</strong></p>
+
+<p>Gemini's advantages are less compelling if you do not use Google's ecosystem. Some integrations and premium features require an eligible subscription, and access can vary by country, account type and rollout.</p>
+
+<p>A large context window is useful for processing substantial inputs, but it does not guarantee that every detail will be interpreted correctly. Long documents still need careful checking, particularly when decisions depend on a small detail buried in the source.</p>
+
+<p>Gemini can also make factual mistakes, misinterpret instructions or generate code that needs debugging. Its integration with Google services does not remove the need to review what it produces or understand the permissions granted to connected tools.</p>
+
+<p><strong>Who should choose Gemini?</strong></p>
+
+<p>Choose Gemini if your daily work revolves around Google applications or you want an assistant that combines conversation with Google's productivity and creative tools.</p>
+
+<p>It is also worth testing for long-document workflows, provided the relevant context limit is available on your plan. If Google integration is not important to you, compare the quality of its actual answers against ChatGPT and Claude before choosing.</p>
+
+<h2>Which AI Is Best for Each Task?</h2>
+
+<p>The most useful answer to “which AI is best?” is often the one that names the task. The following recommendations are starting points based on product capabilities, not a claim that one model wins every benchmark.</p>
+
+<figure>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-labelledby="t d" font-family="Inter, Arial, sans-serif">
+  <title id="t">Flowchart for choosing between ChatGPT, Claude and Gemini based on your main task</title>
+  <desc id="d">Decision flowchart titled "Which AI should you pick?". Question 1: Do you mainly write, edit or code? Yes leads to Claude, best for writing, document work and coding. No leads to Question 2: Do you live in Google's apps, such as Gmail, Docs and Drive? Yes leads to Gemini, best for the Google ecosystem and multimodal work. No leads to Question 3: Do you want one versatile all-rounder for everything? Yes leads to ChatGPT, best for general-purpose assistance. No leads to trying the free plans first.</desc>
+  <rect width="1000" height="600" rx="16" fill="#12121A"/>
+  <text x="500" y="52" font-size="30" font-weight="700" fill="#F2F2F8" text-anchor="middle">Which AI should you pick?</text>
+
+  <rect x="60" y="100" width="380" height="90" rx="10" fill="#1E1E2A" stroke="#3A3A4A" stroke-width="1"/>
+  <text x="80" y="126" font-size="13" font-weight="600" fill="#9A9AAB">QUESTION 1</text>
+  <text x="250" y="156" font-size="19" fill="#E8E8F0" text-anchor="middle">Do you mainly write, edit or code?</text>
+
+  <rect x="560" y="100" width="380" height="90" rx="10" fill="#D97757"/>
+  <text x="750" y="142" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">Claude</text>
+  <text x="750" y="170" font-size="16" fill="#FFFFFF" text-anchor="middle">Writing, document work and coding</text>
+
+  <line x1="440" y1="145" x2="548" y2="145" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="548,139 560,145 548,151" fill="#9A9AAB"/>
+  <text x="500" y="132" font-size="14" font-weight="600" fill="#9A9AAB" text-anchor="middle">Yes</text>
+
+  <line x1="250" y1="190" x2="250" y2="232" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="244,232 250,240 256,232" fill="#9A9AAB"/>
+  <text x="264" y="218" font-size="14" font-weight="600" fill="#9A9AAB">No</text>
+
+  <rect x="60" y="240" width="380" height="90" rx="10" fill="#1E1E2A" stroke="#3A3A4A" stroke-width="1"/>
+  <text x="80" y="266" font-size="13" font-weight="600" fill="#9A9AAB">QUESTION 2</text>
+  <text x="250" y="290" font-size="19" fill="#E8E8F0" text-anchor="middle">Do you live in Google's apps</text>
+  <text x="250" y="314" font-size="19" fill="#E8E8F0" text-anchor="middle">(Gmail, Docs, Drive)?</text>
+
+  <rect x="560" y="240" width="380" height="90" rx="10" fill="#4285F4"/>
+  <text x="750" y="282" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">Gemini</text>
+  <text x="750" y="310" font-size="16" fill="#FFFFFF" text-anchor="middle">Google ecosystem and multimodal work</text>
+
+  <line x1="440" y1="285" x2="548" y2="285" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="548,279 560,285 548,291" fill="#9A9AAB"/>
+  <text x="500" y="272" font-size="14" font-weight="600" fill="#9A9AAB" text-anchor="middle">Yes</text>
+
+  <line x1="250" y1="330" x2="250" y2="372" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="244,372 250,380 256,372" fill="#9A9AAB"/>
+  <text x="264" y="358" font-size="14" font-weight="600" fill="#9A9AAB">No</text>
+
+  <rect x="60" y="380" width="380" height="90" rx="10" fill="#1E1E2A" stroke="#3A3A4A" stroke-width="1"/>
+  <text x="80" y="406" font-size="13" font-weight="600" fill="#9A9AAB">QUESTION 3</text>
+  <text x="250" y="430" font-size="19" fill="#E8E8F0" text-anchor="middle">Do you want one versatile</text>
+  <text x="250" y="454" font-size="19" fill="#E8E8F0" text-anchor="middle">all-rounder for everything?</text>
+
+  <rect x="560" y="380" width="380" height="90" rx="10" fill="#10A37F"/>
+  <text x="750" y="422" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">ChatGPT</text>
+  <text x="750" y="450" font-size="16" fill="#FFFFFF" text-anchor="middle">General-purpose assistance</text>
+
+  <line x1="440" y1="425" x2="548" y2="425" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="548,419 560,425 548,431" fill="#9A9AAB"/>
+  <text x="500" y="412" font-size="14" font-weight="600" fill="#9A9AAB" text-anchor="middle">Yes</text>
+
+  <line x1="250" y1="470" x2="250" y2="512" stroke="#9A9AAB" stroke-width="2"/>
+  <polygon points="244,512 250,520 256,512" fill="#9A9AAB"/>
+  <text x="264" y="498" font-size="14" font-weight="600" fill="#9A9AAB">No</text>
+
+  <rect x="60" y="520" width="380" height="60" rx="10" fill="#2A2A38" stroke="#3A3A4A" stroke-width="1"/>
+  <text x="250" y="556" font-size="18" fill="#C9C9D6" text-anchor="middle">Try the free plans first</text>
+</svg>
+  <figcaption>A quick way to pick your AI assistant.</figcaption>
+</figure>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Task</th><th>Best starting choice</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Writing and editing</td><td>Claude</td><td>A strong candidate for drafting, restructuring and refining long text</td></tr>
+    <tr><td>Coding</td><td>Claude or ChatGPT</td><td>Both offer code assistance; compare them on your language, tools and actual project</td></tr>
+    <tr><td>Web research</td><td>ChatGPT or Gemini</td><td>Both provide web-connected workflows; check sources and dates</td></tr>
+    <tr><td>Long documents</td><td>Gemini or Claude</td><td>Gemini offers large plan-dependent context windows; Claude documents 200K tokens on paid plans</td></tr>
+    <tr><td>Students</td><td>ChatGPT or Gemini</td><td>Both support explanations, research and file-based study; Gemini may suit Google Workspace users</td></tr>
+    <tr><td>Image generation</td><td>ChatGPT or Gemini</td><td>Both offer image-generation features, with plan-specific limits</td></tr>
+    <tr><td>Privacy-sensitive work</td><td>Depends on the data and plan</td><td>Review each provider's data controls, retention terms and organisational settings</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Writing: Which AI is best for writing?</h3>
+
+<p>Start with Claude if you need extensive editing, a consistent voice or help restructuring a long article. Try ChatGPT if the job includes brainstorming, research, image creation or multiple types of content. Gemini is also worth testing if your drafts live in Google Docs.</p>
+
+<p>The best result depends on the writing task and how much revision is needed. Ask each assistant to complete the same brief, then compare accuracy, tone, structure and the number of edits you must make.</p>
+
+<h3>Coding: Which AI is best for coding?</h3>
+
+<p>Claude is a strong starting point for code-heavy work, while ChatGPT is useful when coding is one part of a broader workflow involving research, data analysis and explanation. Gemini can also assist with programming and may fit well into a Google-centred development setup.</p>
+
+<p>Test the tools against the same bug, feature request or code review. Check whether the suggested code runs, passes tests, handles edge cases and avoids security problems. Do not choose a coding assistant based only on a polished explanation.</p>
+
+<h3>Research and long documents</h3>
+
+<p>ChatGPT and Gemini are good starting points for web-connected research, while Claude is worth trying for detailed document analysis. Ask for source links, publication dates and a clear separation between verified facts and uncertainty.</p>
+
+<p>Gemini's published context capacity can be substantially larger on paid plans. Claude's documented 200K-token paid-plan context is also substantial, but actual document handling varies by the model and application.</p>
+
+<h3>Students, images and privacy</h3>
+
+<p>For students, start with a free plan and use the assistant to explain concepts, create practice questions and review your reasoning rather than blindly copying answers. Our guide to <a href="/article/ai-tools-for-students-2026">AI tools for students</a> offers further options.</p>
+
+<p>For image creation, ChatGPT and Gemini are the more direct choices of these three. For privacy-sensitive work, there is no universal winner: check whether the plan offers the controls you need, whether your data may be used for model improvement, and what retention rules apply. Avoid uploading passwords, private records or confidential work unless you have confirmed that the service and account settings are appropriate.</p>
+
+<h2>Free vs Paid: What You Actually Get</h2>
+
+<p>You can accomplish a surprising amount with free AI chatbots. All three services provide free access, but their available models, usage allowances and advanced features differ.</p>
+
+<p><strong>ChatGPT Free</strong> offers everyday conversations and access to selected tools, including web search, file and image uploads, data analysis, image generation and voice, subject to separate limits. OpenAI's model rollout means the model available to you may differ from what another user sees.</p>
+
+<p><strong>Claude Free</strong> supports writing, coding, text and image analysis, and web search. Its usage allowance is limited, so heavy document analysis can exhaust it faster than short questions.</p>
+
+<p><strong>Gemini without a Google AI plan</strong> provides access under Google's standard usage limits. Paid plans increase usage and provide additional features, context capacity and integrations. Google's published context figures distinguish the standard plan from AI Plus, Pro and Ultra.</p>
+
+<p>For individual subscriptions, the US prices checked on 23 October 2026 are:</p>
+
+<ul>
+  <li><strong>ChatGPT Plus:</strong> $20 per month.</li>
+  <li><strong>Claude Pro:</strong> $20 per month, or $200 billed annually.</li>
+  <li><strong>Google AI Pro:</strong> $19.99 per month.</li>
+</ul>
+
+<p>These are not perfectly equivalent packages. Google AI Pro includes additional Google One benefits, while Claude Pro and ChatGPT Plus emphasise their own tools and usage allowances. Prices, taxes and available features can vary by region.</p>
+
+<p><strong>When should you pay?</strong> Upgrade when you regularly hit free limits, need a paid-only feature or save enough time to justify the cost. Do not subscribe just because a model has a higher-tier name. Test the free plan with your real workload first, and check the current subscription page before paying.</p>
+
+<p>If you are trying to save time across repetitive work, see our guide to <a href="/article/ai-tools-saving-hours-every-week-2026">AI tools that save hours every week</a>.</p>
+
+<h2>How We Compared</h2>
+
+<p>This comparison uses official provider documentation for model announcements, subscription prices, feature availability and published context-window figures. The model names and pricing reflect information available on 23 October 2026, but providers can change their products and limits after publication.</p>
+
+<p>The recommendations about writing, coding, research and productivity are editorial judgements based on the documented feature sets and intended uses of the products. They are not a claim that we ran controlled performance tests.</p>
+
+<p>We did not invent benchmark scores or conduct laboratory testing for this comparison. Nor should a provider's own performance claims be interpreted as independent proof that its model is best for every user. Published benchmarks measure particular tasks under particular conditions and do not reliably predict every real-world workflow.</p>
+
+<p>For a fair personal comparison, give each assistant the same prompt, files and success criteria. Check factual accuracy, code correctness, source quality, instruction-following and the amount of correction required. Repeat the exercise on several representative tasks before paying for a plan.</p>
+
+<h2>FAQ</h2>
+
+<details>
+  <summary>Which AI is best for everyday use?</summary>
+  ChatGPT is a sensible starting point if you want a broad mix of conversation, research, file analysis, image generation and voice. Gemini may be more convenient if you work mainly in Google applications, while Claude is worth trying if writing and code dominate your day. Test the free versions before deciding.
+</details>
+
+<details>
+  <summary>Is Claude better than ChatGPT for long documents?</summary>
+  Not automatically. Claude offers a documented 200K-token context window on paid plans, while Gemini publishes larger plan-dependent context limits. ChatGPT's applicable limits depend on the model and product. The amount of text accepted is only one factor; accuracy, retrieval of relevant details and the quality of the final analysis matter too.
+</details>
+
+<details>
+  <summary>Can I use Gemini for free?</summary>
+  Yes. Gemini offers access without a paid Google AI plan, although usage limits apply and can change. Paid Google AI plans increase access to selected models and features. Check Google's official feature-availability page for the current limits in your region before relying on a particular capability.
+</details>
+
+<details>
+  <summary>Which AI assistant is best for coding?</summary>
+  Claude and ChatGPT are both strong starting choices for coding assistance, and Gemini is another option. The right choice depends on your programming language, repository size, development tools and task. Give each assistant the same problem, then run the proposed code and evaluate tests, edge cases, maintainability and security.
+</details>
+
+<details>
+  <summary>Do I need more than one AI assistant?</summary>
+  No. One assistant is usually enough for everyday work. Consider a second when it offers a concrete advantage, such as a different writing style, better integration with your tools or access to a feature your main assistant lacks. Compare the extra cost with the time saved rather than maintaining several subscriptions by default.
+</details>
+
+<details>
+  <summary>Which AI assistant is the most private?</summary>
+  There is no universal answer without specifying the account type, data and privacy requirements. Consumer subscriptions and business plans may have different controls, retention terms and data-use policies. Review each provider's current privacy documentation and settings, and use an appropriately managed service for confidential information.
+</details>
+
+<h2>Conclusion</h2>
+
+<p>The practical winner in <strong>ChatGPT vs Claude vs Gemini</strong> depends on your work, not the model name alone. Start with ChatGPT for broad everyday assistance, Claude for writing and code-heavy workflows, or Gemini for Google integration and its available multimodal tools.</p>
+
+<p>Try the same real task on each free plan, compare the results and upgrade only when the benefits justify the price. The best AI assistant is the one that reliably helps you finish your work with less effort.</p>
+
+<p><strong>Which assistant works best for you—ChatGPT, Claude or Gemini? Share your experience and tell us what you use it for.</strong></p>
+
+<h2>Sources</h2>
+
+<ol>
+  <li>OpenAI — GPT-6 and other models in ChatGPT: <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models">https://help.openai.com/en/articles/20001354-gpt-6-and-other-models</a></li>
+  <li>OpenAI — ChatGPT Free Tier FAQ: <a href="https://help.openai.com/en/articles/9275245-using-chatgpt-with-images?utm_source=chatgpt.com">https://help.openai.com/en/articles/9275245-using-chatgpt-with-images?utm_source=chatgpt.com</a></li>
+  <li>Anthropic — Claude model announcements: <a href="https://www.anthropic.com/news/models?utm_source=chatgpt.com">https://www.anthropic.com/news/models?utm_source=chatgpt.com</a></li>
+  <li>Anthropic — Pricing and plans: <a href="https://www.anthropic.com/pricing?utm_source=chatgpt.com">https://www.anthropic.com/pricing?utm_source=chatgpt.com</a></li>
+  <li>Google — Gemini Apps limits and feature availability: <a href="https://support.google.com/gemini/answer/16275805?hl=en&amp;utm_source=chatgpt.com">https://support.google.com/gemini/answer/16275805?hl=en&amp;utm_source=chatgpt.com</a></li>
+  <li>Google — Google One plans: <a href="https://one.google.com/about/plans?hl=en_US&amp;utm_source=chatgpt.com">https://one.google.com/about/plans?hl=en_US&amp;utm_source=chatgpt.com</a></li>
+  <li>Google — Gemini model announcements: <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/?utm_source=chatgpt.com">https://blog.google/innovation-and-ai/models-and-research/gemini-models/?utm_source=chatgpt.com</a></li>
+</ol>
+`,
 
     'ai-prompt-formula-better-answers-2026': `<p>Most people use AI assistants like a slightly smarter search engine. They type a question, get an answer, and move on. And most of the time, the answer is... fine. Usable. Forgettable.</p>
 
@@ -2248,145 +2535,259 @@ async function runSetup(pool) {
 
 <p>The smartest move is understanding which tier matches your actual needs. Not everyone needs an AI-powered flagship — but for those who do, what they are getting in return has never been more impressive. If you want to see how the latest wave of AI gadgets is reshaping the wearables category specifically, our article on <a href="/article/meta-smartwatch-comeback-2026" class="article-backlink">Meta's smartwatch comeback and why wearables are getting smarter in 2026</a> covers the premium side of the AI hardware story.</p>
 `,
-    'handheld-gaming-gadgets-2026': `<p>A few years ago, handheld gaming felt like a niche hobby. Something for commuters and teenagers. Today, it is one of the fastest-growing segments in all of consumer electronics — and the brands investing in it are not playing around.</p>
-
-<p>In 2026, portable gaming devices are no longer just toys. They are premium tech products with serious hardware, serious price tags, and a surprisingly wide audience.</p>
-
-<p>Here is why this is happening — and why it matters even if you have never called yourself a gamer.</p>
+    'handheld-gaming-gadgets-2026': `<p>Last updated: October 2026</p>
 
 <figure>
   <img
-    src="https://images.pexels.com/photos/3945657/pexels-photo-3945657.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Person holding a handheld gaming device with colorful game display"
-    data-search="handheld gaming device portable 2026"
+    src="/images/handheld-gaming-pc-hero.webp"
+    alt="Person holding a handheld gaming PC while playing a game on its screen"
+    data-search="hands holding handheld gaming console"
     data-source="pexels.com"
     width="1200"
     height="630"
+    fetchpriority="high"
   />
-  <figcaption>Handheld gaming devices in 2026 are built for power, portability, and premium experiences that rival home consoles.</figcaption>
+  <figcaption>The handheld gaming PCs in this guide range from $599.99 to $1,799.99 in the US. Photo: Daniel J. Schwarz on Pexels</figcaption>
 </figure>
 
-<h2>The Handheld Gaming Comeback Is Real</h2>
+<p>The best handheld gaming PC for most people in October 2026 is the ROG Xbox Ally X at $999.99. It pairs a Ryzen AI Z2 Extreme chip with 24GB of memory and an 80Wh battery, and its list price has held while rivals climbed. If you want to spend less, the ROG Xbox Ally costs $599.99. If you want SteamOS, the Steam Deck OLED starts at $789.</p>
 
-<p>Portable gaming peaked with the original Game Boy era, faded with smartphones, and is now roaring back — but this time with PC-level hardware stuffed into a device you can hold in two hands.</p>
+<p>These picks come from published expert reviews and manufacturer specs, not from our own hands-on testing. Prices are US list prices checked in October 2026, and stock and retailer pricing can differ.</p>
 
-<p>The numbers back it up. According to Reuters, the global video game market is on a strong growth trajectory through 2027, powered in part by the rise of portable and hybrid gaming formats. More people want to play full games anywhere — not just at a desk or on a TV.</p>
+<h2>Quick Picks</h2>
 
-<p>The Nintendo Switch proved the concept. Now a wave of competitors is pushing the idea much further.</p>
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Category</th><th>Pick</th><th>US list price</th><th>Why it stands out</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Best overall</td><td>ROG Xbox Ally X</td><td>$999.99</td><td>Fast chip, 80Wh battery and 1TB of storage</td></tr>
+    <tr><td>Best budget</td><td>ROG Xbox Ally</td><td>$599.99</td><td>Cheapest Windows pick here, with a 60Wh battery</td></tr>
+    <tr><td>Best premium</td><td>ROG Xbox Ally X20</td><td>$1,299.99</td><td>Same chip as the Ally X, plus a 7.4-inch OLED screen</td></tr>
+    <tr><td>Best battery</td><td>MSI Claw 8 EX AI+</td><td>$1,799.99</td><td>Longest runtime in PC Gamer's battery chart, and the fastest it has tested</td></tr>
+    <tr><td>Best for SteamOS</td><td>Steam Deck OLED (512GB)</td><td>$789</td><td>Valve's own SteamOS handheld, though stock has been patchy</td></tr>
+  </tbody>
+</table>
+</div>
 
-<h2>What Modern Chips Are Making Possible</h2>
+<p><a href="https://www.pcgamer.com/best-handheld-gaming-pc/">PC Gamer's buying guide</a> names the ROG Xbox Ally X its best overall pick because it kept its original price while rivals rose. The same guide calls the ROG Xbox Ally the best budget handheld gaming PC, and it moved the Steam Deck out of that slot after Valve's price increase.</p>
 
-<p>The secret to the handheld gaming boom is silicon. Modern chips are getting faster and more power-efficient at the same time — a combination that was previously impossible.</p>
+<p>The ROG Xbox Ally X20 went on sale on October 15. <a href="https://www.tomsguide.com/gaming/handheld-gaming/i-tested-the-usd1-299-rog-xbox-ally-x20-with-that-oled-display-the-usd300-price-hike-is-surprisingly-palatable">Tom's Guide</a> lists the same Ryzen AI Z2 Extreme chip, 24GB of memory, 1TB SSD and 80Wh battery as the Ally X. The extra $300 therefore buys a better screen and updated controls, not more speed.</p>
 
-<p>Intel's upcoming Arc G3 Extreme chip, designed specifically for handheld and compact gaming PCs, promises console-level graphics in a form factor that fits in a backpack. Acer is reportedly working on its Predator Atlas 8 — a handheld built around these next-generation Intel processors, with a debut expected at Computex 2026.</p>
+<p>The MSI Claw 8 EX AI+ is the most powerful handheld PC Gamer has tested. In its gaming battery test it lasted 153 minutes at full power, against 125 minutes for the ROG Xbox Ally X, and 308 minutes in a 20W endurance mode. It is also the most expensive device here.</p>
 
-<p>When a chip can run demanding games at high frame rates while lasting four to six hours on battery, portable gaming stops being a compromise. It becomes a real alternative to sitting at a desk.</p>
+<h2>What Is a Handheld Gaming PC?</h2>
+
+<p>A handheld gaming PC is a compact computer with a built-in screen and game controls. It uses a laptop-class chip with integrated graphics, shared memory and a solid-state drive, so it plays PC games rather than a closed console library.</p>
+
+<p>Most models run Windows 11 and can install game stores such as Steam, Epic and Xbox. Valve's Steam Deck runs SteamOS instead, a Linux-based system built around Steam.</p>
+
+<p>That openness is the main reason to pick one over a console. It is also why a handheld gaming PC costs more than a Nintendo Switch 2.</p>
+
+<h2>Handheld PC vs Steam Deck vs Switch vs Phone</h2>
+
+<p>The right device depends on which games you want to play. This table shows how the four options differ.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Option</th><th>What you can play</th><th>US price</th><th>Best for</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Windows handheld PC</td><td>Almost any PC game, plus other launchers and Game Pass</td><td>$599.99 to $1,799.99</td><td>Players who use several game stores</td></tr>
+    <tr><td>Steam Deck OLED</td><td>Your Steam library, with many Windows games running through Proton</td><td>$789 or $949</td><td>Steam players who want a console-style interface</td></tr>
+    <tr><td>Nintendo Switch 2</td><td>Nintendo's own Switch and Switch 2 games</td><td>$499.99</td><td>Nintendo exclusives and easy setup</td></tr>
+    <tr><td>Phone</td><td>Mobile games</td><td>You likely own one already</td><td>Short, casual sessions</td></tr>
+  </tbody>
+</table>
+</div>
 
 <figure>
-  <img
-    src="https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Close-up of gaming hardware chip and circuit board components"
-    data-search="gaming chip processor hardware electronics"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>Next-generation chips like Intel's Arc G3 Extreme are the engine behind the new wave of powerful handheld gaming PCs.</figcaption>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="t d" font-family="Inter, Arial, sans-serif">
+  <title id="t">US list prices of the handhelds in this guide, October 2026</title>
+  <desc id="d">Horizontal bar chart: Nintendo Switch 2 $499.99, ROG Xbox Ally $599.99, Steam Deck OLED 512GB $789, Steam Deck OLED 1TB $949, ROG Xbox Ally X $999.99, ROG Xbox Ally X20 $1,299.99, MSI Claw 8 EX AI+ $1,799.99.</desc>
+  <rect width="1200" height="675" rx="16" fill="#12121A"/>
+  <text x="40" y="58" font-size="32" font-weight="700" fill="#F2F2F8">US list price by device, October 2026</text>
+  <rect x="40" y="86" width="16" height="16" rx="3" fill="#5B8CFF"/><text x="64" y="100" font-size="18" fill="#C9C9D6">Windows handheld PC</text>
+  <rect x="270" y="86" width="16" height="16" rx="3" fill="#3DD6A3"/><text x="294" y="100" font-size="18" fill="#C9C9D6">SteamOS handheld PC</text>
+  <rect x="510" y="86" width="16" height="16" rx="3" fill="#F5B94A"/><text x="534" y="100" font-size="18" fill="#C9C9D6">Nintendo console</text>
+  <text x="310" y="174" font-size="24" fill="#E8E8F0" text-anchor="end">Nintendo Switch 2</text>
+  <rect x="330" y="140" width="190" height="52" rx="6" fill="#F5B94A"/>
+  <text x="534" y="174" font-size="24" font-weight="700" fill="#F2F2F8">$499.99</text>
+  <text x="310" y="246" font-size="24" fill="#E8E8F0" text-anchor="end">ROG Xbox Ally</text>
+  <rect x="330" y="212" width="228" height="52" rx="6" fill="#5B8CFF"/>
+  <text x="572" y="246" font-size="24" font-weight="700" fill="#F2F2F8">$599.99</text>
+  <text x="310" y="318" font-size="24" fill="#E8E8F0" text-anchor="end">Steam Deck OLED 512GB</text>
+  <rect x="330" y="284" width="300" height="52" rx="6" fill="#3DD6A3"/>
+  <text x="644" y="318" font-size="24" font-weight="700" fill="#F2F2F8">$789</text>
+  <text x="310" y="390" font-size="24" fill="#E8E8F0" text-anchor="end">Steam Deck OLED 1TB</text>
+  <rect x="330" y="356" width="361" height="52" rx="6" fill="#3DD6A3"/>
+  <text x="705" y="390" font-size="24" font-weight="700" fill="#F2F2F8">$949</text>
+  <text x="310" y="462" font-size="24" fill="#E8E8F0" text-anchor="end">ROG Xbox Ally X</text>
+  <rect x="330" y="428" width="380" height="52" rx="6" fill="#5B8CFF"/>
+  <text x="724" y="462" font-size="24" font-weight="700" fill="#F2F2F8">$999.99</text>
+  <text x="310" y="534" font-size="24" fill="#E8E8F0" text-anchor="end">ROG Xbox Ally X20</text>
+  <rect x="330" y="500" width="494" height="52" rx="6" fill="#5B8CFF"/>
+  <text x="838" y="534" font-size="24" font-weight="700" fill="#F2F2F8">$1,299.99</text>
+  <text x="310" y="606" font-size="24" fill="#E8E8F0" text-anchor="end">MSI Claw 8 EX AI+</text>
+  <rect x="330" y="572" width="684" height="52" rx="6" fill="#5B8CFF"/>
+  <text x="1028" y="606" font-size="24" font-weight="700" fill="#F2F2F8">$1,799.99</text>
+  <text x="40" y="650" font-size="16" fill="#9A9AAB">Bar length is proportional to price on a $0 to $2,000 scale. Retailer prices and stock vary.</text>
+</svg>
+  <figcaption>US list prices as of October 2026. Retailer prices and stock vary.</figcaption>
 </figure>
 
-<h2>Why These Devices Are Getting More Expensive</h2>
+<p>If you are looking for Steam Deck alternatives, the ROG Xbox Ally range is the closest match on price. The Ally X costs about $50 more than the 1TB Steam Deck OLED, yet it has a newer chip and more memory. The trade-off is Windows: PC Gamer says Microsoft's Xbox full-screen mode mostly works but is still less unified than SteamOS.</p>
 
-<p>Here is the trade-off nobody loves to talk about: handheld gaming PCs are getting pricey. Very pricey.</p>
+<p>Phones are the cheapest way in, and they keep getting smarter, as <a href="/article/why-ai-phones-are-the-future-2026">our guide to AI phones</a> explains. They still rely on touch controls unless you add a controller, and they do not run your PC library.</p>
 
-<p>The MSI Claw 8 EX AI is reportedly edging toward a $2,000 price point — closer to a high-end laptop than a traditional gaming handheld. Premium displays, powerful processors, fast storage, long-lasting batteries, and solid build quality all cost money to engineer at this scale.</p>
+<p>The Switch 2 is the simplest choice if you mostly want Nintendo games. It is a closed system, so it will not run Steam or Game Pass titles.</p>
 
-<p>This is part of a broader pattern in consumer tech. If you want to understand why gadgets across the board are getting more expensive in 2026, <a href="/article/why-gadgets-are-getting-more-expensive-2026">this breakdown explains the forces driving prices up across the industry</a>.</p>
+<h2>Spec Comparison</h2>
 
-<p>For handheld gaming specifically, the price is justified by a simple argument: you are getting a full gaming PC that fits in your hands. When you frame it that way, $1,500 starts to look like a value proposition.</p>
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Device</th><th>Chip</th><th>Screen</th><th>Battery</th><th>Storage / RAM</th><th>OS</th><th>US price</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ROG Xbox Ally</td><td>Ryzen Z2 A</td><td>7-inch 1080p IPS, 120Hz</td><td>60Wh</td><td>512GB / 16GB</td><td>Windows 11</td><td>$599.99</td></tr>
+    <tr><td>ROG Xbox Ally X</td><td>Ryzen AI Z2 Extreme</td><td>7-inch 1080p IPS, 120Hz</td><td>80Wh</td><td>1TB / 24GB</td><td>Windows 11</td><td>$999.99</td></tr>
+    <tr><td>ROG Xbox Ally X20</td><td>Ryzen AI Z2 Extreme</td><td>7.4-inch 1080p OLED, 120Hz</td><td>80Wh</td><td>1TB / 24GB</td><td>Windows 11</td><td>$1,299.99</td></tr>
+    <tr><td>MSI Claw 8 EX AI+</td><td>Intel Arc G3 Extreme</td><td>8-inch 1920x1200 IPS, up to 120Hz</td><td>About 80Wh</td><td>1TB / 32GB</td><td>Windows 11</td><td>$1,799.99</td></tr>
+    <tr><td>Steam Deck OLED 512GB</td><td>Custom AMD APU</td><td>7.4-inch 1280x800 OLED, 90Hz</td><td>50Wh</td><td>512GB / 16GB</td><td>SteamOS</td><td>$789</td></tr>
+    <tr><td>Steam Deck OLED 1TB</td><td>Custom AMD APU</td><td>7.4-inch 1280x800 OLED, 90Hz</td><td>50Wh</td><td>1TB / 16GB</td><td>SteamOS</td><td>$949</td></tr>
+  </tbody>
+</table>
+</div>
 
-<h2>How They Compare to Phones, Laptops, and Consoles</h2>
+<p>Many shoppers still search for ROG Ally X vs Legion Go, but both are older models. The ROG Xbox Ally X succeeds the ROG Ally X, and PC Gamer measured 41 fps in Cyberpunk 2077 at 1080p medium on it, against 32 fps for the older ROG Ally X.</p>
 
-<p>It is a fair question. You already have a phone. Maybe a laptop. Why would you buy a gaming handheld?</p>
+<p>Lenovo's current models are the Legion Go 2 and the smaller Legion Go S. Lenovo has repriced both repeatedly this year. <a href="https://www.pcworld.com/article/3106428/lenovo-legion-go-prices-have-jumped-by-up-to-650-in-six-months.html">PCWorld reported</a> the Legion Go 2 with a Z2 Extreme chip, 32GB and 1TB rising from $1,349.99 to $1,999.99 in under six months. Check Lenovo's live price before you compare it with the Ally X.</p>
+
+<h2>What to Look For Before You Buy</h2>
+
+<h3>Chip and memory</h3>
+
+<p>The chip decides how well demanding games run. In PC Gamer's 1080p medium tests of Cyberpunk 2077, the MSI Claw 8 EX AI+ averaged 51 fps, the ROG Xbox Ally X 41 fps and a Legion Go S running SteamOS 35 fps.</p>
+
+<p>Budget chips such as the Ryzen Z2 A suit indie and older games, and demanding titles need lower settings. Memory matters too, because a handheld shares it between the system and the graphics. PC Gamer suggests 16GB as the minimum, and 24GB or more gives more headroom.</p>
+
+<h3>Screen</h3>
+
+<p>Panel type changes how a game looks more than it changes speed. PC Gamer calls the ROG Xbox Ally X's 7-inch IPS panel fine but dull. ASUS rates the X20's OLED at up to 1,400 nits peak in HDR. The Steam Deck OLED pairs an OLED panel with a lower 1280x800 resolution.</p>
+
+<h3>Battery</h3>
+
+<p>Watt-hours are a guide, but the chip and power mode matter as much as the number. In PC Gamer's chart the Claw 8 EX AI+ lasted 153 minutes at full power and the ROG Xbox Ally X lasted 125. Plan on roughly two to three hours of demanding play on the faster devices, and longer for lighter games.</p>
+
+<h3>Storage and upgrades</h3>
+
+<p>PC Gamer calls 1TB the sweet spot for storage. ASUS lists the ROG Xbox Ally's M.2 2280 SSD as easy to upgrade, and the Steam Deck has a microSD slot. Repairs and upgrades matter when a device costs this much, as our guide to <a href="/article/repairable-gadgets-right-to-repair-2026">repairable gadgets and right-to-repair devices</a> explains.</p>
+
+<h3>Windows vs SteamOS</h3>
+
+<p>Windows gives you every store and Game Pass, but it was not built for a handheld. SteamOS feels more like a console and runs many Windows games through Valve's Proton layer.</p>
+
+<p>Some online games with anti-cheat do not run on SteamOS. Check your must-play titles against Steam's Deck Verified ratings before you buy.</p>
+
+<h2>Are Handheld Gaming PCs Worth the Price?</h2>
+
+<p>They are worth it for a specific buyer: someone who travels, plays in short sessions or has no room for a gaming desk. PC Gamer notes a handheld is rarely anyone's only gaming device, which makes high prices harder to defend. It also compares the Claw 8 EX AI+ to the cost of a full gaming desktop with a Radeon RX 9070 XT.</p>
+
+<p>Use this guide to decide.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>If you...</th><th>Choose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Want the best balance of price and speed</td><td>ROG Xbox Ally X ($999.99)</td></tr>
+    <tr><td>Want the lowest-priced Windows handheld</td><td>ROG Xbox Ally ($599.99)</td></tr>
+    <tr><td>Care most about the screen</td><td>ROG Xbox Ally X20 ($1,299.99)</td></tr>
+    <tr><td>Want top speed and battery, and price is no object</td><td>MSI Claw 8 EX AI+ ($1,799.99)</td></tr>
+    <tr><td>Play mostly on Steam and want a console feel</td><td>Steam Deck OLED ($789 or $949)</td></tr>
+    <tr><td>Mostly play Nintendo games</td><td>Nintendo Switch 2 ($499.99)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Our verdict: at $599.99 the ROG Xbox Ally is the easiest to justify. At $1,299.99 or more, you are paying for a screen or speed you may not need.</p>
+
+<h2>Who Should Skip One</h2>
+
+<p>A handheld gaming PC is a poor fit in these cases:</p>
 
 <ul>
-  <li><strong>vs. Phones:</strong> Phones are not built for extended gaming sessions. Small screens, no physical controls, and thermal throttling under sustained load make them a frustrating experience for demanding games.</li>
-  <li><strong>vs. Laptops:</strong> Laptops are powerful but not portable in the same way. You need a table, a power outlet, and a comfortable posture. A handheld works anywhere.</li>
-  <li><strong>vs. Consoles:</strong> Home consoles are tethered to a TV and a room. Handhelds give you the same library of games with the freedom to play on a plane, in a waiting room, or on a couch across the house.</li>
+  <li><strong>You play at a desk or TV most nights.</strong> Portability is the main thing you pay for, and you would barely use it.</li>
+  <li><strong>You mainly play competitive online games on SteamOS.</strong> Anti-cheat rules can block them, so choose a Windows model or skip.</li>
+  <li><strong>Your budget is under $500.</strong> The cheapest handheld PC here is $599.99, while the Switch 2 is $499.99.</li>
+  <li><strong>You want old-school games in a retro-style body.</strong> Our look at <a href="/article/modern-retro-gadgets-2026">modern-retro gadgets</a> covers handhelds that lean on nostalgic design.</li>
+  <li><strong>You are trying to cut screen time.</strong> Our piece on <a href="/article/e-ink-gadgets-comeback-2026">the e-ink gadgets comeback</a> covers calmer devices.</li>
 </ul>
 
-<p>The handheld gaming PC sits in a sweet spot none of those categories fully cover.</p>
+<h2>Why Prices Keep Rising</h2>
 
-<figure>
-  <img
-    src="https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Gaming setup with console controller laptop and handheld devices on desk"
-    data-search="gaming devices comparison console laptop portable"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>Handheld gaming PCs occupy a unique space between phones, laptops, and home consoles — combining power with portability in ways none of the others can match.</figcaption>
-</figure>
+<p>Memory and storage are the main reason. Chipmakers are prioritising server products for AI, which leaves less supply for consumer devices. <a href="https://www.trendforce.com/presscenter/news/20260930-13258.html">TrendForce expects</a> conventional DRAM contract prices to rise 10 to 15 percent in the fourth quarter of 2026, and NAND flash prices 15 to 20 percent.</p>
 
-<h2>Why Regular People — Not Just Gamers — Are Buying Them</h2>
+<p>You can see the effect on price tags. <a href="https://windowscentral.com/hardware/handheld-gaming-pc/valves-new-steam-deck-restock-comes-with-a-huge-price-hike">Valve raised Steam Deck OLED prices</a> on May 27, citing rising memory and storage costs. <a href="https://www.tomshardware.com/video-games/nintendo/nintendo-is-raising-the-price-of-the-switch-2-by-usd50-starting-in-september-console-will-soon-cost-usd499-but-you-can-avoid-the-price-hike-if-you-buy-now">Nintendo moved the Switch 2 to $499.99</a> on September 1. When MSI <a href="https://www.tomshardware.com/video-games/handheld-gaming/msis-new-claw-8-ex-ai-handheld-with-an-intel-arc-g3-extreme-and-32gb-of-ram-costs-usd1-799-company-says-itll-be-a-tough-year-with-chances-of-another-price-hike">announced the Claw 8 EX AI+ price</a>, it said further increases were possible.</p>
 
-<p>This is where the trend gets interesting. The audience for premium handheld gaming devices is not just hardcore gamers.</p>
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>Device</th><th>Earlier price</th><th>Price now</th><th>Change</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Steam Deck OLED 512GB</td><td>$549</td><td>$789</td><td>+$240</td></tr>
+    <tr><td>Steam Deck OLED 1TB</td><td>$649</td><td>$949</td><td>+$300</td></tr>
+    <tr><td>Nintendo Switch 2</td><td>$449.99</td><td>$499.99</td><td>+$50</td></tr>
+    <tr><td>ROG Xbox Ally X</td><td>$999.99</td><td>$999.99</td><td>No change</td></tr>
+  </tbody>
+</table>
+</div>
 
-<p>Frequent travelers are buying them for long flights. Remote workers are using them as wind-down devices after meetings. Adults who grew up gaming but no longer have time to sit at a desk are rediscovering games in a format that fits their lifestyle.</p>
-
-<p>The handheld gaming device is becoming a lifestyle gadget — in the same category as premium headphones or a high-end tablet. It signals something about who you are and how you spend your leisure time.</p>
-
-<p>If you are curious how this connects to the broader shift in premium mobile technology, take a look at <a href="/article/why-ai-phones-are-the-future-2026">why AI phones are reshaping what we expect from pocket-sized devices</a>.</p>
-
-<h2>Is This a Real Trend or Just Hype?</h2>
-
-<p>Every tech cycle has its hype products. So it is fair to ask whether handheld gaming PCs are the real deal or just a moment.</p>
-
-<p>The evidence points toward real. Multiple major brands — MSI, Acer, Lenovo, Asus — are all investing heavily in the segment simultaneously. Intel is designing chips specifically for it. Game studios are optimizing titles for handheld form factors. The infrastructure of the trend is building out in every direction.</p>
-
-<p>When that many companies bet on the same category at the same time, it is rarely just hype.</p>
-
-<figure>
-  <img
-    src="https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    alt="Person playing portable gaming device on the go outdoors urban setting"
-    data-search="person playing handheld gaming portable outdoor"
-    data-source="pexels.com"
-    width="1200"
-    height="630"
-  />
-  <figcaption>Handheld gaming devices are increasingly seen outside of living rooms — in cafes, airports, and commutes — reflecting a genuine shift in how people play.</figcaption>
-</figure>
-
-<h2>What to Expect in the Next 12 Months</h2>
-
-<p>Computex 2026 is expected to be a defining moment for handheld gaming. Multiple manufacturers are rumored to announce new devices, including Acer's Predator Atlas 8 and updated models from other key players.</p>
-
-<p>Prices will likely stay high in the near term as brands chase premium buyers. Over time, as chip costs fall and competition increases, mid-range handheld gaming PCs will reach a wider audience.</p>
-
-<p>The era of handheld gaming as a premium tech category has officially begun.</p>
+<p>The ROG Xbox Ally X is the exception, which is a big part of why it wins our overall pick. For the wider forces behind rising gadget prices, see our explainer on <a href="/article/why-gadgets-are-getting-more-expensive-2026">why gadgets are getting more expensive in 2026</a>. Waiting is no guaranteed saving, because the memory forecast points up, not down.</p>
 
 <h2>Frequently Asked Questions</h2>
 
-<h3>Are handheld gaming PCs worth the price?</h3>
-<p>If you travel frequently, lack a gaming setup at home, or want flexibility in when and where you play, they offer genuine value. For casual gamers, the price may be hard to justify right now.</p>
+<details>
+  <summary>Are handheld gaming PCs worth it?</summary>
+  Only if you will use one often. At $599.99 to $1,799.99, a handheld gaming PC costs as much as a console or a laptop. It pays off for frequent travelers and people without a gaming desk. If you mostly play at home, a console or an existing PC is better value right now.
+</details>
 
-<h3>How do handheld gaming PCs run games?</h3>
-<p>Modern handheld gaming PCs run full PC games through platforms like Steam. They are essentially compact Windows computers with dedicated gaming controls built in.</p>
+<details>
+  <summary>How do handheld gaming PCs run games?</summary>
+  They run PC games like a laptop does, using an integrated chip instead of a separate graphics card. Most modern titles play at 1080p on medium settings, often with upscaling. PC Gamer measured Cyberpunk 2077 averaging 41 fps at 1080p medium on the ROG Xbox Ally X.
+</details>
 
-<h3>What is the best handheld gaming device in 2026?</h3>
-<p>Options vary by budget and use case. The Asus ROG Ally X, Lenovo Legion Go, and upcoming Intel Arc G3-powered devices from Acer and MSI are among the most discussed in 2026.</p>
+<details>
+  <summary>What is the best handheld gaming PC in 2026?</summary>
+  For most buyers, the ROG Xbox Ally X at $999.99 is the best all-round pick, based on published reviews. Choose the X20 at $1,299.99 for its OLED screen, or the MSI Claw 8 EX AI+ at $1,799.99 for top speed. SteamOS fans should look at the Steam Deck OLED.
+</details>
 
-<h3>Will phone gaming ever replace handheld gaming PCs?</h3>
-<p>Phones are improving but are fundamentally constrained by thermal limits, small screens, and the absence of physical controls. Dedicated handheld gaming hardware will continue to offer a meaningfully different experience.</p>
+<details>
+  <summary>What is the best budget handheld gaming PC?</summary>
+  The ROG Xbox Ally at $599.99 is the best budget pick in 2026, according to PC Gamer. It has a Ryzen Z2 A chip, 16GB of memory, 512GB of storage and a 60Wh battery. It suits indie and older games best, and demanding titles need lower settings.
+</details>
 
-<h2>The Bottom Line</h2>
+<details>
+  <summary>Can a handheld gaming PC replace a gaming laptop?</summary>
+  For most people, no. A handheld has a smaller screen, a lower-power chip and fewer ports, so it cannot match a gaming laptop in heavy games or for work. It can work as your only machine if you mostly play lighter games and connect it to a monitor over USB-C.
+</details>
 
-<p>Handheld gaming gadgets are not a niche toy anymore. They are the next premium consumer tech category — built on serious hardware, aimed at a wider audience than ever, and priced accordingly.</p>
+<details>
+  <summary>Do handheld gaming PCs run Windows games?</summary>
+  Windows models such as the ROG Xbox Ally range and MSI Claw run Windows games directly, including Xbox Game Pass and other launchers. SteamOS devices like the Steam Deck run most Windows games through Valve's Proton layer, but some anti-cheat games fail, so check each title first.
+</details>
 
-<p>Whether you are a lifelong gamer or someone who has never touched a controller, these devices represent something worth paying attention to. The question is not whether this trend is real. The question is which device you will pick up first.</p>
+<h2>Conclusion</h2>
 
-<p>If you want to explore the bigger picture of where consumer gadgets are headed, our guide to <a href="/article/google-io-2026-ai-announcements">the biggest tech announcements shaping 2026</a> is a great place to start.</p>`,
+<p>A handheld gaming PC is worth buying in 2026 only if you will use it away from a desk. For most people that means the ROG Xbox Ally X at $999.99, and the ROG Xbox Ally at $599.99 is the cheaper way in. SteamOS fans can pay $789 for the Steam Deck OLED if they find stock, and the X20 at $1,299.99 is the pick for screen quality. Skip the $1,799.99 Claw 8 EX AI+ unless top speed matters more than value.</p>
+
+<p>Which handheld are you leaning toward? Share this guide with a friend who is deciding, and tell us your pick.</p>
+`,
 
     'repairable-gadgets-right-to-repair-2026': `<p>What if your phone broke and you could fix it yourself — without voiding the warranty, without paying a shop hundreds of dollars, without buying a whole new device?</p>
 
@@ -5260,13 +5661,14 @@ async function runSetup(pool) {
     },
     {
       slug: 'chatgpt-claude-gemini-comparison-2026',
-      title: 'ChatGPT vs Claude vs Gemini — Which AI Is Actually Best for You in 2026?',
-      subtitle: 'Three leading AI assistants, all free to try, all doing the same job differently. Here\'s the honest breakdown of which one wins for what',
-      excerpt: 'Everyone\'s using AI assistants now — but most people are using the wrong one for their needs. Here\'s how ChatGPT, Claude, and Gemini actually compare in 2026.',
+      title: 'ChatGPT vs Claude vs Gemini (2026 Comparison)',
+      subtitle: null,
+      excerpt: 'ChatGPT, Claude and Gemini can all help you write, code, research and study, but their tools, limitations and subscription plans differ. Compare their latest models, free features, prices and strengths to choose the assistant that fits your needs.',
       category: 'AI Tools', authorId: 5,
-      imageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80',
-      readTime: 7, featured: false, editorsPick: true,
-      tags: ['ChatGPT', 'Claude', 'Gemini', 'AI Tools', 'AI Assistants', 'OpenAI'],
+      imageUrl: '/images/chatgpt-vs-claude-vs-gemini-hero.webp',
+      publishedAt: '2026-05-25T08:00:00Z',
+      readTime: 10, featured: false, editorsPick: true,
+      tags: ['ChatGPT', 'Claude', 'Google Gemini', 'AI chatbots', 'AI comparison', 'AI tools', 'productivity', 'coding'],
     },
     {
       slug: 'ai-prompt-formula-better-answers-2026',
@@ -5375,14 +5777,14 @@ async function runSetup(pool) {
     },
     {
       slug: 'handheld-gaming-gadgets-2026',
-      title: 'Why Handheld Gaming Gadgets Are Becoming the Next Premium Tech Trend',
-      subtitle: 'Portable gaming devices are getting faster, smarter, and more expensive — and both gamers and non-gamers are suddenly paying attention',
-      excerpt: 'Handheld gaming gadgets are getting bigger, faster, and more expensive in 2026. Here is why portable gaming devices are suddenly booming again.',
+      title: 'Best Handheld Gaming PCs in 2026: Buyer\'s Guide',
+      subtitle: 'Prices are up and the lineup keeps shifting. Here is how the current picks compare, and who should skip one.',
+      excerpt: 'Prices are up and the lineup keeps shifting. We compare the best handheld gaming PCs of 2026 on price, speed and battery, and say who should skip one.',
       category: 'Tech', authorId: 2,
-      imageUrl: 'https://images.pexels.com/photos/3945657/pexels-photo-3945657.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      imageUrl: '/images/handheld-gaming-pc-hero.webp',
       publishedAt: '2026-05-29T08:00:00Z',
-      readTime: 8, featured: false, editorsPick: true,
-      tags: ['Handheld Gaming', 'Gaming Gadgets', 'Portable Gaming', 'Gaming PC', 'Tech Trends 2026', 'Consumer Electronics'],
+      readTime: 10, featured: false, editorsPick: true,
+      tags: ['handheld gaming pc', 'best handheld gaming pc', 'Steam Deck alternatives', 'ROG Xbox Ally X', 'MSI Claw 8 EX AI+', 'SteamOS', 'gaming handhelds', 'buyer\'s guide'],
     },
     {
       slug: 'repairable-gadgets-right-to-repair-2026',
@@ -5595,7 +5997,7 @@ async function runSetup(pool) {
 
   // ── 6. Always sync content fields from code → database ───────────────────
   // Runs only when an explicit setup/force-seed operation calls runSetup.
-  // Updates: title, subtitle, excerpt, imageUrl, readTime, body.
+  // Updates: title, subtitle, excerpt, imageUrl, readTime, tags, body.
   // Does NOT touch: views, featured, editors_pick, published (admin-managed).
   for (const a of articles) {
     await pool.query(
@@ -5605,11 +6007,12 @@ async function runSetup(pool) {
              excerpt    = $3,
              image_url  = $4,
              read_time  = $5,
-             body       = COALESCE($6, body)
-       WHERE slug = $7`,
+             tags       = $6,
+             body       = COALESCE($7, body)
+       WHERE slug = $8`,
       [
         a.title, a.subtitle ?? null, a.excerpt,
-        a.imageUrl, a.readTime,
+        a.imageUrl, a.readTime, a.tags,
         BODIES[a.slug] ?? null,
         a.slug,
       ],
@@ -5622,7 +6025,7 @@ async function runSetup(pool) {
 /**
  * Force-refresh: resets the setup cache and re-runs the full setup.
  * - Inserts any articles missing from the database (ON CONFLICT DO NOTHING)
- * - Syncs title, subtitle, excerpt, imageUrl, readTime, body for all articles
+ * - Syncs title, subtitle, excerpt, imageUrl, readTime, tags, body for all articles
  * - Safe to call repeatedly on a populated database — fully idempotent
  * - Call via the authenticated POST /api/admin/force-seed route only after approval.
  */

@@ -1,6 +1,7 @@
 import { db, articlesTable, authorsTable } from "@workspace/db";
 import { eq, desc, and, inArray } from "drizzle-orm";
 import { getCached, setCached } from "./cache";
+import { getArticleSeoOverride } from "./article-seo";
 
 function esc(s: string): string {
   return s
@@ -415,11 +416,13 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   const a = rows[0];
   const authors = await getAuthors();
   const author = authors.find((au) => au.id === a.authorId);
+  const articleSeoOverride = getArticleSeoOverride(a.slug);
   const seoOverride = Object.prototype.hasOwnProperty.call(ARTICLE_SSR_OVERRIDES, slug)
     ? ARTICLE_SSR_OVERRIDES[slug]
     : undefined;
-  const metaTitleBase = seoOverride?.metaTitle ?? a.title;
-  const metaDescription = seoOverride?.metaDescription ?? a.excerpt ?? SITE_DESC;
+  const metaTitleBase = articleSeoOverride?.metaTitle ?? seoOverride?.metaTitle ?? a.title;
+  const metaDescription = articleSeoOverride?.metaDescription ?? seoOverride?.metaDescription ?? a.excerpt ?? SITE_DESC;
+  const h1 = articleSeoOverride?.h1 ?? a.title;
 
   const canonicalUrl = `${SITE_URL}/article/${encodeURIComponent(slug)}`;
   const resolvedHeroImage = a.imageUrl ? new URL(a.imageUrl, `${SITE_URL}/`).href : undefined;
@@ -449,7 +452,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
     : "";
 
   const bodyHtml = `<main id="ssr">
-    <h1>${esc(a.title)}</h1>
+    <h1>${esc(h1)}</h1>
     ${a.subtitle ? (seoOverride?.updatedLabel ? `<p><em>${esc(a.subtitle)}</em><br />${esc(seoOverride.updatedLabel)}</p>` : `<h2>${esc(a.subtitle)}</h2>`) : ""}
     ${a.excerpt && !seoOverride?.updatedLabel ? `<p class="excerpt">${esc(a.excerpt)}</p>` : ""}
     ${author ? `<address>By <span>${esc(author.name)}</span></address>` : ""}
@@ -459,7 +462,9 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   </main>`;
 
   const schemaType = seoOverride?.schemaType ?? "NewsArticle";
-  const jsonLd = seoOverride?.graphJsonLd
+  const jsonLd = articleSeoOverride?.jsonLd
+    ? JSON.stringify(articleSeoOverride.jsonLd)
+    : seoOverride?.graphJsonLd
     ? JSON.stringify(seoOverride.graphJsonLd)
     : JSON.stringify({
         "@context": "https://schema.org",
@@ -528,9 +533,9 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
       ogImage: resolvedHeroImage,
       ogImageWidth: seoOverride?.heroWidth,
       ogImageHeight: seoOverride?.heroHeight,
-      articlePublishedTime: seoOverride ? a.publishedAt.toISOString() : undefined,
-      articleModifiedTime: seoOverride?.dateModified,
-      articleAuthor: seoOverride ? (seoOverride.articleAuthorMeta ?? authorUrl) : undefined,
+      articlePublishedTime: articleSeoOverride?.publishedTime ?? (seoOverride ? a.publishedAt.toISOString() : undefined),
+      articleModifiedTime: articleSeoOverride?.modifiedTime ?? seoOverride?.dateModified,
+      articleAuthor: articleSeoOverride?.authorName ?? (seoOverride ? (seoOverride.articleAuthorMeta ?? authorUrl) : undefined),
       articleSection: seoOverride?.emitArticleSectionAndTags && categoryName ? categoryName : undefined,
       articleTags: seoOverride?.emitArticleSectionAndTags && Array.isArray(a.tags) ? a.tags : undefined,
       robots: seoOverride?.robots,
@@ -676,6 +681,17 @@ export async function renderForPath(urlPath: string): Promise<RenderResult | nul
 function replaceOrInsertHeadTag(html: string, matcher: RegExp, tag: string): string {
   if (matcher.test(html)) return html.replace(matcher, tag);
   return html.replace(/<\/head\s*>/i, `${tag}\n</head>`);
+}
+
+// The shell's <noscript id="homepage-fallback"> block is homepage-only
+// content (it even carries its own h1). Serving it on every route would put a
+// second, wrong H1 into the server-rendered HTML of non-home pages, so the
+// production SSR drops it everywhere except the homepage — mirroring
+// removeHomepageFallback in functions/lib/seo-html.mjs.
+const HOMEPAGE_FALLBACK_PATTERN = /<noscript\s+id=["']homepage-fallback["'][^>]*>[\s\S]*?<\/noscript>/i;
+
+export function removeHomepageFallback(template: string): string {
+  return template.replace(HOMEPAGE_FALLBACK_PATTERN, "");
 }
 
 export function injectIntoHtml(

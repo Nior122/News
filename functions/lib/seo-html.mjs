@@ -1,5 +1,6 @@
 import { getArticleRedirectTarget } from "./article-routing.mjs";
 import { buildFaqJsonLd, getArticleSeoOverride } from "./article-seo.mjs";
+import { getArticleSeoOverride as getArticleSeoOverrideForSlug } from "./article-seo-overrides.mjs";
 
 export const SITE_ORIGIN = "https://scrolltek.name.ng";
 const SITE_NAME = "Scrolltek";
@@ -7,13 +8,30 @@ const SITE_LOGO = `${SITE_ORIGIN}/favicon.svg`;
 const CANONICAL_HOSTNAME = new URL(SITE_ORIGIN).hostname;
 
 const ALLOWED_TAGS = new Set([
-  "a", "b", "blockquote", "br", "code", "del", "div", "em", "figcaption",
-  "figure", "h2", "h3", "h4", "hr", "i", "img", "li", "mark", "nav", "ol", "p",
-  "pre", "s", "span", "strong", "sub", "sup", "table", "tbody", "td", "th",
-  "thead", "tr", "u", "ul",
+  "a", "b", "blockquote", "br", "code", "del", "details", "div", "em",
+  "figcaption", "figure", "h2", "h3", "h4", "hr", "i", "img", "li", "mark",
+  "nav", "ol", "p", "pre", "s", "span", "strong", "sub", "summary", "sup",
+  "table", "tbody", "td", "th", "thead", "tr", "u", "ul",
+  // Inline SVG chart elements (data visualisations embedded in article bodies).
+  "svg", "title", "desc", "g", "rect", "circle", "ellipse", "line", "path",
+  "polygon", "polyline", "text",
 ]);
 const VOID_TAGS = new Set(["br", "hr", "img"]);
-const BLOCKED_TAGS = "script|style|iframe|object|embed|svg|math|template|noscript";
+const BLOCKED_TAGS = "script|style|iframe|object|embed|math|template|noscript";
+
+// Presentation-only attributes kept on inline SVG chart elements. Event
+// handlers, href/xlink:href, style and class are deliberately excluded.
+const SVG_ALLOWED_TAGS = new Set([
+  "svg", "title", "desc", "g", "rect", "circle", "ellipse", "line", "path",
+  "polygon", "polyline", "text",
+]);
+const SVG_ALLOWED_ATTRIBUTES = new Set([
+  "xmlns", "viewBox", "width", "height", "role", "aria-labelledby", "aria-label",
+  "id", "font-family", "font-size", "font-weight", "fill", "fill-opacity",
+  "x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "d",
+  "points", "text-anchor", "stroke", "stroke-width", "transform",
+]);
+const SAFE_CLASS_NAME = /^[A-Za-z0-9 _-]+$/;
 
 export function escapeHtml(value) {
   return String(value ?? "")
@@ -160,8 +178,34 @@ function safeAttributes(tagName, attributes) {
     if (title) output.push(`title="${escapeHtml(decodeAttributeEntities(title))}"`);
     if (width && /^\d{1,4}$/.test(width)) output.push(`width="${width}"`);
     if (height && /^\d{1,4}$/.test(height)) output.push(`height="${height}"`);
-    output.push('loading="lazy"', 'decoding="async"');
+    const fetchpriority = readAttribute(attributes, "fetchpriority");
+    if (fetchpriority === "high" || fetchpriority === "low" || fetchpriority === "auto") {
+      output.push(`fetchpriority="${fetchpriority}"`);
+    }
+    if (fetchpriority === "high") {
+      // The hero image is fetched eagerly at high priority, not lazily.
+      output.push('decoding="async"');
+    } else {
+      output.push('loading="lazy"', 'decoding="async"');
+    }
     return ` ${output.join(" ")}`;
+  }
+
+  if (tagName === "div" || tagName === "figure" || tagName === "span") {
+    const className = readAttribute(attributes, "class");
+    if (className && SAFE_CLASS_NAME.test(className)) {
+      return ` class="${escapeHtml(className)}"`;
+    }
+    return "";
+  }
+
+  if (SVG_ALLOWED_TAGS.has(tagName)) {
+    const output = [];
+    for (const name of SVG_ALLOWED_ATTRIBUTES) {
+      const value = readAttribute(attributes, name);
+      if (value !== null) output.push(`${name}="${escapeHtml(decodeAttributeEntities(value))}"`);
+    }
+    return output.length ? ` ${output.join(" ")}` : "";
   }
 
   if (tagName === "td" || tagName === "th") {
@@ -215,10 +259,15 @@ export function sanitizeArticleHtml(input) {
       continue;
     }
 
+    const selfClosing = /\/\s*>$/.test(rawTag);
     const attributes = parsed[3].replace(/\/\s*$/, "");
     const safe = safeAttributes(tagName, attributes);
     if (safe === null) continue;
-    output += `<${tagName}${safe}>`;
+    // Preserve the self-closing form so inline SVG elements such as <rect />
+    // survive sanitisation intact (they are not HTML void elements).
+    output += selfClosing && !VOID_TAGS.has(tagName)
+      ? `<${tagName}${safe} />`
+      : `<${tagName}${safe}>`;
   }
 
   output += escapeTextPreservingEntities(source.slice(cursor));
@@ -380,13 +429,14 @@ function setJsonLd(html, data) {
   if (!data) {
     return transformHeadContent(html, (content) => content, (block, tagName) => {
       const id = tagName === "script" ? scriptIdFromBlock(block) : null;
-      return id && /^(?:article|author|page|breadcrumb|faq)-jsonld$/.test(id) ? "" : block;
+      return id && /^(?:article|author|page|breadcrumb|faq|itemlist)-jsonld$/.test(id) ? "" : block;
     });
   }
 
   const schemaType = data["@type"];
+  const hasGraph = Array.isArray(data["@graph"]);
   const authorUrl = typeof data.url === "string" && data.url.startsWith(`${SITE_ORIGIN}/author/`);
-  const scriptId = schemaType === "NewsArticle" || schemaType === "Article"
+  const scriptId = schemaType === "NewsArticle" || schemaType === "Article" || hasGraph
     ? "article-jsonld"
     : schemaType === "Person" || (schemaType === "Organization" && authorUrl)
       ? "author-jsonld"
@@ -680,12 +730,14 @@ function buildArticleTocMarkup(sanitizedBody) {
 export function renderArticleDocument(template, article, { related = [] } = {}) {
   const articlePath = `/article/${encodeURIComponent(article.slug)}`;
   const canonical = canonicalUrlForPath(articlePath);
+  const articleSeoOverride = getArticleSeoOverrideForSlug(article.slug);
   const seoOverride = getArticleSeoOverride(article.slug);
-  const titleBase = seoOverride?.metaTitle || article.title;
+  const titleBase = articleSeoOverride?.metaTitle || seoOverride?.metaTitle || article.title;
   const title = `${titleBase} — ${SITE_NAME}`;
   const body = sanitizeArticleHtml(article.body || "");
   const bodyText = body.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-  const description = seoOverride?.metaDescription
+  const description = articleSeoOverride?.metaDescription
+    || seoOverride?.metaDescription
     || String(article.excerpt || "").trim()
     || bodyText.slice(0, 180)
     || article.title;
@@ -694,7 +746,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
   const datePublished = articleDate && !Number.isNaN(articleDate.getTime())
     ? articleDate.toISOString()
     : undefined;
-  const dateModified = seoOverride?.dateModified || undefined;
+  const dateModified = articleSeoOverride?.modifiedTime || seoOverride?.dateModified || undefined;
   const authorName = String(article.author_name || "").trim();
   const authorSlug = authorName ? authorName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : "";
   const authorUrl = authorSlug ? `${SITE_ORIGIN}/author/${encodeURIComponent(authorSlug)}` : undefined;
@@ -732,7 +784,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
   const tocMarkup = seoOverride?.enableSsrToc ? buildArticleTocMarkup(body) : "";
   const bodyMarkup = body ? `<div class="ssr-article-body">${tocMarkup}${body}</div>` : "";
   const relatedMarkup = relatedArticleMarkup(related, article.slug);
-  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(article.title)}</h1>${subtitleMarkup}${excerptMarkup}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article>${relatedMarkup}</main>`;
+  const bodyHtml = `<main id="ssr"><article><header>${categoryMarkup ? `<p>${categoryMarkup}</p>` : ""}<h1>${escapeHtml(articleSeoOverride?.h1 || article.title)}</h1>${subtitleMarkup}${excerptMarkup}${authorMarkup}${datePublished ? `<time datetime="${escapeHtml(datePublished)}">${escapeHtml(new Date(datePublished).toLocaleDateString("en", { dateStyle: "long", timeZone: "UTC" }))}</time>` : ""}</header>${imageMarkup}${bodyMarkup}</article>${relatedMarkup}</main>`;
 
   const schemaType = seoOverride?.schemaType || "NewsArticle";
   const imageObject = image
@@ -744,7 +796,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
         ...(seoOverride?.heroCaption ? { caption: seoOverride.heroCaption } : {}),
       }
     : null;
-  const jsonLd = {
+  const jsonLd = articleSeoOverride?.jsonLd ?? {
     "@context": "https://schema.org",
     "@type": schemaType,
     headline: article.title,
@@ -808,11 +860,21 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ogImage: image,
     ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.heroWidth } : {}),
     ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.heroHeight } : {}),
-    ...(seoOverride && datePublished ? { articlePublishedTime: datePublished } : {}),
-    ...(seoOverride && dateModified ? { articleModifiedTime: dateModified } : {}),
-    ...(seoOverride && (seoOverride.articleAuthorMeta || authorUrl)
-      ? { articleAuthor: seoOverride.articleAuthorMeta || authorUrl }
-      : {}),
+    ...(articleSeoOverride?.publishedTime
+      ? { articlePublishedTime: articleSeoOverride.publishedTime }
+      : seoOverride && datePublished
+        ? { articlePublishedTime: datePublished }
+        : {}),
+    ...(articleSeoOverride?.modifiedTime
+      ? { articleModifiedTime: articleSeoOverride.modifiedTime }
+      : seoOverride && dateModified
+        ? { articleModifiedTime: dateModified }
+        : {}),
+    ...(articleSeoOverride?.authorName
+      ? { articleAuthor: articleSeoOverride.authorName }
+      : seoOverride && (seoOverride.articleAuthorMeta || authorUrl)
+        ? { articleAuthor: seoOverride.articleAuthorMeta || authorUrl }
+        : {}),
     ...(seoOverride?.emitArticleSectionAndTags && categoryName ? { articleSection: categoryName } : {}),
     ...(seoOverride?.emitArticleSectionAndTags && Array.isArray(article.tags) && article.tags.length > 0
       ? { articleTags: article.tags }
