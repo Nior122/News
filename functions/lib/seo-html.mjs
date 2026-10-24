@@ -857,9 +857,9 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ogTitle: seoOverride?.ogTitle || title,
     ...(seoOverride?.ogDescription ? { ogDescription: seoOverride.ogDescription } : {}),
     ogType: "article",
-    ogImage: image,
-    ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.heroWidth } : {}),
-    ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.heroHeight } : {}),
+    ogImage: seoOverride?.ogImage || image,
+    ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.ogImageWidth || seoOverride.heroWidth } : {}),
+    ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.ogImageHeight || seoOverride.heroHeight } : {}),
     ...(articleSeoOverride?.publishedTime
       ? { articlePublishedTime: articleSeoOverride.publishedTime }
       : seoOverride && datePublished
@@ -879,7 +879,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ...(seoOverride?.emitArticleSectionAndTags && Array.isArray(article.tags) && article.tags.length > 0
       ? { articleTags: article.tags }
       : {}),
-    jsonLd: graphJsonLd || jsonLd,
+    jsonLd: seoOverride?.articleJsonLd || graphJsonLd || jsonLd,
     ...(graphJsonLd ? { breadcrumbJsonLd: null, faqJsonLd: null, itemListJsonLd: null } : {
       ...(seoOverride ? { breadcrumbJsonLd } : {}),
       faqJsonLd,
