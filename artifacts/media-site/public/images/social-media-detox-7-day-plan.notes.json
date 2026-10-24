@@ -11,5 +11,43 @@
     "width": 1200,
     "height": 630
   },
-  "thirdPartyPhotography": false
+  "thirdPartyPhotography": false,
+  "bodyImages": [
+    {
+      "file": "social-media-detox-planning.webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 57164,
+      "alt": "A blank paper planner, pencil, clock and face-down phone on a desk for planning a social media break.",
+      "section": "A 7-day social media detox plan",
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+    },
+    {
+      "file": "social-media-detox-offline-activities.webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 86962,
+      "alt": "An open book, watercolor paints and a plant beside a sunlit window, showing offline activities.",
+      "section": "What to do instead of social media",
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+    },
+    {
+      "file": "social-media-detox-phone-free-bedroom.webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 91036,
+      "alt": "A phone-free bedside table with a lamp, book and alarm clock in a peaceful bedroom.",
+      "section": "What people commonly experience",
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+    },
+    {
+      "file": "social-media-detox-intentional-return.webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 59642,
+      "alt": "A phone with a dark screen beside an hourglass and notebook, representing intentional social media use.",
+      "section": "How to come back without sliding into old habits",
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+    }
+  ]
 }

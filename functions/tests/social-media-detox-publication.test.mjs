@@ -24,7 +24,7 @@ test('social media detox preserves verbatim draft and locked article identity', 
   assert.equal(article.subtitle,null);
   assert.equal(article.excerpt,draft.metaDescription);
   assert.equal(article.body,read(`drafts/${slug}.body.html`).trimEnd());
-  assert.doesNotMatch(article.body,/<h1|<img|unsplash|\brecord\b|Q1 2026|three separate research groups|return on attention anxiety|calmer after a month/i);
+  assert.doesNotMatch(article.body,/<h1|unsplash|\brecord\b|Q1 2026|three separate research groups|return on attention anxiety|calmer after a month/i);
   const internal = [...article.body.matchAll(/href="(\/article\/[^"]+)"/g)].map(m=>m[1]);
   assert.deepEqual(internal,draft.internalLinks.map(l=>l.path));
   const external = [...article.body.matchAll(/<a href="https:[^>]+>/g)];
@@ -64,4 +64,18 @@ test('social media detox SSR has exact SEO, eager sized hero and three synchroni
   assert.match(page,/<h2>Related reading<\/h2>/);
   assert.ok(buildSitemapXml([source]).includes('<lastmod>2026-10-24</lastmod>'));
   for(const file of ['hero','social']) assert.ok(statSync(new URL(`../../artifacts/media-site/public/images/social-media-detox-7-day-plan-${file}.webp`,import.meta.url)).size<200000);
+});
+
+ test('social media detox includes four optimized self-hosted lazy body images', () => {
+  const images=[...article.body.matchAll(/<img\b[^>]*>/g)].map(m=>m[0]);
+  assert.equal(images.length,4);
+  for(const tag of images){
+    assert.match(tag,/src="\/images\/social-media-detox-[^" ]+\.webp"/);
+    assert.match(tag,/alt="[^"]+"/);
+    assert.match(tag,/width="1200" height="675"/);
+    assert.match(tag,/loading="lazy" decoding="async"/);
+    const path=tag.match(/src="([^" ]+)"/)[1];
+    assert.ok(statSync(new URL('../../artifacts/media-site/public'+path,import.meta.url)).size<200000);
+  }
+  assert.equal((article.body.match(/AI-generated editorial illustration\./g)||[]).length,4);
 });
