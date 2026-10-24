@@ -294,7 +294,7 @@ export const STUDENTS_AI_ARTICLE_BODY = String.raw`<p>AI tools for students can 
 <p>Active recall means trying to retrieve information from memory before looking at the answer. AI can help you practise it, but the important part is making the attempt yourself.</p>
 
 <figure>
-  <img src="/images/ai-study-active-recall-workflow.svg" alt="Five-step AI study workflow showing learning, recall, feedback, review and independent practice" width="1200" height="675" loading="lazy" decoding="async" />
+  <img src="/images/ai-study-active-recall-workflow.svg" title="Five-step active recall study workflow" alt="Five-step AI study workflow showing learning, recall, feedback, review and independent practice" width="1200" height="675" loading="lazy" decoding="async" />
   <figcaption>Use AI to create practice opportunities, then retrieve the answer and verify it independently.</figcaption>
 </figure>
 

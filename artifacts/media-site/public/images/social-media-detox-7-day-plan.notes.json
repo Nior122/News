@@ -1,10 +1,11 @@
 {
   "source": "Original AI-generated editorial still life, generated for Scrolltek on 2026-10-24",
-  "caption": "AI-generated editorial illustration.",
+  "caption": "A phone-free pause makes room for reading and a quieter routine.",
   "hero": {
     "file": "social-media-detox-7-day-plan-hero.webp",
     "width": 1600,
-    "height": 900
+    "height": 900,
+    "title": "Social media detox: a phone-free pause"
   },
   "social": {
     "file": "social-media-detox-7-day-plan-social.webp",
@@ -20,7 +21,9 @@
       "bytes": 57164,
       "alt": "A blank paper planner, pencil, clock and face-down phone on a desk for planning a social media break.",
       "section": "A 7-day social media detox plan",
-      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24",
+      "title": "Plan your seven-day social media break",
+      "caption": "Set a start date, an end date and a replacement for scrolling."
     },
     {
       "file": "social-media-detox-offline-activities.webp",
@@ -29,7 +32,9 @@
       "bytes": 86962,
       "alt": "An open book, watercolor paints and a plant beside a sunlit window, showing offline activities.",
       "section": "What to do instead of social media",
-      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24",
+      "title": "Offline activities for a social media detox",
+      "caption": "Books and creative hobbies offer alternatives to opening a social feed."
     },
     {
       "file": "social-media-detox-phone-free-bedroom.webp",
@@ -38,7 +43,9 @@
       "bytes": 91036,
       "alt": "A phone-free bedside table with a lamp, book and alarm clock in a peaceful bedroom.",
       "section": "What people commonly experience",
-      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24",
+      "title": "Create a phone-free bedtime routine",
+      "caption": "Keep the phone outside the bedroom and use a separate alarm clock."
     },
     {
       "file": "social-media-detox-intentional-return.webp",
@@ -47,7 +54,9 @@
       "bytes": 59642,
       "alt": "A phone with a dark screen beside an hourglass and notebook, representing intentional social media use.",
       "section": "How to come back without sliding into old habits",
-      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24"
+      "source": "Original AI-generated editorial illustration created for Scrolltek on 2026-10-24",
+      "title": "Return to social media with time limits",
+      "caption": "Choose a platform and a time window before returning to social media."
     }
   ]
 }

@@ -34,7 +34,7 @@ test('AI phones SSR validates exact SEO, three schema blocks, seven visible FAQs
   for (const name of ['og:image','twitter:image']) assert.ok(page.includes(`${name}" content="${draft.socialImage.url}"`));
   const hero=page.match(/<img[^>]+ai-phones-2026-editorial-hero\.webp[^>]*>/)?.[0];assert.ok(hero);
   assert.match(hero,/width="1600" height="900"/);assert.match(hero,/loading="eager"/);assert.doesNotMatch(hero,/loading="lazy"/);
-  assert.match(page,/AI-generated editorial illustration/);
+  assert.match(page,/Generic smartphones illustrate on-device AI features/);
   const schemas=[...page.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
   const byType=type=>schemas.filter(s=>s['@type']===type);
   for(const type of ['Article','BreadcrumbList','FAQPage'])assert.equal(byType(type).length,1,type+' emitted exactly once');

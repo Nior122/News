@@ -544,6 +544,13 @@ export function renderPageDocument(template, page) {
   }
   if (page.robots !== undefined) html = setMeta(html, "name", "robots", page.robots);
   if (Object.hasOwn(page, "ogImage")) {
+    if (page.ogImage && page.ogImageAlt) {
+      html = setMeta(html, "property", "og:image:alt", page.ogImageAlt);
+      html = setMeta(html, "name", "twitter:image:alt", page.ogImageAlt);
+    } else {
+      html = removeMeta(html, "property", "og:image:alt");
+      html = removeMeta(html, "name", "twitter:image:alt");
+    }
     if (page.ogImage) {
       html = setMeta(html, "property", "og:image", page.ogImage);
       html = setMeta(html, "name", "twitter:image", page.ogImage);
@@ -767,6 +774,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     : "";
   const authorMarkup = authorName ? `<p>By ${escapeHtml(authorName)}</p>` : "";
   const heroAlt = seoOverride?.heroAlt || article.title;
+  const heroTitleAttrs = seoOverride?.heroTitle ? ` title="${escapeHtml(seoOverride.heroTitle)}"` : "";
   const heroSizeAttrs = seoOverride?.heroWidth && seoOverride?.heroHeight
     ? ` width="${seoOverride.heroWidth}" height="${seoOverride.heroHeight}"`
     : "";
@@ -779,7 +787,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ? `<figcaption>${escapeHtml(seoOverride.heroCaption)}</figcaption>`
     : "";
   const imageMarkup = image
-    ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(heroAlt)}"${heroSizeAttrs}${heroLoadingAttrs}>${heroCaptionMarkup}</figure>`
+    ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(heroAlt)}"${heroTitleAttrs}${heroSizeAttrs}${heroLoadingAttrs}>${heroCaptionMarkup}</figure>`
     : "";
   const tocMarkup = seoOverride?.enableSsrToc ? buildArticleTocMarkup(body) : "";
   const bodyMarkup = body ? `<div class="ssr-article-body">${tocMarkup}${body}</div>` : "";
@@ -858,6 +866,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     ...(seoOverride?.ogDescription ? { ogDescription: seoOverride.ogDescription } : {}),
     ogType: "article",
     ogImage: seoOverride?.ogImage || image,
+    ogImageAlt: heroAlt,
     ...(seoOverride?.heroWidth ? { ogImageWidth: seoOverride.ogImageWidth || seoOverride.heroWidth } : {}),
     ...(seoOverride?.heroHeight ? { ogImageHeight: seoOverride.ogImageHeight || seoOverride.heroHeight } : {}),
     ...(articleSeoOverride?.publishedTime

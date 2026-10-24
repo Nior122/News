@@ -73,11 +73,11 @@ test("best-budget-wireless-earbuds-2026 renders verified SEO metadata, TOC, Item
   // Exact hero & commute image attributes, alts, and visible captions
   assert.match(
     html,
-    /<img src="https:\/\/scrolltek\.name\.ng\/images\/best-budget-wireless-earbuds-2026-hero\.webp" alt="Pair of wireless earbuds beside their charging case" width="1200" height="630" fetchpriority="high" decoding="async"><figcaption>You no longer need to spend \$250 to get good wireless earbuds\. Photo: Atelier by Vineeth \/ Unsplash\.<\/figcaption>/,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/best-budget-wireless-earbuds-2026-hero\.webp" alt="Pair of wireless earbuds beside their charging case" title="Wireless earbuds and charging case" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><figcaption>You no longer need to spend \$250 to get good wireless earbuds\. Photo: Atelier by Vineeth \/ Unsplash\.<\/figcaption>/,
   );
   assert.match(
     html,
-    /<img src="https:\/\/scrolltek\.name\.ng\/images\/budget-earbuds-commute-use\.webp" alt="Commuter wearing wireless earbuds on a train" width="1200" height="800" loading="lazy" decoding="async">\s*<figcaption>Noise cancelling is the feature commuters notice most\. Photo: Burst \/ Pexels\.<\/figcaption>/,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/budget-earbuds-commute-use\.webp" alt="Commuter wearing wireless earbuds on a train"(?: title="Wireless earbuds for commuting")? width="1200" height="800" loading="lazy" decoding="async">\s*<figcaption>Noise cancelling is the feature commuters notice most\. Photo: Burst \/ Pexels\.<\/figcaption>/,
   );
 
   // JSON-LD schemas: Article + BreadcrumbList + ItemList + FAQPage (NO Product, Review, or AggregateRating)

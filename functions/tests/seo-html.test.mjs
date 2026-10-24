@@ -97,8 +97,8 @@ test("e-ink article override renders its page metadata, images, TOC and required
   assert.match(html, /property="article:modified_time" content="2026-10-23T00:00:00.000Z"/);
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
   assert.match(html, /aria-label="Table of contents"/);
-  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/best-e-ink-tablets-2026-hero\.webp" alt="A hand uses a stylus over a tablet screen beside a keyboard and smartphone\." width="1200" height="630" fetchpriority="high" decoding="async"/);
-  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/e-ink-screen-readable-in-sunlight\.webp" alt="Person reading on an e ink screen outdoors in bright sunlight" width="1200" height="800" loading="lazy" decoding="async"/);
+  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/best-e-ink-tablets-2026-hero\.webp" alt="A hand uses a stylus over a tablet screen beside a keyboard and smartphone\." title="Tablet and stylus for digital note-taking" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"/);
+  assert.match(html, /src="https:\/\/scrolltek\.name\.ng\/images\/e-ink-screen-readable-in-sunlight\.webp" alt="Person reading on an e ink screen outdoors in bright sunlight" title="Reading an e ink screen in sunlight" width="1200" height="800" loading="lazy" decoding="async"/);
   assert.match(html, /Photo: Jakub Zerdzicki \/ Pexels/);
   assert.match(html, /Photo: Perfecto Capucine \/ Pexels/);
   assert.equal(article.title, "Best E Ink Tablets in 2026: Are They Worth Buying?");
@@ -406,11 +406,11 @@ test("upgraded what-is-vibe-coding-2026 seed data is synced across setup files a
   // Hero & workflow diagram images + visible captions + TOC
   assert.match(
     html,
-    /<figure><img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-beginners-guide-hero\.webp" alt="Illustration of a person describing an app idea to an AI that builds the software on a laptop screen" width="1200" height="630" fetchpriority="high" decoding="async"><figcaption>Vibe coding lets you describe software in plain English and have AI build it\.<\/figcaption><\/figure>/,
+    /<figure><img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-beginners-guide-hero\.webp" alt="Illustration of a person describing an app idea to an AI that builds the software on a laptop screen" title="Vibe coding: from an app idea to software" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><figcaption>Vibe coding lets you describe software in plain English and have AI build it\.<\/figcaption><\/figure>/,
   );
   assert.match(
     html,
-    /<img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-workflow-diagram\.svg" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback" width="1000" height="400" loading="lazy" decoding="async">\s*<figcaption>The basic vibe coding loop\.<\/figcaption>/,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/vibe-coding-workflow-diagram\.svg" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback"(?: title="Four-step vibe coding workflow")? width="1000" height="400" loading="lazy" decoding="async">\s*<figcaption>The basic vibe coding loop\.<\/figcaption>/,
   );
   assert.match(html, /<nav aria-label="Table of contents"><h2>In this article<\/h2><ol><li><a href="#what-is-vibe-coding">What is vibe coding\?<\/a><\/li>/);
   assert.equal((html.match(/<table>/g) ?? []).length, 2);

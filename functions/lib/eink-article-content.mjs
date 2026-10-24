@@ -49,7 +49,7 @@ export const EINK_ARTICLE_BODY = String.raw`<p>Screens that glow, buzz and beg f
 <h2 id="toc-how-e-ink-works-4">How E Ink Works</h2>
 <p>E ink screens hold millions of tiny capsules filled with charged black and white particles. A small electric field moves the particles up or down, so each spot looks black or white. Two things follow. The screen reflects room light instead of producing its own, and it uses power only when the image changes.</p>
 <figure>
-  <img src="/images/e-ink-screen-readable-in-sunlight.webp" alt="Person reading on an e ink screen outdoors in bright sunlight" width="1200" height="800" loading="lazy" decoding="async" />
+  <img src="/images/e-ink-screen-readable-in-sunlight.webp" title="Reading an e ink screen in sunlight" alt="Person reading on an e ink screen outdoors in bright sunlight" width="1200" height="800" loading="lazy" decoding="async" />
   <figcaption>E ink reflects light, so it stays readable in direct sun. Photo: Perfecto Capucine / Pexels.</figcaption>
 </figure>
 <p>That is why e ink stays readable in sunlight and why a static page costs almost nothing to display. Front-lit models add a light that shines onto the screen for dark rooms. Many color panels, such as Kaleido 3, place a color filter over black-and-white ink, which is why color looks muted and sits at 150 ppi while black text reaches 300 ppi.</p>

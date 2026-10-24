@@ -97,11 +97,11 @@ test("ai-tools-for-students-2026 passes all Section 1–6 SEO, image, schema, li
   // Hero WebP & Active Recall SVG attributes, captions, and file sizes
   assert.match(
     html,
-    /<img src="https:\/\/scrolltek\.name\.ng\/images\/ai-tools-for-students-study-guide\.webp" alt="Student study desk with a laptop, notes and revision materials representing AI tools for students" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"\s*\/?><figcaption>AI study tools can support research, note-taking and revision while students remain responsible for their learning\.<\/figcaption>/,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/ai-tools-for-students-study-guide\.webp" alt="Student study desk with a laptop, notes and revision materials representing AI tools for students" title="AI study tools for notes and revision" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"\s*\/?><figcaption>AI study tools can support research, note-taking and revision while students remain responsible for their learning\.<\/figcaption>/,
   );
   assert.match(
     html,
-    /<img src="https:\/\/scrolltek\.name\.ng\/images\/ai-study-active-recall-workflow\.svg" alt="Five-step AI study workflow showing learning, recall, feedback, review and independent practice" width="1200" height="675" loading="lazy" decoding="async"\s*\/?>\s*<figcaption>Use AI to create practice opportunities, then retrieve the answer and verify it independently\.<\/figcaption>/,
+    /<img src="https:\/\/scrolltek\.name\.ng\/images\/ai-study-active-recall-workflow\.svg" alt="Five-step AI study workflow showing learning, recall, feedback, review and independent practice"(?: title="Five-step active recall study workflow")? width="1200" height="675" loading="lazy" decoding="async"\s*\/?>\s*<figcaption>Use AI to create practice opportunities, then retrieve the answer and verify it independently\.<\/figcaption>/,
   );
 
   const heroStat = statSync(

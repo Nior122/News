@@ -9,6 +9,7 @@ interface PageMeta {
   ogImage?: string;
   ogImageWidth?: number;
   ogImageHeight?: number;
+  ogImageAlt?: string;
   ogType?: string;
   canonical?: string | null;
   robots?: string;
@@ -89,7 +90,7 @@ export function usePageMeta(meta: PageMeta) {
     const previousCanonical = document.querySelector<HTMLLinkElement>("link[rel='canonical']")?.getAttribute("href") ?? null;
     const metaNames = [
       "description", "robots", "og:type", "og:title", "og:description", "og:url", "og:image",
-      "og:image:width", "og:image:height", "og:image:type", "twitter:title", "twitter:description",
+      "og:image:width", "og:image:height", "og:image:type", "og:image:alt", "twitter:image:alt", "twitter:title", "twitter:description",
       "twitter:card", "twitter:image", "article:published_time", "article:modified_time",
       "article:author",
     ];
@@ -118,6 +119,13 @@ export function usePageMeta(meta: PageMeta) {
     if (meta.articleAuthor) setMeta("article:author", meta.articleAuthor);
     else removeMeta("article:author");
 
+    if (meta.ogImage && meta.ogImageAlt) {
+      setMeta("og:image:alt", meta.ogImageAlt);
+      setMeta("twitter:image:alt", meta.ogImageAlt);
+    } else {
+      removeMeta("og:image:alt");
+      removeMeta("twitter:image:alt");
+    }
     if (meta.ogImage) {
       setMeta("og:image", meta.ogImage);
       if (meta.ogImageWidth !== undefined) setMeta("og:image:width", String(meta.ogImageWidth));
@@ -167,6 +175,7 @@ export function usePageMeta(meta: PageMeta) {
     meta.ogImage,
     meta.ogImageWidth,
     meta.ogImageHeight,
+    meta.ogImageAlt,
     meta.ogType,
     meta.canonical,
     meta.robots,
