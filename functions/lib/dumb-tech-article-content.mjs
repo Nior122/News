@@ -36,7 +36,7 @@ export const DUMB_TECH_ARTICLE_BODY = String.raw`<p>The Light Phone is the best-
 </ul>
 
 <figure>
-  <img src="/images/light-flip-open-tools.webp" alt="Light Flip open, showing its tool menu screen and T9 keypad" width="1200" height="800" loading="lazy" decoding="async" />
+  <img src="/images/light-flip-open-tools.webp" title="Light Flip open, showing its tool menu screen and T9 keypad" alt="Light Flip open, showing its tool menu screen and T9 keypad" width="1200" height="800" loading="lazy" decoding="async" />
   <figcaption>The Light Flip open, with the same tool menu as the Light Phone III. Photo: Light (thelightphone.com)</figcaption>
 </figure>
 
@@ -49,7 +49,7 @@ export const DUMB_TECH_ARTICLE_BODY = String.raw`<p>The Light Phone is the best-
 <p><strong>Camera.</strong> A 50 MP rear sensor outputs 12 MP images at a fixed focal length near 28 mm, with a dedicated shutter button and an 8 MP front camera.</p>
 
 <figure>
-  <img src="/images/light-phone-iii-back-camera.webp" alt="Back of the Light Phone III showing its camera, flash and removable battery cover" width="1200" height="800" loading="lazy" decoding="async" />
+  <img src="/images/light-phone-iii-back-camera.webp" title="Back of the Light Phone III showing its camera, flash and removable battery cover" alt="Back of the Light Phone III showing its camera, flash and removable battery cover" width="1200" height="800" loading="lazy" decoding="async" />
   <figcaption>The back of the Light Phone III: camera, flash and a battery cover held by screws. Photo: Light (thelightphone.com)</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@ export const DUMB_TECH_ARTICLE_BODY = String.raw`<p>The Light Phone is the best-
 </div>
 
 <figure>
-  <img src="/images/mudita-kompakt-e-ink-phone.webp" alt="Mudita Kompakt minimalist phone showing its E Ink home screen" width="1200" height="800" loading="lazy" decoding="async" />
+  <img src="/images/mudita-kompakt-e-ink-phone.webp" title="Mudita Kompakt minimalist phone showing its E Ink home screen" alt="Mudita Kompakt minimalist phone showing its E Ink home screen" width="1200" height="800" loading="lazy" decoding="async" />
   <figcaption>The Mudita Kompakt's E Ink home screen. Photo: Mudita (store.mudita.com)</figcaption>
 </figure>
 
@@ -120,7 +120,7 @@ export const DUMB_TECH_ARTICLE_BODY = String.raw`<p>The Light Phone is the best-
 </ul>
 
 <figure>
-  <img src="/images/punkt-mp02-minimalist-phone.webp" alt="Punkt MP02 minimalist phone front and back, showing its monochrome screen and physical keypad" width="1200" height="800" loading="lazy" decoding="async" />
+  <img src="/images/punkt-mp02-minimalist-phone.webp" title="Punkt MP02 minimalist phone front and back, showing its monochrome screen and physical keypad" alt="Punkt MP02 minimalist phone front and back, showing its monochrome screen and physical keypad" width="1200" height="800" loading="lazy" decoding="async" />
   <figcaption>The Punkt MP02, front and back. Photo: Punkt (punkt.ch)</figcaption>
 </figure>
 

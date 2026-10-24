@@ -1,3 +1,4 @@
+import { editorialRelatedSlugs, orderEditorialRelated } from "../lib/editorial-related.mjs";
 /**
  * Cloudflare Pages Function — handles all /api/* routes.
  * No separate Worker needed — this runs automatically as part of the Pages project.
@@ -612,6 +613,14 @@ export async function handleApiRequest({ request, env, databaseFactory = getDb }
       if (redirectTarget) return redirectArticleApiUrl(url, redirectTarget, '/related');
       const base = await db`SELECT category FROM articles WHERE slug = ${slug} AND published = true`;
       if (!base.length) return json({ error: 'Not found' }, 404);
+      const curated = editorialRelatedSlugs(slug);
+      if (curated) {
+        const selected = await db`
+          SELECT a.*, au.name AS author_name, au.avatar_url
+          FROM articles a JOIN authors au ON a.author_id = au.id
+          WHERE a.published = true AND a.slug = ANY(${curated}::text[])`;
+        return publicJson(orderEditorialRelated(slug, selected).map(publicSummaryFmt));
+      }
       const rows = await db`
         SELECT a.*, au.name AS author_name, au.avatar_url
         FROM articles a JOIN authors au ON a.author_id = au.id

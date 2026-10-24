@@ -1,3 +1,4 @@
+import { editorialRelatedSlugs, orderEditorialRelated } from "./lib/editorial-related.mjs";
 import { neon } from "@neondatabase/serverless";
 import { getArticleRedirectTarget, REDIRECTED_ARTICLE_SLUGS } from "./lib/article-routing.mjs";
 import { applyArticleContentOverride } from "./lib/article-seo.mjs";
@@ -304,6 +305,20 @@ async function fetchCategoryArticles(sql, slug) {
 const RELATED_CANDIDATE_LIMIT = 12;
 
 async function fetchRelatedArticles(sql, article) {
+  const curated = editorialRelatedSlugs(article.slug);
+  if (curated) {
+    const rows = await sql`
+      SELECT a.id, a.slug, a.title, a.excerpt, a.body, a.category,
+             a.author_id, a.image_url, a.read_time, a.views, a.featured,
+             a.editors_pick, a.tags, a.published_at,
+             au.name AS author_name, au.avatar_url
+      FROM articles a LEFT JOIN authors au ON au.id = a.author_id
+      WHERE a.published = true AND a.slug = ANY(${curated}::text[])
+    `;
+    return orderEditorialRelated(article.slug, rows.map(applyArticleContentOverride))
+      .filter(row => hasMeaningfulArticleBody(row.body));
+  }
+
   const candidates = await sql`
     SELECT a.id, a.slug, a.title, a.excerpt, a.body, a.category,
            a.author_id, a.image_url, a.read_time, a.views, a.featured,
