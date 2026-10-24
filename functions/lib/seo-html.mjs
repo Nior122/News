@@ -733,7 +733,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
   const articleSeoOverride = getArticleSeoOverrideForSlug(article.slug);
   const seoOverride = getArticleSeoOverride(article.slug);
   const titleBase = articleSeoOverride?.metaTitle || seoOverride?.metaTitle || article.title;
-  const title = `${titleBase} — ${SITE_NAME}`;
+  const title = seoOverride?.exactTitle ? titleBase : `${titleBase} — ${SITE_NAME}`;
   const body = sanitizeArticleHtml(article.body || "");
   const bodyText = body.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   const description = articleSeoOverride?.metaDescription

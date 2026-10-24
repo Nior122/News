@@ -355,6 +355,7 @@ export default function ArticlePage() {
     description: article
       ? pageMetaDescription
       : (articleFailure === "not-found" ? ARTICLE_LOAD_FAILURE_COPY["not-found"].description : undefined),
+    exactTitle: seoOverride?.exactTitle,
     ogTitle: seoOverride?.ogTitle,
     ogDescription: seoOverride?.ogDescription,
     ogImage: resolvedOgImage,
@@ -634,6 +635,10 @@ export default function ArticlePage() {
                     </>
                   )}
                 </p>
+              )}
+
+              {!article.subtitle && seoOverride?.updatedLabel && (
+                <p className="text-xs md:text-sm text-muted-foreground mb-4">{seoOverride.updatedLabel}</p>
               )}
 
               {/* Reading time + publication date */}
