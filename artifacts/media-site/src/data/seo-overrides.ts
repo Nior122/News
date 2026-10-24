@@ -12,6 +12,7 @@ export interface ArticleSeoOverride {
   updatedLabel?: string;
   robots?: string;
   schemaType?: "Article" | "NewsArticle";
+  heroBelowByline?: boolean;
   heroTitle?: string;
   heroAlt?: string;
   heroCaption?: string;
@@ -25,6 +26,138 @@ export interface ArticleSeoOverride {
 }
 
 export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
+ "amd-on-device-ai-no-internet-2026": {
+  "metaTitle": "What Is On-Device AI? Pros, Limits & Examples",
+  "exactTitle": true,
+  "metaDescription": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+  "ogTitle": "What Is On-Device AI? Pros, Limits & Examples",
+  "ogDescription": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+  "dateModified": "2026-10-24",
+  "updatedLabel": "Updated October 24, 2026",
+  "robots": "index, follow, max-image-preview:large",
+  "schemaType": "Article",
+  "heroTitle": "On-device AI: local processing on phones and laptops",
+  "heroAlt": "Phone and laptop with a glowing chip icon showing AI running on the device",
+  "heroCaption": "A phone and laptop illustrate AI processing on the device rather than in a remote data center.",
+  "heroWidth": 1600,
+  "heroHeight": 900,
+  "heroLoadingEager": true,
+  "heroBelowByline": true,
+  "bodyIncludesFaq": true,
+  "schemaScripts": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "What Is On-Device AI? How It Works, Why It Matters and Where It Falls Short",
+      "description": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+      "image": [
+        "https://scrolltek.name.ng/images/on-device-ai-explained-hero.webp"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Liam Park"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Scrolltek",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://scrolltek.name.ng/favicon.svg"
+        }
+      },
+      "datePublished": "2026-05-26T15:35:23.685Z",
+      "dateModified": "2026-10-24",
+      "mainEntityOfPage": "https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026",
+      "articleSection": "Tech"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://scrolltek.name.ng/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Tech",
+          "item": "https://scrolltek.name.ng/category/tech"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is On-Device AI?",
+          "item": "https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is on-device AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On-device AI is AI that runs on your own phone, laptop or tablet rather than on a company's server. A chip in the device, often an NPU, does the work, so many features run offline and keep data local."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is on-device AI different from cloud AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cloud AI sends your request to a remote data center, which can run very large models but needs a connection. On-device AI processes the request locally. It is faster for short tasks and works offline, but uses smaller models."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is on-device AI more private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Often, because a locally run feature does not need to upload your data. But many products are hybrid, and apps can still sync or log information, so check each feature's settings rather than assuming."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does on-device AI work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, for features that run entirely on the device, such as local transcription or translation. Features that call a cloud model, search the web or use live data still need a connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an NPU and what are TOPS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An NPU is a processor block built for AI calculations that uses less power than a CPU or GPU. TOPS means trillions of operations per second, a peak-speed rating. Copilot+ PCs need an NPU rated at 40+ TOPS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which devices have on-device AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Recent flagship phones such as Google's Pixel 11 series, Apple devices that support Apple Intelligence, Windows Copilot+ PCs and AMD Ryzen AI systems all run some AI locally. Check your model's spec page for supported features."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can't on-device AI do yet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It cannot match the largest cloud models on complex reasoning or very long documents, and big local models strain memory, battery and heat. Heavy tasks usually still fall back to the cloud."
+          }
+        }
+      ]
+    }
+  ]
+},
   "quitting-social-media-digital-detox-2026": {
   "metaTitle": "Social Media Detox: How to Do One (7-Day Plan)",
   "exactTitle": true,

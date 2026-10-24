@@ -28,7 +28,7 @@ The hardware is the NPU, or neural processing unit. It is a block inside the pho
 
 Where the work happens matters more than the chip name. On-device AI runs on the phone, works offline and keeps data local. Google's [Gemini Nano](https://developer.android.com/ai/gemini-nano) is one example: it runs inside Android's AICore service without a network connection. Cloud AI sends your request to a server, which allows bigger models but needs a connection. Most AI phones are hybrids. Apple Intelligence handles many tasks on the device and sends heavier ones to Private Cloud Compute, and Google's Private AI Compute does something similar for Gemini features.
 
-One warning for shoppers: the same model name can carry a different chip. The Galaxy S26 and S26+ use Snapdragon 8 Elite Gen 5 in North America, China and Japan and Samsung's Exynos 2600 elsewhere, while the S26 Ultra uses Snapdragon everywhere. For a deeper look at the hardware, see our explainer on [on-device AI that runs with no internet](https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026).
+One warning for shoppers: the same model name can carry a different chip. The Galaxy S26 and S26+ use Snapdragon 8 Elite Gen 5 in North America, China and Japan and Samsung's Exynos 2600 elsewhere, while the S26 Ultra uses Snapdragon everywhere. For a deeper look at the hardware, see our explainer on [on-device AI](https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026).
 
 ## AI Phone Features That Are Actually Useful
 

@@ -586,7 +586,8 @@ export default function ArticlePage() {
       <article className="pb-16 md:pb-24" itemScope itemType="https://schema.org/Article">
 
         {/* Hero */}
-        <div className="w-full h-[45vh] md:h-[62vh] relative mb-8 md:mb-12">
+        <div className={seoOverride?.heroBelowByline ? "w-full relative pt-8 mb-8" : "w-full h-[45vh] md:h-[62vh] relative mb-8 md:mb-12"}>
+          {!seoOverride?.heroBelowByline && (
           <img
             src={article.imageUrl}
             alt={seoOverride?.heroAlt ?? article.title}
@@ -599,8 +600,9 @@ export default function ArticlePage() {
             className="w-full h-full object-cover"
             itemProp="image"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full p-4 md:p-8">
+          )}
+          {!seoOverride?.heroBelowByline && <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />}
+          <div className={seoOverride?.heroBelowByline ? "w-full px-4 md:px-8" : "absolute bottom-0 left-0 w-full p-4 md:p-8"}>
             <div className="container max-w-screen-md mx-auto text-center">
               {/* Breadcrumb */}
               <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-1.5 text-xs mb-4 text-muted-foreground">
@@ -669,7 +671,7 @@ export default function ArticlePage() {
                   itemScope
                   itemType={`https://schema.org/${article.author.name === "Scrolltek Editorial" ? "Organization" : "Person"}`}
                 >
-                  {article.author.avatarUrl ? (
+                  {article.author.avatarUrl && article.slug !== "amd-on-device-ai-no-internet-2026" ? (
                     <img
                       src={article.author.avatarUrl}
                       alt={article.author.name}
@@ -687,7 +689,7 @@ export default function ArticlePage() {
                     </div>
                   )}
                   <div>
-                    <div className="font-semibold text-sm group-hover:text-primary transition-colors" itemProp="name">{article.slug === "quitting-social-media-digital-detox-2026" ? "By " : ""}{article.author.name}</div>
+                    <div className="font-semibold text-sm group-hover:text-primary transition-colors" itemProp="name">{["quitting-social-media-digital-detox-2026", "amd-on-device-ai-no-internet-2026"].includes(article.slug) ? "By " : ""}{article.author.name}</div>
                     <div className="text-xs text-muted-foreground">
                       <time
                         dateTime={new Date(article.publishedAt).toISOString()}
@@ -706,6 +708,22 @@ export default function ArticlePage() {
             </div>
           </div>
         </div>
+        {seoOverride?.heroBelowByline && (
+          <figure className="container max-w-screen-md px-4 mb-8">
+          <img
+            src={article.imageUrl}
+            alt={seoOverride?.heroAlt ?? article.title}
+            title={seoOverride?.heroTitle}
+            width={seoOverride?.heroWidth ?? 1200}
+            height={seoOverride?.heroHeight ?? 630}
+            loading={seoOverride?.heroLoadingEager ? "eager" : undefined}
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-auto rounded-xl"
+            itemProp="image"
+          />
+          </figure>
+        )}
         {seoOverride?.heroCaption && (
           <p className="text-center text-xs sm:text-sm italic text-muted-foreground -mt-5 mb-8 px-4">
             {seoOverride.heroCaption}
@@ -788,7 +806,7 @@ export default function ArticlePage() {
           ) : related && related.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {related.slice(0, 4).map((rel) => (
-                <ArticleCard key={rel.id} article={rel} selfHostedImagesOnly={article.slug === "why-ai-phones-are-the-future-2026"} />
+                <ArticleCard key={rel.id} article={rel} selfHostedImagesOnly={["why-ai-phones-are-the-future-2026", "amd-on-device-ai-no-internet-2026"].includes(article.slug)} />
               ))}
             </div>
           ) : (

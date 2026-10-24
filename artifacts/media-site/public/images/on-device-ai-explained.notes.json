@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "source": "Original AI-generated editorial concept created for Scrolltek; not a product photograph",
+    "title": "On-device AI: local processing on phones and laptops",
+    "alt": "Phone and laptop with a glowing chip icon showing AI running on the device",
+    "width": 1600,
+    "height": 900
+  },
+  "diagram": {
+    "source": "Original in-house diagram drawn programmatically by the editorial team",
+    "title": "On-device AI vs cloud AI: request paths",
+    "alt": "Diagram comparing cloud AI, where a request travels to a data center, with on-device AI, where the chip in your device answers directly",
+    "width": 1440,
+    "height": 900
+  },
+  "optionalScreenshot": "Omitted: no original team screenshot of Windows Task Manager on an NPU-equipped device available. No simulated screenshot used."
+}

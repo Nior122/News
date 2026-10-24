@@ -54,6 +54,7 @@ function lastmodFor(value) {
 // Editorial lastmod overrides for articles that were updated without changing
 // their original publication date. Mirrors artifacts/api-server sitemap route.
 const ARTICLE_LASTMOD_OVERRIDES = {
+ "amd-on-device-ai-no-internet-2026": "2026-10-24",
   "quitting-social-media-digital-detox-2026": "2026-10-24",
   "why-ai-phones-are-the-future-2026": "2026-10-24",
   'handheld-gaming-gadgets-2026': '2026-10-23',

@@ -1,3 +1,4 @@
+import { ON_DEVICE_AI_ARTICLE_BODY } from "./on-device-ai-article-content.mjs";
 import { SOCIAL_MEDIA_DETOX_ARTICLE_BODY } from "./social-media-detox-article-content.mjs";
 import { AI_PHONES_ARTICLE_BODY } from "./ai-phones-article-content.mjs";
 import { JOMO_ARTICLE_BODY, JOMO_ARTICLE_TITLE } from "./jomo-article-content.mjs";
@@ -275,6 +276,14 @@ export const VIBE_CODING_ARTICLE_BODY = `<p>Vibe coding is a way of building sof
 <p>It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.</p>`;
 
 export const ARTICLE_CONTENT_OVERRIDES = {
+ "amd-on-device-ai-no-internet-2026": {
+  "title": "What Is On-Device AI? How It Works, Why It Matters and Where It Falls Short",
+  "subtitle": null,
+  "excerpt": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+  "image_url": "/images/on-device-ai-explained-hero.webp",
+  "read_time": 10,
+ "body": ON_DEVICE_AI_ARTICLE_BODY
+},
   "quitting-social-media-digital-detox-2026": {
   "title": "Social Media Detox: How to Do One, What to Expect and a 7-Day Plan",
   "subtitle": null,
@@ -395,6 +404,106 @@ export const ARTICLE_CONTENT_OVERRIDES = {
 };
 
 export const ARTICLE_SEO_OVERRIDES = {
+ "amd-on-device-ai-no-internet-2026": {
+  "metaTitle": "What Is On-Device AI? Pros, Limits & Examples",
+  "exactTitle": true,
+  "metaDescription": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+  "ogTitle": "What Is On-Device AI? Pros, Limits & Examples",
+  "ogDescription": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+  "dateModified": "2026-10-24",
+  "updatedLabel": "Updated October 24, 2026",
+  "robots": "index, follow, max-image-preview:large",
+  "schemaType": "Article",
+  "heroTitle": "On-device AI: local processing on phones and laptops",
+  "heroAlt": "Phone and laptop with a glowing chip icon showing AI running on the device",
+  "heroCaption": "A phone and laptop illustrate AI processing on the device rather than in a remote data center.",
+  "heroWidth": 1600,
+  "heroHeight": 900,
+  "heroLoadingEager": true,
+  "heroBelowByline": true,
+  "bodyIncludesFaq": true,
+  "articleAuthorMeta": "Liam Park",
+  "emitArticleSectionAndTags": true,
+  "articleJsonLd": {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "What Is On-Device AI? How It Works, Why It Matters and Where It Falls Short",
+    "description": "On-device AI runs on your phone or laptop, not the cloud. See how it works, the privacy and offline benefits, the limits and real-world examples.",
+    "image": [
+      "https://scrolltek.name.ng/images/on-device-ai-explained-hero.webp"
+    ],
+    "author": {
+      "@type": "Person",
+      "name": "Liam Park"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Scrolltek",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://scrolltek.name.ng/favicon.svg"
+      }
+    },
+    "datePublished": "2026-05-26T15:35:23.685Z",
+    "dateModified": "2026-10-24",
+    "mainEntityOfPage": "https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026",
+    "articleSection": "Tech"
+  },
+  "breadcrumbJsonLd": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://scrolltek.name.ng/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Tech",
+        "item": "https://scrolltek.name.ng/category/tech"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "What Is On-Device AI?",
+        "item": "https://scrolltek.name.ng/article/amd-on-device-ai-no-internet-2026"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "What is on-device AI?",
+      "a": "On-device AI is AI that runs on your own phone, laptop or tablet rather than on a company's server. A chip in the device, often an NPU, does the work, so many features run offline and keep data local."
+    },
+    {
+      "q": "How is on-device AI different from cloud AI?",
+      "a": "Cloud AI sends your request to a remote data center, which can run very large models but needs a connection. On-device AI processes the request locally. It is faster for short tasks and works offline, but uses smaller models."
+    },
+    {
+      "q": "Is on-device AI more private?",
+      "a": "Often, because a locally run feature does not need to upload your data. But many products are hybrid, and apps can still sync or log information, so check each feature's settings rather than assuming."
+    },
+    {
+      "q": "Does on-device AI work offline?",
+      "a": "Yes, for features that run entirely on the device, such as local transcription or translation. Features that call a cloud model, search the web or use live data still need a connection."
+    },
+    {
+      "q": "What is an NPU and what are TOPS?",
+      "a": "An NPU is a processor block built for AI calculations that uses less power than a CPU or GPU. TOPS means trillions of operations per second, a peak-speed rating. Copilot+ PCs need an NPU rated at 40+ TOPS."
+    },
+    {
+      "q": "Which devices have on-device AI?",
+      "a": "Recent flagship phones such as Google's Pixel 11 series, Apple devices that support Apple Intelligence, Windows Copilot+ PCs and AMD Ryzen AI systems all run some AI locally. Check your model's spec page for supported features."
+    },
+    {
+      "q": "What can't on-device AI do yet?",
+      "a": "It cannot match the largest cloud models on complex reasoning or very long documents, and big local models strain memory, battery and heat. Heavy tasks usually still fall back to the cloud."
+    }
+  ]
+},
   "quitting-social-media-digital-detox-2026": {
   "metaTitle": "Social Media Detox: How to Do One (7-Day Plan)",
   "exactTitle": true,
@@ -1080,6 +1189,11 @@ export function getArticleSeoOverride(slug) {
 }
 
 const INBOUND_LINK_AUGMENTATIONS = {
+  "privacy-first-gadgets-2026": (body) => {
+    const target = /(<a\b[^>]*href=["'](?:https:\/\/scrolltek\.name\.ng)?\/article\/amd-on-device-ai-no-internet-2026["'][^>]*>)[\s\S]*?(<\/a>)/i;
+    if (target.test(body)) return body.replace(target, '$1on-device AI$2');
+    return body + '<p>Learn how <a href="/article/amd-on-device-ai-no-internet-2026">on-device AI</a> processes tasks locally and where its privacy limits lie.</p>';
+  },
   "chatgpt-claude-gemini-comparison-2026": (body) => {
     if (body.includes("/article/ai-tools-for-students-2026")) return body;
     return body.replace(

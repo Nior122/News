@@ -831,7 +831,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
     },
     articleSection: article.category || undefined,
   };
-  const breadcrumbJsonLd = seoOverride
+  const breadcrumbJsonLd = seoOverride?.breadcrumbJsonLd ?? (seoOverride
     ? {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -843,7 +843,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
           { "@type": "ListItem", position: categoryName ? 3 : 2, name: article.title, item: canonical },
         ],
       }
-    : null;
+    : null);
   const faqJsonLd = buildFaqJsonLd(seoOverride?.faqs);
   const itemListJsonLd = seoOverride?.itemList || null;
   const graphJsonLd = typeof seoOverride?.buildGraphJsonLd === "function"
