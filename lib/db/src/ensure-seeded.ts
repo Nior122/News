@@ -2172,6 +2172,11 @@ const ARTICLE_BODY_DUMB_TECH = `<p>The Light Phone is the best-known "dumb phone
   <li><strong>Light Flip:</strong> announced in July 2026, a $299 T9 flip phone with a plastic body and no touchscreen, due to ship from April 2027.</li>
 </ul>
 
+<figure>
+  <img src="/images/light-flip-open-tools.webp" alt="Light Flip open, showing its tool menu screen and T9 keypad" width="1200" height="800" loading="lazy" decoding="async" />
+  <figcaption>The Light Flip open, with the same tool menu as the Light Phone III. Photo: Light (thelightphone.com)</figcaption>
+</figure>
+
 <h2>Light Phone III: Features, Price and Display</h2>
 
 <p><strong>Display.</strong> A 3.92-inch AMOLED screen (1080 x 1240, about 419 ppi) behind matte glass. The interface is black and white, but photos are captured in colour. It is not E Ink; that was the Light Phone II.</p>
@@ -2179,6 +2184,11 @@ const ARTICLE_BODY_DUMB_TECH = `<p>The Light Phone is the best-known "dumb phone
 <p><strong>Hardware.</strong> Aluminium frame, Snapdragon 4 Gen 2, 6 GB of RAM, 128 GB of storage, 5G, Wi-Fi, Bluetooth 5.0, GPS, fingerprint sensor and IP54 splash resistance. It takes a nano-SIM plus an eSIM (still labelled beta), weighs 124 g and has a user-replaceable 1,800 mAh battery. Light estimates a day of normal use, with one to three days possible. There is no headphone jack, no wireless charging and no charger in the box.</p>
 
 <p><strong>Camera.</strong> A 50 MP rear sensor outputs 12 MP images at a fixed focal length near 28 mm, with a dedicated shutter button and an 8 MP front camera.</p>
+
+<figure>
+  <img src="/images/light-phone-iii-back-camera.webp" alt="Back of the Light Phone III showing its camera, flash and removable battery cover" width="1200" height="800" loading="lazy" decoding="async" />
+  <figcaption>The back of the Light Phone III: camera, flash and a battery cover held by screws. Photo: Light (thelightphone.com)</figcaption>
+</figure>
 
 <p><strong>Tools.</strong> Calls, texts (including photos and audio messages), alarm, timer, calculator, calendar, notes, voice memos, directory, directions, weather, hotspot, music and podcasts (music is uploaded as files), an authenticator for two-factor codes, and Uber and Lyft rideshare. Not included: social media, a browser, email, WhatsApp or streaming. The interface and keyboard are English only.</p>
 
@@ -2231,6 +2241,11 @@ const ARTICLE_BODY_DUMB_TECH = `<p>The Light Phone is the best-known "dumb phone
 </table>
 </div>
 
+<figure>
+  <img src="/images/mudita-kompakt-e-ink-phone.webp" alt="Mudita Kompakt minimalist phone showing its E Ink home screen" width="1200" height="800" loading="lazy" decoding="async" />
+  <figcaption>The Mudita Kompakt's E Ink home screen. Photo: Mudita (store.mudita.com)</figcaption>
+</figure>
+
 <p>If an E Ink screen is the draw, see our look at the <a href="/article/e-ink-gadgets-comeback-2026">comeback of e-ink gadgets</a>. Mudita's <a href="https://store.mudita.com/store/mudita-kompakt-global">store</a> ships to a set country list (the US, Canada, the UK, much of Europe and Turkiye at last check) and lists a 14-day return window, extended to 30 days during a current promotion.</p>
 
 <h2>Dumb Phone vs Minimalist Phone vs a Focused Smartphone</h2>
@@ -2240,6 +2255,11 @@ const ARTICLE_BODY_DUMB_TECH = `<p>The Light Phone is the best-known "dumb phone
   <li><strong>Minimalist phone:</strong> a purpose-built or heavily curated system that keeps a few modern tools. The Light Phone III and Mudita Kompakt run their own operating systems; the Wisephone II and Balance Phone curate Android.</li>
   <li><strong>Focused smartphone:</strong> the phone you already own, with limits. Android's <a href="/article/hidden-android-features-2026">hidden built-in controls</a> and the iPhone's <a href="/article/iphone-settings-change-now-2026">Focus and Screen Time settings</a> cost nothing.</li>
 </ul>
+
+<figure>
+  <img src="/images/punkt-mp02-minimalist-phone.webp" alt="Punkt MP02 minimalist phone front and back, showing its monochrome screen and physical keypad" width="1200" height="800" loading="lazy" decoding="async" />
+  <figcaption>The Punkt MP02, front and back. Photo: Punkt (punkt.ch)</figcaption>
+</figure>
 
 <p>Pick the lightest step that fixes your actual problem.</p>
 
