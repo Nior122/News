@@ -2,8 +2,8 @@
   "source": "Original AI-generated editorial illustration created with Arena image generation on October 24, 2026, following user permission to generate imagery.",
   "type": "AI-generated illustration, not an official press image or product photograph",
   "rights": "No third-party stock or press photograph used. No manufacturer endorsement or press-kit licence claimed.",
-  "caption": "AI-generated editorial illustration of generic smartphones; not photographs or accurate depictions of Samsung, Google or Apple devices.",
-  "alt": "Editorial illustration of three generic smartphones with symbols representing on-device AI features.",
+  "caption": "Generic smartphones illustrate on-device AI features; no specific brand or model is depicted.",
+  "alt": "Three generic smartphones with symbols for on-device AI features",
   "files": [
     {
       "filename": "ai-phones-2026-editorial-hero.webp",
@@ -17,5 +17,6 @@
       "height": 630,
       "bytes": 11448
     }
-  ]
+  ],
+  "title": "On-device AI features on smartphones"
 }

@@ -77,5 +77,7 @@ test('social media detox SSR has exact SEO, eager sized hero and three synchroni
     const path=tag.match(/src="([^" ]+)"/)[1];
     assert.ok(statSync(new URL('../../artifacts/media-site/public'+path,import.meta.url)).size<200000);
   }
-  assert.equal((article.body.match(/AI-generated editorial illustration\./g)||[]).length,4);
+  assert.doesNotMatch(article.body,/AI-generated editorial illustration/);
+  assert.equal((article.body.match(/<figcaption>[^<]+<\/figcaption>/g)||[]).length,4);
+  for (const tag of images) assert.match(tag,/title="[^"]+"/);
 });

@@ -12,6 +12,7 @@ export interface ArticleSeoOverride {
   updatedLabel?: string;
   robots?: string;
   schemaType?: "Article" | "NewsArticle";
+  heroTitle?: string;
   heroAlt?: string;
   heroCaption?: string;
   heroWidth?: number;
@@ -37,8 +38,9 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
   "updatedLabel": "Updated October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
+  heroTitle: "Social media detox: a phone-free pause",
   "heroAlt": "A phone face-down on a table next to a book and a mug, representing a social media detox",
-  "heroCaption": "AI-generated editorial illustration.",
+  "heroCaption": "A phone-free pause makes room for reading and a quieter routine.",
   "heroWidth": 1600,
   "heroHeight": 900,
   "heroLoadingEager": true,
@@ -164,8 +166,9 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
   "updatedLabel": "Updated October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
-  "heroAlt": "Editorial illustration of three generic smartphones with symbols representing on-device AI features.",
-  "heroCaption": "AI-generated editorial illustration of generic smartphones; not photographs or accurate depictions of Samsung, Google or Apple devices.",
+  heroTitle: "On-device AI features on smartphones",
+  "heroAlt": "Three generic smartphones with symbols for on-device AI features",
+  "heroCaption": "Generic smartphones illustrate on-device AI features; no specific brand or model is depicted.",
   "heroWidth": 1600,
   "heroHeight": 900,
   "heroLoadingEager": true,
@@ -279,6 +282,7 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
   ]
 },
   "dumb-tech-trend-2026": {
+    heroTitle: "Light Phone III minimalist phone",
     heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
     heroCaption: "Photo: Light (thelightphone.com)",
     heroWidth: 1200,
@@ -294,6 +298,7 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
   "updatedLabel": "Updated: October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
+  heroTitle: "JOMO: enjoying a quiet reading break",
   "heroAlt": "Person reading a book by a window with a phone face down on the table, an everyday example of JOMO, the joy of missing out",
   "heroWidth": 1200,
   "heroHeight": 630,
@@ -309,10 +314,12 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Tablet and stylus for digital note-taking",
     heroAlt: "A hand uses a stylus over a tablet screen beside a keyboard and smartphone.",
     heroCaption: "A stylus-equipped tablet can serve as a digital note-taking surface. Photo: Jakub Zerdzicki / Pexels.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     bodyIncludesFaq: true,
     itemList: {
       "@context": "https://schema.org",
@@ -337,12 +344,14 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Vibe coding: from an app idea to software",
     heroAlt:
       "Illustration of a person describing an app idea to an AI that builds the software on a laptop screen",
     heroCaption:
       "Vibe coding lets you describe software in plain English and have AI build it.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     bodyIncludesFaq: true,
   },
   "best-budget-wireless-earbuds-2026": {
@@ -353,11 +362,13 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Wireless earbuds and charging case",
     heroAlt: "Pair of wireless earbuds beside their charging case",
     heroCaption:
       "You no longer need to spend $250 to get good wireless earbuds. Photo: Atelier by Vineeth / Unsplash.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     bodyIncludesFaq: true,
     itemList: {
       "@context": "https://schema.org",
@@ -416,6 +427,7 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "AI study tools for notes and revision",
     heroAlt:
       "Student study desk with a laptop, notes and revision materials representing AI tools for students",
     heroCaption:

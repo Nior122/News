@@ -46,7 +46,7 @@ export const VIBE_CODING_ARTICLE_BODY = `<p>Vibe coding is a way of building sof
 <p>You repeat that loop until the app does what you want. In practice, most of the work is not writing code. It is deciding what to ask next, spotting what broke, and checking whether the app behaves properly on edge cases.</p>
 
 <figure>
-  <img src="/images/vibe-coding-workflow-diagram.svg" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback" width="1000" height="400" loading="lazy" decoding="async" />
+  <img src="/images/vibe-coding-workflow-diagram.svg" title="Four-step vibe coding workflow" alt="Four-step vibe coding workflow: describe the app, AI builds it, review the result, refine with feedback" width="1000" height="400" loading="lazy" decoding="async" />
   <figcaption>The basic vibe coding loop.</figcaption>
 </figure>
 
@@ -402,8 +402,9 @@ export const ARTICLE_SEO_OVERRIDES = {
   "updatedLabel": "Updated October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
+  heroTitle: "Social media detox: a phone-free pause",
   "heroAlt": "A phone face-down on a table next to a book and a mug, representing a social media detox",
-  "heroCaption": "AI-generated editorial illustration.",
+  "heroCaption": "A phone-free pause makes room for reading and a quieter routine.",
   "heroWidth": 1600,
   "heroHeight": 900,
   "heroLoadingEager": true,
@@ -473,8 +474,9 @@ export const ARTICLE_SEO_OVERRIDES = {
   "updatedLabel": "Updated October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
-  "heroAlt": "Editorial illustration of three generic smartphones with symbols representing on-device AI features.",
-  "heroCaption": "AI-generated editorial illustration of generic smartphones; not photographs or accurate depictions of Samsung, Google or Apple devices.",
+  heroTitle: "On-device AI features on smartphones",
+  "heroAlt": "Three generic smartphones with symbols for on-device AI features",
+  "heroCaption": "Generic smartphones illustrate on-device AI features; no specific brand or model is depicted.",
   "heroWidth": 1600,
   "heroHeight": 900,
   "heroLoadingEager": true,
@@ -531,6 +533,7 @@ export const ARTICLE_SEO_OVERRIDES = {
   ]
 },
   "dumb-tech-trend-2026": {
+    heroTitle: "Light Phone III minimalist phone",
     heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
     heroCaption: "Photo: Light (thelightphone.com)",
     heroWidth: 1200,
@@ -547,6 +550,7 @@ export const ARTICLE_SEO_OVERRIDES = {
   "updatedLabel": "Updated: October 24, 2026",
   "robots": "index, follow, max-image-preview:large",
   "schemaType": "Article",
+  heroTitle: "JOMO: enjoying a quiet reading break",
   "heroAlt": "Person reading a book by a window with a phone face down on the table, an everyday example of JOMO, the joy of missing out",
   "heroWidth": 1200,
   "heroHeight": 630,
@@ -678,10 +682,12 @@ export const ARTICLE_SEO_OVERRIDES = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Tablet and stylus for digital note-taking",
     heroAlt: "A hand uses a stylus over a tablet screen beside a keyboard and smartphone.",
     heroCaption: "A stylus-equipped tablet can serve as a digital note-taking surface. Photo: Jakub Zerdzicki / Pexels.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     enableSsrToc: true,
     faqs: [
       { q: "Is an e ink tablet better for your eyes?", a: "It may be easier than an LCD tablet for long reading. A small 2013 study found more visual fatigue on an LCD tablet than on e ink or paper. The American Academy of Ophthalmology says screen eye strain is temporary and linked to blinking less. Take breaks on any screen, and see an eye doctor if symptoms persist." },
@@ -714,12 +720,14 @@ export const ARTICLE_SEO_OVERRIDES = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Vibe coding: from an app idea to software",
     heroAlt:
       "Illustration of a person describing an app idea to an AI that builds the software on a laptop screen",
     heroCaption:
       "Vibe coding lets you describe software in plain English and have AI build it.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     enableSsrToc: true,
     faqs: [
       {
@@ -756,11 +764,13 @@ export const ARTICLE_SEO_OVERRIDES = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "Wireless earbuds and charging case",
     heroAlt: "Pair of wireless earbuds beside their charging case",
     heroCaption:
       "You no longer need to spend $250 to get good wireless earbuds. Photo: Atelier by Vineeth / Unsplash.",
     heroWidth: 1200,
     heroHeight: 630,
+    heroLoadingEager: true,
     enableSsrToc: true,
     itemList: {
       "@context": "https://schema.org",
@@ -845,6 +855,7 @@ export const ARTICLE_SEO_OVERRIDES = {
     updatedLabel: "Last updated: October 2026",
     robots: "index, follow, max-image-preview:large",
     schemaType: "Article",
+    heroTitle: "AI study tools for notes and revision",
     heroAlt:
       "Student study desk with a laptop, notes and revision materials representing AI tools for students",
     heroCaption:

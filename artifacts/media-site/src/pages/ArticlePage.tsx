@@ -359,6 +359,7 @@ export default function ArticlePage() {
     ogTitle: seoOverride?.ogTitle,
     ogDescription: seoOverride?.ogDescription,
     ogImage: seoOverride?.ogImage ?? resolvedOgImage,
+    ogImageAlt: seoOverride?.heroAlt ?? article?.title,
     ogImageWidth: seoOverride?.ogImageWidth ?? seoOverride?.heroWidth,
     ogImageHeight: seoOverride?.ogImageHeight ?? seoOverride?.heroHeight,
     ogType: article ? "article" : "website",
@@ -589,6 +590,7 @@ export default function ArticlePage() {
           <img
             src={article.imageUrl}
             alt={seoOverride?.heroAlt ?? article.title}
+            title={seoOverride?.heroTitle}
             width={seoOverride?.heroWidth ?? 1200}
             height={seoOverride?.heroHeight ?? 630}
             loading={seoOverride?.heroLoadingEager ? "eager" : undefined}
