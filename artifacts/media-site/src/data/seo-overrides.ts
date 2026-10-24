@@ -307,6 +307,10 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
     heroHeight: 630,
     heroLoadingEager: true,
   },
+  "tiktok-brain-attention-span-2026": {
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
+  },
   "digital-detox-jomo-2026": {
   "metaTitle": "What Is JOMO? The Joy of Missing Out Explained",
   "metaDescription": "JOMO means the joy of missing out. Learn where the term came from, how it differs from FOMO and digital detox, and 7 simple ways to practice it.",

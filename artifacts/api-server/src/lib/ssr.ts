@@ -87,6 +87,10 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
     heroHeight: 630,
     heroLoadingEager: true,
   },
+  "tiktok-brain-attention-span-2026": {
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
+  },
   "what-is-vibe-coding-2026": {
     metaTitle: "What Is Vibe Coding? A Beginner's Guide (2026)",
     metaDescription:

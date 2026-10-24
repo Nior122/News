@@ -5,6 +5,7 @@ import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 import { BUDGET_EARBUDS_ARTICLE_BODY } from "./budget-earbuds-article-content.mjs";
 import { STUDENTS_AI_ARTICLE_BODY } from "./students-ai-article-content.mjs";
 import { DUMB_TECH_ARTICLE_BODY } from "./dumb-tech-article-content.mjs";
+import { TIKTOK_BRAIN_ARTICLE_BODY } from "./tiktok-brain-article-content.mjs";
 import { TESLA_ROBOTAXI_ARTICLE_BODY } from "./tesla-robotaxi-article-content.mjs";
 import { PERSONAL_BRAND_ARTICLE_BODY } from "./personal-brand-article.mjs";
 /**
@@ -383,6 +384,11 @@ export const ARTICLE_CONTENT_OVERRIDES = {
     body: TESLA_ROBOTAXI_ARTICLE_BODY,
     image_url: "/images/robotaxi-what-is-a-robotaxi-2026.webp",
   },
+  "tiktok-brain-attention-span-2026": {
+    title: "TikTok Brain: What the Research Actually Says and How to Reset Your Focus",
+    subtitle: "You open the app for a minute and look up an hour later. Then you struggle to read a page without reaching for your phone. People call it “TikTok brain.” The research behind it is real but narrower than the headlines: heavier short-form video use is linked with poorer attention and self-control, yet that link is an association, not proof that scrolling causes it. Here is what the evidence shows, where it stops, and how to reset your focus.",
+    body: TIKTOK_BRAIN_ARTICLE_BODY,
+  },
   "how-to-build-personal-brand-online-2026": {
     title: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
     subtitle: null,
@@ -563,6 +569,10 @@ export const ARTICLE_SEO_OVERRIDES = {
     heroWidth: 1200,
     heroHeight: 630,
     heroLoadingEager: true,
+  },
+  "tiktok-brain-attention-span-2026": {
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
   },
   "digital-detox-jomo-2026": {
 
