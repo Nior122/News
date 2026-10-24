@@ -57,6 +57,7 @@ const ARTICLE_LASTMOD_OVERRIDES = {
   "why-ai-phones-are-the-future-2026": "2026-10-24",
   'handheld-gaming-gadgets-2026': '2026-10-23',
   'chatgpt-claude-gemini-comparison-2026': '2026-10-23',
+  'dumb-tech-trend-2026': '2026-10-24',
 };
 
 /**

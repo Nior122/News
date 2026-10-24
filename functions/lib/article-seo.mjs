@@ -422,6 +422,13 @@ export const ARTICLE_SEO_OVERRIDES = {
     }
   ]
 },
+  "dumb-tech-trend-2026": {
+    heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
+    heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
   "digital-detox-jomo-2026": {
 
   "metaTitle": "What Is JOMO? The Joy of Missing Out Explained",

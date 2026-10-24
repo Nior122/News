@@ -363,6 +363,130 @@ export const ARTICLE_SEO_OVERRIDES = {
   ]
 },
   },
+  'dumb-tech-trend-2026': {
+    metaTitle: "Light Phone Review & Best Alternatives (2026)",
+    h1: "Light Phone Review: Is It Worth It? Plus the Best Alternatives in 2026",
+    metaDescription: "Is the Light Phone worth it? See what it does, what it costs, who it suits and the best minimalist phone alternatives from Mudita, Punkt and more.",
+    publishedTime: "2026-05-31",
+    modifiedTime: "2026-10-24",
+    authorName: "James Okafor",
+    jsonLd: {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://scrolltek.name.ng/article/dumb-tech-trend-2026#article",
+      "headline": "Light Phone Review: Is It Worth It? Plus the Best Alternatives in 2026",
+      "description": "Is the Light Phone worth it? See what it does, what it costs, who it suits and the best minimalist phone alternatives from Mudita, Punkt and more.",
+      "image": [
+        "https://scrolltek.name.ng/images/light-phone-iii-review-hero.webp"
+      ],
+      "datePublished": "2026-05-31",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Person",
+        "name": "James Okafor",
+        "url": "https://scrolltek.name.ng/author/james-okafor"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Scrolltek",
+        "url": "https://scrolltek.name.ng"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://scrolltek.name.ng/article/dumb-tech-trend-2026"
+      },
+      "articleSection": "Lifestyle",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://scrolltek.name.ng/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Lifestyle",
+          "item": "https://scrolltek.name.ng/category/lifestyle"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Light Phone Review: Is It Worth It? Plus the Best Alternatives in 2026",
+          "item": "https://scrolltek.name.ng/article/dumb-tech-trend-2026"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Light Phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Light Phone is a minimalist phone from Light, built to be used as little as possible. It handles calls, texts and a short list of tools such as an alarm, directions and a hotspot, with no social media, browser or email. The current model is the Light Phone III."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much is the Light Phone III?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At last check, Light listed the Light Phone III at $899 unlocked, or from $59 a month on a two-year bundle with Light Service. The price has changed several times since launch, so confirm the live price and delivery date before ordering."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can the Light Phone III do and not do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It makes calls, sends texts and photos, takes 50 MP photos, and offers directions, a hotspot, weather, music, podcasts, an authenticator and rideshare. It does not offer social media, a browser, email, WhatsApp, streaming or banking apps. The interface is English only."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Light Phone vs a basic feature phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Basic feature phones such as the Nokia 110 4G cost roughly $70 to $100 and offer T9 calling and texting with long standby, but little or no navigation and only basic cameras. A Light Phone costs several times more for a touchscreen keyboard, 5G, a camera, directions and a hotspot."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the Light Phone work outside the US, and with which carriers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is sold unlocked as one global hardware model, and Light ships internationally with duties and taxes extra. In the US it works with AT&T, T-Mobile, Mint, US Mobile, Noble Mobile and Light's own service. Verizon works only with an existing active SIM. Google Fi, Cricket, Metro, Consumer Cellular, Straight Talk and Tracfone are unsupported, and Light's own service covers only the US and Canada. Light has said it does not work well on Telstra in Australia. Use Light's compatibility checker first, because returns on an unsupported carrier are reportedly refused."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the best Light Phone alternatives?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Mudita Kompakt suits anyone who wants an E Ink screen and offline maps. The Wisephone II suits people who need WhatsApp and maps. The Punkt MP02 is the stricter keypad choice, the Light Flip is cheaper but not shipping until April 2027, and Nokia flips are the lowest-cost trial."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the Light Phone worth it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only for a narrow group: people who already want to carry less, can do banking and email elsewhere, and accept a premium price. Everyone else should try software limits, a basic phone or a Mudita Kompakt first."
+          }
+        }
+      ]
+    }
+  ]
+},
+  },
 };
 
 export function getArticleSeoOverride(slug) {

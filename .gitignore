@@ -50,3 +50,6 @@ Thumbs.db
 
 # Wrangler local development state
 /.wrangler/
+
+# image search scratch downloads (agent tooling)
+image-search/
