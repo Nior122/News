@@ -1,3 +1,4 @@
+import { SOCIAL_MEDIA_DETOX_ARTICLE_BODY } from "./social-media-detox-article-content.mjs";
 import { AI_PHONES_ARTICLE_BODY } from "./ai-phones-article-content.mjs";
 import { JOMO_ARTICLE_BODY, JOMO_ARTICLE_TITLE } from "./jomo-article-content.mjs";
 import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
@@ -271,6 +272,14 @@ export const VIBE_CODING_ARTICLE_BODY = `<p>Vibe coding is a way of building sof
 <p>It changes what developers spend time on rather than removing the need for engineering judgment. Writing routine boilerplate gets much faster, while architecture, security, debugging complex systems and product decisions matter more.</p>`;
 
 export const ARTICLE_CONTENT_OVERRIDES = {
+  "quitting-social-media-digital-detox-2026": {
+  "title": "Social Media Detox: How to Do One, What to Expect and a 7-Day Plan",
+  "subtitle": null,
+  "excerpt": "Thinking of a social media break? Here is how to do a social media detox, what to expect, what the research says and a simple 7-day plan to start now.",
+  "image_url": "/images/social-media-detox-7-day-plan-hero.webp",
+  "read_time": 10,
+  "body": SOCIAL_MEDIA_DETOX_ARTICLE_BODY
+},
   "why-ai-phones-are-the-future-2026": {
   "title": "AI Phones in 2026: What They Are, Which Features Matter and the Best Picks",
   "subtitle": null,
@@ -352,6 +361,77 @@ export const ARTICLE_CONTENT_OVERRIDES = {
 };
 
 export const ARTICLE_SEO_OVERRIDES = {
+  "quitting-social-media-digital-detox-2026": {
+  "metaTitle": "Social Media Detox: How to Do One (7-Day Plan)",
+  "exactTitle": true,
+  "metaDescription": "Thinking of a social media break? Here is how to do a social media detox, what to expect, what the research says and a simple 7-day plan to start now.",
+  "ogTitle": "Social Media Detox: How to Do One (7-Day Plan)",
+  "ogDescription": "Thinking of a social media break? Here is how to do a social media detox, what to expect, what the research says and a simple 7-day plan to start now.",
+  "ogImage": "https://scrolltek.name.ng/images/social-media-detox-7-day-plan-social.webp",
+  "ogImageWidth": 1200,
+  "ogImageHeight": 630,
+  "dateModified": "2026-10-24",
+  "updatedLabel": "Updated October 24, 2026",
+  "robots": "index, follow, max-image-preview:large",
+  "schemaType": "Article",
+  "heroAlt": "A phone face-down on a table next to a book and a mug, representing a social media detox",
+  "heroCaption": "AI-generated editorial illustration.",
+  "heroWidth": 1600,
+  "heroHeight": 900,
+  "heroLoadingEager": true,
+  "bodyIncludesFaq": true,
+  "articleAuthorMeta": "Sofia Reyes",
+  "emitArticleSectionAndTags": true,
+  "articleJsonLd": {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Social Media Detox: How to Do One, What to Expect and a 7-Day Plan",
+    "description": "Thinking of a social media break? Here is how to do a social media detox, what to expect, what the research says and a simple 7-day plan to start now.",
+    "author": {
+      "@type": "Person",
+      "name": "Sofia Reyes"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Scrolltek"
+    },
+    "datePublished": "2026-05-26T15:35:23.696Z",
+    "dateModified": "2026-10-24",
+    "mainEntityOfPage": "https://scrolltek.name.ng/article/quitting-social-media-digital-detox-2026",
+    "image": "https://scrolltek.name.ng/images/social-media-detox-7-day-plan-hero.webp",
+    "articleSection": "Lifestyle"
+  },
+  "faqs": [
+    {
+      "q": "What is a social media detox?",
+      "a": "A deliberate, time-limited break from social media, from a weekend to several weeks. You choose which platforms to drop, how long to stay away and what to do instead."
+    },
+    {
+      "q": "How long should a social media detox last?",
+      "a": "No ideal length has been established. Experiments tested one to six weeks, and one week produced measurable differences in the Bath trial, so seven days is a sensible start."
+    },
+    {
+      "q": "What are the benefits of quitting social media?",
+      "a": "In the experiments above, people reported modest gains in well-being, and some reported less depression, anxiety or loneliness, plus more offline time. Results vary, and you may also lose some news knowledge or contact."
+    },
+    {
+      "q": "What happens to your brain and mood when you quit social media?",
+      "a": "The studies measured self-reported mood, loneliness and time use, not brain activity. Many people feel restless at first; some then feel calmer, while others notice little change."
+    },
+    {
+      "q": "How do I do a detox without losing touch?",
+      "a": "Tell close contacts how to reach you by text or call, move key group chats to a messaging app and message people directly during the week."
+    },
+    {
+      "q": "Should I deactivate my accounts or just delete the apps?",
+      "a": "Deleting the apps is the gentler first step, but log out as well because the browser still works. Deactivating is a firmer break. Choose based on how easily you slip back."
+    },
+    {
+      "q": "How do I come back without relapsing?",
+      "a": "Return to one platform at a time, keep apps off your home screen, set a timer, turn off notifications and review how you feel after two weeks."
+    }
+  ]
+},
   "why-ai-phones-are-the-future-2026": {
   "metaTitle": "AI Phones in 2026: What They Are & Best Picks",
   "metaDescription": "What makes a phone an AI phone? See which on-device AI features matter, which are marketing, and the best AI phones by price in 2026, flagship to budget.",

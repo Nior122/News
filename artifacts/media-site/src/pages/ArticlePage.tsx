@@ -685,7 +685,7 @@ export default function ArticlePage() {
                     </div>
                   )}
                   <div>
-                    <div className="font-semibold text-sm group-hover:text-primary transition-colors" itemProp="name">{article.author.name}</div>
+                    <div className="font-semibold text-sm group-hover:text-primary transition-colors" itemProp="name">{article.slug === "quitting-social-media-digital-detox-2026" ? "By " : ""}{article.author.name}</div>
                     <div className="text-xs text-muted-foreground">
                       <time
                         dateTime={new Date(article.publishedAt).toISOString()}
