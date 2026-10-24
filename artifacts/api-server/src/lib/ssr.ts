@@ -64,6 +64,13 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
   graphJsonLd?: Record<string, unknown>;
   faqs?: { question: string; answer: string }[];
 }> = {
+  "dumb-tech-trend-2026": {
+    heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
+    heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
   "what-is-vibe-coding-2026": {
     metaTitle: "What Is Vibe Coding? A Beginner's Guide (2026)",
     metaDescription:
@@ -491,7 +498,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
         url: canonicalUrl,
       });
 
-  const breadcrumbJsonLd = seoOverride && !seoOverride.graphJsonLd
+  const breadcrumbJsonLd = seoOverride && !seoOverride.graphJsonLd && !articleSeoOverride?.jsonLd
     ? JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",

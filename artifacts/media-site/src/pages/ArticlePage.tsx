@@ -279,7 +279,13 @@ function FaqSection({ faq }: { faq: FaqEntry[] }) {
         {faq.map((item, i) => (
           <div key={i} className="rounded-xl border border-border bg-card px-5 py-5">
             <p className="font-semibold text-sm leading-snug mb-2">{item.question}</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">{item.answer}</p>
+            {/* item.answer is the serialized inner HTML of the body's <details> block —
+                render it as HTML so entities like &amp; display correctly instead of
+                being double-escaped as text. */}
+            <p
+              className="text-sm text-muted-foreground leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: item.answer }}
+            />
           </div>
         ))}
       </div>

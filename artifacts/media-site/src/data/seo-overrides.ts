@@ -19,6 +19,13 @@ export interface ArticleSeoOverride {
 }
 
 export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
+  "dumb-tech-trend-2026": {
+    heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
+    heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
   "digital-detox-jomo-2026": {
   "metaTitle": "What Is JOMO? The Joy of Missing Out Explained",
   "metaDescription": "JOMO means the joy of missing out. Learn where the term came from, how it differs from FOMO and digital detox, and 7 simple ways to practice it.",
