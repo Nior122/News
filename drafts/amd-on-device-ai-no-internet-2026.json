@@ -97,5 +97,15 @@
     ],
     "appleWording": "2025 3B figure explicitly historical; current 2026 parameter count unstated."
   },
-  "deploymentStatus": "Approved and queued for repository deployment; live verification pending."
+  "deploymentStatus": "Published: PR 19 merged; Cloudflare Pages production check success on merge d67100b58d41172c92d87e6b313a693046e7e925.",
+  "publicationDeployment": {
+    "pullRequest": "https://github.com/Nior122/News/pull/19",
+    "mergedAt": "2026-10-24T12:03:49Z",
+    "mergeCommit": "d67100b58d41172c92d87e6b313a693046e7e925",
+    "productionCheck": "success",
+    "liveContentRefetch": "Verified new exact SEO title, H1, Liam Park/May 26, updated October 24, local hero/diagram references, comparison table, seven visible FAQs, revised claims, related order and both exact inbound anchors. Used cache-bypass query after deployment.",
+    "liveApiIdentity": "ID 4, same slug, Tech, authorId 4, published true, original 2026-05-26T15:35:23.685Z timestamp.",
+    "rawHeadAndBinaryImage": "Live markdown extraction does not expose all head tags/schema. Direct binary hero fetch returned fetch-tool HTTP 500; this is not conclusive evidence of origin image failure. Local built browser loaded hero and schema successfully.",
+    "indexingRequested": false
+  }
 }

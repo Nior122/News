@@ -56,3 +56,12 @@ Editor selected **Approve exceptions and publish** in the conversation. This exp
 
 No separate image-rules document was found in the repository or a targeted connected Drive filename search. Applied the explicit image specifications and existing editorial image audit conventions.
 Prepared Markdown count: **1,908 words**, within 1,700–2,100.
+
+## Publication and post-deployment result
+
+- PR **19** https://github.com/Nior122/News/pull/19 merged at `2026-10-24T12:03:49Z`; merge commit `d67100b58d41172c92d87e6b313a693046e7e925`. Both branch preview and production Cloudflare checks reported **success**.
+- After production success, cache-bypass fetch of existing article confirms exact SEO title and H1, Liam Park/May 26, updated October 24, self-hosted hero and diagram references, real comparison table, all seven visible FAQs, qualified Apple wording, current Halo update and requested three related stories.
+- Live API confirms original ID **4**, slug, Tech, authorId **4**, published true, and `2026-05-26T15:35:23.685Z`; new excerpt and `/images/on-device-ai-explained-hero.webp` returned. Related API confirms exactly the three selected live rows in requested order, including the cross-category privacy guide.
+- Both live inbound pages now visibly link the exact anchor **on-device AI** to the existing AMD slug.
+- Rich Results remains **not run**, per approved exception. Raw live head/JSON-LD could not be independently extracted with the available markdown-only fetch; production title is confirmed, full tag/schema structure tested locally before deployment. Direct binary hero fetch returned fetch-tool HTTP 500; do **not** interpret as a verified origin failure or claim live binary byte/dimension verification. Local optimized file is 43,970 bytes and loaded successfully in the actual built browser preview.
+- No Search Console/reindex request submitted: authenticated authorization/access unavailable. No indexing success claimed.
