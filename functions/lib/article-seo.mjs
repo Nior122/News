@@ -5,6 +5,7 @@ import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 import { BUDGET_EARBUDS_ARTICLE_BODY } from "./budget-earbuds-article-content.mjs";
 import { STUDENTS_AI_ARTICLE_BODY } from "./students-ai-article-content.mjs";
 import { DUMB_TECH_ARTICLE_BODY } from "./dumb-tech-article-content.mjs";
+import { TESLA_ROBOTAXI_ARTICLE_BODY } from "./tesla-robotaxi-article-content.mjs";
 import { PERSONAL_BRAND_ARTICLE_BODY } from "./personal-brand-article.mjs";
 /**
  * Article-level SEO metadata, structured data helpers, and canonical content
@@ -377,6 +378,10 @@ export const ARTICLE_CONTENT_OVERRIDES = {
       "Lifestyle Tech",
     ],
   },
+  "tesla-self-driving-cars-2026": {
+    title: "What Is a Robotaxi? How They Work and Where You Can Ride One",
+    body: TESLA_ROBOTAXI_ARTICLE_BODY,
+  },
   "how-to-build-personal-brand-online-2026": {
     title: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
     subtitle: null,
@@ -536,6 +541,15 @@ export const ARTICLE_SEO_OVERRIDES = {
     heroWidth: 1200,
     heroHeight: 630,
     heroLoadingEager: true,
+  },
+  "tesla-self-driving-cars-2026": {
+    metaTitle: "What Is a Robotaxi? Where They Run in 2026",
+    exactTitle: true,
+    metaDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+    ogTitle: "What Is a Robotaxi? Where They Run in 2026",
+    ogDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
   },
   "digital-detox-jomo-2026": {
 
