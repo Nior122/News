@@ -60,6 +60,7 @@ const ARTICLE_LASTMOD_OVERRIDES = {
   'chatgpt-claude-gemini-comparison-2026': '2026-10-23',
   'dumb-tech-trend-2026': '2026-10-24',
   'tesla-self-driving-cars-2026': '2026-10-24',
+  'tiktok-brain-attention-span-2026': '2026-10-24',
   'how-to-build-personal-brand-online-2026': '2026-10-24',
 };
 

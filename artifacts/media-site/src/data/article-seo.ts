@@ -624,6 +624,53 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
       ]
     }
   },
+  "tiktok-brain-attention-span-2026": {
+    metaTitle: "TikTok Brain: What Research Says & How to Fix It",
+    h1: "TikTok Brain: What the Research Actually Says and How to Reset Your Focus",
+    metaDescription: "Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.",
+    publishedTime: "2026-05-26",
+    modifiedTime: "2026-10-24",
+    authorName: "Sofia Reyes",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://scrolltek.name.ng/article/tiktok-brain-attention-span-2026#article",
+          "headline": "TikTok Brain: What the Research Actually Says and How to Reset Your Focus",
+          "description": "Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.",
+          "image": "https://scrolltek.name.ng/images/tiktok-brain-attention-span-2026-hero.webp",
+          "author": { "@type": "Person", "name": "Sofia Reyes" },
+          "publisher": { "@type": "Organization", "name": "Scrolltek", "url": "https://scrolltek.name.ng" },
+          "datePublished": "2026-05-26",
+          "dateModified": "2026-10-24",
+          "articleSection": "Culture",
+          "inLanguage": "en",
+          "mainEntityOfPage": "https://scrolltek.name.ng/article/tiktok-brain-attention-span-2026"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrolltek.name.ng" },
+            { "@type": "ListItem", "position": 2, "name": "Culture", "item": "https://scrolltek.name.ng/category/culture" },
+            { "@type": "ListItem", "position": 3, "name": "TikTok Brain: What the Research Actually Says and How to Reset Your Focus", "item": "https://scrolltek.name.ng/article/tiktok-brain-attention-span-2026" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "What is TikTok brain?", "acceptedAnswer": { "@type": "Answer", "text": "TikTok brain is an informal term for reduced focus and a pull to keep scrolling after heavy short-form video use. It is not a medical diagnosis. Researchers study related traits such as attention, impulse control and compulsive use." } },
+            { "@type": "Question", "name": "Is TikTok brain real?", "acceptedAnswer": { "@type": "Answer", "text": "The pattern is real in the data: heavier short-form video use is associated with poorer attention and inhibitory control. Whether the videos cause it is unproven, and “TikTok brain” is a popular label, not a clinical one." } },
+            { "@type": "Question", "name": "Does TikTok shorten your attention span?", "acceptedAnswer": { "@type": "Answer", "text": "That is not proven. Heavy users tend to score lower on attention measures, but most studies are snapshots, so people who already struggle to focus may simply watch more short videos. Long-term studies are still needed." } },
+            { "@type": "Question", "name": "What does the research say?", "acceptedAnswer": { "@type": "Answer", "text": "A 2025 meta-analysis of 98,299 participants across 71 studies found short-form video use was most strongly associated with poorer attention (r = −.38) and inhibitory control (r = −.41). Stress and anxiety also showed links, though mental health overall was a weaker association." } },
+            { "@type": "Question", "name": "Is “brain rot” a medical term?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is slang that Oxford University Press named its 2024 Word of the Year. It describes a supposed mental decline from low-quality online content, not a clinical diagnosis." } },
+            { "@type": "Question", "name": "How do I reduce TikTok brain?", "acceptedAnswer": { "@type": "Answer", "text": "Add friction to the app, turn off notifications, decide on a stopping point before you open it, protect your sleep and practice single-task time. If problems persist, talk to a doctor or mental health professional." } },
+            { "@type": "Question", "name": "Is TikTok brain worse for teens?", "acceptedAnswer": { "@type": "Answer", "text": "That is unsettled. The meta-analysis included both youths and adults, and the American Psychological Association says effects vary by young person and context. Teen use is heavy, so sleep, school and friendships are sensible things to watch." } }
+          ]
+        }
+      ]
+    }
+  },
 };
 
 export function getArticleSeoOverride(slug: string): ArticleSeoOverride | undefined {

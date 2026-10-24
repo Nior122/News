@@ -21,6 +21,11 @@ export const TIKTOK_BRAIN_ARTICLE_BODY = String.raw`<h2>What is “TikTok brain�
 <li><strong>Stress and anxiety:</strong> r = −.34 and r = −.33, within a weaker overall mental-health link (r = −.21)</li>
 </ul>
 
+<figure>
+<img src="/images/tiktok-brain-correlations-chart.webp" alt="Bar chart of correlations between short-form video use and inhibitory control, attention and overall cognition" width="1200" height="800" loading="lazy" decoding="async">
+<figcaption>Association strength, not proof of cause. Source: Nguyen et al., Psychological Bulletin, 2025.</figcaption>
+</figure>
+
 <p>A negative correlation means that, on average, more use went with lower scores. It describes a pattern across many people, not how much any one person’s attention has changed. The review found no significant overall link with body image or self-esteem, and few studies looked at memory or reasoning.</p>
 
 <p><a href="https://www.psypost.org/large-meta-analysis-links-tiktok-and-instagram-reels-to-poorer-cognitive-and-mental-health/">Coverage of the paper by PsyPost</a> adds that studies using addiction-style questionnaires showed stronger links than studies that only counted time, which suggests that how compulsively people scroll may matter more than how long. Smaller studies, including brain-imaging work, are emerging, but we have kept this article to evidence we could trace to a primary source.</p>
@@ -51,7 +56,7 @@ export const TIKTOK_BRAIN_ARTICLE_BODY = String.raw`<h2>What is “TikTok brain�
 
 <h2>Is “brain rot” a real diagnosis?</h2>
 
-<p>No. “Brain rot” is slang, and Oxford University Press named it its <a href="https://www.13abc.com/2024/12/02/whats-oxfords-word-year/">2024 Word of the Year</a>, reporting that its use rose 230% between 2023 and 2024. Oxford’s own definition hedges, describing a supposed decline in mental state blamed on overdoing trivial or undemanding content, now mostly online. The term is older than the internet: Thoreau used it in <em>Walden</em> in 1854. Its modern sense spread through TikTok and Instagram, and it works as a joke or a worry, not a clinical category. For how that kind of slang travels, see our piece on <a href="https://scrolltek.name.ng/article/memes-internet-news-culture-2026">internet meme culture</a>. What the research actually measures is narrower: attention, inhibitory control, stress and anxiety.</p>
+<p>No. “Brain rot” is slang, and Oxford University Press named it its <a href="https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/">2024 Word of the Year</a>, reporting that its use rose 230% between 2023 and 2024. Oxford’s own definition hedges, describing a supposed decline in mental state blamed on overdoing trivial or undemanding content, now mostly online. The term is older than the internet: Thoreau used it in <em>Walden</em> in 1854. Its modern sense spread through TikTok and Instagram, and it works as a joke or a worry, not a clinical category. For how that kind of slang travels, see our piece on <a href="https://scrolltek.name.ng/article/memes-internet-news-culture-2026">internet meme culture</a>. What the research actually measures is narrower: attention, inhibitory control, stress and anxiety.</p>
 
 <h2>How to reset your attention: 6 practical steps</h2>
 
@@ -65,6 +70,11 @@ export const TIKTOK_BRAIN_ARTICLE_BODY = String.raw`<h2>What is “TikTok brain�
 <li><strong>Practice one thing at a time.</strong> Start small: ten minutes of reading, a walk, or a conversation with the phone in another room, then extend. If you want to go further, our guides to <a href="https://scrolltek.name.ng/article/quitting-social-media-digital-detox-2026">quitting social media</a> and the <a href="https://scrolltek.name.ng/article/digital-detox-jomo-2026">joy of missing out</a> cover the next steps.</li>
 <li><strong>Make the phone duller.</strong> Some people try greyscale, fewer apps or a basic handset (see the <a href="https://scrolltek.name.ng/article/dumb-tech-trend-2026">dumb tech trend</a>). Notice the trigger too: do you reach for the feed when bored, stressed or avoiding a task?</li>
 </ol>
+
+<figure>
+<img src="/images/tiktok-brain-reading-reset.webp" alt="Person reading a paper book with a phone left on a table across the room" width="1200" height="800" loading="lazy" decoding="async">
+<figcaption>Reading on paper, with the phone left across the room. AI-generated editorial illustration.</figcaption>
+</figure>
 
 <p>If attention problems or low mood persist, or get in the way of work, school or daily life, talk to a doctor or a licensed mental health professional. This article is general information, not medical advice.</p>
 

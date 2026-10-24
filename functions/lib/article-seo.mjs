@@ -388,6 +388,8 @@ export const ARTICLE_CONTENT_OVERRIDES = {
     title: "TikTok Brain: What the Research Actually Says and How to Reset Your Focus",
     subtitle: "You open the app for a minute and look up an hour later. Then you struggle to read a page without reaching for your phone. People call it “TikTok brain.” The research behind it is real but narrower than the headlines: heavier short-form video use is linked with poorer attention and self-control, yet that link is an association, not proof that scrolling causes it. Here is what the evidence shows, where it stops, and how to reset your focus.",
     body: TIKTOK_BRAIN_ARTICLE_BODY,
+    image_url: "/images/tiktok-brain-attention-span-2026-hero.webp",
+    excerpt: "Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.",
   },
   "how-to-build-personal-brand-online-2026": {
     title: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
@@ -571,8 +573,22 @@ export const ARTICLE_SEO_OVERRIDES = {
     heroLoadingEager: true,
   },
   "tiktok-brain-attention-span-2026": {
+    metaTitle: "TikTok Brain: What Research Says & How to Fix It",
+    exactTitle: true,
+    metaDescription: "Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.",
+    ogTitle: "TikTok Brain: What Research Says & How to Fix It",
+    ogDescription: "Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.",
+    ogImage: "https://scrolltek.name.ng/images/tiktok-brain-attention-span-2026-hero.webp",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
     dateModified: "2026-10-24",
     updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    heroAlt: "Person scrolling a vertical video feed on a smartphone in low light",
+    heroCaption: "AI-generated editorial illustration.",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
   },
   "digital-detox-jomo-2026": {
 
