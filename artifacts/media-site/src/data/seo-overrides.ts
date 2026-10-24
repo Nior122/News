@@ -18,6 +18,13 @@ export interface ArticleSeoOverride {
 }
 
 export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
+  "dumb-tech-trend-2026": {
+    heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
+    heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
   "e-ink-gadgets-comeback-2026": {
     metaTitle: "Best E Ink Tablets in 2026: Are They Worth It?",
     metaDescription:

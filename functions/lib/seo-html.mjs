@@ -881,7 +881,7 @@ export function renderArticleDocument(template, article, { related = [] } = {}) 
       : {}),
     jsonLd: graphJsonLd || jsonLd,
     ...(graphJsonLd ? { breadcrumbJsonLd: null, faqJsonLd: null, itemListJsonLd: null } : {
-      ...(seoOverride ? { breadcrumbJsonLd } : {}),
+      ...(seoOverride && !articleSeoOverride?.jsonLd ? { breadcrumbJsonLd } : {}),
       faqJsonLd,
       ...(itemListJsonLd ? { itemListJsonLd } : {}),
     }),

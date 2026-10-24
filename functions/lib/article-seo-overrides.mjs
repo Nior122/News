@@ -245,7 +245,7 @@ export const ARTICLE_SEO_OVERRIDES = {
     metaTitle: "Light Phone Review & Best Alternatives (2026)",
     h1: "Light Phone Review: Is It Worth It? Plus the Best Alternatives in 2026",
     metaDescription: "Is the Light Phone worth it? See what it does, what it costs, who it suits and the best minimalist phone alternatives from Mudita, Punkt and more.",
-    publishedTime: "2026-06-07",
+    publishedTime: "2026-05-31",
     modifiedTime: "2026-10-24",
     authorName: "James Okafor",
     jsonLd: {
@@ -257,9 +257,9 @@ export const ARTICLE_SEO_OVERRIDES = {
       "headline": "Light Phone Review: Is It Worth It? Plus the Best Alternatives in 2026",
       "description": "Is the Light Phone worth it? See what it does, what it costs, who it suits and the best minimalist phone alternatives from Mudita, Punkt and more.",
       "image": [
-        "https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        "https://scrolltek.name.ng/images/light-phone-iii-review-hero.webp"
       ],
-      "datePublished": "2026-06-07",
+      "datePublished": "2026-05-31",
       "dateModified": "2026-10-24",
       "author": {
         "@type": "Person",

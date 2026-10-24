@@ -69,7 +69,7 @@ const PUBLISHED_AT = {
   'camera-culture-2026':                      '2026-06-06T08:00:00Z',
   'ai-emotional-support-2026':               '2026-06-06T10:00:00Z',
   'silent-internet-content-2026':            '2026-06-07T08:00:00Z',
-  'dumb-tech-trend-2026':                    '2026-06-07T10:00:00Z',
+  'dumb-tech-trend-2026':                    '2026-05-31T10:00:00Z',
 };
 
 let setupPromise = null;
@@ -6005,8 +6005,8 @@ async function runSetup(pool) {
       subtitle: 'Feature phones, film cameras, and alarm clocks are making a genuine comeback — and the people buying them are not who you think',
       excerpt: 'Minimalist gadgets and distraction-free devices are making a surprising comeback in 2026. Here is why people are getting tired of hyper-connected tech.',
       category: 'Lifestyle', authorId: 2,
-      imageUrl: 'https://images.pexels.com/photos/325153/pexels-photo-325153.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      publishedAt: '2026-06-07T10:00:00Z',
+      imageUrl: '/images/light-phone-iii-review-hero.webp',
+      publishedAt: '2026-05-31T10:00:00Z',
       readTime: 7, featured: false, editorsPick: false,
       tags: ['Dumb Tech', 'Minimalist Gadgets', 'Distraction Free', 'Digital Detox', 'Simple Technology', 'Lifestyle Tech'],
     },

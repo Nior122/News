@@ -335,6 +335,13 @@ export const ARTICLE_CONTENT_OVERRIDES = {
 };
 
 export const ARTICLE_SEO_OVERRIDES = {
+  "dumb-tech-trend-2026": {
+    heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
+    heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
   "e-ink-gadgets-comeback-2026": {
     metaTitle: "Best E Ink Tablets in 2026: Are They Worth It?",
     metaDescription: "Looking for an e ink tablet? Compare the best options for reading, note-taking and work, with battery life, prices and who should buy one.",
