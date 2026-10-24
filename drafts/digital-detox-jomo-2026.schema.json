@@ -1,0 +1,114 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "What Is JOMO? The Joy of Missing Out, Explained (and How to Practice It)",
+      "description": "JOMO means the joy of missing out. Learn where the term came from, how it differs from FOMO and digital detox, and 7 simple ways to practice it.",
+      "image": [
+        "https://scrolltek.name.ng/images/jomo-joy-of-missing-out-hero.webp"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Sofia Reyes",
+        "url": "https://scrolltek.name.ng/author/sofia-reyes"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Scrolltek",
+        "url": "https://scrolltek.name.ng/"
+      },
+      "datePublished": "2026-05-27",
+      "dateModified": "2026-10-24",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://scrolltek.name.ng/article/digital-detox-jomo-2026"
+      },
+      "articleSection": "Lifestyle"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does JOMO mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "JOMO means “joy of missing out”: the contentment of skipping something on purpose and being glad you did. Merriam-Webster classes it as informal and dates its first known use to 2012."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who coined JOMO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anil Dash is most often credited, thanks to his July 19, 2012 blog post “JOMO!” Merriam-Webster names no originator and Word Spy lists an earlier February 2012 tweet, so “popularized by Dash” is the safest wording."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "JOMO vs FOMO: what is the difference?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "FOMO is anxiety that others are having rewarding experiences without you. JOMO is contentment with what you chose to skip. FOMO pushes toward constant connection; JOMO asks what you actually want to spend time on."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is JOMO just being antisocial?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, not when it is working. JOMO means choosing which plans deserve your time, often so you can show up better for the ones that matter. It becomes a problem when it turns into avoidance or isolation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I practice JOMO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Decide your priorities first, learn one short and kind way to decline, silence nonessential notifications, set a boundary around feeds, and protect one unplanned evening a week. The seven ways above give the full plan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "JOMO vs digital detox vs minimalism: which is which?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "JOMO is a mindset about enjoying what you leave out. A digital detox is a time-limited break from devices or platforms. Minimalism is a broader approach to owning and doing less. They work well together, but none requires the others."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can JOMO apply at work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes: use response windows instead of instant replies, skip optional meetings that do not need you, and mute low-value channels. Check expectations with your manager, especially in roles that need availability."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://scrolltek.name.ng/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Lifestyle",
+          "item": "https://scrolltek.name.ng/category/lifestyle"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is JOMO? The Joy of Missing Out, Explained (and How to Practice It)",
+          "item": "https://scrolltek.name.ng/article/digital-detox-jomo-2026"
+        }
+      ]
+    }
+  ]
+}

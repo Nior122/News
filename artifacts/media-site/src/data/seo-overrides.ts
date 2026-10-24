@@ -1,5 +1,6 @@
 export interface ArticleSeoOverride {
   metaTitle?: string;
+  exactTitle?: boolean;
   metaDescription?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -18,6 +19,22 @@ export interface ArticleSeoOverride {
 }
 
 export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
+  "digital-detox-jomo-2026": {
+  "metaTitle": "What Is JOMO? The Joy of Missing Out Explained",
+  "metaDescription": "JOMO means the joy of missing out. Learn where the term came from, how it differs from FOMO and digital detox, and 7 simple ways to practice it.",
+  "ogTitle": "What Is JOMO? The Joy of Missing Out Explained",
+  "ogDescription": "JOMO means the joy of missing out. Learn where the term came from, how it differs from FOMO and digital detox, and 7 simple ways to practice it.",
+  "dateModified": "2026-10-24",
+  "updatedLabel": "Updated: October 24, 2026",
+  "robots": "index, follow, max-image-preview:large",
+  "schemaType": "Article",
+  "heroAlt": "Person reading a book by a window with a phone face down on the table, an everyday example of JOMO, the joy of missing out",
+  "heroWidth": 1200,
+  "heroHeight": 630,
+  "heroLoadingEager": true,
+  "bodyIncludesFaq": true,
+  "exactTitle": true
+},
   "e-ink-gadgets-comeback-2026": {
     metaTitle: "Best E Ink Tablets in 2026: Are They Worth It?",
     metaDescription:
