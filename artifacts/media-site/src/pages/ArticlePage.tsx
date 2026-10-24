@@ -358,9 +358,9 @@ export default function ArticlePage() {
     exactTitle: seoOverride?.exactTitle,
     ogTitle: seoOverride?.ogTitle,
     ogDescription: seoOverride?.ogDescription,
-    ogImage: resolvedOgImage,
-    ogImageWidth: seoOverride?.heroWidth,
-    ogImageHeight: seoOverride?.heroHeight,
+    ogImage: seoOverride?.ogImage ?? resolvedOgImage,
+    ogImageWidth: seoOverride?.ogImageWidth ?? seoOverride?.heroWidth,
+    ogImageHeight: seoOverride?.ogImageHeight ?? seoOverride?.heroHeight,
     ogType: article ? "article" : "website",
     canonical: article
       ? canonicalUrlForPath(`/article/${encodeURIComponent(article.slug)}`)
@@ -553,7 +553,11 @@ export default function ArticlePage() {
 
   return (
     <>
-      {articleSeoOverride?.jsonLd ? (
+      {seoOverride?.schemaScripts ? (
+        seoOverride.schemaScripts.map((data, index) => (
+          <JsonLd key={index} data={data} id={["article-jsonld", "breadcrumb-jsonld", "faq-jsonld"][index]} />
+        ))
+      ) : articleSeoOverride?.jsonLd ? (
         <JsonLd data={articleSeoOverride.jsonLd} id="article-jsonld" />
       ) : seoOverride?.graphJsonLd ? (
         <JsonLd data={seoOverride.graphJsonLd} id="article-jsonld" />
@@ -782,7 +786,7 @@ export default function ArticlePage() {
           ) : related && related.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {related.slice(0, 4).map((rel) => (
-                <ArticleCard key={rel.id} article={rel} />
+                <ArticleCard key={rel.id} article={rel} selfHostedImagesOnly={article.slug === "why-ai-phones-are-the-future-2026"} />
               ))}
             </div>
           ) : (

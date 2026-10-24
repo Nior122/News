@@ -7,6 +7,7 @@ import { prefetchArticle, prefetchCategory } from "@/lib/prefetch";
 
 interface ArticleCardProps {
   article: Article;
+  selfHostedImagesOnly?: boolean;
   layout?: "grid" | "horizontal";
   featured?: boolean;
   className?: string;
@@ -71,10 +72,14 @@ export const CategoryBadge = memo(function CategoryBadge({
 
 export const ArticleCard = memo(function ArticleCard({
   article,
+  selfHostedImagesOnly = false,
   layout = "grid",
   featured = false,
   className,
 }: ArticleCardProps) {
+  const remoteImage = /^https?:\/\//i.test(article.imageUrl) && !article.imageUrl.startsWith("https://scrolltek.name.ng/");
+  const decorativePlaceholder = selfHostedImagesOnly && remoteImage;
+  const imageSrc = decorativePlaceholder ? "/images/article-placeholder.svg" : article.imageUrl;
   const handlePrefetch = () => prefetchArticle(article.slug);
 
   if (layout === "horizontal") {
@@ -96,8 +101,8 @@ export const ArticleCard = memo(function ArticleCard({
           style={{ width: 120, height: 90 }}
         >
           <img
-            src={article.imageUrl}
-            alt={article.title}
+            src={imageSrc}
+            alt={decorativePlaceholder ? "" : article.title}
             width={120}
             height={90}
             loading="lazy"
@@ -151,8 +156,8 @@ export const ArticleCard = memo(function ArticleCard({
         style={{ aspectRatio: "16/9" }}
       >
         <img
-          src={article.imageUrl}
-          alt={article.title}
+          src={imageSrc}
+          alt={decorativePlaceholder ? "" : article.title}
           width={featured ? 1200 : 640}
           height={featured ? 675 : 360}
           loading="lazy"
