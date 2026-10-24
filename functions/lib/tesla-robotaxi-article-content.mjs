@@ -1,8 +1,7 @@
 // Canonical body for the robotaxi explainer (tesla-self-driving-cars-2026).
 // Verbatim copy of ARTICLE_BODY_TESLA_FSD in lib/db/src/ensure-seeded.ts and
-// BODIES['tesla-self-driving-cars-2026'] in api/setup.mjs. The <!-- IMAGE_2 -->
-// placeholder is filled in Prompt 2. The page template renders the H1, so the
-// body has none.
+// BODIES['tesla-self-driving-cars-2026'] in api/setup.mjs. The page template
+// renders the H1, so the body has none.
 export const TESLA_ROBOTAXI_ARTICLE_BODY = String.raw`<p><em>Updated October 24, 2026. This guide began as our May 2026 report on Tesla's driverless launch. We rebuilt it as a full robotaxi explainer with dated figures from company filings, regulator notices and company data pages.</em></p>
 
 <p>You open an app, a car pulls up, and nobody is in the driver's seat. That is a robotaxi, and in October 2026 you can ride one in more than a dozen US cities, in several Chinese cities and in parts of the Middle East. This guide explains what a robotaxi is, how robotaxis work, who runs them, where Tesla really stands and how safe they are.</p>
@@ -21,7 +20,10 @@ export const TESLA_ROBOTAXI_ARTICLE_BODY = String.raw`<p><em>Updated October 24,
 
 <p>Engineers rate automation on the SAE scale from Level 0 to 5. At Level 2 the car steers and brakes but you must watch the road. At Level 4 the car drives itself within set conditions, such as one mapped area, and needs no human driver. Robotaxis are Level 4. Level 5, driving anywhere in any conditions, does not exist commercially.</p>
 
-<!-- IMAGE_2 -->
+<figure>
+<img src="/images/how-a-robotaxi-works-sensors-diagram.webp" alt="Diagram of how a robotaxi works: cameras, radar, lidar, onboard AI computer and remote support" width="1200" height="800" loading="lazy" decoding="async">
+<figcaption>How a robotaxi sees the road: cameras, radar and lidar feed an onboard AI computer, with remote support on standby. Original Scrolltek diagram.</figcaption>
+</figure>
 
 <h2 id="robotaxi-vs-tesla-fsd-vs-self-driving-car">Robotaxi vs Tesla FSD vs a Normal Self-Driving Car</h2>
 

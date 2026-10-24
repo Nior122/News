@@ -80,6 +80,12 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
     ogDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
     dateModified: "2026-10-24",
     updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    heroAlt: "A driverless robotaxi waiting at a city curb",
+    heroCaption: "Photo: Dllu / Wikimedia Commons / CC BY 4.0",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
   },
   "what-is-vibe-coding-2026": {
     metaTitle: "What Is Vibe Coding? A Beginner's Guide (2026)",

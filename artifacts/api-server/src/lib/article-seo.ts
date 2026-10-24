@@ -503,6 +503,50 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
   ]
 },
   },
+  "tesla-self-driving-cars-2026": {
+    metaTitle: "What Is a Robotaxi? Where They Run in 2026",
+    h1: "What Is a Robotaxi? How They Work and Where You Can Ride One",
+    metaDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+    publishedTime: "2026-05-26",
+    modifiedTime: "2026-10-24",
+    authorName: "James Okafor",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "headline": "What Is a Robotaxi? How They Work and Where You Can Ride One",
+          "description": "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+          "image": ["https://scrolltek.name.ng/images/robotaxi-what-is-a-robotaxi-2026.webp"],
+          "author": { "@type": "Person", "name": "James Okafor", "url": "https://scrolltek.name.ng/author/james-Okafor" },
+          "publisher": { "@type": "Organization", "name": "Scrolltek", "logo": { "@type": "ImageObject", "url": "https://scrolltek.name.ng/favicon.svg" } },
+          "datePublished": "2026-05-26",
+          "dateModified": "2026-10-24",
+          "mainEntityOfPage": { "@type": "WebPage", "@id": "https://scrolltek.name.ng/article/tesla-self-driving-cars-2026" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrolltek.name.ng/" },
+            { "@type": "ListItem", "position": 2, "name": "Tech", "item": "https://scrolltek.name.ng/category/tech" },
+            { "@type": "ListItem", "position": 3, "name": "What Is a Robotaxi?", "item": "https://scrolltek.name.ng/article/tesla-self-driving-cars-2026" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a robotaxi?", "acceptedAnswer": { "@type": "Answer", "text": "A robotaxi is a driverless ride-hailing car you book in an app. It typically runs at SAE Level 4, driving itself inside a mapped area with no human driver. Some services still carry a supervisor and are best seen as pilots." } },
+            { "@type": "Question", "name": "How do robotaxis work?", "acceptedAnswer": { "@type": "Answer", "text": "Cameras, radar and usually lidar feed an AI driving system. Remote staff can offer guidance in tricky situations, and fleets run only inside areas the operator has mapped and approved." } },
+            { "@type": "Question", "name": "Is a Tesla with FSD a robotaxi?", "acceptedAnswer": { "@type": "Answer", "text": "No. FSD (Supervised) is Level 2 driver assistance, and you must watch the road. Tesla's separate Robotaxi service uses company-run cars. Tesla said on October 21, 2026 that unsupervised FSD could reach customer cars around Q2 2027." } },
+            { "@type": "Question", "name": "Where can I ride one?", "acceptedAnswer": { "@type": "Answer", "text": "As of October 2026: Waymo in 15 US metros, Tesla in six cities without an in-car supervisor, Zoox in Las Vegas (paid) and San Francisco (free), plus Baidu, WeRide and Pony.ai in China and the Gulf. Availability changes quickly, so check each app." } },
+            { "@type": "Question", "name": "Are robotaxis safe?", "acceptedAnswer": { "@type": "Answer", "text": "Waymo's data through June 2026 shows far fewer injury crashes than human benchmarks, but recalls show gaps in rare situations. Tesla's safety figures are self-reported and cover far fewer miles. See the safety section above." } },
+            { "@type": "Question", "name": "How much do they cost?", "acceptedAnswer": { "@type": "Answer", "text": "In San Francisco, Obi found Waymo averaged $19.69, Uber $17.47 and Tesla $8.17 (with a safety driver) in late 2025. Waymo prices rose 18% by spring 2026." } },
+            { "@type": "Question", "name": "Are there robotaxis outside the US?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. China has the most, with Baidu, Pony.ai and WeRide. Abu Dhabi and Dubai run fully driverless services, and Pony.ai serves riders in Qatar, Singapore and South Korea. London and Zagreb have supervised services. We found no confirmed public robotaxi service in Nigeria or elsewhere in Africa as of October 2026." } }
+          ]
+        }
+      ]
+    }
+  },
 };
 
 export function getArticleSeoOverride(slug: string): ArticleSeoOverride | undefined {

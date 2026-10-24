@@ -381,6 +381,7 @@ export const ARTICLE_CONTENT_OVERRIDES = {
   "tesla-self-driving-cars-2026": {
     title: "What Is a Robotaxi? How They Work and Where You Can Ride One",
     body: TESLA_ROBOTAXI_ARTICLE_BODY,
+    image_url: "/images/robotaxi-what-is-a-robotaxi-2026.webp",
   },
   "how-to-build-personal-brand-online-2026": {
     title: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
@@ -550,6 +551,15 @@ export const ARTICLE_SEO_OVERRIDES = {
     ogDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
     dateModified: "2026-10-24",
     updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    ogImage: "https://scrolltek.name.ng/images/robotaxi-what-is-a-robotaxi-2026.webp",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    heroAlt: "A driverless robotaxi waiting at a city curb",
+    heroCaption: "Photo: Dllu / Wikimedia Commons / CC BY 4.0",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
   },
   "digital-detox-jomo-2026": {
 
