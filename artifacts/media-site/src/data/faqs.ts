@@ -4,6 +4,36 @@ export interface FaqItem {
 }
 
 export const ARTICLE_FAQS: Record<string, FaqItem[]> = {
+  "how-to-build-personal-brand-online-2026": [
+    {
+      question: "What is a personal brand?",
+      answer: "A personal brand is the reputation you build for a specific skill, perspective or kind of help. It is what people expect from you and remember about you, shaped by your content, your communication style and the value you consistently deliver.",
+    },
+    {
+      question: "How do I build a personal brand from scratch?",
+      answer: "Choose a narrow niche, write a one-sentence brand statement, pick one platform, publish content around three pillars on a steady schedule, and start an email list. The 90-day plan above breaks this into weekly actions.",
+    },
+    {
+      question: "How long does it take to build a personal brand?",
+      answer: "It varies widely. You can set up the foundations in a few weeks, but audience growth depends on your niche, consistency and timing. Many creators describe slow early months, so judge early progress by habits and feedback.",
+    },
+    {
+      question: "What is a personal brand statement?",
+      answer: "It is one or two sentences saying who you help, what outcome you deliver and how. Template: \"I help [audience] [outcome] by [method], so they can [benefit].\" Keep it under 25 words and use it in your bios.",
+    },
+    {
+      question: "Which platform should I pick?",
+      answer: "Pick the one where your audience already looks for help and where you can sustain the format. Professional services often suit LinkedIn or a newsletter, visual niches suit Instagram, and tutorials suit YouTube. Start with one.",
+    },
+    {
+      question: "Can I build a personal brand without showing my face?",
+      answer: "Yes. You can use writing, voiceover, screen recordings, carousels, illustrations or a pen name. What matters is a consistent voice and useful content. If constant filming feels draining, our look at camera culture in 2026 offers context.",
+    },
+    {
+      question: "How do I make money from a personal brand?",
+      answer: "Most creators earn through services, digital products, affiliate links, sponsorships or memberships, usually after building trust. Income is uneven and not guaranteed, and payout methods vary by country.",
+    },
+  ],
   "chatgpt-claude-gemini-comparison-2026": [
     {
       question: "Which AI is best for everyday use in 2026?",

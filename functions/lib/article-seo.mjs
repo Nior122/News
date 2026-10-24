@@ -5,6 +5,7 @@ import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 import { BUDGET_EARBUDS_ARTICLE_BODY } from "./budget-earbuds-article-content.mjs";
 import { STUDENTS_AI_ARTICLE_BODY } from "./students-ai-article-content.mjs";
 import { DUMB_TECH_ARTICLE_BODY } from "./dumb-tech-article-content.mjs";
+import { PERSONAL_BRAND_ARTICLE_BODY } from "./personal-brand-article.mjs";
 /**
  * Article-level SEO metadata, structured data helpers, and canonical content
  * overrides shared across Cloudflare Pages middleware, API routes, sitemap
@@ -375,6 +376,15 @@ export const ARTICLE_CONTENT_OVERRIDES = {
       "Simple Technology",
       "Lifestyle Tech",
     ],
+  },
+  "how-to-build-personal-brand-online-2026": {
+    title: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
+    subtitle: null,
+    excerpt: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    body: PERSONAL_BRAND_ARTICLE_BODY,
+    category: "Lifestyle",
+    image_url: "/images/personal-brand-hero.webp",
+    read_time: 10,
   },
 };
 
@@ -1004,6 +1014,28 @@ export const ARTICLE_SEO_OVERRIDES = {
         a: "Yes. You can ask an assistant to explain vocabulary, compare sentence structures, practise conversations or give feedback on a paragraph you wrote. Ask it to explain the reason for each correction so you learn the underlying rule. Check that suggested edits preserve your intended meaning and follow your course's AI policy.",
       },
     ],
+  },
+  "how-to-build-personal-brand-online-2026": {
+    metaTitle: "How to Build a Personal Brand (Step-by-Step)",
+    metaDescription: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    exactTitle: true,
+    ogTitle: "How to Build a Personal Brand (Step-by-Step)",
+    ogDescription: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    ogImage: "https://scrolltek.name.ng/images/personal-brand-hero.webp",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    breadcrumbLabel: "How to Build a Personal Brand Online.",
+    heroAlt: "Notebook, laptop and phone on a desk, set up to plan personal brand content",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+    bodyIncludesFaq: true,
+    enableSsrToc: true,
+    articleAuthorMeta: "Anya Patel",
   },
 };
 
