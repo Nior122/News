@@ -20,6 +20,7 @@ export interface ArticleSeoOverride {
   bodyIncludesFaq?: boolean;
   itemList?: Record<string, unknown>;
   graphJsonLd?: Record<string, unknown>;
+  breadcrumbLabel?: string;
 }
 
 export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
@@ -556,6 +557,26 @@ export const ARTICLE_SEO_OVERRIDES: Record<string, ArticleSeoOverride> = {
         },
       ],
     },
+  },
+  "how-to-build-personal-brand-online-2026": {
+    metaTitle: "How to Build a Personal Brand (Step-by-Step)",
+    exactTitle: true,
+    metaDescription: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    ogTitle: "How to Build a Personal Brand (Step-by-Step)",
+    ogDescription: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    ogImage: "https://scrolltek.name.ng/images/personal-brand-hero.webp",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    schemaType: "Article",
+    heroAlt: "Notebook, laptop and phone on a desk, set up to plan personal brand content",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+    bodyIncludesFaq: true,
+    breadcrumbLabel: "How to Build a Personal Brand Online.",
   },
 };
 

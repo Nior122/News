@@ -487,6 +487,83 @@ export const ARTICLE_SEO_OVERRIDES = {
   ]
 },
   },
+  "how-to-build-personal-brand-online-2026": {
+    metaTitle: "How to Build a Personal Brand (Step-by-Step)",
+    h1: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
+    metaDescription: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+    publishedTime: "2026-05-28T11:00:00Z",
+    modifiedTime: "2026-10-24",
+    authorName: "Anya Patel",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          headline: "How to Build a Personal Brand Online: A Step-by-Step Guide for 2026",
+          description: "Learn how to build a personal brand step by step: find your niche, write a brand statement, pick a platform, create content and follow a 90-day plan.",
+          image: "https://scrolltek.name.ng/images/personal-brand-hero.webp",
+          author: { "@type": "Person", name: "Anya Patel" },
+          publisher: {
+            "@type": "Organization",
+            name: "Scrolltek",
+            logo: { "@type": "ImageObject", url: "https://scrolltek.name.ng/favicon.svg" },
+          },
+          datePublished: "2026-05-28T11:00:00Z",
+          dateModified: "2026-10-24",
+          mainEntityOfPage: "https://scrolltek.name.ng/article/how-to-build-personal-brand-online-2026",
+          articleSection: "Lifestyle",
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://scrolltek.name.ng/" },
+            { "@type": "ListItem", position: 2, name: "Lifestyle", item: "https://scrolltek.name.ng/category/lifestyle" },
+            { "@type": "ListItem", position: 3, name: "How to Build a Personal Brand Online.", item: "https://scrolltek.name.ng/article/how-to-build-personal-brand-online-2026" },
+          ],
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "What is a personal brand?",
+              acceptedAnswer: { "@type": "Answer", text: "A personal brand is the reputation you build for a specific skill, perspective or kind of help. It is what people expect from you and remember about you, shaped by your content, your communication style and the value you consistently deliver." },
+            },
+            {
+              "@type": "Question",
+              name: "How do I build a personal brand from scratch?",
+              acceptedAnswer: { "@type": "Answer", text: "Choose a narrow niche, write a one-sentence brand statement, pick one platform, publish content around three pillars on a steady schedule, and start an email list. The 90-day plan above breaks this into weekly actions." },
+            },
+            {
+              "@type": "Question",
+              name: "How long does it take to build a personal brand?",
+              acceptedAnswer: { "@type": "Answer", text: "It varies widely. You can set up the foundations in a few weeks, but audience growth depends on your niche, consistency and timing. Many creators describe slow early months, so judge early progress by habits and feedback." },
+            },
+            {
+              "@type": "Question",
+              name: "What is a personal brand statement?",
+              acceptedAnswer: { "@type": "Answer", text: "It is one or two sentences saying who you help, what outcome you deliver and how. Template: \"I help [audience] [outcome] by [method], so they can [benefit].\" Keep it under 25 words and use it in your bios." },
+            },
+            {
+              "@type": "Question",
+              name: "Which platform should I pick?",
+              acceptedAnswer: { "@type": "Answer", text: "Pick the one where your audience already looks for help and where you can sustain the format. Professional services often suit LinkedIn or a newsletter, visual niches suit Instagram, and tutorials suit YouTube. Start with one." },
+            },
+            {
+              "@type": "Question",
+              name: "Can I build a personal brand without showing my face?",
+              acceptedAnswer: { "@type": "Answer", text: "Yes. You can use writing, voiceover, screen recordings, carousels, illustrations or a pen name. What matters is a consistent voice and useful content. If constant filming feels draining, our look at camera culture in 2026 offers context." },
+            },
+            {
+              "@type": "Question",
+              name: "How do I make money from a personal brand?",
+              acceptedAnswer: { "@type": "Answer", text: "Most creators earn through services, digital products, affiliate links, sponsorships or memberships, usually after building trust. Income is uneven and not guaranteed, and payout methods vary by country." },
+            },
+          ],
+        },
+      ],
+    },
+  },
 };
 
 export function getArticleSeoOverride(slug) {
