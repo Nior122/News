@@ -45,6 +45,7 @@ interface RenderResult {
 
 const ARTICLE_SSR_OVERRIDES: Record<string, {
   metaTitle?: string;
+  exactTitle?: boolean;
   metaDescription?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -67,6 +68,21 @@ const ARTICLE_SSR_OVERRIDES: Record<string, {
   "dumb-tech-trend-2026": {
     heroAlt: "Light Phone III minimalist phone showing its black-and-white tool menu",
     heroCaption: "Photo: Light (thelightphone.com)",
+    heroWidth: 1200,
+    heroHeight: 630,
+    heroLoadingEager: true,
+  },
+  "tesla-self-driving-cars-2026": {
+    metaTitle: "What Is a Robotaxi? Where They Run in 2026",
+    exactTitle: true,
+    metaDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+    ogTitle: "What Is a Robotaxi? Where They Run in 2026",
+    ogDescription: "A robotaxi is a driverless ride-hailing car. See how robotaxis work, where Waymo, Tesla and others operate in 2026, and how safe they are today.",
+    dateModified: "2026-10-24",
+    updatedLabel: "Updated October 24, 2026",
+    robots: "index, follow, max-image-preview:large",
+    heroAlt: "A driverless robotaxi waiting at a city curb",
+    heroCaption: "Photo: Dllu / Wikimedia Commons / CC BY 4.0",
     heroWidth: 1200,
     heroHeight: 630,
     heroLoadingEager: true,
@@ -531,7 +547,7 @@ async function renderArticle(slug: string): Promise<RenderResult | null> {
   const result: RenderResult = {
     bodyHtml,
     meta: {
-      title: `${metaTitleBase} — ${SITE_NAME}`,
+      title: seoOverride?.exactTitle ? metaTitleBase : `${metaTitleBase} — ${SITE_NAME}`,
       description: metaDescription,
       ogTitle: seoOverride?.ogTitle,
       ogDescription: seoOverride?.ogDescription,
