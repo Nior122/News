@@ -4,6 +4,7 @@ import { JOMO_ARTICLE_BODY, JOMO_ARTICLE_TITLE } from "./jomo-article-content.mj
 import { EINK_ARTICLE_BODY } from "./eink-article-content.mjs";
 import { BUDGET_EARBUDS_ARTICLE_BODY } from "./budget-earbuds-article-content.mjs";
 import { STUDENTS_AI_ARTICLE_BODY } from "./students-ai-article-content.mjs";
+import { DUMB_TECH_ARTICLE_BODY } from "./dumb-tech-article-content.mjs";
 /**
  * Article-level SEO metadata, structured data helpers, and canonical content
  * overrides shared across Cloudflare Pages middleware, API routes, sitemap
@@ -356,6 +357,23 @@ export const ARTICLE_CONTENT_OVERRIDES = {
       "study apps",
       "ChatGPT for students",
       "academic integrity",
+    ],
+  },
+  "dumb-tech-trend-2026": {
+    title: "Light Phone Review & Best Alternatives (2026)",
+    subtitle: "Feature phones, film cameras, and alarm clocks are making a genuine comeback — and the people buying them are not who you think",
+    excerpt: "Minimalist gadgets and distraction-free devices are making a surprising comeback in 2026. Here is why people are getting tired of hyper-connected tech.",
+    body: DUMB_TECH_ARTICLE_BODY,
+    category: "Lifestyle",
+    image_url: "/images/light-phone-iii-review-hero.webp",
+    read_time: 7,
+    tags: [
+      "Dumb Tech",
+      "Minimalist Gadgets",
+      "Distraction Free",
+      "Digital Detox",
+      "Simple Technology",
+      "Lifestyle Tech",
     ],
   },
 };
