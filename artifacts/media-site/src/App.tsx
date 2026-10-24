@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ActiveCategoryProvider } from "@/contexts/ActiveCategoryContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { MobileNav } from "@/components/layout/MobileNav";
 import { queryClient } from "@/lib/query-client";
 
 import Home from "@/pages/Home";
@@ -38,10 +39,11 @@ function ScrollToTop() {
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground pb-[calc(56px+env(safe-area-inset-bottom))] md:pb-0">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <MobileNav />
     </div>
   );
 }
