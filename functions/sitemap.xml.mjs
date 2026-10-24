@@ -56,6 +56,7 @@ function lastmodFor(value) {
 const ARTICLE_LASTMOD_OVERRIDES = {
   'handheld-gaming-gadgets-2026': '2026-10-23',
   'chatgpt-claude-gemini-comparison-2026': '2026-10-23',
+  'dumb-tech-trend-2026': '2026-10-24',
 };
 
 /**
