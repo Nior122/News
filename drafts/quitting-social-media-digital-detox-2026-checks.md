@@ -39,3 +39,10 @@ Prompt 2 supersedes the earlier draft-only instruction and explicitly requests p
 - Actual built React page preview with a fixture article API: **390px and 1440px** checked. One H1, correct heading hierarchy, exact title/description, three article-specific schema blocks, visible By Sofia Reyes and update line, loaded eager 1600×900 hero, no old hero, and no page-level overflow. Both tables use their own horizontal-scrolling containers. Long Sources URLs wrap without changing their wording.
 - Existing related-reading content and selection logic remain untouched; preview uses a fixture related story, not production data.
 - Production deployment/live metadata verification is pending at this point. Search Console indexing/sitemap submission requires authenticated access not available here; do not claim submission.
+
+## Four additional images — user-authorized follow-up
+
+- Added four original AI-generated body illustrations: planning the break, offline activities, phone-free sleep and intentional return.
+- Each is self-hosted under `/images`, 1200×675 WebP, under 100 KB, with descriptive alt text, explicit dimensions, lazy loading, asynchronous decoding and an AI-generated caption.
+- Existing hero/social image, SEO/schema, original publication timestamp, slug, byline, article wording and links unchanged. Verified removing only the four new figure insertions reproduces the prior HTML exactly. Original Markdown unchanged.
+- Full production build/typecheck passed; 72/72 repository tests passed. Publication requested by user; deployment verification pending below.
