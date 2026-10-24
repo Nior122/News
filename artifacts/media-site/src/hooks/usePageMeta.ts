@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 interface PageMeta {
   title?: string;
+  exactTitle?: boolean;
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -96,7 +97,7 @@ export function usePageMeta(meta: PageMeta) {
       metaNames.map((name) => [name, captureMeta(name)] as const),
     );
 
-    const pageTitle = meta.title ? `${meta.title} — ${SITE_NAME}` : HOME_TITLE;
+    const pageTitle = meta.title ? (meta.exactTitle ? meta.title : `${meta.title} — ${SITE_NAME}`) : HOME_TITLE;
     const description = meta.description || DEFAULT_DESCRIPTION;
     const canonical = canonicalFor(meta.canonical);
 
@@ -159,7 +160,7 @@ export function usePageMeta(meta: PageMeta) {
       for (const [name, content] of previousMeta) restoreMeta(name, content);
     };
   }, [
-    meta.title,
+    meta.title, meta.exactTitle,
     meta.description,
     meta.ogTitle,
     meta.ogDescription,
