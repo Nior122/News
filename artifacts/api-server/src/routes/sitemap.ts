@@ -48,6 +48,7 @@ const ARTICLE_LASTMOD_OVERRIDES: Record<string, string> = {
   "ai-tools-for-students-2026": "2026-10-23T00:00:00.000Z",
   "dumb-tech-trend-2026": "2026-10-24",
   "tesla-self-driving-cars-2026": "2026-10-24",
+  "tiktok-brain-attention-span-2026": "2026-10-24",
   "how-to-build-personal-brand-online-2026": "2026-10-24",
 };
 

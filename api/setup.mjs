@@ -550,37 +550,125 @@ async function runSetup(pool) {
 
 <p>On-device AI shifts some of that power back to you. Privacy, speed, and independence — three things the internet has always struggled to deliver at the same time. <strong>Share this with someone who cares about their privacy online — this is a shift worth knowing about.</strong></p>`,
 
-    'tiktok-brain-attention-span-2026': `<p>Here's a question worth sitting with: when was the last time you read something — an article, a book chapter, even a long email — without reaching for your phone? If you're struggling to remember, you're not alone, and it may not be entirely your fault.</p>
+    'tiktok-brain-attention-span-2026': `<h2>What is “TikTok brain”?</h2>
+
+<p><strong>TikTok brain is an informal label for the sense that your attention has become harder to hold after heavy use of short-form video such as TikTok, Instagram Reels or YouTube Shorts. It is not a medical diagnosis. Researchers study the underlying questions as attention, inhibitory control (the ability to stop an impulse) and compulsive use.</strong></p>
+
+<p>The label describes a pattern people report, not a condition doctors test for. And “short-form video” covers everything from a few cooking clips to hours of late-night scrolling, a difference the research suggests matters.</p>
+
+<h2>What the research found</h2>
+
+<p>The strongest evidence is a 2025 systematic review and meta-analysis in <em>Psychological Bulletin</em> titled <a href="https://doi.org/10.1037/bul0000498">“Feeds, Feelings, and Focus”</a>. It was led by Lan Nguyen of Griffith University’s School of Applied Psychology and appeared in the September 2025 issue (volume 151, issue 9). A meta-analysis pools results from many separate studies, so it gives a broader picture than any single experiment.</p>
+
+<p>The authors combined data from 98,299 participants across 71 studies (70 went into the statistical pooling). Heavier short-form video use was associated with poorer thinking skills overall, and the strongest links were with:</p>
+
+<ul>
+<li><strong>Inhibitory control</strong> (the ability to resist an impulse): r = −.41</li>
+<li><strong>Attention:</strong> r = −.38</li>
+<li><strong>Cognition overall:</strong> r = −.34, which the authors call moderate</li>
+<li><strong>Stress and anxiety:</strong> r = −.34 and r = −.33, within a weaker overall mental-health link (r = −.21)</li>
+</ul>
 
 <figure>
-  <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&q=80" alt="Person scrolling short-form video on smartphone in a dark room late at night" width="1200" height="630" />
+<img src="/images/tiktok-brain-correlations-chart.webp" alt="Bar chart of correlations between short-form video use and inhibitory control, attention and overall cognition" width="1200" height="800" loading="lazy" decoding="async">
+<figcaption>Association strength, not proof of cause. Source: Nguyen et al., Psychological Bulletin, 2025.</figcaption>
 </figure>
 
-<h2>What Researchers Actually Found</h2>
+<p>A negative correlation means that, on average, more use went with lower scores. It describes a pattern across many people, not how much any one person’s attention has changed. The review found no significant overall link with body image or self-esteem, and few studies looked at memory or reasoning.</p>
 
-<p>A 2026 study from University College London tracked 3,000 adults across 18 months of heavy short-form video consumption. The findings were stark. Average sustained attention dropped by 22% over the study period. The ability to hold focus on a single task for more than 90 seconds — what researchers call "deep attention" — declined in participants who watched more than two hours of short-form video daily.</p>
+<p><a href="https://www.psypost.org/large-meta-analysis-links-tiktok-and-instagram-reels-to-poorer-cognitive-and-mental-health/">Coverage of the paper by PsyPost</a> adds that studies using addiction-style questionnaires showed stronger links than studies that only counted time, which suggests that how compulsively people scroll may matter more than how long. Smaller studies, including brain-imaging work, are emerging, but we have kept this article to evidence we could trace to a primary source.</p>
 
-<p>The culprit isn't laziness. It's dopamine. Every swipe delivers a micro-hit of novelty. Your brain, optimised over millions of years to pay attention to new things, gets hijacked by an endless stream of them. After enough exposure, anything that doesn't change every 15 seconds starts to feel unbearably slow.</p>
+<h2>What the research can’t prove</h2>
+
+<p>The authors, as summarized by PsyPost, are clear about the limits.</p>
+
+<ul>
+<li><strong>The direction of cause is unknown.</strong> Most included studies were cross-sectional, meaning a single snapshot in time. People who already struggle with attention, stress or anxiety may be drawn to short videos as a distraction, so the pattern could run in either direction, or both.</li>
+<li><strong>Measurement is imperfect.</strong> Many studies relied on self-reported use, and few accounted for general social media use, so the review cannot separate the short-form format from time online in general.</li>
+<li><strong>The sample has gaps.</strong> Most studies were conducted in Asia, with fewer from North America and Europe, which may affect how well the findings transfer.</li>
+<li><strong>The dopamine story is a metaphor here.</strong> The popular explanation that each swipe delivers a reward-chemical hit was not tested by this review, which measured cognition and mental health.</li>
+<li><strong>Averages are not individuals.</strong> A moderate average link does not mean every heavy user has a problem, and the content people watch and their circumstances vary.</li>
+</ul>
+
+<p>The authors call for long-term and experimental studies that follow people over time and test what happens when use is reduced.</p>
+
+<h2>Why short-form video feels hard to put down</h2>
+
+<p>Part of the answer is design. The US Surgeon General’s <a href="https://www.hhs.gov/sites/default/files/sg-youth-mental-health-social-media-advisory.pdf">2023 advisory on social media and youth mental health</a> noted that platforms often use push notifications, autoplay, infinite scroll and algorithms that tailor recommendations from your data to keep people engaged.</p>
+
+<p>Short clips add to that. Each one is over in seconds, the next arrives with a swipe, and there is no chapter end or credits roll to prompt a pause. That is an observation about the format, not a research finding.</p>
+
+<p>The meta-analysis authors offer one hypothesis, based on habituation and sensitization: repeated exposure to fast, highly stimulating content may make slower tasks like reading feel duller, while the platform’s rewards reinforce impulsive checking. It is a proposed explanation, not a demonstrated mechanism.</p>
+
+<p>Video-first design is also spreading well beyond TikTok, as we explored in <a href="https://scrolltek.name.ng/article/camera-culture-2026">how camera culture is reshaping the internet</a>.</p>
+
+<h2>Is “brain rot” a real diagnosis?</h2>
+
+<p>No. “Brain rot” is slang, and Oxford University Press named it its <a href="https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/">2024 Word of the Year</a>, reporting that its use rose 230% between 2023 and 2024. Oxford’s own definition hedges, describing a supposed decline in mental state blamed on overdoing trivial or undemanding content, now mostly online. The term is older than the internet: Thoreau used it in <em>Walden</em> in 1854. Its modern sense spread through TikTok and Instagram, and it works as a joke or a worry, not a clinical category. For how that kind of slang travels, see our piece on <a href="https://scrolltek.name.ng/article/memes-internet-news-culture-2026">internet meme culture</a>. What the research actually measures is narrower: attention, inhibitory control, stress and anxiety.</p>
+
+<h2>How to reset your attention: 6 practical steps</h2>
+
+<p>There is no proven cure for “TikTok brain,” but you can change the conditions that keep you scrolling. These steps are common-sense habit changes, not a clinically tested treatment, and we found no trials proving that any routine restores attention.</p>
+
+<ol>
+<li><strong>Add friction.</strong> Move the app off your home screen, log out after each session, or use the browser version. Autoplay and endless feeds work by removing stopping points, so put some back.</li>
+<li><strong>Turn off push notifications.</strong> Notifications are among the engagement features the Surgeon General’s advisory describes. Fewer prompts means fewer unplanned openings.</li>
+<li><strong>Decide before you open.</strong> Pick a purpose and a stopping point (“ten minutes, then dinner”) and set a timer. Watch for the sign the research points to: not minutes, but feeling unable to stop.</li>
+<li><strong>Protect sleep.</strong> Charge your phone outside the bedroom. The American Psychological Association’s adolescent advisory says social media should not crowd out sleep or physical activity, and the same logic is sensible for adults.</li>
+<li><strong>Practice one thing at a time.</strong> Start small: ten minutes of reading, a walk, or a conversation with the phone in another room, then extend. If you want to go further, our guides to <a href="https://scrolltek.name.ng/article/quitting-social-media-digital-detox-2026">quitting social media</a> and the <a href="https://scrolltek.name.ng/article/digital-detox-jomo-2026">joy of missing out</a> cover the next steps.</li>
+<li><strong>Make the phone duller.</strong> Some people try greyscale, fewer apps or a basic handset (see the <a href="https://scrolltek.name.ng/article/dumb-tech-trend-2026">dumb tech trend</a>). Notice the trigger too: do you reach for the feed when bored, stressed or avoiding a task?</li>
+</ol>
 
 <figure>
-  <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1200&q=80" alt="Brain activity and neural connections visualized showing dopamine reward pathways and attention research" width="1200" height="630" />
+<img src="/images/tiktok-brain-reading-reset.webp" alt="Person reading a paper book with a phone left on a table across the room" width="1200" height="800" loading="lazy" decoding="async">
+<figcaption>Reading on paper, with the phone left across the room. AI-generated editorial illustration.</figcaption>
 </figure>
 
-<h2>The Real-World Effects</h2>
+<p>If attention problems or low mood persist, or get in the way of work, school or daily life, talk to a doctor or a licensed mental health professional. This article is general information, not medical advice.</p>
 
-<p>The consequences show up in unexpected places. Students report finding lectures physically painful to sit through. Workers describe struggling to finish reports they could have written easily three years ago. Readers abandon books after a few pages. The patience required for anything that unfolds slowly — a relationship, a skill, a long read — becomes harder to sustain.</p>
+<h2>Teens and parents</h2>
 
-<p>This isn't moral panic. It's neuroscience. The brain is plastic: it rewires itself based on what you repeatedly do. Feed it constant novelty, and it gets worse at tolerating the absence of novelty.</p>
+<p>Teens are the group most often discussed, and their use is heavy. A <a href="https://www.pewresearch.org/internet/2025/12/09/teens-social-media-and-ai-chatbots-2025/">Pew Research Center survey</a> of 1,458 US teens, published in December 2025, found that 63% use TikTok and about one in five (21%) say they are on it almost constantly, up from 16% in 2022.</p>
 
-<h2>What You Can Actually Do</h2>
+<p>Whether the cognitive link is stronger in teens is not settled. The meta-analysis included both youths and adults, and we could not confirm a clear age difference. The American Psychological Association’s <a href="https://www.apa.org/news/press/releases/2023/05/adolescent-social-media-use-recommendations">2023 health advisory</a> says social media is not inherently good or bad for young people and that effects depend on the individual and the context.</p>
 
-<p>The research also shows the brain can recover. The key is deliberate practice in sustained attention — reading physical books, taking walks without a phone, having conversations without checking notifications. Even 20 minutes a day of focused, single-task activity shows measurable improvements in attention within six weeks.</p>
+<p>Its practical advice for adults: coach younger adolescents and talk through what they watch, look for signs that use is interfering with sleep, school, physical activity or friendships, and mind your own habits, because young people notice them.</p>
 
-<figure>
-  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Person reading a physical book in a quiet focused environment away from screens and devices" width="1200" height="630" />
-</figure>
+<h2>Frequently asked questions</h2>
 
-<p>The algorithm is optimised for your eyeballs, not your wellbeing. Knowing that is the first step to using it differently. <strong>Share this with someone who keeps saying they "used to read a lot."</strong></p>`,
+<h3>What is TikTok brain?</h3>
+
+<p>TikTok brain is an informal term for reduced focus and a pull to keep scrolling after heavy short-form video use. It is not a medical diagnosis. Researchers study related traits such as attention, impulse control and compulsive use.</p>
+
+<h3>Is TikTok brain real?</h3>
+
+<p>The pattern is real in the data: heavier short-form video use is associated with poorer attention and inhibitory control. Whether the videos cause it is unproven, and “TikTok brain” is a popular label, not a clinical one.</p>
+
+<h3>Does TikTok shorten your attention span?</h3>
+
+<p>That is not proven. Heavy users tend to score lower on attention measures, but most studies are snapshots, so people who already struggle to focus may simply watch more short videos. Long-term studies are still needed.</p>
+
+<h3>What does the research say?</h3>
+
+<p>A 2025 meta-analysis of 98,299 participants across 71 studies found short-form video use was most strongly associated with poorer attention (r = −.38) and inhibitory control (r = −.41). Stress and anxiety also showed links, though mental health overall was a weaker association.</p>
+
+<h3>Is “brain rot” a medical term?</h3>
+
+<p>No. It is slang that Oxford University Press named its 2024 Word of the Year. It describes a supposed mental decline from low-quality online content, not a clinical diagnosis.</p>
+
+<h3>How do I reduce TikTok brain?</h3>
+
+<p>Add friction to the app, turn off notifications, decide on a stopping point before you open it, protect your sleep and practice single-task time. If problems persist, talk to a doctor or mental health professional.</p>
+
+<h3>Is TikTok brain worse for teens?</h3>
+
+<p>That is unsettled. The meta-analysis included both youths and adults, and the American Psychological Association says effects vary by young person and context. Teen use is heavy, so sleep, school and friendships are sensible things to watch.</p>
+
+<h2>Conclusion</h2>
+
+<p>TikTok brain is a real pattern in the data and a shaky shorthand for its cause. The best available evidence links heavy short-form video use with poorer attention and self-control, and it links compulsive use more strongly than time spent. It cannot yet say that the videos are the cause. You do not need to wait for that answer to make small changes: add friction, cut notifications, protect sleep and give your attention one slow task a day.</p>
+
+<p><em>Updated October 24, 2026: this article was revised to replace an earlier, unverified statistic with published research and to clarify what the evidence does and does not show.</em></p>`,
 
     'memes-internet-news-culture-2026': `<p>When something significant happens in the world, here is what the timeline now looks like. The event occurs. Within minutes, someone makes a meme. Within an hour, that meme has reached more people than any newspaper article published about it. By the time a formal news piece is written, edited, and published, the meme has already shaped how the world feels about what happened.</p>
 
@@ -5682,11 +5770,11 @@ async function runSetup(pool) {
     },
     {
       slug: 'tiktok-brain-attention-span-2026',
-      title: 'The TikTok Brain Is Real — Here\'s What Constant Scrolling Is Doing to Your Mind',
-      subtitle: 'Neuroscientists now have the data — and the results are harder to dismiss than you\'d like',
-      excerpt: 'You open the app for two minutes and look up to find an hour has vanished. That\'s not a coincidence. Here\'s the science behind what short-form video is doing to your attention span.',
+      title: 'TikTok Brain: What the Research Actually Says and How to Reset Your Focus',
+      subtitle: 'You open the app for a minute and look up an hour later. Then you struggle to read a page without reaching for your phone. People call it “TikTok brain.” The research behind it is real but narrower than the headlines: heavier short-form video use is linked with poorer attention and self-control, yet that link is an association, not proof that scrolling causes it. Here is what the evidence shows, where it stops, and how to reset your focus.',
+      excerpt: 'Is TikTok brain real? See what the research says about short-form video and attention, what it can’t prove, and 6 practical ways to reset your focus.',
       category: 'Culture', authorId: 3,
-      imageUrl: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80',
+      imageUrl: '/images/tiktok-brain-attention-span-2026-hero.webp',
       readTime: 6, featured: false, editorsPick: true,
       tags: ['TikTok', 'Social Media', 'Attention Span', 'Mental Health', 'Digital Wellness'],
     },
