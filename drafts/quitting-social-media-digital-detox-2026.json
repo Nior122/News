@@ -1,0 +1,70 @@
+{
+  "status": "draft",
+  "published": false,
+  "slug": "quitting-social-media-digital-detox-2026",
+  "canonicalUrl": "https://scrolltek.name.ng/article/quitting-social-media-digital-detox-2026",
+  "sourceArticleId": 8,
+  "title": "Social Media Detox: How to Do One, What to Expect and a 7-Day Plan",
+  "subtitle": null,
+  "byline": "Sofia Reyes",
+  "authorId": 3,
+  "category": "Lifestyle",
+  "originalPublishedDate": "May 26, 2026",
+  "originalPublishedAt": "2026-05-26T15:35:23.696Z",
+  "dateModified": "2026-10-24",
+  "bodyFile": "quitting-social-media-digital-detox-2026.md",
+  "bodyFormat": "markdown",
+  "bodyContainsH1": true,
+  "bodySha256": "6f7e9c610151ada9df958059ed507c9105877aa16fb9c209159af0d8f5a36eec",
+  "wordCountExcludingSources": 1838,
+  "wordCountMethod": "Whitespace-separated rendered-text tokens, including headings and table contents, excluding Sources; link destinations, Markdown markers and table separators excluded.",
+  "internalLinks": [
+    {
+      "anchor": "the iPhone settings worth changing",
+      "path": "/article/iphone-settings-change-now-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    },
+    {
+      "anchor": "hidden Android features",
+      "path": "/article/hidden-android-features-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    },
+    {
+      "anchor": "tiny internet communities",
+      "path": "/article/tiny-internet-communities-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    },
+    {
+      "anchor": "the dumb tech trend",
+      "path": "/article/dumb-tech-trend-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    },
+    {
+      "anchor": "TikTok and attention span",
+      "path": "/article/tiktok-brain-attention-span-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    },
+    {
+      "anchor": "digital detox and JOMO",
+      "path": "/article/digital-detox-jomo-2026",
+      "resolution": "Article content successfully retrieved via page-fetch tool; exact HTTP status not exposed."
+    }
+  ],
+  "images": "No inline images included; image decisions deferred to Publisher Prompt 2.",
+  "deployment": "Publication requested in Prompt 2. Runtime implementation prepared; do not infer deployment from draft metadata. Original Markdown is preserved; template emits its H1 once.",
+  "publicationRequested": true,
+  "metaTitle": "Social Media Detox: How to Do One (7-Day Plan)",
+  "metaDescription": "Thinking of a social media break? Here is how to do a social media detox, what to expect, what the research says and a simple 7-day plan to start now.",
+  "hero": {
+    "url": "https://scrolltek.name.ng/images/social-media-detox-7-day-plan-hero.webp",
+    "width": 1600,
+    "height": 900,
+    "alt": "A phone face-down on a table next to a book and a mug, representing a social media detox"
+  },
+  "socialImage": {
+    "url": "https://scrolltek.name.ng/images/social-media-detox-7-day-plan-social.webp",
+    "width": 1200,
+    "height": 630
+  },
+  "renderedBodyFile": "quitting-social-media-digital-detox-2026.body.html"
+}
