@@ -76,6 +76,7 @@ export function prefetchAuthor(slug: string) {
 
 export function prefetchStaticRoute(path: string) {
   if (path === "/about") void import("@/pages/AboutPage");
+  else if (path === "/services") void import("@/pages/ServicesPage");
   else if (path === "/contact") void import("@/pages/ContactPage");
   else if (path === "/privacy") void import("@/pages/PrivacyPage");
   else if (path === "/search") void import("@/pages/SearchPage");
