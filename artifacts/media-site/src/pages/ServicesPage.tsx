@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { Link } from "wouter";
 import {
-  ArrowRight, Bot, Code2, Globe2, Lightbulb, MessageCircle,
-  Palette, Workflow, BookOpen, Sparkles, CheckCircle2, Mail,
+  ArrowRight, Bot, Lightbulb, MessageCircle,
+  Palette, BookOpen, Sparkles, CheckCircle2, Mail,
 } from "lucide-react";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
