@@ -59,6 +59,7 @@ export function Header() {
                   </Link>
                 );
               })}
+              <Link href="/services" onMouseEnter={() => prefetchStaticRoute("/services")} className={cn("px-3 py-2 rounded-md transition-colors hover:bg-muted hover:text-foreground", location === "/services" ? "text-primary font-semibold bg-primary/5" : "text-muted-foreground")}>Services</Link>
             </nav>
           </div>
 
@@ -160,6 +161,17 @@ export function Header() {
               <div className="h-px bg-border mx-1 my-2" />
 
               {/* Extra links */}
+              <Link
+                href="/services"
+                onMouseEnter={() => prefetchStaticRoute("/services")}
+                onTouchStart={() => prefetchStaticRoute("/services")}
+                className={cn(
+                  "flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                  location === "/services" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+                )}
+              >
+                Services
+              </Link>
               <Link
                 href="/about"
                 onMouseEnter={() => prefetchStaticRoute("/about")}
