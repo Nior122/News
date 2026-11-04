@@ -68,6 +68,11 @@ const GENERIC_PAGE_METADATA = {
     heading: "About Scrolltek",
     description: "Scrolltek covers tech, culture, AI tools, phone tips, lifestyle, and trending topics — fast, useful, and written for real people.",
   },
+  "/services": {
+    title: "AI Automation, Website & Digital Services | Chenar",
+    heading: "AI Automation, Websites & Digital Services",
+    description: "Chenar helps businesses, entrepreneurs and creators with AI automation, chatbots, AI agents, website and app development, creative media and digital products.",
+  },
   "/contact": {
     title: "Contact Us — Scrolltek",
     heading: "Contact Us",
