@@ -20,6 +20,7 @@ const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
 const AuthorPage = lazy(() => import("@/pages/AuthorPage"));
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
 const SearchPage = lazy(() => import("@/pages/SearchPage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -118,6 +119,7 @@ function Router() {
                 <Route path="/category/:slug" component={CategoryPage} />
                 <Route path="/author/:slug" component={AuthorPage} />
                 <Route path="/about" component={AboutPage} />
+                <Route path="/services" component={ServicesPage} />
                 <Route path="/contact" component={ContactPage} />
                 <Route path="/privacy" component={PrivacyPage} />
                 <Route path="/search" component={SearchPage} />
