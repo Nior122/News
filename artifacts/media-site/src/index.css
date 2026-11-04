@@ -359,3 +359,52 @@ figure svg {
   max-width: 100%;
   height: auto;
 }
+
+ 
+/* ─── Chenar services page: prevent mobile text and layout overflow ─── */
+.chenar-services-page {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+.chenar-services-page *,
+.chenar-services-page *::before,
+.chenar-services-page *::after {
+  box-sizing: border-box;
+}
+.chenar-services-page :where(section, article, div, a, p, h1, h2, h3, h4, li, summary) {
+  min-width: 0;
+  max-width: 100%;
+}
+.chenar-services-page :where(h1, h2, h3, h4, p, a, li, summary, strong, span) {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+.chenar-services-page img {
+  display: block;
+  max-width: 100%;
+}
+.chenar-services-page .prose {
+  width: 100%;
+  max-width: 100%;
+}
+@media (max-width: 640px) {
+  .chenar-services-page section {
+    scroll-margin-top: 4.5rem;
+  }
+  .chenar-services-page .prose h2,
+  .chenar-services-page h2 {
+    font-size: clamp(1.45rem, 6.2vw, 2rem);
+    line-height: 1.2;
+  }
+  .chenar-services-page h3 {
+    line-height: 1.25;
+  }
+  .chenar-services-page .rounded-3xl {
+    border-radius: 1rem;
+  }
+  .chenar-services-page .prose p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
