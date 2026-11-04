@@ -133,7 +133,7 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16">
+    <div className="chenar-services-page min-h-screen w-full max-w-full overflow-x-clip pb-16">
       <section className="relative isolate overflow-hidden border-b border-border bg-slate-950 text-white">
         <img
           src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=2000&q=85"
@@ -144,11 +144,11 @@ export default function ServicesPage() {
           height="1200"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-900/55" />
-        <div className="container mx-auto max-w-6xl px-4 py-20 md:py-28">
+        <div className="container mx-auto w-full min-w-0 max-w-6xl px-4 py-14 sm:px-6 md:py-28">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
             <Sparkles className="h-4 w-4" /> Practical digital solutions by Chenar
           </p>
-          <h1 className="max-w-4xl text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
+          <h1 className="w-full max-w-4xl text-[clamp(2rem,8vw,3.75rem)] font-extrabold leading-[1.12] tracking-tight [overflow-wrap:break-word] md:text-6xl">
             What if some of the hard work in your business could be handled for you?
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl">
@@ -156,13 +156,13 @@ export default function ServicesPage() {
             Chenar helps you use technology without needing to understand all the
             complicated parts.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9 flex w-full min-w-0 flex-col gap-3 sm:flex-row">
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-bold text-primary-foreground shadow-lg transition hover:opacity-90">
+              className="inline-flex w-full min-w-0 flex-wrap items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-4 py-4 text-center font-bold text-primary-foreground shadow-lg transition hover:opacity-90 sm:w-auto sm:px-6">
               <MessageCircle className="h-5 w-5" /> Talk to us on WhatsApp <ArrowRight className="h-4 w-4" />
             </a>
             <a href="#our-services"
-              className="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-4 font-semibold text-white transition hover:bg-white/10">
+              className="inline-flex w-full min-w-0 items-center justify-center whitespace-normal break-words rounded-xl border border-white/30 px-4 py-4 text-center font-semibold text-white transition hover:bg-white/10 sm:w-auto sm:px-6">
               Explore our services
             </a>
           </div>
@@ -170,7 +170,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="container mx-auto max-w-4xl px-4 py-16 md:py-20">
+      <section className="container mx-auto w-full min-w-0 max-w-4xl px-4 py-12 sm:px-6 md:py-20">
         <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-display">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">A simpler way to get things done</p>
           <h2 className="text-3xl font-bold md:text-4xl">You have a business to run. You should not have to do every little thing by hand.</h2>
@@ -195,7 +195,7 @@ export default function ServicesPage() {
       </section>
 
       <section id="our-services" className="scroll-mt-24 bg-muted/40 py-16 md:py-20">
-        <div className="container mx-auto max-w-6xl px-4">
+        <div className="container mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
           <div className="mx-auto mb-12 max-w-3xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">What we can help with</p>
             <h2 className="mt-3 text-3xl font-extrabold md:text-5xl">Three ways Chenar can help</h2>
@@ -209,13 +209,13 @@ export default function ServicesPage() {
             {serviceGroups.map((group, index) => {
               const Icon = group.icon;
               return (
-                <article key={group.number} className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
-                  <div className="grid md:grid-cols-2">
+                <article key={group.number} className="min-w-0 overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
+                  <div className="grid min-w-0 grid-cols-1 md:grid-cols-2">
                     <div className={index % 2 === 1 ? "md:order-2" : ""}>
                       <img src={group.image} alt={group.imageAlt} loading="lazy" width="1200" height="800"
                         className="h-64 w-full object-cover md:h-full md:min-h-[430px]" />
                     </div>
-                    <div className="p-6 md:p-10">
+                    <div className="min-w-0 p-5 sm:p-6 md:p-10">
                       <div className="mb-5 flex items-center gap-3">
                         <span className="rounded-lg bg-primary/10 px-3 py-2 text-sm font-bold text-primary">{group.number}</span>
                         <Icon className="h-6 w-6 text-primary" />
@@ -225,7 +225,7 @@ export default function ServicesPage() {
                       <p className="mt-4 leading-relaxed text-muted-foreground">{group.description}</p>
                       <div className="mt-7 space-y-5">
                         {group.services.map(([name, description]) => (
-                          <div key={name} className="flex gap-3">
+                          <div key={name} className="flex min-w-0 gap-3">
                             <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-primary" />
                             <div>
                               <h4 className="font-bold">{name}</h4>
@@ -247,7 +247,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="container mx-auto max-w-6xl px-4 py-16 md:py-20">
+      <section className="container mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 md:py-20">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Made for real people</p>
@@ -273,7 +273,7 @@ export default function ServicesPage() {
                 "I have an idea for an app but do not know where to begin.",
                 "I want to turn my knowledge into an ebook.",
               ].map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-relaxed">
+                <li key={item} className="flex min-w-0 gap-3 text-sm leading-relaxed">
                   <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {item}
                 </li>
               ))}
@@ -284,7 +284,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="bg-muted/40 py-16 md:py-20">
-        <div className="container mx-auto max-w-5xl px-4">
+        <div className="container mx-auto w-full min-w-0 max-w-5xl px-4 sm:px-6">
           <div className="mb-10 text-center">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Getting started</p>
             <h2 className="mt-3 text-3xl font-extrabold md:text-4xl">Working with Chenar is straightforward</h2>
@@ -323,7 +323,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="container mx-auto max-w-6xl px-4 pb-8">
+      <section className="container mx-auto w-full min-w-0 max-w-6xl px-4 pb-8 sm:px-6">
         <div className="overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 text-center text-white md:px-12 md:py-16">
           <div className="mx-auto max-w-3xl">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
@@ -336,11 +336,11 @@ export default function ServicesPage() {
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-bold text-primary-foreground hover:opacity-90">
+                className="inline-flex w-full min-w-0 flex-wrap items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:opacity-90 sm:w-auto sm:px-6">
                 <MessageCircle className="h-5 w-5" /> WhatsApp: +234 704 611 8938
               </a>
               <a href={EMAIL}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-4 font-semibold text-white hover:bg-white/10">
+                className="inline-flex w-full min-w-0 items-center justify-center gap-2 whitespace-normal break-words rounded-xl border border-white/30 px-4 py-4 text-center font-semibold text-white hover:bg-white/10 sm:w-auto sm:px-6">
                 <Mail className="h-5 w-5" /> Send an email
               </a>
             </div>
