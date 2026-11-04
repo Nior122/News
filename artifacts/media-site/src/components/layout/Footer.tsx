@@ -86,6 +86,7 @@ export function Footer() {
           <div>
             <h3 className="font-display font-semibold mb-4 text-lg">Company</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link href="/services" onMouseEnter={() => prefetchStaticRoute("/services")} className="hover:text-primary transition-colors">Services</Link></li>
               <li><Link href="/about" onMouseEnter={() => prefetchStaticRoute("/about")} className="hover:text-primary transition-colors">About Us</Link></li>
               <li><Link href="/contact" onMouseEnter={() => prefetchStaticRoute("/contact")} className="hover:text-primary transition-colors">Contact</Link></li>
               <li><Link href="/privacy" onMouseEnter={() => prefetchStaticRoute("/privacy")} className="hover:text-primary transition-colors">Privacy Policy</Link></li>
