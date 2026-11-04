@@ -13,7 +13,7 @@ const SITE_ORIGIN = 'https://scrolltek.name.ng';
 
 // Canonical, indexable static pages only. Routes that carry noindex
 // (/search, /admin, /admin/login) must never be advertised here.
-const STATIC_PAGES = ['/', '/about', '/contact', '/privacy'];
+const STATIC_PAGES = ['/', '/about', '/services', '/contact', '/privacy'];
 
 function getDb(env) {
   const connStr = (env.DATABASE_URL ?? '').replace(/[&?]channel_binding=[^&]*/g, '').replace(/\?&/, '?');
