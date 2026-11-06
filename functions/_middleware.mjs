@@ -151,7 +151,7 @@ const CHENAR_SSR_SERVICES = [
     description: "Create and adapt useful content such as social captions, blog drafts, product descriptions, video scripts and content plans with AI-assisted workflows and human review.",
   },
   {
-    id: "ebook-digital-products",
+    id: "ebooks-digital-products",
     title: "Ebook & Digital Product Development",
     description: "Turn knowledge and ideas into well-organised ebooks, guides, templates, workbooks and other digital products that are ready to present to an audience.",
   },
