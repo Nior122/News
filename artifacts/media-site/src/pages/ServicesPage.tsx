@@ -38,12 +38,12 @@ const services = [
       "Turn a Telegram voice note or rough idea into a caption, blog outline or social media draft for your review.",
       "When a new blog post goes live, prepare short social media versions and share them on the channels you have connected.",
       "Notify you when a new lead, order or support request needs your attention.",
-      "Move information between your forms, spreadsheets, email, calendar and other supported apps."
-    ],
+      "Move information between your forms, spreadsheets, email, calendar and other supported apps.",
       "After a customer pays and the payment is confirmed, mark the order as paid, send the agreed receipt message and alert the person preparing the delivery.",
       "When a new student registers through your form, save the details, notify the school office and send the parent the next steps.",
       "When a customer submits a complaint, record it, label it by issue and remind you if nobody has replied within the agreed time.",
       "At closing time, gather the day's orders from connected sources and send you one simple Telegram or email summary.",
+    ],
     outcome: "Spend less time chasing details and repeating small jobs. Get more time to attend to customers and grow your business.",
     keywords: ["Task automation", "AI-assisted processes", "Business productivity"]
   },
@@ -71,12 +71,12 @@ const services = [
       "A customer support bot that answers common questions about returns, repairs, delivery or using a product.",
       "A lead collection bot that asks a visitor for their name, contact and what help they need.",
       "A website assistant that helps people find the right service instead of searching through many pages.",
-      "A staff help bot that answers team questions from your approved guides, rules and documents."
-    ],
+      "A staff help bot that answers team questions from your approved guides, rules and documents.",
       "A WhatsApp enquiry assistant that answers questions about your prices, shares your catalogue and collects order details before handing the order to you.",
       "A Facebook Page or Instagram messaging assistant that responds to common questions and directs serious buyers to a human salesperson, where the platform allows it.",
       "A tutor's bot that explains available lessons, class times, fees and how a parent can register a child.",
       "A support bot for an online seller that explains delivery steps and helps a buyer check an order using the information your system makes available.",
+    ],
     outcome: "Customers can get basic answers quickly, and you receive clearer enquiries instead of typing the same replies all day.",
     keywords: ["Website chatbot", "Customer support", "Enquiry assistant"]
   },
@@ -104,12 +104,12 @@ const services = [
       "A recruitment helper that sorts applications using criteria you set and prepares a shortlist for a human to review.",
       "A creator assistant that helps organise video ideas, research topics and prepare scripts.",
       "A report helper that reviews supplied sales or service records and points out useful patterns.",
-      "A task assistant that follows an approved checklist and asks you before sending messages, changing records or taking important actions."
-    ],
+      "A task assistant that follows an approved checklist and asks you before sending messages, changing records or taking important actions.",
       "An order assistant that checks new orders, spots missing phone numbers or delivery addresses and asks your staff to confirm the details.",
       "A social media assistant that receives a content idea, prepares captions for different platforms and sends the drafts to Telegram for your approval.",
       "A blog assistant that researches a topic from approved sources, prepares an article draft and sends it to you to review before it goes live.",
       "A booking assistant that checks your available calendar slots, suggests suitable times and waits for your confirmation before booking.",
+    ],
     outcome: "Let an assistant handle the checking, sorting and preparation, while you keep control of decisions and important actions.",
     keywords: ["AI assistants", "Task execution", "Human approval"]
   },
@@ -138,12 +138,12 @@ const services = [
       "A blog where you can publish helpful articles, news, guides and updates.",
       "An online catalogue where customers can browse products before contacting you to order.",
       "A simple booking or appointment website where visitors can request an available time.",
-      "A website refresh that makes an old, confusing or phone-unfriendly website easier to use."
-    ],
+      "A website refresh that makes an old, confusing or phone-unfriendly website easier to use.",
       "A website for a fashion vendor with a product gallery, size guide, delivery information and a WhatsApp button for orders.",
       "A website for a photographer or makeup artist with a portfolio, service packages, customer enquiry form and booking details.",
       "A website for a private school with admission requirements, fee enquiry details, school calendar and an online application form.",
       "A website for a local food business where customers can view the menu, see delivery areas and send an order request.",
+    ],
     outcome: "Give people one clear place to learn about your business, see what you offer and reach you whenever they are ready.",
     keywords: ["Business websites", "Landing pages", "Portfolio websites"]
   },
@@ -172,12 +172,12 @@ const services = [
       "A CV and job application helper that helps users prepare and improve their documents.",
       "A simple question-and-answer app for a school, organisation or business using its own approved information.",
       "An internal staff app for submitting requests, checking instructions and tracking assigned tasks.",
-      "A custom AI tool that handles one clear problem your customers or team face every day."
-    ],
+      "A custom AI tool that handles one clear problem your customers or team face every day.",
       "An app for a provision shop to record daily sales, track low-stock items and see which products need restocking.",
       "A school learning app where a student selects a topic, gets a simple explanation and answers a short quiz.",
       "An app for a delivery business where staff record pickup details, customer phone numbers and delivery status.",
       "A creator's app that stores content ideas, turns selected ideas into draft captions and organises a weekly posting calendar.",
+    ],
     outcome: "Build around a real need, with only the features that make the app useful. We agree on what is possible before work begins.",
     keywords: ["Custom AI apps", "AI-powered tools", "Application development"]
   },
@@ -214,12 +214,12 @@ const services = [
       "When a customer asks for help, create a support record and send it to the right person.",
       "Connect a website, spreadsheet, email and database so customer details do not need to be typed repeatedly.",
       "Send reminders when a task is still waiting for attention after an agreed time.",
-      "Create a simple approval flow where a manager checks a message or document before it is sent."
-    ],
+      "Create a simple approval flow where a manager checks a message or document before it is sent.",
       "When you send a photo, video or caption to a Telegram bot, prepare it for your connected Facebook Page and Instagram Business account, then publish after your approval.",
       "When a new WordPress blog post is published, automatically send its title and link to your Telegram channel and prepare social media announcements.",
       "When you upload a new YouTube video, create a short announcement with the video link and send it to your selected social channels.",
       "When a customer completes a supported payment checkout, match the payment reference to the order and notify you if the details do not match.",
+    ],
     outcome: "Reduce the back-and-forth between apps, cut down repeated typing and help your team follow the same steps every time.",
     keywords: ["n8n automation", "Make.com integrations", "Connected workflows"]
   },
@@ -247,12 +247,12 @@ const services = [
       "Connect a spreadsheet to another business tool so selected information is shared automatically.",
       "Bring information from several approved services into one dashboard.",
       "Connect a membership or course platform to a system that manages access, where the provider supports it.",
-      "Connect your internal app to an outside service to check or send information securely."
-    ],
+      "Connect your internal app to an outside service to check or send information securely.",
       "Connect a website or online store to a supported payment provider so your system can receive payment updates and match them to orders.",
       "Connect Meta's supported publishing tools to an approved social media workflow so scheduled content can be sent to eligible Facebook or Instagram accounts.",
       "Connect WordPress to your content workflow so a reviewed article can be published and its link shared with your other connected tools.",
       "Connect Telegram to your business workflow so a message sent to your bot can trigger an approved task, save a file or start a content process.",
+    ],
     outcome: "Help separate apps share the information they need, instead of making you enter the same details again and again.",
     keywords: ["Software connections", "API development", "Data exchange"]
   },
@@ -280,12 +280,12 @@ const services = [
       "Choose matching colours, text styles, buttons and icons so every page feels like part of the same brand.",
       "Create a clickable sample of an app or website so you can see how it may work before development.",
       "Make layouts that adjust properly to small phone screens and larger computer screens.",
-      "Review an existing website or app and point out places where users may get confused."
-    ],
+      "Review an existing website or app and point out places where users may get confused.",
       "Redesign a mobile shop page so the product photo, price, available sizes, delivery details and order button are easy to spot.",
       "Design a checkout screen that clearly shows the items, delivery fee, total amount and payment steps before a customer confirms.",
       "Design a school parent portal where a parent can find notices, fee information, attendance updates and contact details without getting lost.",
       "Create a simple admin dashboard that lets a business owner find new orders, pending payments and customer messages in one place.",
+    ],
     outcome: "Help customers find their way, understand your offer and complete tasks with less confusion.",
     keywords: ["Interface design", "User experience", "Wireframes and prototypes"]
   },
@@ -315,12 +315,12 @@ const services = [
       "Create simple educational posts that explain a topic step by step.",
       "Write scripts for product demonstrations, customer stories or behind-the-scenes videos.",
       "Turn frequently asked customer questions into a helpful FAQ post series.",
-      "Prepare different versions of an advert for different audiences, such as new customers and returning customers."
-    ],
+      "Prepare different versions of an advert for different audiences, such as new customers and returning customers.",
       "Turn one product photo and its details into a Facebook caption, Instagram caption, WhatsApp Status text and short video script.",
       "Create a week's worth of posts for a restaurant, including menu highlights, lunch offers, customer FAQs and behind-the-scenes ideas.",
       "Turn a long YouTube video, webinar or voice note into short clips ideas, quote posts, a blog outline and social captions.",
       "Prepare a blog article draft from your notes, then create a short Facebook post, Instagram caption and Telegram announcement to promote it.",
+    ],
     outcome: "Spend less time wondering what to post and more time sharing useful content with the people you want to reach.",
     keywords: ["AI-assisted writing", "Social content", "Creative production"]
   },
@@ -351,12 +351,12 @@ const services = [
       "A digital planner for appointments, tasks, study time, meal planning or business activities.",
       "A bundle of printable checklists, trackers, forms and worksheets.",
       "An ebook cover and inside-page layout that makes your content look neat and easy to read.",
-      "A digital product sales page that explains what buyers will receive and how to get it."
-    ],
+      "A digital product sales page that explains what buyers will receive and how to get it.",
       "A practical guide for Nigerian small business owners on recording sales, tracking expenses and knowing whether the business is making a profit.",
       "A WhatsApp selling guide showing a new vendor how to arrange a catalogue, reply to enquiries and follow up with interested customers.",
       "A social media content planner with 30 post prompts, caption templates and a simple weekly posting calendar for small businesses.",
       "A digital starter kit for a new freelancer with a CV template, service price list, proposal template, invoice and client onboarding form.",
+    ],
     outcome: "Turn useful knowledge into a clear, well-arranged digital product that you can share or sell through a suitable platform.",
     keywords: ["Ebook creation", "PDF guides", "Templates and workbooks"]
   }
