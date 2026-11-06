@@ -22,6 +22,7 @@ import {
   sanitizeArticleHtml,
   MAX_RELATED_LINKS,
   SITE_ORIGIN,
+  escapeHtml,
 } from "./lib/seo-html.mjs";
 
 const CANONICAL_HOST = new URL(SITE_ORIGIN).hostname;
@@ -102,6 +103,72 @@ const GENERIC_PAGE_METADATA = {
     robots: "noindex, nofollow",
   },
 };
+
+const CHENAR_SSR_SERVICES = [
+  {
+    id: "ai-automation",
+    title: "AI Automation",
+    description: "Automate suitable repetitive business tasks such as organising enquiries, recording orders, sending reminders and preparing daily summaries, while keeping people in control of important decisions.",
+  },
+  {
+    id: "ai-chatbots",
+    title: "AI Chatbot Development",
+    description: "Give website and supported messaging-channel visitors quick answers to common questions, help them find information, collect enquiries and reach a person when needed.",
+  },
+  {
+    id: "ai-agents",
+    title: "AI Agent Development",
+    description: "Build AI assistants that can work through approved multi-step tasks, such as researching information, sorting requests, preparing reports and drafting responses for review.",
+  },
+  {
+    id: "website-development",
+    title: "Website Development",
+    description: "Create clear, mobile-friendly websites for businesses, professionals, schools, creators and organisations to explain what they offer and help visitors contact them.",
+  },
+  {
+    id: "ai-app-development",
+    title: "AI App Development",
+    description: "Turn a useful idea into a custom web or mobile-friendly application, with AI features where they genuinely help people complete a task.",
+  },
+  {
+    id: "workflow-automation",
+    title: "Workflow Automation",
+    description: "Connect supported tools such as forms, spreadsheets, email, calendars, websites and social platforms with n8n or Make.com so information moves between steps automatically.",
+  },
+  {
+    id: "api-integration",
+    title: "API Integration",
+    description: "Connect software platforms and services so they can securely exchange information, such as orders, payment updates, customer details and content.",
+  },
+  {
+    id: "ui-ux-design",
+    title: "UI/UX Design",
+    description: "Plan and improve the screens, layouts and user journeys of websites and apps so people can understand them and complete important actions more easily.",
+  },
+  {
+    id: "ai-content-creation",
+    title: "AI Content Creation",
+    description: "Create and adapt useful content such as social captions, blog drafts, product descriptions, video scripts and content plans with AI-assisted workflows and human review.",
+  },
+  {
+    id: "ebook-digital-products",
+    title: "Ebook & Digital Product Development",
+    description: "Turn knowledge and ideas into well-organised ebooks, guides, templates, workbooks and other digital products that are ready to present to an audience.",
+  },
+];
+
+function renderChenarServicesBody() {
+  const serviceItems = CHENAR_SSR_SERVICES.map((service) => {
+    const title = escapeHtml(service.title);
+    const description = escapeHtml(service.description);
+    const id = escapeHtml(service.id);
+    const message = encodeURIComponent(`Hello Chenar, I would like to ask about ${service.title}.`);
+    return `<li><article><h3><a href="/services#${id}">${title}</a></h3><p>${description}</p><p><a href="https://wa.me/2347046118938?text=${message}">Ask Chenar about ${title}</a></p></article></li>`;
+  }).join("");
+
+  return `<main id="ssr"><h1>AI Automation, Websites &amp; Digital Services</h1><p>Chenar helps businesses, entrepreneurs and creators plan and build practical digital solutions. Explore our services below and choose the area that best matches what you need.</p><section aria-labelledby="chenar-services-heading"><h2 id="chenar-services-heading">Our 10 services</h2><ul>${serviceItems}</ul></section><p>Not sure which service you need? <a href="https://wa.me/2347046118938">Contact Chenar on WhatsApp</a> and explain what you are trying to achieve.</p><p><a href="mailto:chinecheremjoseph39@gmail.com">Email Chenar</a></p></main>`;
+}
+
 function getDatabase(env) {
   const connectionString = (env.DATABASE_URL ?? "")
     .replace(/[&?]channel_binding=[^&]*/g, "")
@@ -545,6 +612,17 @@ export async function handleSeoRequest(context, { databaseFactory = getDatabase 
     } catch {
       console.error("[seo-render] homepage listing failed; serving static shell");
     }
+  }
+
+  if (route.type === "generic" && route.path === "/services") {
+    const html = renderCanonicalDocument(template, route.path, {
+      robots: route.robots,
+      title: route.title,
+      description: route.description,
+      heading: route.heading,
+      bodyHtml: renderChenarServicesBody(),
+    });
+    return htmlResponse(baseResponse, html, request, baseResponse.status, { robots: route.robots });
   }
 
   if (route.type === "generic") {
